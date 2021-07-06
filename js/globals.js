@@ -37,9 +37,13 @@ function getGlobalsDelta() {
 }
 
 function updateGlobals(params) {
-    for (let tree in params.talents)
-        for (let talent in params.talents[tree].t)
+    for (let tree in params.talents) {
+        console.log(tree)
+        for (let talent in params.talents[tree].t) {
+            console.log(talent)
             talents[tree].t[talent].c = params.talents[tree].t[talent];
+        }
+    }
 
     for (let i of params.buffs)
         for (let j of buffs)

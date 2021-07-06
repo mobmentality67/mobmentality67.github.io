@@ -603,7 +603,7 @@ SIM.UI = {
             if (counter == 0)
                 continue;
             if (counter >= set.bonus[0].count)
-                view.sidebar.find('#sets').append(`<a href="https://classic.wowhead.com/item-set=${set.id}" class="q4">${set.name} (${counter})</a><br />`);
+                view.sidebar.find('#sets').append(`<a href="https://tbc.wowhead.com/item-set=${set.id}" class="q4">${set.name} (${counter})</a><br />`);
         }
     },
 
@@ -772,7 +772,7 @@ SIM.UI = {
                 
             table += `<tr data-id="${item.id}" data-name="${item.name}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
-                        <td><a href="https://classic.wowhead.com/item=${tooltip}${rand}"></a>${item.name}</td>
+                        <td><a href="https://tbc.wowhead.com/item=${tooltip}${rand}"></a>${item.name}</td>
                         <td>${item.source}</td>
                         <td>${item.sta || ''}</td>
                         <td>${item.str || ''}</td>
@@ -862,7 +862,7 @@ SIM.UI = {
 
             table += `<tr data-id="${item.id}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
-                        <td><a href="https://classic.wowhead.com/item=${tooltip}${rand}"></a>${item.name}</td>
+                        <td><a href="https://tbc.wowhead.com/item=${tooltip}${rand}"></a>${item.name}</td>
                         <td>${item.source || ''}</td>
                         <td>${item.sta || ''}</td>
                         <td>${item.str || ''}</td>
@@ -978,7 +978,7 @@ SIM.UI = {
 
             table += `<tr data-id="${item.id}" data-temp="${item.temp || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
-                        <td><a href="https://classic.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
+                        <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
                         <td>${item.str || ''}</td>
                         <td>${item.agi || ''}</td>
                         <td>${item.ap || ''}</td>

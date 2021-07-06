@@ -11,6 +11,7 @@ struct Buff
         int agi;
         int ap;
         int crit;
+        int critrating;
         int hit;
         int spellcrit;
         int agimod;

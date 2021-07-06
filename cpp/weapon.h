@@ -29,8 +29,6 @@ struct Weapon
 
     int data[5] = { 0, 0, 0, 0, 0 };
 
-    std::optional<Proc> proc1;
-    std::optional<Proc> proc2;
     Windfury* windfury = nullptr;
 
     Weapon( Player& player_, Item& item, Enchant* enchant, Enchant* tempenchant, bool offhand_, bool twohand_ );

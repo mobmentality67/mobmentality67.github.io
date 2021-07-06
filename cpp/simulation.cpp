@@ -58,31 +58,14 @@ void Simulation::run()
 
     while ( step < maxsteps )
     {
-        // Passive ticks
-        if ( next != 0 && step % 3000 == 0 && player.talents.angermanagement )
+        // Attacks
+        if ( player.mh.timer <= 0 )
         {
-            player.rage = std::min( player.rage + 1.0, 100.0 );
-            spellcheck = true;
-        }
-        if ( player.vaelbuff && next != 0 && step % 1000 == 0 )
-        {
-            player.rage = std::min( player.rage + 20.0, 100.0 );
+            int dmg = player.attackmh( player.mh );
+            idmg += dmg;
             spellcheck = true;
         }
 
-        // Attacks
-        if ( player.mh->timer <= 0 )
-        {
-            int dmg = player.attackmh( *player.mh );
-            idmg += dmg;
-            spellcheck = true;
-        }
-        if ( player.oh && player.oh->timer <= 0 )
-        {
-            int dmg = player.attackoh( *player.oh );
-            idmg += dmg;
-            spellcheck = true;
-        }
 
         // Spells
         if ( spellcheck && !player.spelldelay )
@@ -172,7 +155,7 @@ void Simulation::run()
 
         // TODO: this always uses HS settings and ignores HS Execute
         if ( player.spells.has<HeroicStrike>() && HeroicStrike::options.unqueue && player.nextswinghs &&
-             player.rage < HeroicStrike::options.unqueue && player.mh->timer < HeroicStrike::options.unqueuetimer )
+             player.rage < HeroicStrike::options.unqueue && player.mh.timer < HeroicStrike::options.unqueuetimer )
         {
             player.nextswinghs = false;
         }
@@ -180,30 +163,29 @@ void Simulation::run()
         // Extra attacks
         if ( player.extraattacks > 0 )
         {
-            player.mh->timer = 0;
+            player.mh.timer = 0;
             player.extraattacks -= 1;
         }
         if ( player.batchedextras > 0 )
         {
-            player.mh->timer = batching - ( step % batching );
+            player.mh.timer = batching - ( step % batching );
             player.batchedextras -= 1;
         }
 
         // Process next step
-        if ( !player.mh->timer || ( !player.spelldelay && spellcheck ) || ( !player.heroicdelay && spellcheck ) )
+        if ( !player.mh.timer || ( !player.spelldelay && spellcheck ) || ( !player.heroicdelay && spellcheck ) )
         {
             next = 0;
             continue;
         }
 
-        next = player.mh->timer;
-        if ( player.oh ) next = std::min( next, player.oh->timer );
+        next = player.mh.timer;
+        if ( &player.oh ) next = std::min( next, player.oh.timer );
 
         if ( player.spelldelay ) next = std::min( next, delayedspell->maxdelay - player.spelldelay + 1 );
         if ( player.heroicdelay ) next = std::min( next, delayedheroic->maxdelay - player.heroicdelay + 1 );
         if ( player.timer ) next = std::min( next, player.timer );
         if ( player.itemtimer ) next = std::min( next, player.itemtimer );
-        if ( player.talents.angermanagement ) next = std::min( next, 3000 - step % 3000 );
         if ( player.vaelbuff ) next = std::min( next, 1000 - step % 1000 );
         if ( auto* ptr = player.auras.ptr<BloodrageAura>(); ptr && ptr->timer ) next = std::min( next, 1000 - ( step - ptr->starttimer ) % 1000 );
         if ( auto* ptr = player.auras.ptr<Gabbar>(); ptr && ptr->timer ) next = std::min( next, 2000 - ( step - ptr->starttimer ) % 2000 );
@@ -217,13 +199,13 @@ void Simulation::run()
 
         if ( player.spells.has<HeroicStrike>() && HeroicStrike::options.unqueue )
         {
-            int timeleft = player.mh->timer - HeroicStrike::options.unqueuetimer;
+            int timeleft = player.mh.timer - HeroicStrike::options.unqueuetimer;
             if ( timeleft > 0 ) next = std::min( next, timeleft );
         }
 
         step += next;
-        player.mh->step( next );
-        if ( player.oh ) player.oh->step( next );
+        player.mh.step( next );
+        if ( &player.oh ) player.oh.step( next );
         if ( player.timer && player.steptimer( next ) && !player.spelldelay ) spellcheck = true;
         if ( player.itemtimer && player.stepitemtimer( next ) && !player.spelldelay ) spellcheck = true;
         if ( player.dodgetimer ) player.stepdodgetimer( next );
@@ -264,18 +246,18 @@ void Simulation::report( bool full )
 {
     if ( full )
     {
-        player.auras.for_each( [=]( Aura& aura )
+        // player.auras.for_each( [=]( Aura& aura )
+        // {
+        //     reportAura( aura, iterations, totalduration );
+        // } );
+        // player.spells.for_each( [=]( Spell& spell )
+        // {
+        //     reportSpell( spell, iterations, totalduration );
+        // } );
+        reportWeapon( false, player.mh, iterations, totalduration );
+        if ( &player.oh )
         {
-            reportAura( aura, iterations, totalduration );
-        } );
-        player.spells.for_each( [=]( Spell& spell )
-        {
-            reportSpell( spell, iterations, totalduration );
-        } );
-        reportWeapon( false, *player.mh, iterations, totalduration );
-        if ( player.oh )
-        {
-            reportWeapon( true, *player.oh, iterations, totalduration );
+            reportWeapon( true, player.oh, iterations, totalduration );
         }
         reportSpread( spread, MAX_DPS );
     }

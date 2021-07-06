@@ -2,6 +2,7 @@
 #include "player.h"
 #include "simulation.h"
 #include "talents.h"
+#include <cmath>
 
 static bool testMainCd( Player& player, int maincd )
 {
@@ -41,8 +42,8 @@ decltype( MortalStrike::options ) MortalStrike::options;
 
 double MortalStrike::dmg() const
 {
-    double dmg = ( player.weaponrng ? ( double )rng( player.mh->mindmg, player.mh->maxdmg ) : double( player.mh->mindmg + player.mh->maxdmg ) / 2.0 );
-    return dmg + 160.0 + double( player.mh->bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh->normSpeed;
+    double dmg = ( player.weaponrng ? ( double )rng( player.mh.mindmg, player.mh.maxdmg ) : double( player.mh.mindmg + player.mh.maxdmg ) / 2.0 );
+    return dmg + 160.0 + double( player.mh.bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh.normSpeed;
 }
 
 bool MortalStrike::canUse() const
@@ -55,8 +56,8 @@ decltype( Whirlwind::options ) Whirlwind::options;
 
 double Whirlwind::dmg() const
 {
-    double dmg = ( player.weaponrng ? ( double )rng( player.mh->mindmg, player.mh->maxdmg ) : double( player.mh->mindmg + player.mh->maxdmg ) / 2.0 );
-    return dmg + double( player.mh->bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh->normSpeed;
+    double dmg = ( player.weaponrng ? ( double )rng( player.mh.mindmg, player.mh.maxdmg ) : double( player.mh.mindmg + player.mh.maxdmg ) / 2.0 );
+    return dmg + double( player.mh.bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh.normSpeed;
 }
 
 bool Whirlwind::canUse() const
@@ -69,14 +70,13 @@ decltype( Overpower::options ) Overpower::options;
 
 double Overpower::dmg() const
 {
-    double dmg = ( player.weaponrng ? ( double )rng( player.mh->mindmg, player.mh->maxdmg ) : double( player.mh->mindmg + player.mh->maxdmg ) / 2.0 );
-    return dmg + 35.0 + double( player.mh->bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh->normSpeed;
+    double dmg = ( player.weaponrng ? ( double )rng( player.mh.mindmg, player.mh.maxdmg ) : double( player.mh.mindmg + player.mh.maxdmg ) / 2.0 );
+    return dmg + 35.0 + double( player.mh.bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh.normSpeed;
 }
 
 void Overpower::use()
 {
     player.dodgetimer = 0;
-    player.rage = std::min<double>( player.rage, player.talents.rageretained );
     Spell::use();
     if ( player.zerkstance )
     {
@@ -95,7 +95,7 @@ decltype( Execute::options ) Execute::options;
 Execute::Execute( Player& player_ )
     : Spell( player_ )
 {
-    cost = 15 - player.talents.executecost;
+    cost = 15;
     maxdelay = options.reaction;
     refund = false;
     weaponspell = false;
@@ -133,7 +133,7 @@ decltype( Bloodrage::options ) Bloodrage::options;
 Bloodrage::Bloodrage( Player& player_ )
     : Spell( player_ )
 {
-    rage = 10 + player.talents.bloodragebonus;
+    rage = 10 + ceil(player.talents.intensity * 3.33);
     cooldown = 60;
     useonly = true;
     maxdelay = options.reaction;
@@ -157,7 +157,7 @@ decltype( HeroicStrike::options ) HeroicStrike::options;
 HeroicStrike::HeroicStrike( Player& player_ )
     : Spell( player_ )
 {
-    cost = 15 - player.talents.impheroicstrike;
+    cost = 15;
     bonus = player.aqbooks ? 175 : 138;
     useonly = true;
     maxdelay = options.reaction;
@@ -171,7 +171,7 @@ void HeroicStrike::use()
 bool HeroicStrike::canUse() const
 {
     return !player.nextswinghs && cost <= player.rage && ( player.rage >= options.minrage || testMainCd( player, options.maincd ) ) &&
-        ( !options.unqueue || player.mh->timer > options.unqueuetimer );
+        ( !options.unqueue || player.mh.timer > options.unqueuetimer );
 }
 
 // Heroic Strike (Execute Phase)
@@ -180,7 +180,7 @@ decltype( HeroicStrikeExecute::options ) HeroicStrikeExecute::options;
 HeroicStrikeExecute::HeroicStrikeExecute( Player& player_ )
     : Spell( player_ )
 {
-    cost = 15 - player.talents.impheroicstrike;
+    cost = 15;
     bonus = player.aqbooks ? 175 : 138;
     useonly = true;
     maxdelay = options.reaction;
@@ -194,7 +194,7 @@ void HeroicStrikeExecute::use()
 bool HeroicStrikeExecute::canUse() const
 {
     return !player.nextswinghs && cost <= player.rage && player.rage >= options.minrage &&
-        ( !options.unqueue || player.mh->timer > options.unqueuetimer );
+        ( !options.unqueue || player.mh.timer > options.unqueuetimer );
 }
 
 // Sunder Armor
@@ -203,7 +203,7 @@ decltype( SunderArmor::options ) SunderArmor::options;
 SunderArmor::SunderArmor( Player& player_ )
     : Spell( player_ )
 {
-    cost = 15 - player.talents.impsunderarmor;
+    cost = 15;
     nocrit = true;
     maxdelay = options.reaction;
 }
@@ -307,7 +307,7 @@ Flurry::Flurry( Player& player_ )
     : HasteAura( player_ )
 {
     duration = 12;
-    mult_stats.haste = player.talents.flurry;
+    mult_stats.haste = 0;
 }
 
 void Flurry::proc()
@@ -349,8 +349,8 @@ int DeepWounds::step()
 {
     while ( player.simulation.step >= nexttick )
     {
-        double dmg = double( player.mh->mindmg + player.mh->maxdmg ) / 2.0 + ( double )player.mh->bonusdmg + ( ( double )player.stats.ap / 14.0 ) * player.mh->speed;
-        int idmg = int( dmg * player.mh->modifier * player.stats.dmgmod * player.talents.deepwounds / 4.0 );
+        double dmg = double( player.mh.mindmg + player.mh.maxdmg ) / 2.0 + ( double )player.mh.bonusdmg + ( ( double )player.stats.ap / 14.0 ) * player.mh.speed;
+        int idmg = int( dmg * player.mh.modifier * player.stats.dmgmod / 4.0 );
         //std::cout << player.simulation.step << " " << name() << ": " << idmg << std::endl;
         player.simulation.idmg += idmg;
         totaldmg += idmg;
@@ -417,10 +417,6 @@ bool DeathWish::canUse() const
 
 int BattleStance::step()
 {
-    if ( player.simulation.step >= timer )
-    {
-        player.rage = std::min<double>( player.rage, player.talents.rageretained );
-    }
     return Aura::step();
 }
 

@@ -13,63 +13,10 @@ Weapon::Weapon( Player& player_, Item& item, Enchant* enchant, Enchant* tempench
     , speed( item.weapon.speed )
     , type( (WeaponType) item.weapon.type )
 {
-    if ( twohand )
-    {
-        modifier = 1.0 + player.talents.twomod;
-    }
-    else if ( offhand )
-    {
-        modifier = 0.5 * ( 1.0 + player.talents.offmod ) * ( 1.0 + player.talents.onemod );
-    }
-    else
-    {
-        modifier = 1.0 + player.talents.onemod;
-    }
 
-    if ( type == WEAPON_AXE )
-    {
-        crit += player.talents.axecrit;
-    }
-    else if ( type == WEAPON_POLEARM )
-    {
-        crit += player.talents.polearmcrit;
-    }
-    else if ( type == WEAPON_DAGGER )
-    {
-        normSpeed = 1.7;
-    }
-    if ( twohand )
-    {
-        normSpeed = 3.3;
-    }
-
-    if ( item.proc.ppm )
-    {
-        auto& proc = proc1.emplace();
-        proc.chance = int( speed * item.proc.ppm / 0.006 );
-        proc.physdmg = item.proc.physdmg;
-        proc.magicdmg = item.proc.magicdmg;
-        proc.binaryspell = item.proc.binaryspell != 0;
-        proc.coeff = item.proc.coeff;
-        proc.extra = item.proc.extra;
-        proc.gcd = item.proc.gcd != 0;
-        if ( item.proc.spell )
-        {
-            proc.spell = &item.proc.spell( player );
-        }
-    }
-
-    if ( enchant && enchant->proc.ppm )
-    {
-        auto& proc = proc2.emplace();
-        proc.chance = int( speed * enchant->proc.ppm / 0.006 );
-        proc.magicdmg = enchant->proc.magicdmg;
-        if ( enchant->proc.spell )
-        {
-            proc.spell = &enchant->proc.spell( player );
-        }
-    }
-
+    modifier = 1.0;
+    normSpeed = 3.3;
+    
     for ( auto& buff : Buffs )
     {
         if ( buff.active )

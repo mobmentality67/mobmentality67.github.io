@@ -97,8 +97,8 @@ struct Player
     int spelldelay = 0;
     int heroicdelay = 0;
 
-    std::optional<Weapon> mh;
-    std::optional<Weapon> oh;
+    Weapon mh;
+    Weapon oh;
 
     std::vector<Proc> attackproc;
 

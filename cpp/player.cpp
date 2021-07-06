@@ -63,8 +63,6 @@ Player::Player( Simulation& sim, const Config& cfg, const Talents& talents_ )
     addBuffs();
     addSpells();
 
-    if ( talents.flurry ) auras.emplace<Flurry>( *this );
-    if ( talents.deepwounds ) auras.emplace<DeepWounds>( *this );
     if ( spells.has<Overpower>() ) auras.emplace<BattleStance>( *this );
     if ( spells.has<Bloodrage>() ) auras.emplace<BloodrageAura>( *this );
     if ( includes( items, 9449 ) ) auras.emplace<Pummeler>( *this );
@@ -79,9 +77,9 @@ Player::Player( Simulation& sim, const Config& cfg, const Talents& talents_ )
 
     update();
 
-    if ( oh )
+    if ( &oh )
     {
-        oh->timer = int( oh->speed * 1000.0 / stats.haste / 2.0 + 0.5 );
+        oh.timer = int( oh.speed * 1000.0 / stats.haste / 2.0 + 0.5 );
     }
 }
 
@@ -921,22 +919,6 @@ int Player::procattack( Spell* spell, Weapon& weapon, Result result )
     int procdmg = 0;
     if ( result != RESULT_MISS && result != RESULT_DODGE )
     {
-        if ( weapon.proc1 && rng10k() < weapon.proc1->chance )
-        {
-            if ( weapon.proc1->spell ) weapon.proc1->spell->use();
-            if ( weapon.proc1->magicdmg ) procdmg += magicproc( *weapon.proc1 );
-            if ( weapon.proc1->physdmg ) procdmg += physproc( weapon.proc1->physdmg );
-            if ( weapon.proc1->extra ) extraattacks += weapon.proc1->extra;
-        }
-        if ( weapon.proc2 && rng10k() < weapon.proc2->chance )
-        {
-            if ( weapon.proc2->spell ) weapon.proc2->spell->use();
-            if ( weapon.proc2->magicdmg ) procdmg += magicproc( *weapon.proc2 );
-        }
-        if ( weapon.windfury && weapon.windfury->timer == 0 && rng10k() < 2000 )
-        {
-            weapon.windfury->use();
-        }
         for ( auto& proc : attackproc )
         {
             if ( rng10k() < proc.chance )

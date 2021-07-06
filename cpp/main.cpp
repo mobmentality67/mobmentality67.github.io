@@ -4,23 +4,14 @@
 
 int main()
 {
-    enableBuff( 2458, 1 );
-    enableBuff( 27578, 1 );
-    enableBuff( 22888, 1 );
-    enableBuff( 24425, 1 );
-    enableBuff( 23768, 1 );
-    enableBuff( 22817, 1 );
-    enableBuff( 15366, 1 );
-    enableBuff( 16609, 1 );
-    enableBuff( 9885, 1 );
-    enableBuff( 20906, 1 );
-    enableBuff( 20217, 1 );
-    enableBuff( 19838, 1 );
-    enableBuff( 8410, 1 );
-    enableBuff( 13452, 1 );
-    enableBuff( 12451, 1 );
-    enableBuff( 12460, 1 );
-    enableBuff( 13810, 1 );
+    enableBuff( 2048, 1 );  // Battle Shout
+    enableBuff( 26990, 1 ); // MOTW
+    enableBuff( 20217, 1 ); // BOK
+    enableBuff( 27140, 1 ); // BOM
+    enableBuff( 35359, 1 ); // Grace of Air
+    enableBuff( 8075, 1 ); // Strength of Earth
+    enableBuff( 22831, 1 );  // Major Agility
+    enableBuff( 27644, 1 ); // Grilled Mudfish
     enableEnchant( ITEM_HEAD, 11645, 1 );
     enableEnchant( ITEM_SHOULDER, 29483, 1 );
     enableEnchant( ITEM_BACK, 13882, 1 );
@@ -67,40 +58,25 @@ int main()
     options = spellOptions( 7373 ); options[0] = 0; options[1] = 50; options[2] = 100;
     options = spellOptions( 115671 ); options[0] = 0; options[1] = 30; options[2] = 0; options[3] = 200; options[4] = 100;
     Config* cfg = allocConfig();
-    cfg->sim.timesecsmin = 50;
-    cfg->sim.timesecsmax = 60;
+    cfg->sim.timesecsmin = 110;
+    cfg->sim.timesecsmax = 120;
     cfg->sim.executeperc = 20;
     cfg->sim.startrage = 0;
     cfg->sim.iterations = 1000;
     cfg->player.testId = -1;
     cfg->player.testType = -1;
     cfg->player.enchType = -1;
-    cfg->player.race = RACE_HUMAN;
+    cfg->player.race = RACE_NIGHTELF;
     cfg->player.aqbooks = 0;
     cfg->player.weaponrng = 1;
     cfg->player.spelldamage = 0;
     cfg->target.level = 63;
-    cfg->target.basearmor = 336;
-    cfg->target.armor = 336;
-    cfg->target.defense = 315;
+    cfg->target.basearmor = 7700;
+    cfg->target.armor = 7700;
+    cfg->target.defense = 365;
     cfg->target.mitigation = 0.94;
     cfg->target.binaryresist = 2197;
     Talents* talents = allocTalents();
-    setTalent( talents, 124, 3 );
-    setTalent( talents, 127, 3 );
-    setTalent( talents, 641, 5 );
-    setTalent( talents, 137, 1 );
-    setTalent( talents, 121, 3 );
-    setTalent( talents, 662, 2 );
-    setTalent( talents, 157, 5 );
-    setTalent( talents, 159, 5 );
-    setTalent( talents, 154, 5 );
-    setTalent( talents, 1581, 5 );
-    setTalent( talents, 1542, 2 );
-    setTalent( talents, 155, 5 );
-    setTalent( talents, 165, 1 );
-    setTalent( talents, 156, 5 );
-    setTalent( talents, 167, 1 );
     Simulation* sim = allocSimulation( cfg, talents );
     runSimulation( sim );
     reportSimulation( sim, 1 );
