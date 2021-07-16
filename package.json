@@ -4,24 +4,18 @@
   "description": "WarriorSim",
   "main": "main.js",
   "devDependencies": {
-    "browser-sync": "^2.27.4",
+    "browser-sync": "^2.26.12",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-cssnano": "^2.1.3",
     "gulp-minify": "^3.1.0",
     "gulp-sass": "^4.1.0",
-    "gulp-uglify": "^3.0.2",
-    "onchange": "^7.1.0"
+    "gulp-uglify": "^3.0.2"
   },
   "scripts": {
-    "cpp": "run-func ./build.js -O3 -g -DUSE_EMSCRIPTEN', 'WarriorSim', ['cpp']",
     "dist": "gulp sass && gulp js",
-    "dev": "gulp",
-    "gulp": "gulp"
+    "dev": "gulp"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "npm-run-all": "^4.1.5"
-  }
+  "license": "ISC"
 }

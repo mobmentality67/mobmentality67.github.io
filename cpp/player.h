@@ -14,54 +14,20 @@ struct Player
     Stats stats;
 
     Holder<
-        Bloodthirst,
-        MortalStrike,
-        Whirlwind,
-        Overpower,
-        Execute,
-        Bloodrage,
-        HeroicStrike,
-        HeroicStrikeExecute,
-        SunderArmor,
-        Hamstring
+        Mangle,
+        Maul,
+        Swipe,
+        Lacerate,
+        FaerieFire
     > spells;
 
     Holder<
-        Recklessness,
-        Flurry,
-        DeepWounds,
-        CrusaderMH,
-        CrusaderOH,
-        Cloudkeeper,
-        FelstrikerMH,
-        FelstrikerOH,
-        DeathWish,
-        BattleStance,
-        MightyRagePotion,
-        BloodFury,
-        Berserking,
-        Empyrean,
-        Eskhandar,
-        Zeal,
-        Annihilator,
-        RivenspikeMH,
-        RivenspikeOH,
-        Bonereaver,
-        Destiny,
-        Untamed,
+        BloodlustBrooch,
         Pummeler,
-        Windfury,
         Swarmguard,
-        Flask,
         Slayer,
         Spider,
-        Earthstrike,
-        Gabbar,
-        PrimalBlessing,
-        BloodrageAura,
-        Zandalarian,
-        AvengerMH,
-        AvengerOH
+        LacerateDOT
     > auras;
 
     double rage = 0;
@@ -74,14 +40,8 @@ struct Player
     bool nextswinghs = false;
     bool nextswingcl = false;
     Race race;
-    bool aqbooks;
     bool weaponrng;
     int spelldamage;
-
-    bool enhancedbs = false;
-    bool zerkstance = false;
-    bool vaelbuff = false;
-    bool dragonbreath = false;
 
     int testEnch = -1;
     int testEnchType = -1;
@@ -97,8 +57,7 @@ struct Player
     int spelldelay = 0;
     int heroicdelay = 0;
 
-    Weapon mh;
-    Weapon oh;
+    std::optional<Weapon> mh;
 
     std::vector<Proc> attackproc;
 
@@ -146,7 +105,6 @@ struct Player
     Result rollspell( Spell& spell );
 
     int attackmh( Weapon& weapon );
-    int attackoh( Weapon& weapon );
     int cast( Castable* castable );
 
     int dealdamage( double dmg, Result result, Weapon& weapon, Spell* spell );

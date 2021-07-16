@@ -74,7 +74,7 @@ void reportSpell( Spell& spell, int iterations, uint64_t totalduration )
 
 void reportAura( Aura& aura, int iterations, uint64_t totalduration )
 {
-    auto* deepWounds = dynamic_cast<DeepWounds*>( &aura );
+    auto* laceratedot = dynamic_cast<LacerateDOT*>( &aura );
 #ifdef USE_EMSCRIPTEN
     EM_ASM(
         ({
@@ -82,14 +82,14 @@ void reportAura( Aura& aura, int iterations, uint64_t totalduration )
             var data = { name, uptime: $1 };
             if ( $2 ) data.totaldmg = $2;
             SIM_PLAYER.auras[name.replace(/[^\\\\w]/g, "").toLowerCase()] = data;
-        }), aura.name(), ( double )aura.uptime, deepWounds ? ( double )deepWounds->totaldmg : 0.0 );
+        }), aura.name(), ( double )aura.uptime, laceratedot ? ( double )laceratedot->totaldmg : 0.0 );
 #else
     if ( aura.uptime )
     {
         std::cout << std::fixed << std::setprecision( 2 ) << aura.name() << ": " << 10.0 * ( double )aura.uptime / ( double )totalduration << "%" << std::endl;
-        if ( deepWounds )
+        if ( laceratedot )
         {
-            std::cout << std::fixed << std::setprecision( 2 ) << "  DPS: " << 1000.0 * ( double )deepWounds->totaldmg / ( double )totalduration << std::endl;
+            std::cout << std::fixed << std::setprecision( 2 ) << "  DPS: " << 1000.0 * ( double )laceratedot->totaldmg / ( double )totalduration << std::endl;
         }
     }
 #endif
@@ -173,21 +173,11 @@ int* spellOptions( int id )
 {
     switch ( id )
     {
-    case 23894: return reinterpret_cast<int*>( &Bloodthirst::options );
-    case 27580: return reinterpret_cast<int*>( &MortalStrike::options );
-    case 11567: return reinterpret_cast<int*>( &HeroicStrike::options );
-    case 20662: return reinterpret_cast<int*>( &Execute::options );
-    case 1680: return reinterpret_cast<int*>( &Whirlwind::options );
-    case 12328: return reinterpret_cast<int*>( &DeathWish::options );
-    case 1719: return reinterpret_cast<int*>( &Recklessness::options );
-    case 11585: return reinterpret_cast<int*>( &Overpower::options );
-    case 26296: return reinterpret_cast<int*>( &Berserking::options );
-    case 20572: return reinterpret_cast<int*>( &BloodFury::options );
-    case 2687: return reinterpret_cast<int*>( &Bloodrage::options );
-    case 17528: return reinterpret_cast<int*>( &MightyRagePotion::options );
-    case 11597: return reinterpret_cast<int*>( &SunderArmor::options );
-    case 7373: return reinterpret_cast<int*>( &Hamstring::options );
-    case 115671: return reinterpret_cast<int*>( &HeroicStrikeExecute::options );
+    case 33987: return reinterpret_cast<int*>( &Mangle::options );
+    case 26997: return reinterpret_cast<int*>( &Swipe::options );
+    case 33745: return reinterpret_cast<int*>( &Lacerate::options );
+    case 26996: return reinterpret_cast<int*>( &Maul::options );
+    case 26993: return reinterpret_cast<int*>( &FaerieFire::options );
     default: return nullptr;
     }
 }

@@ -1,6 +1,6 @@
 var session = {
    buffs: '["25289", "26990", "20217", "27140", "25359", "8075", "22831", "27664"]',
-   rotation: '[{"id":"23894","active":true},{"id":"27580","active":false},{"id":"11567","active":true,"minrage":"40","maincd":"4"},{"id":"11609","active":false,"minrage":"40"},{"id":"20662","active":true,"starttime":"52"},{"id":"1680","active":true,"minrage":"50","maincd":"2"},{"id":"12328","active":true,"time":"29","crusaders":"0"},{"id":"1719","active":false,"time":"44"},{"id":"11551","active":false},{"id":"11585","active":false,"maxrage":"25"},{"id":"26296","active":false,"time":"50","haste":"30"},{"id":"20572","active":false,"time":"35"},{"id":"2687","active":true},{"id":"17528","active":true,"time":"39","crusaders":"0"},{"id":"16322","active":false,"time":"39"},{"id":"23255","active":false},{"id":"11597","active":true,"globals":"1"},{"id":"11605","active":false}]',
+   rotation: '[{"id":"33987","active":true}]',
    sources: '["quest","crafting","dungeon","onyxia","mc","bwl","worldboss","pvp","other"]',
    phases: '["1","2","3"]',
    talents: '[{"n":"Balance","t":[0]},{"n":"Feral Combat","t":[3, 5, 3, 3, 2, 3, 2, 3, 2, 2, 5, 3, 1, 5, 1]},{"n":"Restoration","t":[5, 3, 1]}]',

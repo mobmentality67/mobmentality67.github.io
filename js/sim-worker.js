@@ -22,7 +22,7 @@ onmessage = (event) => {
         const itemSlots = ['head', 'neck', 'shoulder', 'back', 'chest', 'wrist', 'hands',
           'waist', 'legs', 'feet', 'finger1', 'finger2', 'trinket1', 'trinket2', 'ranged',
           'mainhand', 'offhand', 'twohand', 'custom'];
-        const races = ['Human', 'Dwarf', 'Gnome', 'Night Elf', 'Orc', 'Tauren', 'Troll', 'Undead'];
+        const races = ['Night Elf', 'Tauren'];
 
         const rng = [...Array(8)].map(() => Math.floor(Math.random() * 65536));
         module._initRandom(...rng);
@@ -53,21 +53,11 @@ onmessage = (event) => {
             module.HEAP32[ptr] = opt.active ? 1 : 0;
             fields.forEach((f, i) => module.HEAP32[ptr + i + 1] = opt[f]);
         }
-        spellOptions(0, "minrage", "reaction"); // Bloodthirst
-        spellOptions(1, "minrage", "reaction"); // Mortal Strike
-        spellOptions(2, "minrage", "maincd", "unqueue", "unqueuetimer", "reaction"); // Heroic Strike
-        spellOptions(4, "priorityap", "reaction"); // Execute
-        spellOptions(5, "minrage", "maincd", "reaction"); // Whirlwind
-        spellOptions(6, "timetoend", "crusaders", "reaction"); // Death Wish
-        spellOptions(7, "timetoend", "reaction"); // Recklessness
-        spellOptions(9, "maxrage", "maincd", "reaction"); // Overpower
-        spellOptions(10, "timetoend", "haste", "reaction"); // Berserking
-        spellOptions(11, "timetoend", "reaction"); // Blood Fury
-        spellOptions(12, "reaction"); // Bloodrage
-        spellOptions(13, "timetoend", "crusaders", "reaction"); // Mighty Rage Potion
-        spellOptions(16, "globals", "reaction"); // Sunder Armor
-        spellOptions(18, "minrage", "reaction"); // Hamstring
-        spellOptions(19, "minrage", "unqueue", "unqueuetimer", "reaction"); // Heroic Strike (Execute Phase)
+        spellOptions(0, "minrage", "reaction"); // Mangle
+        spellOptions(1, "minrage", "maincd", "reaction"); // Swipe
+        spellOptions(2, "minrage", "maincd", "reaction", "priorityap"); // Lacerate
+        spellOptions(3, "minrage", "reaction"); // Maul
+        spellOptions(4, "reaction"); // Faerie Fire 
 
         const configPtr = module._allocConfig();
         const cfg = configPtr >> 2;
@@ -75,7 +65,6 @@ onmessage = (event) => {
         module.HEAP32[cfg + 1] = params.player[1] != null ? (typeof params.player[1] === 'string' ? itemSlots.indexOf(params.player[1]) : params.player[1]) : -1;
         module.HEAP32[cfg + 2] = params.player[2] != null ? params.player[2] : -1;
         module.HEAP32[cfg + 3] = races.indexOf(params.player[3].race);
-        module.HEAP32[cfg + 4] = params.player[3].aqbooks ? 1 : 0;
         module.HEAP32[cfg + 5] = params.player[3].weaponrng ? 1 : 0;
         module.HEAP32[cfg + 6] = params.player[3].spelldamage;
         module.HEAP32[cfg + 7] = params.player[3].target.level;

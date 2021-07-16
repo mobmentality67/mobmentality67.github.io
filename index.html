@@ -15,7 +15,7 @@
   <script type="text/javascript" src="dist/js/libs/jquery.tablesorter.widgets.min.js"></script>
   <script type="text/javascript" src="dist/js/libs/Chart.min.js"></script>
 
-  <script type="text/javascript" src="dist/js/classes/player.min.js"></script>
+<!--   <script type="text/javascript" src="dist/js/classes/player.min.js"></script>
   <script type="text/javascript" src="dist/js/classes/simulation.min.js"></script>
   <script type="text/javascript" src="dist/js/classes/spell.min.js"></script>
   <script type="text/javascript" src="dist/js/classes/weapon.min.js"></script>
@@ -28,10 +28,10 @@
   <script type="text/javascript" src="dist/js/globals.min.js"></script>
   <script type="text/javascript" src="dist/js/settings.min.js"></script>
   <script type="text/javascript" src="dist/js/stats.min.js"></script>
-  <script type="text/javascript" src="dist/js/ui.min.js"></script>
+  <script type="text/javascript" src="dist/js/ui.min.js"></script> -->
 
   <!-- TESTING JS -->
-  <!-- <script type="text/javascript" src="js/classes/player.js"></script>
+  <script type="text/javascript" src="js/classes/player.js"></script>
   <script type="text/javascript" src="js/classes/simulation.js"></script>
   <script type="text/javascript" src="js/classes/spell.js"></script>
   <script type="text/javascript" src="js/classes/weapon.js"></script>
@@ -44,7 +44,7 @@
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/settings.js"></script>
   <script type="text/javascript" src="js/stats.js"></script>
-  <script type="text/javascript" src="js/ui.js"></script> -->
+  <script type="text/javascript" src="js/ui.js"></script>
 
   <script>var whTooltips = { colorLinks: true, iconizeLinks: false, renameLinks: false, "hide": { "ilvl": false } };</script>
   <script src="https://wow.zamimg.com/widgets/power.js"></script>
@@ -61,8 +61,8 @@ profiles
   <section class="sidebar">
     <div class="bg"></div>
     <div class="character">
-      <p><span id="race">Human</span> Warrior</p>
-      <p>Level 60</p>
+      <p><span id="race">Night Elf</span> Druid</p>
+      <p>Level 70</p>
 
       <ul>
         <li>
@@ -141,19 +141,13 @@ profiles
         <ul>
           <li>
             <label>Level</label>
-            <input type="text" name="level" value="60" data-numberonly="true" readonly>
+            <input type="text" name="level" value="70" data-numberonly="true" readonly>
           </li>
           <li>
             <label>Race</label>
             <select dir="rtl" name="race">
-              <option value="Human">Human</option>
-              <option value="Dwarf">Dwarf</option>
-              <option value="Gnome">Gnome</option>
               <option value="Night Elf">Night Elf</option>
-              <option value="Undead">Undead</option>
-              <option value="Orc">Orc</option>
               <option value="Tauren">Tauren</option>
-              <option value="Troll">Troll</option>
             </select>
           </li>
           <li>
@@ -167,10 +161,6 @@ profiles
           <li>
             <label>Fight Duration (max)</label>
             <input type="text" name="timesecsmax" value="60" data-numberonly="true">
-          </li>
-          <li>
-            <label>Execute phase percentage</label>
-            <input type="text" name="executeperc" value="20" data-numberonly="true">
           </li>
           <li>
             <label>Initial Rage</label>
@@ -195,13 +185,6 @@ profiles
           <li>
             <label>Target Armor</label>
             <input type="text" name="targetarmor" value="336" data-numberonly="true">
-          </li>
-          <li>
-            <label>AQ Books</label>
-            <select dir="rtl" name="aqbooks">
-              <option value="No">No</option>
-              <option value="Yes">Yes</option>
-            </select>
           </li>
           <li>
             <label>Weapon Damage RNG</label>

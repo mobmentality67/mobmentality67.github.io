@@ -152,11 +152,6 @@ SIM.SETTINGS = {
             SIM.UI.updateSidebar();
         });
 
-        view.fight.on('change', 'select[name="aqbooks"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
-
         view.fight.on('keyup', 'input[type="text"]', function (e) {
             SIM.UI.updateSession();
             SIM.UI.updateSidebar();
@@ -184,36 +179,20 @@ SIM.SETTINGS = {
             <a href="https://tbc.wowhead.com/spell=${tooltip}" class="wh-tooltip"></a>
             </div><ul class="options"></ul></div>`);
 
-            if (spell.timetoend !== undefined)
-                div.find('.options').append(`<li>Use on last <input type="text" name="timetoend" value="${spell.timetoend}" data-numberonly="true" /> seconds</li>`);
-            if (spell.minrage !== undefined)
-                div.find('.options').append(`<li>Use when above <input type="text" name="minrage" value="${spell.minrage}" data-numberonly="true" /> rage</li>`);
-            if (spell.maxrage !== undefined)
-                div.find('.options').append(`<li>Use when below <input type="text" name="maxrage" value="${spell.maxrage}" data-numberonly="true" /> rage</li>`);
             if (spell.globals !== undefined)
                 div.find('.options').append(`<li>Use on first <input type="text" name="globals" value="${spell.globals}" data-numberonly="true" /> globals</li>`);
             if (spell.maincd !== undefined)
-                div.find('.options').append(`<li>BT/MS cooldown >= <input type="text" name="maincd" value="${spell.maincd}" data-numberonly="true" /> secs</li>`);
+                div.find('.options').append(`<li>Mangle cooldown >= <input type="text" name="maincd" value="${spell.maincd}" data-numberonly="true" /> secs</li>`);
             if (spell.crusaders !== undefined)
                 div.find('.options').append(`<li>when <input type="text" name="crusaders" value="${spell.crusaders}" data-numberonly="true" /> crusaders are up</li>`);
             if (spell.haste !== undefined)
                 div.find('.options').append(`<li>Attack speed at <input type="text" name="haste" value="${spell.haste}" data-numberonly="true" /> %</li>`);
             if (spell.priorityap !== undefined)
-                div.find('.options').append(`<li>Prioritize BT/MS when >= <input style="width:25px" type="text" name="priorityap" value="${spell.priorityap}" data-numberonly="true" /> AP</li>`);
-            if (spell.id == 23255)
-                div.find('.options').append(`<li>Include Deep Wounds damage</li>`);
-            if (spell.id == 11605)
-                div.find('.options').append(`<li>Slam macro with MH swing</li>`);
-            if (spell.id == 2687)
-                div.find('.options').append('<li>Used on cooldown below 80 rage</li>');
+                div.find('.options').append(`<li>Prioritize Swipe when >= <input style="width:25px" type="text" name="priorityap" value="${spell.priorityap}" data-numberonly="true" /> AP</li>`);
             if (spell.reaction !== undefined)
                 div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
             if (spell.hidden)
                 div.addClass('hidden');
-            if (localStorage.race == "Orc" && spell.id == 20572)
-                div.removeClass('hidden');
-            if (localStorage.race == "Troll" && spell.id == 26296)
-                div.removeClass('hidden');
             if (spell.active)
                 div.addClass('active');
 
@@ -225,25 +204,10 @@ SIM.SETTINGS = {
                 div.find('.options li:first-of-type').append(' or');
             }
 
-            if (spell.id == 11567) {
+            /* When to queue maul qualifier */
+            if (spell.id == 26996) {
                 div.find('.options').empty();
                 div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="30" data-numberonly="true"> rage or BT/MS cooldown >= <input type="text" name="maincd" value="4" data-numberonly="true"> secs</li>`);
-                div.find('.options').append(`<li>Unqueue if below <input type="text" name="unqueue" value="${spell.unqueue}" data-numberonly="true" /> rage, <input type="text" name="unqueuetimer" value="${spell.unqueuetimer}" data-numberonly="true" /> ms before MH swing</li>`);
-                div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
-            }
-
-            if (spell.id == 115671) {
-                div.find('.options').empty();
-                div.find('.options').before('<label>Execute phase HS:</label>');
-                div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="30" data-numberonly="true"> rage</li>`);
-                div.find('.options').append(`<li>Unqueue if below <input type="text" name="unqueue" value="${spell.unqueue}" data-numberonly="true" /> rage, <input type="text" name="unqueuetimer" value="${spell.unqueuetimer}" data-numberonly="true" /> ms before MH swing</li>`);
-                div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
-            }
-
-            if (spell.id == 11585) {
-                div.find('.options').empty();
-                div.find('.options').append(`<li>Use when below <input type="text" name="maxrage" value="${spell.maxrage}" data-numberonly="true" /> rage and</li>`);
-                div.find('.options').append(`<li>BT/MS cooldown >= <input type="text" name="maincd" value="${spell.maincd}" data-numberonly="true" /> secs</li>`);
                 div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
             }
 

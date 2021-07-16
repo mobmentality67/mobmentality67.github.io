@@ -26,14 +26,8 @@ enum WeaponType : int
 
 enum Race : int
 {
-    RACE_HUMAN,
-    RACE_DWARF,
-    RACE_GNOME,
     RACE_NIGHTELF,
-    RACE_ORC,
     RACE_TAUREN,
-    RACE_TROLL,
-    RACE_UNDEAD,
 
     NUM_RACES
 };
@@ -81,7 +75,6 @@ struct Config
         int testType;
         int enchType;
         Race race;
-        int aqbooks;
         int weaponrng;
         int spelldamage;
     } player;
@@ -151,14 +144,8 @@ struct RaceInfo
 
 static RaceInfo races[] =
 {
-    { 120,  80, 110,  30, 160, { 5, 5, 0, 0, 0, 0 } }, // human
-    { 122,  76, 113,  29, 160, { 0, 0, 0, 0, 0, 0 } }, // dwarf
-    { 115,  83, 109,  35, 160, { 0, 0, 0, 0, 0, 0 } }, // gnome
     { 117,  85, 109,  30, 160, { 0, 0, 0, 0, 0, 0 } }, // nightelf
-    { 123,  77, 112,  27, 160, { 0, 0, 0, 5, 0, 0 } }, // orc
     { 125,  75, 112,  25, 160, { 0, 0, 0, 0, 0, 0 } }, // tauren
-    { 121,  82, 111,  26, 160, { 0, 0, 0, 0, 0, 0 } }, // troll
-    { 119,  78, 111,  28, 160, { 0, 0, 0, 0, 0, 0 } }, // undead
 };
 
 template<class T>

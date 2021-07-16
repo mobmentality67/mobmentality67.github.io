@@ -2,7 +2,6 @@ class Player {
     static getConfig(base) {
         return {
             race: $('select[name="race"]').val(),
-            aqbooks: $('select[name="aqbooks"]').val() == "Yes",
             weaponrng: $('select[name="weaponrng"]').val() == "Yes",
             spelldamage: parseInt($('input[name="spelldamage"]').val()),
             target: {
@@ -27,7 +26,6 @@ class Player {
         this.nextswinghs = false;
         this.nextswingcl = false;
         this.race = config.race;
-        this.aqbooks = config.aqbooks;
         this.weaponrng = config.weaponrng;
         this.spelldamage = config.spelldamage;
         this.target = config.target;
@@ -89,22 +87,13 @@ class Player {
         this.addTempEnchants();
         this.addBuffs();
         this.addSpells();
-        if (this.talents.flurry) this.auras.flurry = new Flurry(this);
-        if (this.talents.deepwounds) this.auras.deepwounds = new DeepWounds(this);
-        if (this.spells.overpower) this.auras.battlestance = new BattleStance(this);
-        if (this.spells.bloodrage) this.auras.bloodrage = new BloodrageAura(this);
+       
         if (this.items.includes(9449)) this.auras.pummeler = new Pummeler(this);
-        if (this.items.includes(14554)) this.auras.cloudkeeper = new Cloudkeeper(this);
-        if (this.items.includes(20130)) this.auras.flask = new Flask(this);
         if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
-        if (this.items.includes(23570)) this.auras.gabbar = new Gabbar(this);
-        if (this.items.includes(21180)) this.auras.earthstrike = new Earthstrike(this);
+        if (this.items.includes(21180)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
         if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
-        if (this.items.includes(19949)) this.auras.zandalarian = new Zandalarian(this);
         this.update();
-        if (this.oh)
-            this.oh.timer = Math.round(this.oh.speed * 1000 / this.stats.haste / 2);
     }
     addRace() {
         for (let race of races) {
@@ -149,14 +138,7 @@ class Player {
 
                     if (type == "mainhand" || type == "offhand" || type == "twohand")
                         this.addWeapon(item, type);
-
-                    // Blazefury Medallion
-                    if (item.id == 17111) {
-                        this.attackproc = {};
-                        this.attackproc.chance = item.procchance * 100;
-                        this.attackproc.magicdmg = item.magicdmg;
-                    }
-                    
+                   
                     if (item.procchance && (type == "trinket1" || type == "trinket2")) {
                         let proc = {};
                         proc.chance = item.procchance * 100;
@@ -213,9 +195,6 @@ class Player {
         if (type == "mainhand")
             this.mh = new Weapon(this, item, ench, tempench, false, false);
 
-        if (type == "offhand")
-            this.oh = new Weapon(this, item, ench, tempench, true, false);
-
         if (type == "twohand")
             this.mh = new Weapon(this, item, ench, tempench, false, true);
 
@@ -241,7 +220,6 @@ class Player {
         for (let type in enchant) {
             for (let item of enchant[type]) {
                 if (!item.temp) continue;
-                if ((type == "mainhand" || type == "twohand") && this.mh.windfury) continue;
                 if ((this.testTempEnchType == type && this.testTempEnch == item.id) ||
                     (this.testTempEnchType != type && item.selected)) {
 
@@ -285,7 +263,7 @@ class Player {
             if (buff.active) {
                 let apbonus = 0;
                 if (buff.group == "battleshout") {
-                    let shoutap = this.aqbooks ? buff.ap + 39 : buff.ap;
+                    let shoutap = buff.ap;
                     if (buff.id == 27578 && this.enhancedbs) shoutap += 30;
                     shoutap = ~~(shoutap * (1 + this.talents.impbattleshout));
                     apbonus = shoutap - buff.ap;
@@ -308,12 +286,6 @@ class Player {
                 this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 this.base.haste *= (1 + buff.haste / 100) || 1;
 
-                if (buff.group == "blessingmight" && this.aqbooks)
-                    this.base.ap += 36;
-                if (buff.group == "graceair" && this.aqbooks)
-                    this.base.agi += 10;
-                if (buff.group == "strengthearth" && this.aqbooks)
-                    this.base.str += 16;
             }
         }
     }
@@ -420,14 +392,6 @@ class Player {
     }
     updateHaste() {
         this.stats.haste = this.base.haste;
-        if (this.auras.flurry && this.auras.flurry.timer)
-            this.stats.haste *= (1 + this.auras.flurry.mult_stats.haste / 100);
-        if (this.auras.berserking && this.auras.berserking.timer)
-            this.stats.haste *= (1 + this.auras.berserking.mult_stats.haste / 100);
-        if (this.auras.empyrean && this.auras.empyrean.timer)
-            this.stats.haste *= (1 + this.auras.empyrean.mult_stats.haste / 100);
-        if (this.auras.eskhandar && this.auras.eskhandar.timer)
-            this.stats.haste *= (1 + this.auras.eskhandar.mult_stats.haste / 100);
         if (this.auras.pummeler && this.auras.pummeler.timer)
             this.stats.haste *= (1 + this.auras.pummeler.mult_stats.haste / 100);
         if (this.auras.spider && this.auras.spider.timer)
@@ -498,14 +462,7 @@ class Player {
         return r > 0.75 ? 0.75 : r;
     }
     addRage(dmg, result, weapon, spell) {
-        if (!spell || spell instanceof HeroicStrike || spell instanceof HeroicStrikeExecute) {
-            if (result != RESULT.MISS && result != RESULT.DODGE && this.talents.umbridledwrath && rng10k() < this.talents.umbridledwrath * 100) {
-                this.rage += 1;
-                //if (log) this.log('Unbridled Wrath proc');
-            }
-        }
         if (spell) {
-            if (spell instanceof Execute) spell.result = result;
             if (result == RESULT.MISS || result == RESULT.DODGE)
                 this.rage += spell.refund ? spell.cost * 0.8 : 0;
         }
@@ -549,63 +506,24 @@ class Player {
     }
     stepauras() {
 
-        if (this.mh.proc1 && this.mh.proc1.spell && this.mh.proc1.spell.timer) this.mh.proc1.spell.step();
-        if (this.mh.proc2 && this.mh.proc2.spell && this.mh.proc2.spell.timer) this.mh.proc2.spell.step();
-        if (this.oh && this.oh.proc1 && this.oh.proc1.spell && this.oh.proc1.spell.timer) this.oh.proc1.spell.step();
-        if (this.oh && this.oh.proc2 && this.oh.proc2.spell && this.oh.proc2.spell.timer) this.oh.proc2.spell.step();
-
-        if (this.auras.mightyragepotion && this.auras.mightyragepotion.firstuse && this.auras.mightyragepotion.timer) this.auras.mightyragepotion.step();
-        if (this.auras.recklessness && this.auras.recklessness.firstuse && this.auras.recklessness.timer) this.auras.recklessness.step();
-        if (this.auras.deathwish && this.auras.deathwish.firstuse && this.auras.deathwish.timer) this.auras.deathwish.step();
-        if (this.auras.cloudkeeper && this.auras.cloudkeeper.firstuse && this.auras.cloudkeeper.timer) this.auras.cloudkeeper.step();
-        if (this.auras.flask && this.auras.flask.firstuse && this.auras.flask.timer) this.auras.flask.step();
-        if (this.auras.battlestance && this.auras.battlestance.timer) this.auras.battlestance.step();
-        if (this.auras.bloodfury && this.auras.bloodfury.firstuse && this.auras.bloodfury.timer) this.auras.bloodfury.step();
-        if (this.auras.berserking && this.auras.berserking.firstuse && this.auras.berserking.timer) this.auras.berserking.step();
         if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.step();
         if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.step();
-        if (this.auras.earthstrike && this.auras.earthstrike.firstuse && this.auras.earthstrike.timer) this.auras.earthstrike.step();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
         if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.step();
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.step();
-        if (this.auras.zandalarian && this.auras.zandalarian.firstuse && this.auras.zandalarian.timer) this.auras.zandalarian.step();
 
-        if (this.mh.windfury && this.mh.windfury.timer) this.mh.windfury.step();
-        if (this.trinketproc1 && this.trinketproc1.spell && this.trinketproc1.spell.timer) this.trinketproc1.spell.step();
-        if (this.trinketproc2 && this.trinketproc2.spell && this.trinketproc2.spell.timer) this.trinketproc2.spell.step();
-        if (this.attackproc && this.attackproc.spell && this.attackproc.spell.timer) this.attackproc.spell.step();
-
-        if (this.auras.deepwounds && this.auras.deepwounds.timer) this.auras.deepwounds.step();
+        if (this.auras.LacerateDOT && this.auras.LacerateDOT.timer) this.auras.LacerateDOT.step();
     }
     endauras() {
 
-        if (this.mh.proc1 && this.mh.proc1.spell && this.mh.proc1.spell.timer) this.mh.proc1.spell.end();
-        if (this.mh.proc2 && this.mh.proc2.spell && this.mh.proc2.spell.timer) this.mh.proc2.spell.end();
-        if (this.oh && this.oh.proc1 && this.oh.proc1.spell && this.oh.proc1.spell.timer) this.oh.proc1.spell.end();
-        if (this.oh && this.oh.proc2 && this.oh.proc2.spell && this.oh.proc2.spell.timer) this.oh.proc2.spell.end();
-
-        if (this.auras.mightyragepotion && this.auras.mightyragepotion.firstuse && this.auras.mightyragepotion.timer) this.auras.mightyragepotion.end();
-        if (this.auras.recklessness && this.auras.recklessness.firstuse && this.auras.recklessness.timer) this.auras.recklessness.end();
-        if (this.auras.deathwish && this.auras.deathwish.firstuse && this.auras.deathwish.timer) this.auras.deathwish.end();
-        if (this.auras.cloudkeeper && this.auras.cloudkeeper.firstuse && this.auras.cloudkeeper.timer) this.auras.cloudkeeper.end();
-        if (this.auras.flask && this.auras.flask.firstuse && this.auras.flask.timer) this.auras.flask.end();
-        if (this.auras.battlestance && this.auras.battlestance.timer) this.auras.battlestance.end();
-        if (this.auras.bloodfury && this.auras.bloodfury.firstuse && this.auras.bloodfury.timer) this.auras.bloodfury.end();
-        if (this.auras.berserking && this.auras.berserking.firstuse && this.auras.berserking.timer) this.auras.berserking.end();
         if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.end();
         if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.end();
-        if (this.auras.gabbar && this.auras.gabbar.firstuse && this.auras.gabbar.timer) this.auras.gabbar.end();
-        if (this.auras.earthstrike && this.auras.earthstrike.firstuse && this.auras.earthstrike.timer) this.auras.earthstrike.end();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
         if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.end();
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.end();
-        if (this.auras.zandalarian && this.auras.zandalarian.firstuse && this.auras.zandalarian.timer) this.auras.zandalarian.end();
-
-        if (this.mh.windfury && this.mh.windfury.timer) this.mh.windfury.end();
-        if (this.trinketproc1 && this.trinketproc1.spell && this.trinketproc1.spell.timer) this.trinketproc1.spell.end();
-        if (this.trinketproc2 && this.trinketproc2.spell && this.trinketproc2.spell.timer) this.trinketproc2.spell.end();
-        if (this.attackproc && this.attackproc.spell && this.attackproc.spell.timer) this.attackproc.spell.end();
 
         if (this.auras.flurry && this.auras.flurry.timer) this.auras.flurry.end();
-        if (this.auras.deepwounds && this.auras.deepwounds.timer) this.auras.deepwounds.end();
+        if (this.auras.LacerateDOT && this.auras.LacerateDOT.timer) this.auras.LacerateDOT.end();
 
     }
     rollweapon(weapon) {
@@ -635,8 +553,6 @@ class Player {
             tmp = 0;
         }
         let crit = this.crit + this.mh.crit;
-        if (spell instanceof Overpower)
-            crit += this.talents.overpowercrit;
         tmp += crit * 100;
         if (roll < tmp && !spell.nocrit) return RESULT.CRIT;
         return RESULT.HIT;
@@ -650,14 +566,9 @@ class Player {
 
         if (this.nextswinghs) {
             this.nextswinghs = false;
-            if (this.spells.heroicstrike && this.spells.heroicstrike.cost <= this.rage) {
-                result = this.rollspell(this.spells.heroicstrike);
-                spell = this.spells.heroicstrike;
-                this.rage -= spell.cost;
-            }
-            else if (this.spells.heroicstrikeexecute && this.spells.heroicstrikeexecute.cost <= this.rage) {
-                result = this.rollspell(this.spells.heroicstrikeexecute);
-                spell = this.spells.heroicstrikeexecute;
+            if (this.spells.maul && this.spells.maul.cost <= this.rage) {
+                result = this.rollspell(this.spells.maul);
+                spell = this.spells.maul;
                 this.rage -= spell.cost;
             }
             else {
@@ -782,9 +693,6 @@ class Player {
                 if (weapon.proc2.spell) weapon.proc2.spell.use();
                 if (weapon.proc2.magicdmg) procdmg += this.magicproc(weapon.proc2);
             }
-            if (weapon.windfury && !this.auras.windfury.timer && rng10k() < 2000) {
-                weapon.windfury.use();
-            }
             if (this.trinketproc1 && rng10k() < this.trinketproc1.chance) {
                 //if (log) this.log(`Trinket 1 proc`);
                 if (this.trinketproc1.extra)
@@ -820,11 +728,9 @@ class Player {
                 procdmg += this.magicproc({ magicdmg: 60, coeff: 1 });
             }
         }
-        if (!spell || spell instanceof HeroicStrike || spell instanceof HeroicStrikeExecute) {
+        if (!spell || spell instanceof Maul) {
             if (this.auras.flurry && this.auras.flurry.stacks)
                 this.auras.flurry.proc();
-            if (this.mh.windfury && this.mh.windfury.stacks)
-                this.mh.windfury.proc();
         }
         return procdmg;
     }

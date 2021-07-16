@@ -622,7 +622,6 @@ SIM.UI = {
         localStorage.targetresistance = view.fight.find('input[name="targetresistance"]').val();
         localStorage.adjacent = view.fight.find('input[name="adjacent"]').val();
         localStorage.adjacentlevel = view.fight.find('input[name="adjacentlevel"]').val();
-        localStorage.aqbooks = view.fight.find('select[name="aqbooks"]').val();
         localStorage.weaponrng = view.fight.find('select[name="weaponrng"]').val();
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
         localStorage.batching = view.fight.find('select[name="batching"]').val();

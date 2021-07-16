@@ -1,2 +1,5 @@
 node_modules
 emcc
+/.vscode/launch.json
+/.vscode/settings.json
+/.vscode/tasks.json

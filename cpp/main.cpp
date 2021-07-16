@@ -42,21 +42,32 @@ int main()
     enableItem( ITEM_MAINHAND, 23054, 1 );
     enableItem( ITEM_OFFHAND, 23577, 1 );
     int* options;
-    options = spellOptions( 23894 ); options[0] = 1; options[1] = 30; options[2] = 100;
-    options = spellOptions( 27580 ); options[0] = 0; options[1] = 30; options[2] = 100;
-    options = spellOptions( 11567 ); options[0] = 1; options[1] = 30; options[2] = 4; options[3] = 0; options[4] = 200; options[5] = 500;
-    options = spellOptions( 20662 ); options[0] = 1; options[1] = 2000; options[2] = 100;
-    options = spellOptions( 1680 ); options[0] = 1; options[1] = 50; options[2] = 2; options[3] = 300;
-    options = spellOptions( 12328 ); options[0] = 1; options[1] = 31; options[2] = 0; options[3] = 300;
-    options = spellOptions( 1719 ); options[0] = 0; options[1] = 16; options[2] = 300;
-    options = spellOptions( 11585 ); options[0] = 0; options[1] = 25; options[2] = 2; options[3] = 300;
-    options = spellOptions( 26296 ); options[0] = 0; options[1] = 11; options[2] = 30; options[3] = 300;
-    options = spellOptions( 20572 ); options[0] = 0; options[1] = 26; options[2] = 300;
-    options = spellOptions( 2687 ); options[0] = 1; options[1] = 100;
-    options = spellOptions( 17528 ); options[0] = 1; options[1] = 21; options[2] = 0; options[3] = 100;
-    options = spellOptions( 11597 ); options[0] = 1; options[1] = 1; options[2] = 300;
-    options = spellOptions( 7373 ); options[0] = 0; options[1] = 50; options[2] = 100;
-    options = spellOptions( 115671 ); options[0] = 0; options[1] = 30; options[2] = 0; options[3] = 200; options[4] = 100;
+    options = spellOptions( 33987 ); options[0] = 1; options[1] = 20; options[2] = 100; // Mangle | Enabled | Minrage | Reaction
+    options = spellOptions( 26997 ); options[0] = 1; options[1] = 30; options[2] = 2; options[2] = 100; // Swipe | Enabled | Minrage | Main CD | Reaction
+    options = spellOptions( 33745 ); options[0] = 1; options[1] = 30; options[2] = 2; options[2] = 100; options[3] = 2600; // Lacerate | Enabled | Minrage | Main CD | Reaction | Priority AP
+    options = spellOptions( 26996 ); options[0] = 1; options[1] = 50; options[2] = 300; // Maul | Enabled | Minrage | Reaction
+    options = spellOptions( 27011 ); options[0] = 1; options[1] = 100; // Faerie Fire | Enabled | Reaction
+
+    setTalent( talents, 112, 1 );
+    setTalent( talents, 211, 3 );
+    setTalent( talents, 212, 5 );
+    setTalent( talents, 221, 3 );
+    setTalent( talents, 231, 3 );
+    setTalent( talents, 311, 2 );
+    setTalent( talents, 233, 2 );
+    setTalent( talents, 241, 2 );
+    setTalent( talents, 242, 3 );
+    setTalent( talents, 243, 2 );
+    setTalent( talents, 251, 2 );
+    setTalent( talents, 261, 5 );
+    setTalent( talents, 262, 3 );
+    setTalent( talents, 272, 1 );
+    setTalent( talents, 281, 5 );
+    setTalent( talents, 291, 1 );
+    setTalent( talents, 321, 5 );
+    setTalent( talents, 331, 3 );
+    setTalent( talents, 333, 1 );
+
     Config* cfg = allocConfig();
     cfg->sim.timesecsmin = 110;
     cfg->sim.timesecsmax = 120;
@@ -67,7 +78,6 @@ int main()
     cfg->player.testType = -1;
     cfg->player.enchType = -1;
     cfg->player.race = RACE_NIGHTELF;
-    cfg->player.aqbooks = 0;
     cfg->player.weaponrng = 1;
     cfg->player.spelldamage = 0;
     cfg->target.level = 63;

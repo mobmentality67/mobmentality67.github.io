@@ -9,7 +9,6 @@ Simulation::Simulation( Config& cfg, const Talents& talents )
     , startrage( cfg.sim.startrage )
     , iterations( cfg.sim.iterations )
     , batching( cfg.sim.batching )
-    , priorityap( Execute::options.priorityap )
     , maxcallstack( std::min( cfg.sim.iterations / 10, 1000 ) )
     , player( *this, cfg, talents )
 {
@@ -41,100 +40,72 @@ void Simulation::run()
     executestep = maxsteps - maxsteps * executeperc / 100;
 
     int itemstep = maxsteps;
-    int flaskstep = -1, cloudstep = -1, slayerstep = -1, spiderstep = -1, gabbarstep = -1, earthstep = -1, pummelstep = -1, zandalarstep = -1;
-    if ( player.auras.has<Flask>() ) { itemstep -= 60000; flaskstep = std::max( itemstep, 0 ); }
-    if ( player.auras.has<Cloudkeeper>() ) { itemstep -= 30000; cloudstep = std::max( itemstep, 0 ); }
+    int slayerstep = -1, spiderstep = -1, broochstep = -1, pummelstep = -1;
     if ( player.auras.has<Slayer>() ) { itemstep -= 20000; slayerstep = std::max( itemstep, 0 ); }
     if ( player.auras.has<Spider>() ) { itemstep -= 15000; spiderstep = std::max( itemstep, 0 ); }
-    if ( player.auras.has<Gabbar>() ) { itemstep -= 20000; gabbarstep = std::max( itemstep, 0 ); }
-    if ( player.auras.has<Earthstrike>() ) { itemstep -= 20000; earthstep = std::max( itemstep, 0 ); }
+    if ( player.auras.has<BloodlustBrooch>() ) { itemstep -= 20000; broochstep = std::max( itemstep, 0 ); }
     if ( player.auras.has<Pummeler>() ) { itemstep -= 30000; pummelstep = std::max( itemstep, 0 ); }
-    if ( player.auras.has<Zandalarian>() ) { itemstep -= 20000; zandalarstep = std::max( itemstep, 0 ); }
 
     int next = 0;
     bool spellcheck = false;
     Castable* delayedspell = nullptr;
     Spell* delayedheroic = nullptr;
 
+    std::cout << "Starting Simulation::run: " << std::endl;
+
     while ( step < maxsteps )
     {
         // Attacks
-        if ( player.mh.timer <= 0 )
+        if ( player.mh->timer <= 0 )
         {
-            int dmg = player.attackmh( player.mh );
+            int dmg = player.attackmh( *player.mh );
             idmg += dmg;
             spellcheck = true;
         }
-
 
         // Spells
         if ( spellcheck && !player.spelldelay )
         {
             // No GCD
             if ( auto* ptr = player.auras.ptr<Swarmguard>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<MightyRagePotion>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<Bloodrage>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-
+            else if ( auto* ptr = player.auras.ptr<BloodlustBrooch>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+         
             // GCD spells
             else if ( player.timer ) {}
-            else if ( auto* ptr = player.auras.ptr<Flask>(); ptr && ptr->canUse() && step > flaskstep ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Cloudkeeper>(); ptr && ptr->canUse() && step > cloudstep ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Recklessness>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<DeathWish>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<BloodFury>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Berserking>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-
             else if ( auto* ptr = player.auras.ptr<Slayer>(); ptr && ptr->canUse() && step > slayerstep ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<Spider>(); ptr && ptr->canUse() && step > spiderstep ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Gabbar>(); ptr && ptr->canUse() && step > gabbarstep ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Earthstrike>(); ptr && ptr->canUse() && step > earthstep ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<Pummeler>(); ptr && ptr->canUse() && step > pummelstep ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.auras.ptr<Zandalarian>(); ptr && ptr->canUse() && step > zandalarstep ) { player.spelldelay = 1; delayedspell = ptr; }
-
-            // Execute phase
-            else if ( auto* exe = player.spells.ptr<Execute>(); exe && step >= executestep )
-            {
-                if ( auto* ptr = player.spells.ptr<Bloodthirst>(); ptr && player.stats.ap >= priorityap && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-                else if ( auto* ptr = player.spells.ptr<MortalStrike>(); ptr && player.stats.ap >= priorityap && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-                else if ( exe->canUse() ) { player.spelldelay = 1; delayedspell = exe; }
-            }
 
             // Normal phase
-            else if ( auto* ptr = player.spells.ptr<SunderArmor>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<Bloodthirst>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<MortalStrike>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<Whirlwind>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<Overpower>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
-            else if ( auto* ptr = player.spells.ptr<Hamstring>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.spells.ptr<FaerieFire>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.spells.ptr<Mangle>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.spells.ptr<Lacerate>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.spells.ptr<Swipe>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
 
             if ( player.heroicdelay ) spellcheck = false;
         }
 
-        // Heroic Strike
+        // Maul
         if ( spellcheck && !player.heroicdelay )
         {
-            if ( !player.spells.has<Execute>() || step < executestep )
-            {
-                if ( auto* ptr = player.spells.ptr<HeroicStrike>(); ptr && ptr->canUse() ) { player.heroicdelay = 1; delayedheroic = ptr; }
-            }
-            else
-            {
-                if ( auto* ptr = player.spells.ptr<HeroicStrikeExecute>(); ptr && ptr->canUse() ) { player.heroicdelay = 1; delayedheroic = ptr; }
-            }
-
+            if ( auto* ptr = player.spells.ptr<Maul>(); ptr && ptr->canUse() ) { player.heroicdelay = 1; delayedheroic = ptr; }
             spellcheck = false;
         }
+
+        std::cout << "Entering cast spell block: " << std::endl;
 
         // Cast spells
         if ( player.spelldelay && delayedspell && player.spelldelay > delayedspell->maxdelay )
         {
-            // Prevent casting HS and other spells at the exact same time
+            // Prevent casting Maul and other spells at the exact same time
             if ( player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic->maxdelay )
             {
+                std::cout << "Prevent maul block: " << std::endl;
                 player.heroicdelay = delayedheroic->maxdelay - 49;
             }
             if ( delayedspell->canUse() )
             {
+                std::cout << "Delayed spell block: " << std::endl;
                 int dmg = player.cast( delayedspell );
                 idmg += dmg;
                 spellcheck = true;
@@ -142,9 +113,10 @@ void Simulation::run()
             player.spelldelay = 0;
         }
 
-        // Cast HS
+        // Cast Maul
         if ( player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic->maxdelay )
         {
+            std::cout << "Cast maul block: " << std::endl;
             if ( delayedheroic->canUse() )
             {
                 player.cast( delayedheroic );
@@ -153,79 +125,53 @@ void Simulation::run()
             player.heroicdelay = 0;
         }
 
-        // TODO: this always uses HS settings and ignores HS Execute
-        if ( player.spells.has<HeroicStrike>() && HeroicStrike::options.unqueue && player.nextswinghs &&
-             player.rage < HeroicStrike::options.unqueue && player.mh.timer < HeroicStrike::options.unqueuetimer )
-        {
-            player.nextswinghs = false;
-        }
-
         // Extra attacks
         if ( player.extraattacks > 0 )
         {
-            player.mh.timer = 0;
+            player.mh->timer = 0;
             player.extraattacks -= 1;
         }
         if ( player.batchedextras > 0 )
         {
-            player.mh.timer = batching - ( step % batching );
+            player.mh->timer = batching - ( step % batching );
             player.batchedextras -= 1;
         }
 
         // Process next step
-        if ( !player.mh.timer || ( !player.spelldelay && spellcheck ) || ( !player.heroicdelay && spellcheck ) )
+        if ( !player.mh->timer || ( !player.spelldelay && spellcheck ) || ( !player.heroicdelay && spellcheck ) )
         {
             next = 0;
             continue;
         }
 
-        next = player.mh.timer;
-        if ( &player.oh ) next = std::min( next, player.oh.timer );
+        next = player.mh->timer;
 
+        std::cout << "Total: " << idmg << std::endl;
         if ( player.spelldelay ) next = std::min( next, delayedspell->maxdelay - player.spelldelay + 1 );
         if ( player.heroicdelay ) next = std::min( next, delayedheroic->maxdelay - player.heroicdelay + 1 );
         if ( player.timer ) next = std::min( next, player.timer );
         if ( player.itemtimer ) next = std::min( next, player.itemtimer );
-        if ( player.vaelbuff ) next = std::min( next, 1000 - step % 1000 );
-        if ( auto* ptr = player.auras.ptr<BloodrageAura>(); ptr && ptr->timer ) next = std::min( next, 1000 - ( step - ptr->starttimer ) % 1000 );
-        if ( auto* ptr = player.auras.ptr<Gabbar>(); ptr && ptr->timer ) next = std::min( next, 2000 - ( step - ptr->starttimer ) % 2000 );
 
-        if ( auto* ptr = player.spells.ptr<Bloodthirst>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-        if ( auto* ptr = player.spells.ptr<MortalStrike>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-        if ( auto* ptr = player.spells.ptr<Whirlwind>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-        if ( auto* ptr = player.spells.ptr<Bloodrage>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-        if ( auto* ptr = player.spells.ptr<Overpower>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-        if ( auto* ptr = player.spells.ptr<Execute>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
-
-        if ( player.spells.has<HeroicStrike>() && HeroicStrike::options.unqueue )
-        {
-            int timeleft = player.mh.timer - HeroicStrike::options.unqueuetimer;
-            if ( timeleft > 0 ) next = std::min( next, timeleft );
-        }
+        if ( auto* ptr = player.spells.ptr<Mangle>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
+        if ( auto* ptr = player.spells.ptr<Lacerate>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
+        if ( auto* ptr = player.spells.ptr<Swipe>(); ptr && ptr->timer ) next = std::min( next, ptr->timer );
 
         step += next;
-        player.mh.step( next );
-        if ( &player.oh ) player.oh.step( next );
+        player.mh->step( next );
         if ( player.timer && player.steptimer( next ) && !player.spelldelay ) spellcheck = true;
         if ( player.itemtimer && player.stepitemtimer( next ) && !player.spelldelay ) spellcheck = true;
         if ( player.dodgetimer ) player.stepdodgetimer( next );
         if ( player.spelldelay ) player.spelldelay += next;
         if ( player.heroicdelay )  player.heroicdelay += next;
 
-        if ( auto* ptr = player.spells.ptr<Bloodthirst>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.spells.ptr<MortalStrike>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.spells.ptr<Whirlwind>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.spells.ptr<Bloodrage>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.spells.ptr<Overpower>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.spells.ptr<Execute>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
-
-        if ( auto* ptr = player.auras.ptr<BloodrageAura>(); ptr && ptr->timer && !ptr->step() && !player.spelldelay ) spellcheck = true;
-        if ( auto* ptr = player.auras.ptr<Gabbar>(); ptr && ptr->timer ) ptr->step();
+        if ( auto* ptr = player.spells.ptr<Mangle>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
+        if ( auto* ptr = player.spells.ptr<Lacerate>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
+        if ( auto* ptr = player.spells.ptr<Swipe>(); ptr && ptr->timer && !ptr->step( next ) && !player.spelldelay ) spellcheck = true;
     }
 
     player.endauras();
 
-    //std::cout << "Total: " << idmg << std::endl;
+    std::cout << "Total: " << idmg << std::endl;
 
     totaldmg += idmg;
     totalduration += maxsteps;
@@ -246,19 +192,15 @@ void Simulation::report( bool full )
 {
     if ( full )
     {
-        // player.auras.for_each( [=]( Aura& aura )
-        // {
-        //     reportAura( aura, iterations, totalduration );
-        // } );
-        // player.spells.for_each( [=]( Spell& spell )
-        // {
-        //     reportSpell( spell, iterations, totalduration );
-        // } );
-        reportWeapon( false, player.mh, iterations, totalduration );
-        if ( &player.oh )
+        player.auras.for_each( [=]( Aura& aura )
         {
-            reportWeapon( true, player.oh, iterations, totalduration );
-        }
+            reportAura( aura, iterations, totalduration );
+        } );
+        player.spells.for_each( [=]( Spell& spell )
+        {
+            reportSpell( spell, iterations, totalduration );
+        } );
+        reportWeapon( false, *player.mh, iterations, totalduration );
         reportSpread( spread, MAX_DPS );
     }
     finalReport( iterations, totaldmg, totalduration, mindps, maxdps, sumdps, sumdps2 );

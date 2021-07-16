@@ -15,17 +15,12 @@ Weapon::Weapon( Player& player_, Item& item, Enchant* enchant, Enchant* tempench
 {
 
     modifier = 1.0;
-    normSpeed = 3.3;
+    normSpeed = 2.5;
     
     for ( auto& buff : Buffs )
     {
         if ( buff.active )
         {
-            if ( buff.id == 10614 && !offhand )
-            {
-                windfury = &player.auras.emplace<Windfury>( player );
-            }
-
             basebonusdmg += buff.stats.bonusdmg;
         }
     }
@@ -33,7 +28,7 @@ Weapon::Weapon( Player& player_, Item& item, Enchant* enchant, Enchant* tempench
     {
         basebonusdmg += enchant->stats.bonusdmg;
     }
-    if ( !windfury && tempenchant )
+    if ( tempenchant )
     {
         basebonusdmg += tempenchant->stats.bonusdmg;
     }

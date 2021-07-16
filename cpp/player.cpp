@@ -9,7 +9,6 @@ Player::Player( Simulation& sim, const Config& cfg, const Talents& talents_ )
     , talents( talents_ )
 {
     race = cfg.player.race;
-    aqbooks = cfg.player.aqbooks != 0;
     weaponrng = cfg.player.weaponrng != 0;
     spelldamage = cfg.player.spelldamage;
     if ( cfg.player.enchType == 1 )
@@ -56,31 +55,19 @@ Player::Player( Simulation& sim, const Config& cfg, const Talents& talents_ )
 
     addRace();
     addGear();
-    if ( !mh ) return;
     addSets();
     addEnchants();
     addTempEnchants();
     addBuffs();
     addSpells();
 
-    if ( spells.has<Overpower>() ) auras.emplace<BattleStance>( *this );
-    if ( spells.has<Bloodrage>() ) auras.emplace<BloodrageAura>( *this );
     if ( includes( items, 9449 ) ) auras.emplace<Pummeler>( *this );
-    if ( includes( items, 14554 ) ) auras.emplace<Cloudkeeper>( *this );
-    if ( includes( items, 20130 ) ) auras.emplace<Flask>( *this );
     if ( includes( items, 23041 ) ) auras.emplace<Slayer>( *this );
     if ( includes( items, 22954 ) ) auras.emplace<Spider>( *this );
-    if ( includes( items, 23570 ) ) auras.emplace<Gabbar>( *this );
-    if ( includes( items, 21180 ) ) auras.emplace<Earthstrike>( *this );
+    if ( includes( items, 29383 ) ) auras.emplace<BloodlustBrooch>( *this );
     if ( includes( items, 21670 ) ) auras.emplace<Swarmguard>( *this );
-    if ( includes( items, 19949 ) ) auras.emplace<Zandalarian>( *this );
 
     update();
-
-    if ( &oh )
-    {
-        oh.timer = int( oh.speed * 1000.0 / stats.haste / 2.0 + 0.5 );
-    }
 }
 
 void Player::addRace()
@@ -135,28 +122,6 @@ void Player::addGear()
             }
         }
     }
-
-    // remove weapon skill if using 2H
-    if ( mh && mh->twohand )
-    {
-        for ( int type = 0; type < NUM_ITEM_SLOTS; ++type )
-        {
-            if ( type != ITEM_HEAD && type != ITEM_HANDS )
-            {
-                continue;
-            }
-            for ( auto& item : Items[type] )
-            {
-                if ( testItemType == type ? testItem == item.id : item.selected )
-                {
-                    for ( int i = 0; i < NUM_WEAPON_TYPES; ++i )
-                    {
-                        base.skill[i] -= item.stats.skill[i];
-                    }
-                }
-            }
-        }
-    }
 }
 
 void Player::addWeapon( Item& item, int type )
@@ -185,10 +150,6 @@ void Player::addWeapon( Item& item, int type )
     if ( type == ITEM_MAINHAND )
     {
         mh.emplace( *this, item, ench, tempench, false, false );
-    }
-    else if ( type == ITEM_OFFHAND )
-    {
-        oh.emplace( *this, item, ench, tempench, true, false );
     }
     else if ( type == ITEM_TWOHAND )
     {
@@ -221,7 +182,7 @@ void Player::addTempEnchants()
 {
     for ( int type = 0; type < NUM_ITEM_SLOTS; ++type )
     {
-        if ( ( type == ITEM_MAINHAND || type == ITEM_TWOHAND ) && mh->windfury )
+        if ( ( type == ITEM_MAINHAND || type == ITEM_TWOHAND ) )
         {
             continue;
         }
@@ -270,10 +231,6 @@ void Player::addSets()
                 {
                     base.dmgmod *= 1.0 + 0.01 * ( double )bonus.stats.dmgmod;
                 }
-                if ( bonus.stats.enhancedbs )
-                {
-                    enhancedbs = true;
-                }
 
                 if ( bonus.proc.chance )
                 {
@@ -295,15 +252,9 @@ void Player::addBuffs()
             int apbonus = 0;
             if ( buff.id == 27578 || buff.id == 23563 )
             {
-                int shoutap = ( aqbooks ? buff.stats.ap + 39 : buff.stats.ap );
-                if ( buff.id == 27578 && enhancedbs ) shoutap += 30;
-                shoutap = int( ( double )shoutap * ( 1.0 + talents.impbattleshout ) );
+                int shoutap = buff.stats.ap;
                 apbonus = shoutap - buff.stats.ap;
             }
-
-            if ( buff.id == 2458 ) zerkstance = true;
-            if ( buff.id == 23513 ) vaelbuff = true;
-            if ( buff.id == 12217 ) dragonbreath = true;
 
             base.ap += buff.stats.ap + apbonus;
             base.agi += buff.stats.agi;
@@ -315,32 +266,17 @@ void Player::addBuffs()
             if ( buff.stats.strmod ) base.strmod *= 1.0 + 0.01 * ( double )buff.stats.strmod;
             if ( buff.stats.dmgmod ) base.dmgmod *= 1.0 + 0.01 * ( double )buff.stats.dmgmod;
             if ( buff.stats.haste ) base.haste *= 1.0 + 0.01 * ( double )buff.stats.haste;
-
-            if ( buff.id == 19838 && aqbooks ) base.ap += 36;
-            if ( buff.id == 10627 && aqbooks ) base.agi += 10;
-            if ( buff.id == 10442 && aqbooks ) base.str += 16;
         }
     }
 }
 
 void Player::addSpells()
 {
-    if ( Bloodthirst::options.active ) spells.emplace<Bloodthirst>( *this );
-    if ( MortalStrike::options.active ) spells.emplace<MortalStrike>( *this );
-    if ( HeroicStrike::options.active ) spells.emplace<HeroicStrike>( *this );
-    if ( Execute::options.active ) spells.emplace<Execute>( *this );
-    if ( Whirlwind::options.active ) spells.emplace<Whirlwind>( *this );
-    if ( Overpower::options.active ) spells.emplace<Overpower>( *this );
-    if ( Bloodrage::options.active ) spells.emplace<Bloodrage>( *this );
-    if ( SunderArmor::options.active ) spells.emplace<SunderArmor>( *this );
-    if ( Hamstring::options.active ) spells.emplace<Hamstring>( *this );
-    if ( HeroicStrikeExecute::options.active ) spells.emplace<HeroicStrikeExecute>( *this );
-
-    if ( DeathWish::options.active ) auras.emplace<DeathWish>( *this );
-    if ( Recklessness::options.active ) auras.emplace<Recklessness>( *this );
-    if ( Berserking::options.active ) auras.emplace<Berserking>( *this );
-    if ( BloodFury::options.active ) auras.emplace<BloodFury>( *this );
-    if ( MightyRagePotion::options.active ) auras.emplace<MightyRagePotion>( *this );
+    if ( Mangle::options.active ) spells.emplace<Mangle>( *this );
+    if ( Lacerate::options.active ) spells.emplace<Lacerate>( *this );
+    if ( Swipe::options.active ) spells.emplace<Swipe>( *this );
+    if ( FaerieFire::options.active ) spells.emplace<FaerieFire>( *this );
+    if ( Maul::options.active ) spells.emplace<Maul>( *this );
 }
 
 void Player::reset( double rage_ )
@@ -352,10 +288,6 @@ void Player::reset( double rage_ )
     spelldelay = 0;
     heroicdelay = 0;
     mh->timer = 0;
-    if ( oh )
-    {
-        oh->timer = int( oh->speed * 1000.0 / stats.haste / 2.0 + 0.5 );
-    }
     extraattacks = 0;
     batchedextras = 0;
     nextswinghs = false;
@@ -385,15 +317,6 @@ void Player::update()
     mh->miss = getMissChance( *mh );
     mh->dwmiss = mh->miss;
     mh->dodge = getDodgeChance( *mh );
-
-    if ( oh )
-    {
-        mh->dwmiss = getDWMissChance( *mh );
-        oh->glanceChance = getGlanceChance( *oh );
-        oh->miss = getMissChance( *oh );
-        oh->dwmiss = getDWMissChance( *oh );
-        oh->dodge = getDodgeChance( *oh );
-    }
 }
 
 void Player::updateAuras()
@@ -457,29 +380,13 @@ void Player::updateAP()
     stats.ap += stats.str * 2;
     if ( stats.apmod != 1.0 )
     {
-        stats.ap += int( double( base.aprace + stats.str * 2 ) * ( stats.apmod - 1.0 ) );
+        stats.ap += int( double( base.aprace + stats.str * 2 ) * ( stats.apmod - 1.0 ) ) * (talents.heartofthewild * .02);
     }
 }
 
 void Player::updateHaste()
 {
     stats.haste = base.haste;
-    if ( auto aura = auras.ptr<Flurry>(); aura && aura->timer )
-    {
-        stats.haste *= 1.0 + 0.01 * ( double )aura->mult_stats.haste;
-    }
-    if ( auto aura = auras.ptr<Berserking>(); aura && aura->timer )
-    {
-        stats.haste *= 1.0 + 0.01 * ( double )aura->mult_stats.haste;
-    }
-    if ( auto aura = auras.ptr<Empyrean>(); aura && aura->timer )
-    {
-        stats.haste *= 1.0 + 0.01 * ( double )aura->mult_stats.haste;
-    }
-    if ( auto aura = auras.ptr<Eskhandar>(); aura && aura->timer )
-    {
-        stats.haste *= 1.0 + 0.01 * ( double )aura->mult_stats.haste;
-    }
     if ( auto aura = auras.ptr<Pummeler>(); aura && aura->timer )
     {
         stats.haste *= 1.0 + 0.01 * ( double )aura->mult_stats.haste;
@@ -492,41 +399,12 @@ void Player::updateHaste()
 
 void Player::updateBonusDmg()
 {
-    int bonus = 0;
-    if ( auto aura = auras.ptr<Zeal>(); aura && aura->timer )
-    {
-        bonus += aura->stats.bonusdmg;
-    }
-    if ( auto aura = auras.ptr<Zandalarian>(); aura && aura->timer )
-    {
-        bonus += aura->stats.bonusdmg;
-    }
-    mh->bonusdmg = mh->basebonusdmg + bonus;
-    if ( oh )
-    {
-        oh->bonusdmg = oh->basebonusdmg + bonus;
-    }
+    mh->bonusdmg = mh->basebonusdmg;
 }
 
 void Player::updateArmorReduction()
 {
     target.armor = target.basearmor;
-    if ( auto aura = auras.ptr<Annihilator>(); aura && aura->timer )
-    {
-        target.armor = std::max( target.armor - aura->armor * aura->stacks, 0 );
-    }
-    if ( auto aura = auras.ptr<RivenspikeMH>(); aura && aura->timer )
-    {
-        target.armor = std::max( target.armor - aura->armor * aura->stacks, 0 );
-    }
-    if ( auto aura = auras.ptr<RivenspikeOH>(); aura && aura->timer )
-    {
-        target.armor = std::max( target.armor - aura->armor * aura->stacks, 0 );
-    }
-    if ( auto aura = auras.ptr<Bonereaver>(); aura && aura->timer )
-    {
-        target.armor = std::max( target.armor - aura->armor * aura->stacks, 0 );
-    }
     if ( auto aura = auras.ptr<Swarmguard>(); aura && aura->timer )
     {
         target.armor = std::max( target.armor - aura->armor * aura->stacks, 0 );
@@ -585,7 +463,7 @@ int Player::getDWMissChance( Weapon& weapon )
 
 int Player::getCritChance()
 {
-    return std::max( 0, 100 * ( stats.crit + talents.crit ) + 5 * stats.agi + 160 * ( level - target.level ) );
+    return std::max( 0, 100 * ( stats.crit + talents.sharpenedclawsmod ) + 5 * stats.agi + 160 * ( level - target.level ) );
 }
 
 int Player::getDodgeChance( Weapon& weapon )
@@ -601,19 +479,8 @@ double Player::getArmorReduction()
 
 void Player::addRage( double dmg, Result result, Weapon& weapon, Spell* spell )
 {
-    if ( !spell || dynamic_cast<HeroicStrike*>( spell ) || dynamic_cast<HeroicStrikeExecute*>( spell ) )
-    {
-        if ( result != RESULT_MISS && result != RESULT_DODGE && talents.unbridledwrath && rng10k() < talents.unbridledwrath * 100 )
-        {
-            rage += 1.0;
-        }
-    }
     if ( spell )
     {
-        if ( auto exe = dynamic_cast<Execute*>( spell ) )
-        {
-            exe->result = result;
-        }
         if ( result == RESULT_MISS || result == RESULT_DODGE )
         {
             rage += spell->refund ? ( double )spell->cost * 0.8 : 0;
@@ -656,65 +523,25 @@ bool Player::stepdodgetimer( int a )
 
 void Player::stepauras()
 {
-    if ( mh->proc1 && mh->proc1->spell && mh->proc1->spell->timer ) mh->proc1->spell->step();
-    if ( mh->proc2 && mh->proc2->spell && mh->proc2->spell->timer ) mh->proc2->spell->step();
-    if ( oh && oh->proc1 && oh->proc1->spell && oh->proc1->spell->timer ) oh->proc1->spell->step();
-    if ( oh && oh->proc2 && oh->proc2->spell && oh->proc2->spell->timer ) oh->proc2->spell->step();
 
-    if ( auto* aura = auras.ptr<MightyRagePotion>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Recklessness>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<DeathWish>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Cloudkeeper>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Flask>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<BattleStance>(); aura && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<BloodFury>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Berserking>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Slayer>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Spider>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Earthstrike>(); aura && aura->firstuse && aura->timer ) aura->step();
+    if ( auto* aura = auras.ptr<BloodlustBrooch>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Pummeler>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Swarmguard>(); aura && aura->firstuse && aura->timer ) aura->step();
-    if ( auto* aura = auras.ptr<Zandalarian>(); aura && aura->firstuse && aura->timer ) aura->step();
-
-    if ( mh->windfury && mh->windfury->timer ) mh->windfury->step();
-    for ( auto& proc : attackproc )
-    {
-        if ( proc.spell && proc.spell->timer ) proc.spell->step();
-    }
-
-    if ( auto* aura = auras.ptr<DeepWounds>(); aura && aura->timer ) aura->step();
+   
+    if ( auto* aura = auras.ptr<LacerateDOT>(); aura && aura->timer ) aura->step();
 }
 
 void Player::endauras()
 {
-    if ( mh->proc1 && mh->proc1->spell && mh->proc1->spell->timer ) mh->proc1->spell->end();
-    if ( mh->proc2 && mh->proc2->spell && mh->proc2->spell->timer ) mh->proc2->spell->end();
-    if ( oh && oh->proc1 && oh->proc1->spell && oh->proc1->spell->timer ) oh->proc1->spell->end();
-    if ( oh && oh->proc2 && oh->proc2->spell && oh->proc2->spell->timer ) oh->proc2->spell->end();
-
-    if ( auto* aura = auras.ptr<MightyRagePotion>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Recklessness>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<DeathWish>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Cloudkeeper>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Flask>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<BattleStance>(); aura && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<BloodFury>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Berserking>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Slayer>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Spider>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Earthstrike>(); aura && aura->firstuse && aura->timer ) aura->end();
+    if ( auto* aura = auras.ptr<BloodlustBrooch>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Pummeler>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Swarmguard>(); aura && aura->firstuse && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<Zandalarian>(); aura && aura->firstuse && aura->timer ) aura->end();
-
-    if ( mh->windfury && mh->windfury->timer ) mh->windfury->end();
-    for ( auto& proc : attackproc )
-    {
-        if ( proc.spell && proc.spell->timer ) proc.spell->end();
-    }
-
-    if ( auto* aura = auras.ptr<Flurry>(); aura && aura->timer ) aura->end();
-    if ( auto* aura = auras.ptr<DeepWounds>(); aura && aura->timer ) aura->end();
+    
+    if ( auto* aura = auras.ptr<LacerateDOT>(); aura && aura->timer ) aura->end();
 }
 
 Result Player::rollweapon( Weapon& weapon )
@@ -747,10 +574,6 @@ Result Player::rollspell( Spell& spell )
         roll = rng10k();
     }
     roll -= crit + mh->crit * 100;
-    if ( dynamic_cast<Overpower*>( &spell ) )
-    {
-        roll -= talents.overpowercrit * 100;
-    }
     if ( roll < 0 ) return RESULT_CRIT;
     return RESULT_HIT;
 }
@@ -766,14 +589,7 @@ int Player::attackmh( Weapon& weapon )
     if ( nextswinghs )
     {
         nextswinghs = false;
-        if ( auto* ptr = spells.ptr<HeroicStrike>(); ptr && ptr->cost <= rage )
-        {
-            result = rollspell( *ptr );
-            spell = ptr;
-            bonus = ptr->bonus;
-            rage -= spell->cost;
-        }
-        else if ( auto* ptr = spells.ptr<HeroicStrikeExecute>(); ptr && ptr->cost <= rage )
+        if ( auto* ptr = spells.ptr<Maul>(); ptr && ptr->cost <= rage )
         {
             result = rollspell( *ptr );
             spell = ptr;
@@ -803,7 +619,7 @@ int Player::attackmh( Weapon& weapon )
     }
     if ( result == RESULT_CRIT )
     {
-        dmg *= 2.0 + ( spell ? talents.abilitiescrit : 0.0 );
+        dmg *= 2.0 + ( talents.predatoryinstincts * 5.0 );
         proccrit();
     }
 
@@ -822,39 +638,6 @@ int Player::attackmh( Weapon& weapon )
     weapon.totalprocdmg += procdmg;
 
     //std::cout << simulation.step << " Main hand: " << done << " + " << procdmg << std::endl;
-
-    return done + procdmg;
-}
-
-int Player::attackoh( Weapon& weapon )
-{
-    stepauras();
-
-    Result result = rollweapon( weapon );
-    double dmg = weapon.dmg();
-    int procdmg = procattack( nullptr, weapon, result );
-
-    if ( result == RESULT_DODGE )
-    {
-        dodgetimer = 5000;
-    }
-    if ( result == RESULT_GLANCE )
-    {
-        dmg *= getGlanceReduction( weapon );
-    }
-    if ( result == RESULT_CRIT )
-    {
-        dmg *= 2.0;
-        proccrit();
-    }
-
-    weapon.use();
-    int done = dealdamage( dmg, result, weapon, nullptr );
-    weapon.totaldmg += done;
-    weapon.data[result] += 1;
-    weapon.totalprocdmg += procdmg;
-
-    //std::cout << simulation.step << " Off hand: " << done << " + " << procdmg << std::endl;
 
     return done + procdmg;
 }
@@ -878,7 +661,7 @@ int Player::cast( Castable* castable )
     }
     if ( result == RESULT_CRIT )
     {
-        dmg *= 2.0 + talents.abilitiescrit;
+        dmg *= 2.0 + talents.sharpenedclawsmod;
         proccrit();
     }
 
@@ -910,8 +693,9 @@ int Player::dealdamage( double dmg, Result result, Weapon& weapon, Spell* spell 
 
 void Player::proccrit()
 {
-    if ( auras.has<Flurry>() ) auras.get<Flurry>().use();
-    if ( auras.has<DeepWounds>() ) auras.get<DeepWounds>().use();
+    if (talents.primalfury) {
+        rage += 5.0;
+    }
 }
 
 int Player::procattack( Spell* spell, Weapon& weapon, Result result )
@@ -928,36 +712,14 @@ int Player::procattack( Spell* spell, Weapon& weapon, Result result )
                 if ( proc.spell ) proc.spell->use();
             }
         }
-        if ( weapon.type == WEAPON_SWORD && talents.swordproc && rng10k() < talents.swordproc * 100 )
-        {
-            extraattacks += 1;
-        }
         if ( auto* ptr = auras.ptr<Swarmguard>(); ptr && ptr->timer && rng10k() < ptr->chance )
         {
             ptr->proc();
         }
-        if ( auto* ptr = auras.ptr<Zandalarian>(); ptr && ptr->timer )
-        {
-            ptr->proc();
-        }
-        if ( dragonbreath && rng10k() < 400 )
-        {
-            Proc breath;
-            breath.magicdmg = 60;
-            breath.coeff = 1;
-            procdmg += magicproc( breath );
-        }
     }
-    if ( !spell || dynamic_cast<HeroicStrike*>( spell ) || dynamic_cast<HeroicStrikeExecute*>( spell ) )
+    if ( !spell || dynamic_cast<Maul*>( spell )  )
     {
-        if ( auto ptr = auras.ptr<Flurry>(); ptr && ptr->stacks )
-        {
-            ptr->proc();
-        }
-        if ( mh->windfury && mh->windfury->stacks )
-        {
-            mh->windfury->proc();
-        }
+        // Formerly flurry, leaving this here in case this can be converted to DST procs
     }
     return procdmg;
 }

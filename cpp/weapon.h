@@ -2,8 +2,6 @@
 #include "common.h"
 #include <optional>
 
-struct Windfury;
-
 struct Weapon
 {
     Player& player;
@@ -13,7 +11,7 @@ struct Weapon
     double modifier;
     double speed;
     int timer = 0;
-    double normSpeed = 2.4;
+    double normSpeed = 2.5;
     bool offhand;
     bool twohand;
     int crit;
@@ -28,8 +26,6 @@ struct Weapon
     int dodge = 0;
 
     int data[5] = { 0, 0, 0, 0, 0 };
-
-    Windfury* windfury = nullptr;
 
     Weapon( Player& player_, Item& item, Enchant* enchant, Enchant* tempenchant, bool offhand_, bool twohand_ );
 

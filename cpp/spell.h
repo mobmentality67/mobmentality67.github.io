@@ -25,8 +25,7 @@ struct Spell : public Castable
     uint64_t totaldmg = 0;
     int data[5] = { 0, 0, 0, 0, 0 };
     bool weaponspell = true;
-    bool nocrit = false;
-    int stacks = 0;
+    bool nocrit = false;    int stacks = 0;
 
     Spell( Player& player_ ) : Castable( player_ ) {}
 
@@ -45,79 +44,75 @@ struct Spell : public Castable
     }
 };
 
-struct Bloodthirst : public Spell
+struct Mangle : public Spell
 {
     const char* name() const override
     {
-        return "Bloodthirst";
+        return "Mangle";
     }
 
     static struct
     {
         int active = true;
-        int minrage = 30;
         int reaction = 100;
     } options;
 
-    Bloodthirst( Player& player_ )
+    Mangle( Player& player_ )
         : Spell( player_ )
     {
-        cost = 30;
+        cost = 20;
         cooldown = 6;
         maxdelay = options.reaction;
-        weaponspell = false;
+        weaponspell = true;
     }
 
     double dmg() const override;
     bool canUse() const override;
 };
 
-struct MortalStrike : public Spell
+struct Maul : public Spell
 {
     const char* name() const override
     {
-        return "Mortal Strike";
+        return "Maul";
     }
 
-    static struct
+ static struct
     {
         int active = true;
-        int minrage = 30;
-        int reaction = 100;
-    } options;
-
-    MortalStrike( Player& player_ )
-        : Spell( player_ )
-    {
-        cost = 30;
-        cooldown = 6;
-        maxdelay = options.reaction;
-    }
-
-    double dmg() const override;
-    bool canUse() const override;
-};
-
-struct Whirlwind : public Spell
-{
-    const char* name() const override
-    {
-        return "Whirlwind";
-    }
-
-    static struct
-    {
-        int active = true;
-        int minrage = 50;
+        int minrage = 40;
+        int reaction = 500;
         int maincd = 2;
-        int reaction = 300;
     } options;
 
-    Whirlwind( Player& player_ )
+    int bonus;
+
+    Maul( Player& player_ );
+
+    void use() override;
+    bool canUse() const override;
+};
+
+struct Swipe : public Spell
+{
+    const char* name() const override
+    {
+        return "Swipe";
+    }
+
+    static struct
+    {
+        int active = true;
+        int minrage = 40;
+        int reaction = 100;
+        int maincd = 2;
+    } options;
+
+    Swipe( Player& player_ )
         : Spell( player_ )
     {
-        cost = 25;
-        cooldown = 10;
+        cost = 15;
+        cooldown = 0;
         refund = false;
         maxdelay = options.reaction;
     }
@@ -126,136 +121,36 @@ struct Whirlwind : public Spell
     bool canUse() const override;
 };
 
-struct Overpower : public Spell
+struct Lacerate : public Spell
 {
     const char* name() const override
     {
-        return "Overpower";
+        return "Lacerate";
     }
 
     static struct
     {
+        int minrage = 40;
+        int reaction = 100;
         int active = true;
-        int maxrage = 25;
         int maincd = 2;
-        int reaction = 300;
+        int priorityap = 2600;
     } options;
 
-    Overpower( Player& player_ )
-        : Spell( player_ )
-    {
-        cost = 5;
-        cooldown = 5;
-        canDodge = false;
-        maxdelay = options.reaction;
-    }
+    Lacerate( Player& player_ );
 
-    double dmg() const override;
-    void use() override;
+    double dmg() const override
+    {
+        return 45.0;
+    }
     bool canUse() const override;
 };
 
-struct Execute : public Spell
+struct FaerieFire : public Spell
 {
     const char* name() const override
     {
-        return "Execute";
-    }
-
-    static struct
-    {
-        int active = true;
-        int priorityap = 2000;
-        int reaction = 100;
-    } options;
-
-    int usedrage = 0;
-    Result result;
-
-    Execute( Player& player_ );
-
-    double dmg() const override;
-    void use() override;
-    int step( int a ) override;
-    bool canUse() const override;
-};
-
-struct Bloodrage : public Spell
-{
-    const char* name() const override
-    {
-        return "Bloodrage";
-    }
-
-    static struct
-    {
-        int active = true;
-        int reaction = 300;
-        int maxrage = 80;
-    } options;
-
-    int rage;
-
-    Bloodrage( Player& player_ );
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct HeroicStrike : public Spell
-{
-    const char* name() const override
-    {
-        return "Heroic Strike";
-    }
-
-    static struct
-    {
-        int active = true;
-        int minrage = 40;
-        int maincd = 4;
-        int unqueue = 0;
-        int unqueuetimer = 200;
-        int reaction = 500;
-    } options;
-
-    int bonus;
-
-    HeroicStrike( Player& player_ );
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct HeroicStrikeExecute : public Spell
-{
-    const char* name() const override
-    {
-        return "Heroic Strike (Execute Phase)";
-    }
-
-    static struct
-    {
-        int active = true;
-        int minrage = 40;
-        int unqueue = 0;
-        int unqueuetimer = 200;
-        int reaction = 100;
-    } options;
-
-    int bonus;
-
-    HeroicStrikeExecute( Player& player_ );
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct SunderArmor : public Spell
-{
-    const char* name() const override
-    {
-        return "Sunder Armor";
+        return "Faerie Fire";
     }
 
     static struct
@@ -265,35 +160,12 @@ struct SunderArmor : public Spell
         int reaction = 300;
     } options;
 
-    SunderArmor( Player& player_ );
+    FaerieFire( Player& player_ );
 
     void use() override;
     bool canUse() const override;
 };
 
-struct Hamstring : public Spell
-{
-    const char* name() const override
-    {
-        return "Hamstring";
-    }
-
-    static struct
-    {
-        int active = true;
-        int minrage = 50;
-        int reaction = 100;
-    } options;
-
-    Hamstring( Player& player_ );
-
-    double dmg() const override
-    {
-        return 45.0;
-    }
-
-    bool canUse() const override;
-};
 
 struct Aura : public Castable
 {
@@ -348,422 +220,52 @@ struct DmgModAura : public Aura { DmgModAura( Player& player_ ); };
 struct BonusDmgAura : public Aura { BonusDmgAura( Player& player_ ); };
 struct ArmorReductionAura : public Aura { ArmorReductionAura( Player& player_ ); };
 
-struct Recklessness : public Aura
+struct LacerateDOT : public Aura
 {
     const char* name() const override
     {
-        return "Recklessness";
-    }
-
-    static struct
-    {
-        int active = true;
-        int timetoend = 16;
-        int reaction = 300;
-    } options;
-
-    Recklessness( Player& player_ )
-        : Aura( player_ )
-    {
-        duration = 15;
-        stats.crit = 100;
-        maxdelay = options.reaction;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct Flurry : public HasteAura
-{
-    const char* name() const override
-    {
-        return "Flurry";
-    }
-
-    Flurry( Player& player_ );
-
-    void proc();
-    void use() override;
-};
-
-struct DeepWounds : public Aura
-{
-    const char* name() const override
-    {
-        return "Deep Wounds";
+        return "Lacerate DOT";
     }
 
     uint64_t totaldmg = 0;
     int nexttick = 0;
+    int stacks = 0;
 
-    DeepWounds( Player& player_ )
+    LacerateDOT( Player& player_ )
         : Aura( player_ )
     {
-        duration = 12;
+        duration = 15;
     }
 
     void use() override;
     int step() override;
 };
 
-struct Crusader : public StrengthAura
-{
-    Crusader( Player& player_ )
-        : StrengthAura( player_ )
-    {
-        duration = 15;
-        stats.str = 100;
-    }
-
-    static int count( Player& player );
-};
-
-struct CrusaderMH : public Crusader
+struct Bloodlust : public HasteAura
 {
     const char* name() const override
     {
-        return "Crusader (MH)";
-    }
-
-    CrusaderMH( Player& player_ ) : Crusader( player_ ) {}
-};
-
-struct CrusaderOH : public Crusader
-{
-    const char* name() const override
-    {
-        return "Crusader (OH)";
-    }
-
-    CrusaderOH( Player& player_ ) : Crusader( player_ ) {}
-};
-
-struct Cloudkeeper : public AttackPowerAura
-{
-    const char* name() const override
-    {
-        return "Cloudkeeper";
-    }
-
-    Cloudkeeper( Player& player_ )
-        : AttackPowerAura( player_ )
-    {
-        duration = 30;
-        stats.ap = 100;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct Felstriker : public HitAura
-{
-    Felstriker( Player& player_ )
-        : HitAura( player_ )
-    {
-        duration = 3;
-        stats.crit = 100;
-        stats.hit = 100;
-    }
-};
-
-struct FelstrikerMH : public Felstriker
-{
-    const char* name() const override
-    {
-        return "Felstriker (MH)";
-    }
-
-    FelstrikerMH( Player& player_ ) : Felstriker( player_ ) {}
-};
-
-struct FelstrikerOH : public Felstriker
-{
-    const char* name() const override
-    {
-        return "Felstriker (OH)";
-    }
-
-    FelstrikerOH( Player& player_ ) : Felstriker( player_ ) {}
-};
-
-struct DeathWish : public DmgModAura
-{
-    const char* name() const override
-    {
-        return "Death Wish";
+        return "Bloodlust";
     }
 
     static struct
     {
         int active = true;
-        int timetoend = 31;
-        int crusaders = 0;
-        int reaction = 300;
-    } options;
-
-    DeathWish( Player& player_ )
-        : DmgModAura( player_ )
-    {
-        duration = 30;
-        mult_stats.dmgmod = 20;
-        maxdelay = options.reaction;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct BattleStance : public Aura
-{
-    const char* name() const override
-    {
-        return "Battle Stance";
-    }
-
-    BattleStance( Player& player_ )
-        : Aura( player_ )
-    {
-        duration = 2;
-        stats.crit = -3;
-    }
-
-    int step() override;
-};
-
-struct MightyRagePotion : public StrengthAura
-{
-    const char* name() const override
-    {
-        return "Mighty Rage Potion";
-    }
-
-    static struct
-    {
-        int active = true;
-        int timetoend = 21;
-        int crusaders = 0;
-        int reaction = 100;
-    } options;
-
-    MightyRagePotion( Player& player_ )
-        : StrengthAura( player_ )
-    {
-        duration = 20;
-        stats.str = 60;
-        maxdelay = options.reaction;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct BloodFury : public Aura
-{
-    const char* name() const override
-    {
-        return "Blood Fury";
-    }
-
-    static struct
-    {
-        int active = true;
-        int timetoend = 26;
-        int reaction = 300;
-    } options;
-
-    BloodFury( Player& player_ )
-        : Aura( player_ )
-    {
-        duration = 15;
-        mult_stats.apmod = 25;
-        maxdelay = options.reaction;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
-
-struct Berserking : public HasteAura
-{
-    const char* name() const override
-    {
-        return "Berserking";
-    }
-
-    static struct
-    {
-        int active = true;
-        int timetoend = 11;
+        int timetoend = 41;
         int haste = 30;
         int reaction = 300;
     } options;
 
-    Berserking( Player& player_ )
+        Bloodlust( Player& player_ )
         : HasteAura( player_ )
     {
-        duration = 10;
+        duration = 40;
         mult_stats.haste = options.haste;
         maxdelay = options.reaction;
     }
 
     void use() override;
     bool canUse() const override;
-};
-
-struct Empyrean : public HasteAura
-{
-    const char* name() const override
-    {
-        return "Empyrean Haste";
-    }
-
-    Empyrean( Player& player_ )
-        : HasteAura( player_ )
-    {
-        duration = 10;
-        mult_stats.haste = 20;
-    }
-};
-
-struct Eskhandar : public HasteAura
-{
-    const char* name() const override
-    {
-        return "Eskhandar Haste";
-    }
-
-    Eskhandar( Player& player_ )
-        : HasteAura( player_ )
-    {
-        duration = 5;
-        mult_stats.haste = 30;
-    }
-};
-
-struct Zeal : public BonusDmgAura
-{
-    const char* name() const override
-    {
-        return "Zeal";
-    }
-
-    Zeal( Player& player_ )
-        : BonusDmgAura( player_ )
-    {
-        duration = 15;
-        stats.bonusdmg = 10;
-    }
-
-    void use() override;
-};
-
-struct Annihilator : public ArmorReductionAura
-{
-    const char* name() const override
-    {
-        return "Annihilator";
-    }
-
-    int armor = 200;
-
-    Annihilator( Player& player_ )
-        : ArmorReductionAura( player_ )
-    {
-        duration = 45;
-    }
-
-    void use() override;
-};
-
-struct Rivenspike : public ArmorReductionAura
-{
-    int armor = 200;
-
-    Rivenspike( Player& player_ )
-        : ArmorReductionAura( player_ )
-    {
-        duration = 30;
-    }
-
-    void use() override
-    {
-        stacks = std::min( stacks + 1, 3 );
-        Aura::use();
-    }
-};
-
-struct RivenspikeMH : public Rivenspike
-{
-    const char* name() const override
-    {
-        return "Rivenspike (MH)";
-    }
-
-    RivenspikeMH( Player& player_ ) : Rivenspike( player_ ) {}
-};
-
-struct RivenspikeOH : public Rivenspike
-{
-    const char* name() const override
-    {
-        return "Rivenspike (OH)";
-    }
-
-    RivenspikeOH( Player& player_ ) : Rivenspike( player_ ) {}
-};
-
-struct Bonereaver : public ArmorReductionAura
-{
-    const char* name() const override
-    {
-        return "Bonereaver";
-    }
-
-    int armor = 700;
-
-    Bonereaver( Player& player_ )
-        : ArmorReductionAura( player_ )
-    {
-        duration = 10;
-    }
-
-    void use() override
-    {
-        stacks = std::min( stacks + 1, 3 );
-        Aura::use();
-    }
-};
-
-struct Destiny : public StrengthAura
-{
-    const char* name() const override
-    {
-        return "Destiny";
-    }
-
-    Destiny( Player& player_ )
-        : StrengthAura( player_ )
-    {
-        duration = 10;
-        stats.str = 200;
-    }
-};
-
-struct Untamed : public StrengthAura
-{
-    const char* name() const override
-    {
-        return "The Untamed Blade";
-    }
-
-    Untamed( Player& player_ )
-        : StrengthAura( player_ )
-    {
-        duration = 8;
-        stats.str = 300;
-    }
 };
 
 struct Pummeler : public HasteAura
@@ -782,26 +284,6 @@ struct Pummeler : public HasteAura
 
     void use() override;
     bool canUse() const override;
-};
-
-struct Windfury : public Aura
-{
-    const char* name() const override
-    {
-        return "Windfury";
-    }
-
-    int mintime = 0;
-
-    Windfury( Player& player_ )
-        : Aura( player_ )
-    {
-        stats.ap = 315;
-    }
-
-    void use() override;
-    int step() override;
-    void proc();
 };
 
 struct Swarmguard : public Aura
@@ -827,23 +309,6 @@ struct Swarmguard : public Aura
     bool canUse() const override;
 };
 
-struct Flask : public StrengthAura
-{
-    const char* name() const override
-    {
-        return "Diamond Flask";
-    }
-
-    Flask( Player& player_ )
-        : StrengthAura( player_ )
-    {
-        duration = 60;
-        stats.str = 75;
-    }
-
-    void use() override;
-    bool canUse() const override;
-};
 
 struct Slayer : public AttackPowerAura
 {
@@ -881,14 +346,14 @@ struct Spider : public HasteAura
     bool canUse() const override;
 };
 
-struct Earthstrike : public AttackPowerAura
+struct BloodlustBrooch : public AttackPowerAura
 {
     const char* name() const override
     {
-        return "Earthstrike";
+        return "Bloodlust Brooch";
     }
 
-    Earthstrike( Player& player_ )
+    BloodlustBrooch( Player& player_ )
         : AttackPowerAura( player_ )
     {
         duration = 20;
@@ -897,104 +362,4 @@ struct Earthstrike : public AttackPowerAura
 
     void use() override;
     bool canUse() const override;
-};
-
-struct Gabbar : public AttackPowerAura
-{
-    const char* name() const override
-    {
-        return "Jom Gabbar";
-    }
-
-    Gabbar( Player& player_ )
-        : AttackPowerAura( player_ )
-    {
-        duration = 20;
-        stats.ap = 65;
-    }
-
-    void use() override;
-    int step() override;
-    bool canUse() const override;
-};
-
-struct PrimalBlessing : public AttackPowerAura
-{
-    const char* name() const override
-    {
-        return "Primal Blessing";
-    }
-
-    PrimalBlessing( Player& player_ )
-        : AttackPowerAura( player_ )
-    {
-        duration = 12;
-        stats.ap = 300;
-    }
-};
-
-struct BloodrageAura : public Aura
-{
-    const char* name() const override
-    {
-        return "Bloodrage";
-    }
-
-    BloodrageAura( Player& player_ )
-        : Aura( player_ )
-    {
-        duration = 10;
-    }
-
-    void use() override;
-    int step() override;
-};
-
-struct Zandalarian : public BonusDmgAura
-{
-    const char* name() const override
-    {
-        return "Zandalarian";
-    }
-
-    Zandalarian( Player& player_ )
-        : BonusDmgAura( player_ )
-    {
-        duration = 20;
-        stats.bonusdmg = 40;
-    }
-
-    void use() override;
-    bool canUse() const override;
-    void proc();
-};
-
-struct Avenger : public AttackPowerAura
-{
-    Avenger( Player& player_ )
-        : AttackPowerAura( player_ )
-    {
-        duration = 10;
-        stats.ap = 200;
-    }
-};
-
-struct AvengerMH : public Avenger
-{
-    const char* name() const override
-    {
-        return "Avenger (MH)";
-    }
-
-    AvengerMH( Player& player_ ) : Avenger( player_ ) {}
-};
-
-struct AvengerOH : public Avenger
-{
-    const char* name() const override
-    {
-        return "Avenger (OH)";
-    }
-
-    AvengerOH( Player& player_ ) : Avenger( player_ ) {}
 };

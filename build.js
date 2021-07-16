@@ -57,6 +57,7 @@ async function run_build(flags, oname, dirs) {
   let rebuild = true;
   if (fs.existsSync(`${out_dir}/args.txt`)) {
     if (fs.readFileSync(`${out_dir}/args.txt`, 'utf8') === flags) {
+      console.log('Set rebuild to false')
       rebuild = false;
     }
   }
@@ -147,10 +148,15 @@ async function run_build(flags, oname, dirs) {
   console.log(`Linking ${oname}`);
 
   const cmd = `emcc ${link_list.join(" ")} -o ${oname}.js -s EXPORT_NAME="${oname}" ${flags} -s WASM=1 -s MODULARIZE=1 -s NO_FILESYSTEM=1 --post-js ./module-post.js -s TOTAL_MEMORY=16777216 -s DISABLE_EXCEPTION_CATCHING=0`;
+  console.log("Executing " + cmd);
   const {stderr} = await execute(cmd);
   if (stderr) {
+    console.log("Failed emcc command");
     console.error(stderr);
+  }
+  else {
+    console.log("Completed ECC command on " + oname);
   }
 }
 
-run_build('-O3 -g -DUSE_EMSCRIPTEN', 'WarriorSim', ['cpp']).catch(e => console.error(e.message));
+run_build('-O3 -g -std=c++17 -DUSE_EMSCRIPTEN', 'WarriorSim', ['cpp']).catch(e => console.error(e.message));
