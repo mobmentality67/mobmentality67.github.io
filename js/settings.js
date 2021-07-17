@@ -122,24 +122,7 @@ SIM.SETTINGS = {
 
         view.fight.on('change', 'select[name="race"]', function (e) {
             var val = $(this).val();
-            var bloodfury = view.rotation.find('[data-id="20572"]');
-            var berserking = view.rotation.find('[data-id="26296"]');
             var disableSpells = [];
-
-            if (val == "Orc") {
-                bloodfury.removeClass('hidden');
-            }
-            else {
-                bloodfury.addClass('hidden').removeClass('active');
-                disableSpells.push(20572);
-            }
-            if (val == "Troll") {
-                berserking.removeClass('hidden');
-            }
-            else {
-                berserking.addClass('hidden').removeClass('active');
-                disableSpells.push(26296);
-            }
 
             for (let spell of spells) {
                 if (disableSpells.includes(spell.id))
@@ -173,7 +156,7 @@ SIM.SETTINGS = {
         var view = this;
         for (let spell of spells) {
 
-            let tooltip = spell.id == 115671 ? 11567 : spell.id;
+            let tooltip = spell.id == 26996;
             let div = $(`<div data-id="${spell.id}" class="spell"><div class="icon">
             <img src="dist/img/${spell.iconname.toLowerCase()}.jpg " alt="${spell.name}">
             <a href="https://tbc.wowhead.com/spell=${tooltip}" class="wh-tooltip"></a>
@@ -185,6 +168,8 @@ SIM.SETTINGS = {
                 div.find('.options').append(`<li>Mangle cooldown >= <input type="text" name="maincd" value="${spell.maincd}" data-numberonly="true" /> secs</li>`);
             if (spell.crusaders !== undefined)
                 div.find('.options').append(`<li>when <input type="text" name="crusaders" value="${spell.crusaders}" data-numberonly="true" /> crusaders are up</li>`);
+            if (spell.minrage !== undefined)
+                div.find('.options').append(`<li>Use when above <input type="text" name="minrage" value="${spell.minrage}" data-numberonly="true" /> rage</li>`);
             if (spell.haste !== undefined)
                 div.find('.options').append(`<li>Attack speed at <input type="text" name="haste" value="${spell.haste}" data-numberonly="true" /> %</li>`);
             if (spell.priorityap !== undefined)
@@ -207,7 +192,7 @@ SIM.SETTINGS = {
             /* When to queue maul qualifier */
             if (spell.id == 26996) {
                 div.find('.options').empty();
-                div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="30" data-numberonly="true"> rage or BT/MS cooldown >= <input type="text" name="maincd" value="4" data-numberonly="true"> secs</li>`);
+                div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="50" data-numberonly="true"> rage or Mangle cooldown >= <input type="text" name="maincd" value="4" data-numberonly="true"> secs</li>`);
                 div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
             }
 
@@ -237,7 +222,7 @@ SIM.SETTINGS = {
         var view = this;
         for (let tree of talents) {
             let table = $('<table><tr><th colspan="4">' + tree.n + '</th></tr></table>');
-            for (let i = 0; i < 7; i++) table.prepend('<tr><td></td><td></td><td></td><td></td></tr>');
+            for (let i = 0; i < 10; i++) table.prepend('<tr><td></td><td></td><td></td><td></td></tr>');
             for (let talent of tree.t) {
                 let div = $('<div class="icon" data-count="' + talent.c + '" data-x="' + talent.x + '" data-y="' + talent.y + '"></div>');
                 div.html('<img src="dist/img/' + talent.iconname.toLowerCase() + '.jpg" alt="' + talent.n + '" />');

@@ -7,14 +7,14 @@ var browser = require('browser-sync').create();
 gulp.task("js", function () {
     return gulp
         .src(["js/**/*.js", "lib/*.mjs"])
-        .pipe(
-            minify({
-                noSource: true,
-                ext: {
-                    min: ".min.js",
-                },
-            })
-        )
+        // .pipe(
+        //     minify({
+        //         noSource: true,
+        //         ext: {
+        //             min: ".min.js",
+        //         },
+        //     })
+        // )
         .pipe(gulp.dest("dist/js"));
 });
 

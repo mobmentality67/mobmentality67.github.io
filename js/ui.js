@@ -576,21 +576,19 @@ SIM.UI = {
 
         let space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         if (!player.mh) return;
+        view.sidebar.find('#stam').text(player.stats.stam);
         view.sidebar.find('#str').text(player.stats.str);
         view.sidebar.find('#agi').text(player.stats.agi);
         view.sidebar.find('#ap').text(player.stats.ap);
-        view.sidebar.find('#skill').html(player.stats['skill_' + player.mh.type] + ' <small>MH</small>' + (player.oh ? space + player.stats['skill_' + player.oh.type] + ' <small>OH</small>' : ''));
+        view.sidebar.find('#skill').html(player.stats['skill_' + player.mh.type]);
         view.sidebar.find('#hit').html((player.stats.hit || 0) + '%');
-        view.sidebar.find('#miss').html(Math.max(player.mh.miss, 0).toFixed(2) + '% <small>1H</small>' + (player.oh ? space + Math.max(player.mh.dwmiss, 0).toFixed(2) + '% <small>DW</small>' : ''));
+        view.sidebar.find('#miss').html(Math.max(player.mh.miss, 0).toFixed(2));
         let mhcrit = player.crit + player.mh.crit;
-        let ohcrit = player.crit + (player.oh ? player.oh.crit : 0);
-        view.sidebar.find('#crit').html(mhcrit.toFixed(2) + '% <small>MH</small>' + (player.oh ? space + ohcrit.toFixed(2) + '% <small>OH</small>' : ''));
+        view.sidebar.find('#crit').html(mhcrit.toFixed(2));
         let mhcap = 100 - player.mh.dwmiss - player.mh.dodge - player.mh.glanceChance;
-        let ohcap = player.oh ? 100 - player.oh.dwmiss - player.oh.dodge - player.oh.glanceChance : 0;
-        view.sidebar.find('#critcap').html(mhcap.toFixed(2) + '% <small>MH</small>'+ (player.oh ? space + ohcap.toFixed(2) + '% <small>OH</small>' : ''));
+        view.sidebar.find('#critcap').html(mhcap.toFixed(2));
         let mhdmg = player.stats.dmgmod * player.mh.modifier * 100;
-        let ohdmg = player.stats.dmgmod * (player.oh ? player.oh.modifier * 100 : 0);
-        view.sidebar.find('#dmgmod').html(mhdmg.toFixed(2) + '% <small>MH</small>' + (player.oh ? space + ohdmg.toFixed(2) + '% <small>OH</small>' : ''));
+        view.sidebar.find('#dmgmod').html(mhdmg.toFixed(2));
         view.sidebar.find('#haste').html((player.stats.haste * 100).toFixed(2) + '%');
         view.sidebar.find('#race').text(localStorage.race);
         view.sidebar.find('#sets').empty();

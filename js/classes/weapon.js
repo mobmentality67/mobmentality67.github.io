@@ -9,18 +9,16 @@ var WEAPONTYPE = {
 }
 
 class Weapon {
-    constructor(player, item, enchant, tempenchant, offhand, twohand) {
+    constructor(player, item, enchant, tempenchant) {
         this.player = player;
         this.name = item.name;
-        this.mindmg = item.mindmg;
-        this.maxdmg = item.maxdmg;
+        this.mindmg = 189; // Hard coded min/max bear swing damage for now
+        this.maxdmg = 244; // Does not include modifier from Naturalist
         this.type = item.type;
-        this.modifier = player.talents.naturalistmod;
+        this.modifier = 1.0;
         this.speed = item.speed;
         this.timer = 0;
-        this.normspeed = 2.5;
-        this.offhand = offhand;
-        this.twohand = twohand;
+        this.swingspeed = 2.5;
         this.crit = 0;
         this.basebonusdmg = 0;
         this.bonusdmg = 0;
@@ -36,18 +34,18 @@ class Weapon {
     }
     dmg(maul) {
         let dmg;
-        if (this.player.weaponrng) dmg = rng(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.speed;
-        else dmg = avg(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.speed;
+        if (this.player.weaponrng) dmg = rng(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.swingspeed;
+        else dmg = avg(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.swingspeed;
         if (maul) dmg += maul.bonus;
         return dmg * this.modifier;
     }
     avgdmg() {
-        let dmg = ((this.mindmg + this.bonusdmg + this.maxdmg + this.bonusdmg)/2) + (this.player.stats.ap / 14) * this.normSpeed;
+        let dmg = ((this.mindmg + this.bonusdmg + this.maxdmg + this.bonusdmg)/2) + (this.player.stats.ap / 14) * this.swingspeed;
         dmg *= this.modifier * this.player.stats.dmgmod * (1 - this.player.armorReduction);
         return dmg;
     }
     use() {
-        this.timer = Math.round(this.speed * 1000 / this.player.stats.haste);
+        this.timer = Math.round(this.swingspeed * 1000 / this.player.stats.haste);
     }
     step(next) {
         this.timer -= next;

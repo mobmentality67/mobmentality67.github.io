@@ -16,6 +16,8 @@ var spells = [
     iconname: 'inv_misc_monsterclaw_03',
     minrage: 40,
     reaction: 300,
+    maincd: 2,
+    priorityap: 2600,
 },
 {
     // Spells[2], Lacerate
@@ -25,6 +27,7 @@ var spells = [
     iconname: 'ability_druid_lacerate',
     minrage: 40,
     reaction: 300,
+    maincd: 2
 },
 {
     // Spells[3], Maul 
@@ -32,8 +35,9 @@ var spells = [
     name: 'Maul',
     classname: 'Maul',
     iconname: 'ability_druid_maul',
-    minrage: 40,
+    minrage: 50,
     reaction: 300,
+    maincd: 2
 },
 {
     // Spells[4], Faerie Fire 

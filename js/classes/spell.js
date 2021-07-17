@@ -1,3 +1,5 @@
+log = true;
+
 class Spell {
     constructor(player) {
         this.timer = 0;
@@ -65,13 +67,20 @@ class Swipe extends Spell {
         this.refund = false;
         this.threshold = parseInt(spells[1].minrage);
         this.maxdelay = parseInt(spells[1].reaction);
+        this.priorityap = parseInt(spells[1].priorityap);
+        this.maincd = parseInt(spells[1].maincd) * 1000;
     }
+    getPriorityAP() {
+        return this.priorityap;
+    }
+
     dmg() {
         return (this.player.stats.ap * 0.07) + 84;
     }
     canUse() {
-        return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold ||
-            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd));
+        return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold &&
+            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd) &&
+            ((!this.player.spells.lacerate || (this.player.stats.ap > this.priorityap))));
     }
 }
 
@@ -85,20 +94,16 @@ class Lacerate extends Spell {
         this.maxdelay = parseInt(spells[2].reaction);
     }
     dmg() {
-        let dmg;
-        if (this.player.weaponrng) dmg = 35 + rng(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
-        else dmg = 35 + avg(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
-        return 31;
+        return 31 + this.player.stats.ap / 100;
     }
     use() {
-        this.player.timer = 1500;
-        this.player.rage = Math.min(this.player.rage, this.player.talents.rageretained);
         this.player.rage -= this.cost;
-        this.timer = this.cooldown * 1000;
+        this.player.auras.laceratedot.use();
     }
     canUse() {
-        return !this.timer && !this.player.timer && this.cost <= this.player.rage && this.player.dodgetimer && this.player.rage <= this.threshold &&
-            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd);
+        return !this.timer && !this.player.timer && this.cost <= this.player.rage && this.player.rage >= this.threshold &&
+            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd) && 
+            (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap)));
     }
 }
 
@@ -106,19 +111,19 @@ class Maul extends Spell {
     constructor(player) {
         super(player);
         this.cost = 15 - player.talents.ferocity; 
-        this.threshold = parseInt(spells[2].minrage);
-        this.maincd = parseInt(spells[2].maincd) * 1000;
+        this.threshold = parseInt(spells[3].minrage);
+        this.maincd = parseInt(spells[3].maincd) * 1000;
         this.name = 'Maul';
         this.bonus = 226;
-        this.maxdelay = parseInt(spells[2].reaction);
+        this.maxdelay = parseInt(spells[3].reaction);
         this.useonly = true;
     }
     use() {
         this.player.nextswinghs = true;
     }
     canUse() {
-        return !this.player.nextswinghs && this.cost <= this.player.rage && (this.player.rage >= this.threshold ||
-            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd));
+        return !this.player.nextswinghs && this.cost <= this.player.rage && (this.player.rage >= this.threshold) &&
+            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd);
     }
 }
 
@@ -162,7 +167,7 @@ class Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.player.updateAuras();
-        //if (log) this.player.log(`${this.name} applied`);
+        if (log) this.player.log(`${this.name} applied`);
     }
     step() {
         if (step >= this.timer) {
@@ -170,7 +175,7 @@ class Aura {
             this.timer = 0;
             this.firstuse = false;
             this.player.updateAuras();
-            //if (log) this.player.log(`${this.name} removed`);
+            if (log) this.player.log(`${this.name} removed`);
         }
     }
     end() {
@@ -183,35 +188,41 @@ class Aura {
 class LacerateDOT extends Aura {
     constructor(player) {
         super(player);
-        this.duration = 12;
+        this.duration = 15;
         this.name = 'Lacerate DOT';
         this.idmg = 0;
         this.totaldmg = 0;
         this.lasttick = 0;
+        this.stacks = 0;
     }
     step() {
         while (step >= this.nexttick) {
-            let dmg = 31 + this.player.ap / 100;
-            console.log("%d %s: %d", step, this.name, ~~(dmg / 4));
-            this.idmg += ~~(dmg / 4);
-            this.totaldmg += ~~(dmg / 4);
-
-            this.nexttick += 3000;
+            let dmg = (155 + 5.0 * this.player.stats.ap / 100) * this.player.stats.dmgmod * this.stacks;
+            let tickdmg = dmg / 5;
+            if (log) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
+            this.idmg += ~~tickdmg;
+            this.totaldmg += ~~tickdmg;
+            this.nexttick += 3010;
         }
 
         if (step >= this.timer) {
             this.uptime += (this.timer - this.starttimer);
             this.timer = 0;
             this.firstuse = false;
+            if (log) this.player.log(`Lacerate DOT fell off`);
         }
     }
     use() {
         if (this.timer) this.uptime += (step - this.starttimer);
-        this.nexttick = step + 3000;
+        this.stacks = Math.min(this.stacks + 1, 5);
+        if (!this.nexttick || this.nextTick == 0) {
+            this.nexttick = step + 3000;
+        }
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         if (log) this.player.log(`${this.name} applied`);
     }
+
 }
 
 class Pummeler extends Aura {
@@ -235,7 +246,7 @@ class Pummeler extends Aura {
             this.timer = 0;
             this.firstuse = false;
             this.player.updateHaste();
-            //if (log) this.player.log(`${this.name} removed`);
+            if (log) this.player.log(`${this.name} removed`);
         }
     }
     canUse() {

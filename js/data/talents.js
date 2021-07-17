@@ -12,8 +12,8 @@ var talents = [
             d: [
                'Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by 1 Rage or Energy',
             ],
-            x: 0,
-            y: 1,
+            x: 1,
+            y: 0,
             iconname: 'spell_nature_natureswrath',
             c: 0,
             aura: function (count) { return { naturesgrasp: count } },
@@ -26,7 +26,7 @@ var talents = [
          {
             i: 211,
             n: 'Ferocity',
-            m: 3,
+            m: 5,
             s: [
                16938,
                16939,
@@ -41,8 +41,8 @@ var talents = [
                'Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by 4 Rage or Energy',
                'Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by 5 Rage or Energy',
             ],
-            x: 0,
-            y: 1,
+            x: 1,
+            y: 0,
             iconname: 'ferocity',
             c: 0,
             aura: function (count) { return { ferocity: count } },
@@ -65,8 +65,8 @@ var talents = [
                'Increases the attack power reduction of your Demoralizing Roar by 32% and the damage caused by your Ferocious Bite by 12%',
                'Increases the attack power reduction of your Demoralizing Roar by 40% and the damage caused by your Ferocious Bite by 15%',
             ],
-            x: 0,
-            y: 2,
+            x: 2,
+            y: 0,
             iconname: 'demoralizingroar',
             c: 0,
             aura: function (count) { return { feralinstinctmod: 1 + count * 0.05 } },
@@ -86,7 +86,7 @@ var talents = [
                'Increases threat caused in Bear and Dire Bear Form by 15% and reduces the chance enemies have to detect you while Prowling..'
             ],
             x: 0,
-            y: 0,
+            y: 1,
             iconname: 'ability_ambush',
             c: 0,
             aura: function (count) { return { feralinstinctmod: 1 + count * 0.05 } },
@@ -104,8 +104,8 @@ var talents = [
                'Increases your armor contribution from items by 4%.',
                'Increases your armor contribution from items by 7%.'
             ],
-            x: 3,
-            y: 0,
+            x: 2,
+            y: 1,
             c: 0,
             iconname: 'thickhide',
             aura: function (count) { return { thickhidemod: 1 + count * 0.3333 } },
@@ -116,14 +116,14 @@ var talents = [
             m: 2,
             s: [
                17002,
-               17003
+               24866
             ],
             d: [
                'Increases your movement speed by 15% while outdoors in Cat Form and increases your chance to dodge while in Cat Form, Bear Form and Dire Bear Form by 2%',
                'Increases your movement speed by 30% while outdoors in Cat Form and increases your chance to dodge while in Cat Form, Bear Form and Dire Bear Form by 4%',
             ],
-            x: 2,
-            y: 0,
+            x: 0,
+            y: 2,
             c: 0,
             iconname: 'spell_nature_spiritwolf',
             aura: function (count) { return { feralswiftnessmod: 2 * count} },
@@ -133,13 +133,14 @@ var talents = [
             n: 'Sharpened Claws',
             m: 3,
             s: [
-               16941,
                16942,
-               16943
+               16943,
+               16944
             ],
             d: [
                'Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 2%.',
-               'Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 4%.'
+               'Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 4%.',
+               'Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 6%.'
             ],
             x: 2,
             y: 2,
@@ -159,8 +160,8 @@ var talents = [
                'Reduces the energy cost of your Shred ability by 9 and the rage cost of your Lacerate ability by 1',
                'Reduces the energy cost of your Shred ability by 18 and the rage cost of your Lacerate ability by 2',
             ],
-            x: 3,
-            y: 0,
+            x: 0,
+            y: 3,
             c: 0,
             iconname: 'spell_shadow_vampiricaura',
             aura: function (count) { return { shreddingattacks: count} },
@@ -170,17 +171,17 @@ var talents = [
             n: 'Predatory Strikes',
             m: 3,
             s: [
-               16955,
-               16956,
-               16957
+               16972,
+               16974,
+               16975
             ],
             d: [
                'Increases your melee attack power in Cat, Bear, Dire Bear and Moonkin Forms by 50% of your level.',
                'Increases your melee attack power in Cat, Bear, Dire Bear and Moonkin Forms by 100% of your level.',
                'Increases your melee attack power in Cat, Bear, Dire Bear and Moonkin Forms by 150% of your level.'
             ],
-            x: 3,
-            y: 1,
+            x: 1,
+            y: 3,
             c: 0,
             iconname: 'ability_hunter_pet_cat',
             aura: function (count) { return { predatorystrikesmod: count * 0.5 * 70.0  } },
@@ -201,8 +202,8 @@ var talents = [
                critical strike while in Bear and Dire Bear Form and your critical strikes \
                from Cat Form abilities that add combo points  have a 100% chance to add an additional combo point.'
             ],
-            x: 0,
-            y: 2,
+            x: 2,
+            y: 3,
             c: 0,
             iconname: 'ability_racial_cannibalize',
             aura: function (count) { return { primalfury: count } },
@@ -219,8 +220,8 @@ var talents = [
                'Increases the damage caused by your Claw, Rake, and Mangle (Cat) abilities by 10%.',
                'Increases the damage caused by your Claw, Rake, and Mangle (Cat) abilities by 20%.'
             ],
-            x: 4,
-            y: 0,
+            x: 0,
+            y: 4,
             c: 0,
             iconname: 'ability_druid_ravage',
             aura: function (count) { return { savagefurymod: 1.0 + 0.1*count } },
@@ -230,10 +231,10 @@ var talents = [
             n: 'Heart of the Wild',
             m: 5,
             s: [
-               24890,
-               24891,
-               24892,
-               24893,
+               17003,
+               17004,
+               17005,
+               17006,
                24894
             ],
             d: [
@@ -263,8 +264,8 @@ var talents = [
                'Increases all attributes by 2% and reduces the chance you\'ll be critically hit by melee attacks by 2%.',
                'Increases all attributes by 3% and reduces the chance you\'ll be critically hit by melee attacks by 3%.',
             ],
-            x: 5,
-            y: 2,
+            x: 2,
+            y: 5,
             c: 0,
             iconname: 'ability_druid_enrage',
             aura: function (count) { return { survivalofthefittest: count } },
@@ -279,8 +280,8 @@ var talents = [
             d: [
                'Increases ranged and melee critical chance by 5%.'
             ],
-            x: 7,
-            y: 1,
+            x: 1,
+            y: 7,
             c: 0,
             iconname: 'spell_nature_unyeildingstamina',
             aura: function (count) { return { abilitiescrit: count * 0.1 } },
@@ -303,8 +304,8 @@ var talents = [
                'While in Cat Form, Bear Form, or Dire Bear Form, increases your damage from melee critical strikes by 8% and your chance to avoid area effect attacks by 12%.',
                'While in Cat Form, Bear Form, or Dire Bear Form, increases your damage from melee critical strikes by 10% and your chance to avoid area effect attacks by 15%.'
             ],
-            x: 7,
-            y: 2,
+            x: 2,
+            y: 7,
             c: 0,
             iconname: 'ability_druid_predatoryinstincts',
             aura: function (count) { return { predatoryinstincts: count } },
@@ -320,9 +321,9 @@ var talents = [
                'Mangle the target, inflicting damage and causing the target to take additional damage from bleed effects for 12 sec.  \
                 This ability can be used in Cat Form or Dire Bear Form.'
             ],
-            x: 8,
-            y: 4,
-            c: 1,
+            x: 4,
+            y: 8,
+            c: 0,
             iconname: 'ability_druid_mangle2',
             aura: function (count) { return { mangle: count } },
          }
@@ -353,7 +354,7 @@ var talents = [
             y: 0,
             c: 0,
             iconname: 'spell_nature_healingtouch',
-            aura: function (count) { return { naturalistmod: 1.0 + 0.2*count } },
+            aura: function (count) { return { naturalistmod: .02*count } },
          },
          {
             i: 331,
@@ -385,11 +386,11 @@ var talents = [
             d: [
                'Imbues the Druid with natural energy.  Each of the Druid\'s melee attacks has a chance of causing the caster to enter a Clearcasting state.  The Clearcasting state reduces the Mana, Rage or Energy cost of your next damage or healing spell or offensive ability by 100%.  Lasts 30 min'
             ],
-            x: 1,
-            y: 1,
+            x: 2,
+            y: 2,
             c: 0,
             iconname: 'spell_nature_crystalball',
-            aura: function (count) { return { intensity: count } },
+            aura: function (count) { return { ooc: count } },
          },
       ]
    }

@@ -8,7 +8,7 @@ var RESULT = {
 
 var batching = 0;
 var step = 0;
-var log = true;
+var log = false;
 var version = 4;
 
 const TYPE = {
@@ -19,7 +19,7 @@ const TYPE = {
 
 class SimulationWorker {
     constructor(callback_finished, callback_update, callback_error) {
-        this.worker = new Worker('./dist/js/sim-worker.min.js');
+        this.worker = new Worker('./dist/js/sim-worker.js');
         this.worker.onerror = (...args) => {
             callback_error(...args);
             this.worker.terminate();
@@ -120,7 +120,6 @@ class SimulationWorkerParallel {
                         }
                     }
                     result.player.mh = mergeWeapon(result.player.mh, data.player.mh);
-                    if (data.player.oh) result.player.oh = mergeWeapon(result.player.oh, data.player.oh);
                 }
             });
             this.callback_finished(result);
@@ -157,7 +156,7 @@ class Simulation {
             executeperc: parseInt($('input[name="executeperc"]').val()),
             startrage: parseInt($('input[name="startrage"]').val()),
             iterations: parseInt($('input[name="simulations"]').val()),
-            priorityap: parseInt(spells[4].priorityap),
+            priorityap: parseInt(spells[1].priorityap),
             batching: parseInt($('select[name="batching"]').val()),
         };
     }
@@ -183,7 +182,7 @@ class Simulation {
         this.cb_update = callback_update;
         this.cb_finished = callback_finished;
         this.spread = [];
-        this.priorityap = parseInt(spells[4].priorityap);
+        this.priorityap = parseInt(spells[1].priorityap);
 
         if (this.iterations == 1) log = true;
         else log = false;
@@ -325,7 +324,6 @@ class Simulation {
             player.mh.step(next);
             if (player.timer && player.steptimer(next) && !player.spelldelay) spellcheck = true;
             if (player.itemtimer && player.stepitemtimer(next) && !player.spelldelay) spellcheck = true;
-            if (player.dodgetimer) player.stepdodgetimer(next);
             if (player.spelldelay) player.spelldelay += next;
             if (player.heroicdelay) player.heroicdelay += next;
 
@@ -337,8 +335,8 @@ class Simulation {
         // Fight done
         player.endauras();
 
-        if (player.auras.LacerateDOT) {
-            this.idmg += player.auras.deepwounds.idmg;
+        if (player.auras.laceratedot) {
+            this.idmg += player.auras.laceratedot.idmg;
         }
         this.totaldmg += this.idmg;
         this.totalduration += this.duration;

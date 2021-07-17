@@ -44,12 +44,12 @@ int main()
     int* options;
     options = spellOptions( 33987 ); options[0] = 1; options[1] = 20; options[2] = 100; // Mangle | Enabled | Minrage | Reaction
     options = spellOptions( 26997 ); options[0] = 1; options[1] = 30; options[2] = 2; options[2] = 100; // Swipe | Enabled | Minrage | Main CD | Reaction
-    options = spellOptions( 33745 ); options[0] = 1; options[1] = 30; options[2] = 2; options[2] = 100; options[3] = 2600; // Lacerate | Enabled | Minrage | Main CD | Reaction | Priority AP
+    options = spellOptions( 33745 ); options[0] = 1; options[1] = 30; options[2] = 2; options[3] = 100; options[4] = 2600; // Lacerate | Enabled | Minrage | Main CD | Reaction | Priority AP
     options = spellOptions( 26996 ); options[0] = 1; options[1] = 50; options[2] = 300; // Maul | Enabled | Minrage | Reaction
     options = spellOptions( 27011 ); options[0] = 1; options[1] = 100; // Faerie Fire | Enabled | Reaction
 
     setTalent( talents, 112, 1 );
-    setTalent( talents, 211, 3 );
+    setTalent( talents, 211, 5 );
     setTalent( talents, 212, 5 );
     setTalent( talents, 221, 3 );
     setTalent( talents, 231, 3 );

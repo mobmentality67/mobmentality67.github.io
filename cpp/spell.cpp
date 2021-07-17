@@ -29,7 +29,7 @@ decltype( Mangle::options ) Mangle::options;
 double Mangle::dmg() const
 {
     double dmg = ( player.weaponrng ? ( double )rng( player.mh->mindmg, player.mh->maxdmg ) : double( player.mh->mindmg + player.mh->maxdmg ) / 2.0 );
-    return dmg + 155.0 + double( player.mh->bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh->normSpeed * 1.15;
+    return (155.0 + (dmg + double( player.mh->bonusdmg ) + ( ( double )player.stats.ap / 14.0 ) * player.mh->normSpeed) * 1.15) * player.talents.savagefurymod;
 }
 
 bool Mangle::canUse() const

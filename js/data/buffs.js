@@ -16,6 +16,7 @@ var buffs = [
       str: 18,
       agi: 18,
       int: 18,
+      stam: 18
    },
    {
       id: 20217,
@@ -25,6 +26,7 @@ var buffs = [
       group: "",
       strmod: 10,
       agimod: 10,
+      stammod: 10
    },
    {
       id: 27140,

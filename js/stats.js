@@ -84,35 +84,21 @@ SIM.STATS = {
         }
 
         // MH
-        view.dmgdata.labels.push('Main Hand');
+        view.dmgdata.labels.push('White Damage');
         data.push((sim.player.mh.totaldmg / sim.totalduration).toFixed(2));
         colors.push(view.colors[counter % view.colors.length]);
         counter++;
         if (sim.player.mh.totalprocdmg) {
-            view.dmgdata.labels.push('Main Hand Proc');
+            view.dmgdata.labels.push('White Damage Proc');
             data.push((sim.player.mh.totalprocdmg / sim.totalduration).toFixed(2));
             colors.push(view.colors[counter % view.colors.length]);
             counter++;
         }
 
-        // OH
-        if (sim.player.oh) {
-            view.dmgdata.labels.push('Off Hand');
-            data.push((sim.player.oh.totaldmg / sim.totalduration).toFixed(2));
-            colors.push(view.colors[counter % view.colors.length]);
-            counter++;
-            if (sim.player.oh.totalprocdmg) {
-                view.dmgdata.labels.push('Off Hand Proc');
-                data.push((sim.player.oh.totalprocdmg / sim.totalduration).toFixed(2));
-                colors.push(view.colors[counter % view.colors.length]);
-                counter++;
-            }
-        }
-
         // DW
-        if (sim.player.auras.deepwounds && sim.player.auras.deepwounds.totaldmg) {
-            view.dmgdata.labels.push(sim.player.auras.deepwounds.name);
-            data.push((sim.player.auras.deepwounds.totaldmg / sim.totalduration).toFixed(2));
+        if (sim.player.auras.laceratedot && sim.player.auras.laceratedot.totaldmg) {
+            view.dmgdata.labels.push(sim.player.auras.laceratedot.name);
+            data.push((sim.player.auras.laceratedot.totaldmg / sim.totalduration).toFixed(2));
             colors.push(view.colors[counter % view.colors.length]);
         }
 
@@ -262,19 +248,19 @@ SIM.STATS = {
         let html = '<table><thead><tr><th>Action</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Dodge %</th><th>Glance %</th><th>Uses</th><th>DPS</th></tr></thead><tbody>';
 
 
+        // Manually add white damage
         let i = sim.iterations;
         let data = sim.player.mh.data;
         let total = data.reduce((a, b) => a + b, 0);
         let dps = (sim.player.mh.totaldmg / sim.totalduration).toFixed(2);
         html += `<tr><td>Main Hand</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${dps}</td></tr>`;
+       
+        // // Manually add Lacerate DOT 
+        // if (sim.player.auras.laceratedot) {
+        //     let dps = (sim.player.auras.laceratedot.totaldmg / sim.totalduration).toFixed(2);
+        //     html += `<tr><td>Lacerate DOT</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>${dps}</td></tr>`;
+        // }
 
-        if (sim.player.oh) {
-            data = sim.player.oh.data;
-            total = data.reduce((a, b) => a + b, 0);
-            dps = (sim.player.oh.totaldmg / sim.totalduration).toFixed(2);
-            html += `<tr><td>Off Hand</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${dps}</td></tr>`;
-        }
-        
         for (let name in sim.player.spells) {
             let n = sim.player.spells[name].name;
             let data = sim.player.spells[name].data;

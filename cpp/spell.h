@@ -80,8 +80,8 @@ struct Maul : public Spell
  static struct
     {
         int active = true;
-        int minrage = 40;
-        int reaction = 500;
+        int minrage = 50;
+        int reaction = 300;
         int maincd = 2;
     } options;
 

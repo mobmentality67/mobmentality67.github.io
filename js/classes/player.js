@@ -17,10 +17,9 @@ class Player {
     constructor(testItem, testType, enchtype, config) {
         if (!config) config = Player.getConfig();
         this.rage = 0;
-        this.level = 60;
+        this.level = 70;
         this.timer = 0;
         this.itemtimer = 0;
-        this.dodgetimer = 0;
         this.extraattacks = 0;
         this.batchedextras = 0;
         this.nextswinghs = false;
@@ -30,11 +29,13 @@ class Player {
         this.spelldamage = config.spelldamage;
         this.target = config.target;
         this.base = {
+            stam: 0,
             ap: 0,
             agi: 0,
             str: 0,
             hit: 0,
             crit: 0,
+            critrating: 0,
             spellcrit: 0,
             skill_0: this.level * 5,
             skill_1: this.level * 5,
@@ -46,6 +47,7 @@ class Player {
             strmod: 1,
             agimod: 1,
             dmgmod: 1,
+            stammod: 1,
             apmod: 1
         };
         if (enchtype == 1) {
@@ -87,7 +89,9 @@ class Player {
         this.addTempEnchants();
         this.addBuffs();
         this.addSpells();
-       
+
+
+        this.auras.laceratedot = new LacerateDOT(this);
         if (this.items.includes(9449)) this.auras.pummeler = new Pummeler(this);
         if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
@@ -268,15 +272,10 @@ class Player {
                     shoutap = ~~(shoutap * (1 + this.talents.impbattleshout));
                     apbonus = shoutap - buff.ap;
                 }
-                if (buff.group == "zerkstance")
-                    this.zerkstance = true;
-                if (buff.group == "vaelbuff")
-                    this.vaelbuff = true;
-                if (buff.group == "dragonbreath")
-                    this.dragonbreath = true;
 
                 this.base.ap += (buff.ap || 0) + apbonus;
                 this.base.agi += buff.agi || 0;
+                this.base.stam += buff.stam || 0;
                 this.base.str += buff.str || 0;
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
@@ -301,12 +300,9 @@ class Player {
         this.rage = rage;
         this.timer = 0;
         this.itemtimer = 0;
-        this.dodgetimer = 0;
         this.spelldelay = 0;
         this.heroicdelay = 0;
         this.mh.timer = 0;
-        if (this.oh)
-            this.oh.timer = Math.round(this.oh.speed * 1000 / this.stats.haste / 2);
         this.extraattacks = 0;
         this.batchedextras = 0;
         this.nextswinghs = false;
@@ -320,8 +316,8 @@ class Player {
             this.auras[s].firstuse = true;
             this.auras[s].stacks = 0;
         }
-        if (this.auras.deepwounds) {
-            this.auras.deepwounds.idmg = 0;
+        if (this.auras.laceratedot) {
+            this.auras.laceratedot.idmg = 0;
         }
         this.update();
     }
@@ -332,14 +328,11 @@ class Player {
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dwmiss = this.mh.miss;
         this.mh.dodge = this.getDodgeChance(this.mh);
-
-        if (this.oh) {
-            this.mh.dwmiss = this.getDWMissChance(this.mh);
-            this.oh.glanceChance = this.getGlanceChance(this.oh);
-            this.oh.miss = this.getMissChance(this.oh);
-            this.oh.dwmiss = this.getDWMissChance(this.oh);
-            this.oh.dodge = this.getDodgeChance(this.oh);
-        }
+        this.stats.dmgmod += this.talents.naturalistmod;
+        this.stats.apmod += this.talents.heartofthewild * .02;
+        this.stats.strmod += this.talents.survivalofthefittest * .01;
+        this.stats.agimod += this.talents.survivalofthefittest * .01;
+        this.stats.stammod += this.talents.survivalofthefittest * .01;
     }
     updateAuras() {
         for (let prop in this.base)
@@ -354,8 +347,9 @@ class Player {
         }
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
+        this.stats.stam = ~~(this.stats.stam * this.stats.stammod);
         this.stats.ap += this.stats.str * 2;
-        this.stats.crit += this.stats.agi / 20;
+        this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
 
         if (this.stats.apmod != 1)
@@ -390,6 +384,7 @@ class Player {
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
     }
+
     updateHaste() {
         this.stats.haste = this.base.haste;
         if (this.auras.pummeler && this.auras.pummeler.timer)
@@ -404,8 +399,6 @@ class Player {
         if (this.auras.zandalarian && this.auras.zandalarian.timer)
             bonus += this.auras.zandalarian.stats.bonusdmg;
         this.mh.bonusdmg = this.mh.basebonusdmg + bonus;
-        if (this.oh)
-            this.oh.bonusdmg = this.oh.basebonusdmg + bonus;
     }
     updateArmorReduction() {
         this.target.armor = this.target.basearmor;
@@ -425,6 +418,7 @@ class Player {
             if (this.auras[name].timer && this.auras[name].mult_stats.dmgmod)
                 this.stats.dmgmod *= (1 + this.auras[name].mult_stats.dmgmod / 100);
         }
+        this.stats.dmgmod *= this.talents.naturalistmod;
     }
     getGlanceReduction(weapon) {
         let diff = this.target.defense - this.stats['skill_' + weapon.type];
@@ -451,28 +445,54 @@ class Player {
         return miss;
     }
     getCritChance() {
-        let crit = this.stats.crit + (this.talents.crit || 0) + (this.level - this.target.level) * 1 + (this.level - this.target.level) * 0.6;
+        let crit = this.stats.crit + (this.stats.critrating / 22.1) + (this.talents.sharpenedclawsmod || 0) + 
+        (this.level - this.target.level) * 1 + // Level-based crit suppression
+        (this.level - this.target.level) * 0.6; // Boss-based crit suppression
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
         return 5 + (this.target.defense - this.stats['skill_' + weapon.type]) * 0.1;
     }
     getArmorReduction() {
-        let r = this.target.armor / (this.target.armor + 400 + 85 * this.level);
+        let r = this.target.armor / (this.target.armor + 400 + 85 * ((5.5 * this.level) - 265.5))
         return r > 0.75 ? 0.75 : r;
     }
     addRage(dmg, result, weapon, spell) {
+        let rageAdded;
+        let factor;
         if (spell) {
-            if (result == RESULT.MISS || result == RESULT.DODGE)
-                this.rage += spell.refund ? spell.cost * 0.8 : 0;
+            if (result == RESULT.MISS || result == RESULT.DODGE) {
+                rageAdded = spell.refund ? spell.cost * 0.8 : 0;
+                this.rage += rageAdded;
+            }
+            else {
+                rageAdded = 0;
+            }
         }
         else {
-            if (result == RESULT.DODGE)
-                this.rage += (weapon.avgdmg() / 230.6) * 7.5 * 0.75;
-            else if (result != RESULT.MISS)
-                this.rage += (dmg / 230.6) * 7.5;
+            if (result == RESULT.DODGE) {
+                factor = 3.5;
+                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2 * 0.75;
+            }
+            else if (result != RESULT.MISS) {
+                factor = result == RESULT.CRIT ? 7.0 : 3.5;
+                rageAdded = (dmg / 274.7 * 7.5 + weapon.swingspeed * factor) / 2;
+            }
+            else {
+                rageAdded = 0;
+            }
+            this.rage += rageAdded;
         }
         if (this.rage > 100) this.rage = 100;
+        if (log)  
+        {
+            if (spell) {
+                this.log(`Cast ${spell.name} for ${dmg}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+            }
+            else {
+                this.log(`Swung for ${dmg}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+            }
+        }
     }
     steptimer(a) {
         if (this.timer <= a) {
@@ -496,14 +516,7 @@ class Player {
             return false;
         }
     }
-    stepdodgetimer(a) {
-        if (this.dodgetimer <= a) {
-            this.dodgetimer = 0;
-        }
-        else {
-            this.dodgetimer -= a;
-        }
-    }
+
     stepauras() {
 
         if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.step();
@@ -512,7 +525,7 @@ class Player {
         if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.step();
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.step();
 
-        if (this.auras.LacerateDOT && this.auras.LacerateDOT.timer) this.auras.LacerateDOT.step();
+        if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
     endauras() {
 
@@ -523,7 +536,7 @@ class Player {
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.end();
 
         if (this.auras.flurry && this.auras.flurry.timer) this.auras.flurry.end();
-        if (this.auras.LacerateDOT && this.auras.LacerateDOT.timer) this.auras.LacerateDOT.end();
+        if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
 
     }
     rollweapon(weapon) {
@@ -582,14 +595,11 @@ class Player {
         let dmg = weapon.dmg(spell);
         procdmg = this.procattack(spell, weapon, result);
 
-        if (result == RESULT.DODGE) {
-            this.dodgetimer = 5000;
-        }
         if (result == RESULT.GLANCE) {
             dmg *= this.getGlanceReduction(weapon);
         }
         if (result == RESULT.CRIT) {
-            dmg *= 2 + (spell ? this.talents.abilitiescrit : 0);
+            dmg *= 2 + (spell ? 2 * this.talents.predatoryinstincts / 100.0 : 0);
             this.proccrit();
         }
 
@@ -607,35 +617,7 @@ class Player {
         //if (log) this.log(`${spell ? spell.name + ' for' : 'Main hand attack for'} ${done + procdmg} (${Object.keys(RESULT)[result]})`);
         return done + procdmg;
     }
-    attackoh(weapon) {
-        this.stepauras();
 
-        let procdmg = 0;
-        let result;
-        result = this.rollweapon(weapon);
-
-        let dmg = weapon.dmg();
-        procdmg = this.procattack(null, weapon, result);
-
-        if (result == RESULT.DODGE) {
-            this.dodgetimer = 5000;
-        }
-        if (result == RESULT.GLANCE) {
-            dmg *= this.getGlanceReduction(weapon);
-        }
-        if (result == RESULT.CRIT) {
-            dmg *= 2;
-            this.proccrit();
-        }
-
-        weapon.use();
-        let done = this.dealdamage(dmg, result, weapon);
-        weapon.data[result]++;
-        weapon.totaldmg += done;
-        weapon.totalprocdmg += procdmg;
-        //if (log) this.log(`Off hand attack for ${done + procdmg} (${Object.keys(RESULT)[result]})${this.nextswinghs ? ' (HS queued)' : ''}`);
-        return done + procdmg;
-    }
     cast(spell) {
         this.stepauras();
         spell.use();
@@ -648,9 +630,6 @@ class Player {
         let result = this.rollspell(spell);
         procdmg = this.procattack(spell, this.mh, result);
 
-        if (result == RESULT.DODGE) {
-            this.dodgetimer = 5000;
-        }
         if (result == RESULT.CRIT) {
             dmg *= 2 + this.talents.abilitiescrit;
             this.proccrit();
@@ -676,8 +655,9 @@ class Player {
         }
     }
     proccrit() {
-        if (this.auras.flurry) this.auras.flurry.use();
-        if (this.auras.deepwounds) this.auras.deepwounds.use();
+        if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
+            this.rage += 5.0;
+        } 
     }
     procattack(spell, weapon, result) {
         let procdmg = 0;
@@ -752,7 +732,7 @@ class Player {
         tmp += Math.max(this.mh.miss, 0) * 100;
         if (roll < tmp) dmg = 0;
         tmp += this.mh.dodge * 100;
-        if (roll < tmp) { this.dodgetimer = 5000; dmg = 0; }
+        if (roll < tmp) { dmg = 0; }
         roll = rng10k();
         let crit = this.crit + this.mh.crit;
         if (roll < (crit * 100)) dmg *= 2;
@@ -763,7 +743,6 @@ class Player {
             auras: this.auras,
             spells: this.spells,
             mh: this.mh,
-            oh: this.oh,
         };
     }
     log(msg) {

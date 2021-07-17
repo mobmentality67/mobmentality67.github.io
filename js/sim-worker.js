@@ -1,15 +1,27 @@
 importScripts(
-    './data/buffs.min.js',
-    './data/gear.min.js',
-    './data/races.min.js',
-    './data/spells.min.js',
-    './data/talents.min.js',
-    './classes/player.min.js',
-    './classes/simulation.min.js',
-    './classes/spell.min.js',
-    './classes/weapon.min.js',
-    './globals.min.js',
-    './WarriorSim.min.js',
+    // './data/buffs.min.js',
+    // './data/gear.min.js',
+    // './data/races.min.js',
+    // './data/spells.min.js',
+    // './data/talents.min.js',
+    // './classes/player.min.js',
+    // './classes/simulation.min.js',
+    // './classes/spell.min.js',
+    // './classes/weapon.min.js',
+    // './globals.min.js',
+    // './WarriorSim.min.js',
+
+    './data/buffs.js',
+    './data/gear.js',
+    './data/races.js',
+    './data/spells.js',
+    './data/talents.js',
+    './classes/player.js',
+    './classes/simulation.js',
+    './classes/spell.js',
+    './classes/weapon.js',
+    './globals.js',
+    './WarriorSim.js',
 );
 
 onmessage = (event) => {
@@ -54,8 +66,8 @@ onmessage = (event) => {
             fields.forEach((f, i) => module.HEAP32[ptr + i + 1] = opt[f]);
         }
         spellOptions(0, "minrage", "reaction"); // Mangle
-        spellOptions(1, "minrage", "maincd", "reaction"); // Swipe
-        spellOptions(2, "minrage", "maincd", "reaction", "priorityap"); // Lacerate
+        spellOptions(1, "minrage", "maincd", "reaction", "priorityap"); // Swipe
+        spellOptions(2, "minrage", "maincd", "reaction"); // Lacerate
         spellOptions(3, "minrage", "reaction"); // Maul
         spellOptions(4, "reaction"); // Faerie Fire 
 

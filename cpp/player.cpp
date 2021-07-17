@@ -426,6 +426,7 @@ void Player::updateDmgMod()
 
 double Player::getGlanceReduction( Weapon& weapon )
 {
+    // This still appears to be true for TBC against previous expectations
     int diff = target.defense - stats.skill[weapon.type];
     double low = std::min( 1.3 - 0.05 * diff, 0.91 );
     double high = std::min( 1.2 - 0.03 * diff, 0.99 );
@@ -463,7 +464,8 @@ int Player::getDWMissChance( Weapon& weapon )
 
 int Player::getCritChance()
 {
-    return std::max( 0, 100 * ( stats.crit + talents.sharpenedclawsmod ) + 5 * stats.agi + 160 * ( level - target.level ) );
+    // Find this comment
+    return std::max( 0, 100 * ( stats.crit + talents.sharpenedclawsmod + 5 * talents.lotp * 5) + (100 / 25) * stats.agi + 160 * ( level - target.level ) );
 }
 
 int Player::getDodgeChance( Weapon& weapon )
@@ -490,11 +492,12 @@ void Player::addRage( double dmg, Result result, Weapon& weapon, Spell* spell )
     {
         if ( result == RESULT_DODGE )
         {
-            rage += ( weapon.avgdmg() / 230.6 ) * 7.5 * 0.75;
+            rage += ((( dmg / 274.7) * 7.5 + (mh->speed * 3.5)) / 2) * 0.75;
         }
         else if ( result != RESULT_MISS )
         {
-            rage += ( dmg / 230.6 ) * 7.5;
+            double factor = result == RESULT_CRIT ? 7.0 : 3.5;
+            rage += (( dmg / 274.7) * 7.5 + (mh->speed * factor)) / 2;
         }
     }
     if ( rage > 100.0 )
