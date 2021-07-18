@@ -72,9 +72,12 @@ class SimulationWorkerParallel {
             this.states.slice(1).forEach(({data}) => {
                 result.iterations += data.iterations;
                 result.totaldmg += data.totaldmg;
+                result.totalthreat += data.totalthreat;
                 result.totalduration += data.totalduration;
                 result.mindps = Math.min(result.mindps, data.mindps);
                 result.maxdps = Math.min(result.maxdps, data.maxdps);
+                result.mintps = Math.min(result.mintps, data.mintps);
+                result.maxtps = Math.min(result.maxtps, data.maxtps);
                 result.sumdps += data.sumdps;
                 result.sumdps2 += data.sumdps2;
                 result.starttime = Math.min(result.starttime, data.starttime);
@@ -130,6 +133,7 @@ class SimulationWorkerParallel {
                 if (!state) return;
                 iteration += (state.status ? state.data.iterations : state.iteration);
                 data.totaldmg += state.data.totaldmg;
+                data.totalthreat += state.data.totalthreat;
                 data.totalduration += state.data.totalduration;
             });
             this.callback_update(iteration, data);
@@ -170,18 +174,24 @@ class Simulation {
         this.iterations = config.iterations;
         batching = config.batching;
         this.idmg = 0;
+        this.ithreat = 0;
         this.totaldmg = 0;
+        this.totalthreat = 0;
         this.totalduration = 0;
         this.mindps = 99999;
         this.maxdps = 0;
+        this.mintps = 99999;
+        this.maxtps = 0;
         this.sumdps = 0;
         this.sumdps2 = 0;
+        this.sumthreat = 0;
         this.maxcallstack = Math.min(Math.floor(this.iterations / 10), 1000);
         this.starttime = 0;
         this.endtime = 0;
         this.cb_update = callback_update;
         this.cb_finished = callback_finished;
         this.spread = [];
+        this.tpsspread = [];
         this.priorityap = parseInt(spells[1].priorityap);
 
         if (this.iterations == 1) log = true;
@@ -218,6 +228,7 @@ class Simulation {
     run() {
         step = 0;
         this.idmg = 0;
+        this.ithreat = 0;
         let player = this.player;
         player.reset(this.startrage);
         this.maxsteps = rng(this.timesecsmin * 1000, this.timesecsmax * 1000);
@@ -226,6 +237,9 @@ class Simulation {
         let delayedspell, delayedheroic;
         let spellcheck = false;
         let next = 0;
+        let damageDone = 0;
+        let threatDone = 0;
+        var damage_threat = [0, 0];
 
         // item steps
         let itemdelay = 0;
@@ -237,13 +251,17 @@ class Simulation {
         if (player.auras.swarmguard) { player.auras.swarmguard.usestep = Math.max(this.maxsteps - player.auras.swarmguard.timetoend, 0); }
 
 
-        if (log) console.log(' TIME |   RAGE | EVENT')
+        if (log) console.log(' TIME |   RAGE | EVENT');
 
         while (step < this.maxsteps) {
 
             // Attacks
             if (player.mh.timer <= 0) {
-                this.idmg += player.attackmh(player.mh);
+                damage_threat = player.attackmh(player.mh, damage_threat);
+                damageDone = damage_threat[0];
+                threatDone = damage_threat[1];
+                this.idmg += damageDone;
+                this.ithreat += threatDone;
                 spellcheck = true;
             }
 
@@ -284,9 +302,10 @@ class Simulation {
                 // Prevent casting HS and other spells at the exact same time
                 if (player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic.maxdelay)
                     player.heroicdelay = delayedheroic.maxdelay - 49;
-
                 if (delayedspell.canUse()) {
-                    this.idmg += player.cast(delayedspell);
+                    damage_threat = player.cast(delayedspell, damage_threat);
+                    this.idmg += damage_threat[0];
+                    this.ithreat += damage_threat[1];
                     player.spelldelay = 0;
                     spellcheck = true;
                 }
@@ -298,7 +317,8 @@ class Simulation {
             // Cast Maul
             if (player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic.maxdelay) {
                 if (delayedheroic.canUse()) {
-                    player.cast(delayedheroic);
+                    // TODO: idmg, threat not  recorded here?
+                    player.cast(delayedheroic, damage_threat);
                     player.heroicdelay = 0;
                     spellcheck = true;
                 }
@@ -337,23 +357,35 @@ class Simulation {
 
         if (player.auras.laceratedot) {
             this.idmg += player.auras.laceratedot.idmg;
+            this.ithreat += player.auras.laceratedot.idmg * 0.50;
+            player.spells.lacerate.totalthreat += player.auras.laceratedot.idmg * 0.50;
+
         }
         this.totaldmg += this.idmg;
+        this.totalthreat += this.ithreat;
         this.totalduration += this.duration;
         let dps = this.idmg / this.duration;
+        let tps = this.ithreat / this.duration;
         if (dps < this.mindps) this.mindps = dps;
         if (dps > this.maxdps) this.maxdps = dps;
+        if (tps < this.mintps) this.mintps = tps;
+        if (tps > this.maxtps) this.maxtps = tps;
         this.sumdps += dps;
         this.sumdps2 += dps * dps;
+        this.sumthreat += tps;
         dps = Math.round(dps);
+        tps = Math.round(tps);
         if (!this.spread[dps]) this.spread[dps] = 1;
         else this.spread[dps]++;
+        if (!this.tpsspread[tps]) this.tpsspread[tps] = 1;
+        else this.tpsspread[tps]++;
     }
     update(iteration) {
         if (this.cb_update) {
             this.cb_update(iteration, {
                 iterations: this.iterations,
                 totaldmg: this.totaldmg,
+                totalthreat: this.totalthreat,
                 totalduration: this.totalduration,
             });
         }
@@ -363,11 +395,15 @@ class Simulation {
             this.cb_finished({
                 iterations: this.iterations,
                 totaldmg: this.totaldmg,
+                totalthreat: this.totalthreat,
                 totalduration: this.totalduration,
                 mindps: this.mindps,
                 maxdps: this.maxdps,
+                mintps: this.mintps,
+                maxtps: this.maxtps,
                 sumdps: this.sumdps,
                 sumdps2: this.sumdps2,
+                sumthreat: this.sumthreat,
                 starttime: this.starttime,
                 endtime: this.endtime,
             });

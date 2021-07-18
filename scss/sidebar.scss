@@ -132,6 +132,10 @@
             .stat-dps, .stat-error {
                 display: none;
             }
+
+            .stat-tps, .stat-error {
+                display: none;
+            }
         }
 
         .stat-name {
@@ -156,6 +160,18 @@
                 display: none;
             }
         }
+        .stat-tps {
+            font-size: 20px;
+            font-weight: bold;
+            color: $item-uncommon;
+            &:after {
+                content: " TPS";
+                font-size: 12px;
+            }
+            &:empty:after {
+                display: none;
+            }
+        }
         .stat-error {
             font-size: 12px;
             font-weight: bold;
@@ -172,6 +188,10 @@
     #dps-box {
         text-align: center;
     }
+
+    #tps-box {
+        text-align: center;
+    }
     #dps {
         font-size: 26px;
         font-weight: bold;
@@ -184,7 +204,32 @@
             display: none;
         }
     }
+
+    #tps {
+        font-size: 26px;
+        font-weight: bold;
+        color: $item-uncommon;
+        &:after {
+            content: " TPS";
+            font-size: 14px;
+        }
+        &:empty:after {
+            display: none;
+        }
+    }
     #dpserr {
+        font-size: 14px;
+        font-weight: bold;
+        color: $item-uncommon;
+        &:before {
+            content: " \00b1";
+        }
+        &:empty:before {
+            display: none;
+        }
+    }
+
+    #tpserr {
         font-size: 14px;
         font-weight: bold;
         color: $item-uncommon;
@@ -211,6 +256,14 @@
     }
 
     #stats {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 14px;
+        font-weight: bold;
+        min-height: 17px;
+    }
+
+    #tpsstats {
         text-align: center;
         font-size: 12px;
         margin-bottom: 14px;

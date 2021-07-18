@@ -9,6 +9,7 @@ class Spell {
         this.refund = true;
         this.canDodge = true;
         this.totaldmg = 0;
+        this.totalthreat = 0;
         this.data = [0, 0, 0, 0, 0];
         this.name = this.constructor.name;
         this.useonly = false;
@@ -47,6 +48,7 @@ class Mangle extends Spell {
         this.threshold = parseInt(spells[0].minrage);
         this.maxdelay = parseInt(spells[0].reaction);
         this.weaponspell = false;
+        this.name = 'Mangle';
     }
     dmg() {
         let dmg;

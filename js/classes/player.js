@@ -47,6 +47,7 @@ class Player {
             strmod: 1,
             agimod: 1,
             dmgmod: 1,
+            threatmod: 1,
             stammod: 1,
             apmod: 1
         };
@@ -283,6 +284,7 @@ class Player {
                 this.base.agimod *= (1 + buff.agimod / 100) || 1;
                 this.base.strmod *= (1 + buff.strmod / 100) || 1;
                 this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
+                this.base.stammod *= (1 + buff.stammod / 100) || 1;
                 this.base.haste *= (1 + buff.haste / 100) || 1;
 
             }
@@ -329,6 +331,7 @@ class Player {
         this.mh.dwmiss = this.mh.miss;
         this.mh.dodge = this.getDodgeChance(this.mh);
         this.stats.dmgmod += this.talents.naturalistmod;
+        this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
         this.stats.apmod += this.talents.heartofthewild * .02;
         this.stats.strmod += this.talents.survivalofthefittest * .01;
         this.stats.agimod += this.talents.survivalofthefittest * .01;
@@ -446,6 +449,7 @@ class Player {
     }
     getCritChance() {
         let crit = this.stats.crit + (this.stats.critrating / 22.1) + (this.talents.sharpenedclawsmod || 0) + 
+        this.talents.abilitiescrit + // LOTP
         (this.level - this.target.level) * 1 + // Level-based crit suppression
         (this.level - this.target.level) * 0.6; // Boss-based crit suppression
         return Math.max(crit, 0);
@@ -570,7 +574,7 @@ class Player {
         if (roll < tmp && !spell.nocrit) return RESULT.CRIT;
         return RESULT.HIT;
     }
-    attackmh(weapon) {
+    attackmh(weapon, damage_threat_arr) {
         this.stepauras();
 
         let spell = null;
@@ -605,20 +609,39 @@ class Player {
 
         weapon.use();
         let done = this.dealdamage(dmg, result, weapon, spell);
+        let threat = this.attackmhthreat(dmg, result, weapon, spell);
+        
         if (spell) {
             spell.totaldmg += done;
+            spell.totalthreat += threat;
             spell.data[result]++;
         }
         else {
             weapon.totaldmg += done;
+            weapon.totalthreat += threat;
             weapon.data[result]++;
         }
         weapon.totalprocdmg += procdmg;
         //if (log) this.log(`${spell ? spell.name + ' for' : 'Main hand attack for'} ${done + procdmg} (${Object.keys(RESULT)[result]})`);
-        return done + procdmg;
+        damage_threat_arr[0] = done + procdmg;
+        damage_threat_arr[1] = threat;
+        return damage_threat_arr;
     }
 
-    cast(spell) {
+    attackmhthreat(damage, result, weapon, spell) {
+        let threat = 0;
+        if (spell) {
+            threat = this.dealthreat(damage, result, spell);
+            spell.totalthreat += threat;
+        }
+        else {
+            threat = damage * this.stats.threatmod;
+            weapon.totalthreat += threat;
+        }
+        return threat;
+    }
+
+    cast(spell, damage_threat_arr) {
         this.stepauras();
         spell.use();
         if (spell.useonly) { 
@@ -631,16 +654,20 @@ class Player {
         procdmg = this.procattack(spell, this.mh, result);
 
         if (result == RESULT.CRIT) {
-            dmg *= 2 + this.talents.abilitiescrit;
+            dmg *= 2 + this.talents.predatoryinstincts * .02;
             this.proccrit();
         }
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
+        let threat = this.dealthreat(done, result, spell);
         spell.data[result]++;
         spell.totaldmg += done;
+        spell.totalthreat += threat;
         this.mh.totalprocdmg += procdmg;
         //if (log) this.log(`${spell.name} for ${done + procdmg} (${Object.keys(RESULT)[result]}).`);
-        return done + procdmg;
+        damage_threat_arr[0] = done;
+        damage_threat_arr[1] = threat;
+        return damage_threat_arr;
     }
     dealdamage(dmg, result, weapon, spell) {
         if (result != RESULT.MISS && result != RESULT.DODGE) {
@@ -654,6 +681,32 @@ class Player {
             return 0;
         }
     }
+
+    dealthreat(dmg, result, spell) {
+        let threat = 0;
+        if (spell && spell.name == 'Faerie Fire') {
+            threat = 131 * this.stats.threatmod;
+        }
+        else if (result != RESULT.MISS && result != RESULT.DODGE) {
+            if (spell.name == 'Mangle') {
+                threat = dmg * this.stats.threatmod * 1.3;
+            }
+            else if (spell.name == 'Swipe') {
+                threat = dmg * this.stats.threatmod;
+            }
+            else if (spell.name == 'Lacerate') {
+                threat = (dmg * 0.5 + 267) * this.stats.threatmod;
+            }
+            else if (spell.name == 'Maul') {
+                threat = (dmg + 344) * this.stats.threatmod;
+            }
+            else {
+                log(`Unknown spell for threat -- =  + ${spell.name}`);
+            }
+        }
+        return threat;
+    }
+
     proccrit() {
         if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
             this.rage += 5.0;

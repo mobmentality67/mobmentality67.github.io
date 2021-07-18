@@ -193,15 +193,18 @@ SIM.UI = {
 
     simulateDPS: function(rows) {
         let view = this;
+        let tps = view.sidebar.find('#tps');
         let dps = view.sidebar.find('#dps');
         let error = view.sidebar.find('#dpserr');
         let stats = view.sidebar.find('#stats');
+        let tpsstats = view.sidebar.find('#tpsstats');
         let time = view.sidebar.find('#time');
         let btn = view.sidebar.find('.js-dps');
         let weights = (rows === "stats");
         if (weights) {
             rows = undefined;
         }
+        tps.text('');
         dps.text('');
         error.text('');
         time.text('');
@@ -227,6 +230,8 @@ SIM.UI = {
                 // Finished
                 // Technically, it is incorrect to calculate mean DPS like this, since fight duration varies...
                 const mean = report.totaldmg / report.totalduration;
+                const meantps = report.totalthreat / report.totalduration;
+                tps.text(meantps.toFixed(2));
                 dps.text(mean.toFixed(2));
 
                 const s1 = report.sumdps, s2 = report.sumdps2, n = report.iterations;
@@ -235,6 +240,7 @@ SIM.UI = {
 
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
+                tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
                 btn.css('background', '');
                 if (rows) view.simulateRows(Array.from(rows));
                 else if (weights) view.simulateWeights(player, mean, varmean);
@@ -248,6 +254,7 @@ SIM.UI = {
             (iteration, report) => {
                 // Update
                 let perc = parseInt(iteration / report.iterations * 100);
+                tps.text((report.totalthreat / report.totalduration).toFixed(2));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
                 btn.css('background', 'linear-gradient(to right, transparent ' + perc + '%, #444 ' + perc + '%)');
             },
@@ -390,11 +397,13 @@ SIM.UI = {
     simulateRow: function(tr, updateFn) {
         var view = this;
         var dps = tr.find('td:last-of-type');
+        var tps = tr.find('td:last-of-type');
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
         var istemp = tr.data('temp') == true;
         var base = parseFloat(view.sidebar.find('#dps').text());
+        var basetps = parseFloat(view.sidebar.find('#tps').text());
 
         const params = {
             player: [item, type, istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
@@ -404,12 +413,19 @@ SIM.UI = {
             (report) => {
                 // Finished
                 let span = $('<span></span>');
+                let spantps = $('<span></span>');
                 let calc = report.totaldmg / report.totalduration;
+                let calctps = report.totaldmg / report.totalduration;
                 let diff = calc - base;
+                let difftps = calc - base;
                 span.text(diff.toFixed(2));
+                spantps.text(difftps.toFixed(2));
                 if (diff >= 0) span.addClass('p');
                 else span.addClass('n');
+                if (difftps >= 0) spantps.addClass('p');
+                else spantps.addClass('n');
                 dps.text(calc.toFixed(2)).append(span);
+                tps.text(calc.toFixed(2)).append(span);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -424,22 +440,26 @@ SIM.UI = {
 
                 if (isench) {
                     for(let i of enchant[type])
-                        if (i.id == item)
+                        if (i.id == item) {
                             i.dps = calc.toFixed(2);
+                        }
                 }
                 else {
                     for(let i of gear[type])
-                        if (i.id == item)
+                        if (i.id == item) {
                             i.dps = calc.toFixed(2);
+                        }
                 }
             },
             (iteration, report) => {
                 // Update
                 updateFn(Math.floor((iteration / report.iterations) * 100));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
+                tps.text((report.totalthreat / report.totalduration).toFixed(2));
             },
             (error) => {
                 dps.text('ERROR');
+                tps.text('ERROR');
                 console.error(error);
             },
         );

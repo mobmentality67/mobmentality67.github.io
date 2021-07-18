@@ -76,31 +76,18 @@ SIM.STATS = {
         };
         for (let name in sim.player.spells) {
             let spell = sim.player.spells[name];
-            if (!spell.totaldmg) continue;
+            if (!spell.totalthreat) continue;
             view.dmgdata.labels.push(spell.name);
-            data.push((spell.totaldmg / sim.totalduration).toFixed(2));
+            data.push((spell.totalthreat / sim.totalduration).toFixed(2));
             colors.push(view.colors[counter % view.colors.length]);
             counter++;
         }
 
         // MH
-        view.dmgdata.labels.push('White Damage');
-        data.push((sim.player.mh.totaldmg / sim.totalduration).toFixed(2));
+        view.dmgdata.labels.push('White Damage Threat');
+        data.push((sim.player.mh.totalthreat / sim.totalduration).toFixed(2));
         colors.push(view.colors[counter % view.colors.length]);
         counter++;
-        if (sim.player.mh.totalprocdmg) {
-            view.dmgdata.labels.push('White Damage Proc');
-            data.push((sim.player.mh.totalprocdmg / sim.totalduration).toFixed(2));
-            colors.push(view.colors[counter % view.colors.length]);
-            counter++;
-        }
-
-        // DW
-        if (sim.player.auras.laceratedot && sim.player.auras.laceratedot.totaldmg) {
-            view.dmgdata.labels.push(sim.player.auras.laceratedot.name);
-            data.push((sim.player.auras.laceratedot.totaldmg / sim.totalduration).toFixed(2));
-            colors.push(view.colors[counter % view.colors.length]);
-        }
 
         view.dmgdata.datasets.push({
             data: data,
@@ -114,9 +101,9 @@ SIM.STATS = {
             datasets: []
         };
 
-        for(let i in sim.spread) {
+        for(let i in sim.tpsspread) {
             view.spreaddata.labels.push(i);
-            data.push(sim.spread[i]);
+            data.push(sim.tpsspread[i]);
         }
 
         view.spreaddata.datasets.push({
@@ -245,29 +232,26 @@ SIM.STATS = {
     buildTable: function (sim) {
         var view = this;
         view.table.empty();
-        let html = '<table><thead><tr><th>Action</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Dodge %</th><th>Glance %</th><th>Uses</th><th>DPS</th></tr></thead><tbody>';
+        let html = '<table><thead><tr><th>Action</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Dodge %</th><th>Glance %</th><th>Uses</th><th>TPS</th></tr></thead><tbody>';
 
 
         // Manually add white damage
         let i = sim.iterations;
         let data = sim.player.mh.data;
         let total = data.reduce((a, b) => a + b, 0);
-        let dps = (sim.player.mh.totaldmg / sim.totalduration).toFixed(2);
-        html += `<tr><td>Main Hand</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${dps}</td></tr>`;
+        let tps = (sim.player.mh.totalthreat / sim.totalduration).toFixed(2);
+        console.log(tps + ' total white dps');
+        html += `<tr><td>White Damage</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
        
-        // // Manually add Lacerate DOT 
-        // if (sim.player.auras.laceratedot) {
-        //     let dps = (sim.player.auras.laceratedot.totaldmg / sim.totalduration).toFixed(2);
-        //     html += `<tr><td>Lacerate DOT</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>${dps}</td></tr>`;
-        // }
-
         for (let name in sim.player.spells) {
             let n = sim.player.spells[name].name;
             let data = sim.player.spells[name].data;
             let total = data.reduce((a, b) => a + b, 0);
             if (!total) continue;
-            let dps = (sim.player.spells[name].totaldmg / sim.totalduration).toFixed(2);
-            html += `<tr><td>${n}</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${dps}</td></tr>`;
+            let tps = (sim.player.spells[name].totalthreat / sim.totalduration).toFixed(2);
+            console.log(name + ' tps = ' + sim.player.spells[name].totalthreat + 'total tps');
+            console.log('duration = ' + sim.totalduration);
+            html += `<tr><td>${n}</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
         }
 
         html += '</tbody></table>';
@@ -316,7 +300,7 @@ SIM.STATS = {
                 },
                 tooltips: {
                     callbacks: {
-                        label: (item, obj) => ` ${obj.labels[item.index]} DPS: ${obj.datasets[0].data[item.index]}`,
+                        label: (item, obj) => ` ${obj.labels[item.index]} TPS: ${obj.datasets[0].data[item.index]}`,
                     }
                 },
             }

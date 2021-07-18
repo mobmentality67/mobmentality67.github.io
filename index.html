@@ -3,7 +3,7 @@
 
 <head>
   <meta name="viewport" content="width=device-width">
-  <title>Warrior DPS Sim</title>
+  <title>Beary Good Sim</title>
 
   <link href="dist/css/theme.default.min.css" rel="stylesheet">
   <link href="dist/css/style.css" rel="stylesheet">
@@ -123,10 +123,12 @@ profiles
         <div id="weight-crit"><span class="stat-name">Crit Chance:</span><span class="stat-dps">12345</span><span class="stat-error">123</span></div>
         <div id="weight-hit"><span class="stat-name">Hit Chance:</span><span class="stat-dps">12345</span><span class="stat-error">123</span></div>
       </div>
+      <div id="tps-box"><span id="tps"></span><span id="tpserr"></span></div>
+      <div id="tpsstats"></div>
       <div id="dps-box"><span id="dps"></span><span id="dpserr"></span></div>
       <div id="stats"></div>
       <div id="time"></div>
-      <a href="#" class="btn js-dps">DPS</a>
+      <a href="#" class="btn js-dps">TPS</a>
       <a href="#" class="btn js-weights">STAT WEIGHTS</a>
       <a href="#" class="btn js-table">SHEET DPS</a>
       <a href="#" class="btn js-stats disabled">STATS</a>
@@ -269,7 +271,7 @@ profiles
       </article>
 
       <article>
-        <label>DPS Spread</label>
+        <label>TPS Spread</label>
         <div class="container-spread"><canvas></canvas></div>
       </article>
 

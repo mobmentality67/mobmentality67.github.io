@@ -116,6 +116,7 @@ onmessage = (event) => {
             if (params.fullReport) {
                 report.player = player.serializeStats();
                 report.spread = sim.spread;
+                report.tpsspread = sim.tpsspread;
             }
             postMessage([TYPE.FINISHED, report]);
         }, (iteration, report) => {

@@ -69,7 +69,7 @@ var talents = [
             y: 0,
             iconname: 'demoralizingroar',
             c: 0,
-            aura: function (count) { return { feralinstinctmod: 1 + count * 0.05 } },
+            aura: function (count) { return { feralaggressionmod: count * 0.03 } },
          },
          {
             i: 221,
@@ -89,7 +89,7 @@ var talents = [
             y: 1,
             iconname: 'ability_ambush',
             c: 0,
-            aura: function (count) { return { feralinstinctmod: 1 + count * 0.05 } },
+            aura: function (count) { return { feralinstinctmod: count * 0.05 } },
          },
          {
             i: 231,
@@ -284,7 +284,7 @@ var talents = [
             y: 7,
             c: 0,
             iconname: 'spell_nature_unyeildingstamina',
-            aura: function (count) { return { abilitiescrit: count * 0.1 } },
+            aura: function (count) { return { abilitiescrit: count * 5 } },
          },
          {
             i: 281,

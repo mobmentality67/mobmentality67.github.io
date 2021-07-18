@@ -24,6 +24,7 @@ class Weapon {
         this.bonusdmg = 0;
         this.type = WEAPONTYPE[item.type.toUpperCase()] || 0;
         this.totaldmg = 0;
+        this.totalthreat = 0;
         this.totalprocdmg = 0;
         this.data = [0,0,0,0,0];
         
