@@ -597,12 +597,12 @@ SIM.UI = {
         let space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         if (!player.mh) return;
         view.sidebar.find('#stam').text(player.stats.stam);
+        view.sidebar.find('#armor').html((player.stats.armor || 0));
         view.sidebar.find('#str').text(player.stats.str);
         view.sidebar.find('#agi').text(player.stats.agi);
         view.sidebar.find('#ap').text(player.stats.ap);
         view.sidebar.find('#skill').html(player.stats['skill_' + player.mh.type]);
         view.sidebar.find('#hit').html((player.stats.hit || 0) + '%');
-        view.sidebar.find('#miss').html(Math.max(player.mh.miss, 0).toFixed(2));
         let mhcrit = player.crit + player.mh.crit;
         view.sidebar.find('#crit').html(mhcrit.toFixed(2));
         let mhcap = 100 - player.mh.dwmiss - player.mh.dodge - player.mh.glanceChance;

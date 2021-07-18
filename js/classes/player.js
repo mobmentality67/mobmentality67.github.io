@@ -30,6 +30,7 @@ class Player {
         this.target = config.target;
         this.base = {
             stam: 0,
+            armor: 0,
             ap: 0,
             agi: 0,
             str: 0,
@@ -274,9 +275,10 @@ class Player {
                     apbonus = shoutap - buff.ap;
                 }
 
+                this.base.stam += buff.stam || 0;
+                this.base.armor += buff.armor || 0;
                 this.base.ap += (buff.ap || 0) + apbonus;
                 this.base.agi += buff.agi || 0;
-                this.base.stam += buff.stam || 0;
                 this.base.str += buff.str || 0;
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
@@ -330,12 +332,13 @@ class Player {
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dwmiss = this.mh.miss;
         this.mh.dodge = this.getDodgeChance(this.mh);
+        this.stats.stammod += this.talents.survivalofthefittest * .01;
+        this.stats.armormod *= this.talents.thickhide * .01;
         this.stats.dmgmod += this.talents.naturalistmod;
         this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
         this.stats.apmod += this.talents.heartofthewild * .02;
         this.stats.strmod += this.talents.survivalofthefittest * .01;
-        this.stats.agimod += this.talents.survivalofthefittest * .01;
-        this.stats.stammod += this.talents.survivalofthefittest * .01;
+        this.stats.agimod += this.talents.survivalofthefittest * .01;    
     }
     updateAuras() {
         for (let prop in this.base)
@@ -353,6 +356,7 @@ class Player {
         this.stats.stam = ~~(this.stats.stam * this.stats.stammod);
         this.stats.ap += this.stats.str * 2;
         this.stats.crit += this.stats.agi / 25;
+        this.stats.armor += this.stats.agi * 2;
         this.crit = this.getCritChance();
 
         if (this.stats.apmod != 1)
@@ -386,6 +390,21 @@ class Player {
 
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+    }
+
+    updateArmor() {
+        this.stats.armor = this.base.armor;
+
+        /* Initial armor setup with multiplier */
+        if (this.stats.armormod != 1)
+            this.stats.armor += ~~((this.base.armor) * (this.stats.armormod));
+
+        /* Calculate agi/buffs armor after armor mod */
+        this.stats.armor += this.stats.agi * 2;
+        for (let name in this.auras) {
+            if (this.auras[name].timer && this.auras[name].stats.armor)
+                this.stats.armor += this.auras[name].stats.armor;
+        }
     }
 
     updateHaste() {

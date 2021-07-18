@@ -108,7 +108,7 @@ var talents = [
             y: 1,
             c: 0,
             iconname: 'thickhide',
-            aura: function (count) { return { thickhidemod: 1 + count * 0.3333 } },
+            aura: function (count) { return { thickhidemod: count * 0.03333 } },
          },
          {
             i: 311,
@@ -244,8 +244,8 @@ var talents = [
                'Increases your Intellect by 16%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 16% and while in Cat Form your attack power is increased by 8%',
                'Increases your Intellect by 20%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 20% and while in Cat Form your attack power is increased by 10%'
             ],
-            x: 5,
-            y: 1,
+            x: 1,
+            y: 5,
             c: 0,
             iconname: 'spell_holy_blessingofagility',
             aura: function (count) { return { heartofthewild: count } },
@@ -281,7 +281,7 @@ var talents = [
                'Increases ranged and melee critical chance by 5%.'
             ],
             x: 1,
-            y: 7,
+            y: 6,
             c: 0,
             iconname: 'spell_nature_unyeildingstamina',
             aura: function (count) { return { abilitiescrit: count * 5 } },
@@ -321,7 +321,7 @@ var talents = [
                'Mangle the target, inflicting damage and causing the target to take additional damage from bleed effects for 12 sec.  \
                 This ability can be used in Cat Form or Dire Bear Form.'
             ],
-            x: 4,
+            x: 1,
             y: 8,
             c: 0,
             iconname: 'ability_druid_mangle2',
@@ -350,8 +350,8 @@ var talents = [
                'Reduces the cast time of your Healing Touch spell by 0.4 sec and increases the damage you deal with physical attacks in all forms by 8%.',
                'Reduces the cast time of your Healing Touch spell by 0.5 sec and increases the damage you deal with physical attacks in all forms by 10%.'
             ],
-            x: 1,
-            y: 0,
+            x: 0,
+            y: 1,
             c: 0,
             iconname: 'spell_nature_healingtouch',
             aura: function (count) { return { naturalistmod: .02*count } },
@@ -370,8 +370,8 @@ var talents = [
                'Allows 20% of your Mana regeneration to continue while casting and causes your Enrage ability to instantly generate 7 rage..',
                'Allows 30% of your Mana regeneration to continue while casting and causes your Enrage ability to instantly generate 10 rage..'
             ],
-            x: 2,
-            y: 0,
+            x: 0,
+            y: 2,
             c: 0,
             iconname: 'spell_frost_windwalkon',
             aura: function (count) { return { intensity: count } }
