@@ -240,7 +240,6 @@ SIM.STATS = {
         let data = sim.player.mh.data;
         let total = data.reduce((a, b) => a + b, 0);
         let tps = (sim.player.mh.totalthreat / sim.totalduration).toFixed(2);
-        console.log(tps + ' total white dps');
         html += `<tr><td>White Damage</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
        
         for (let name in sim.player.spells) {
@@ -249,8 +248,6 @@ SIM.STATS = {
             let total = data.reduce((a, b) => a + b, 0);
             if (!total) continue;
             let tps = (sim.player.spells[name].totalthreat / sim.totalduration).toFixed(2);
-            console.log(name + ' tps = ' + sim.player.spells[name].totalthreat + 'total tps');
-            console.log('duration = ' + sim.totalduration);
             html += `<tr><td>${n}</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
         }
 

@@ -105,6 +105,7 @@ class SimulationWorkerParallel {
                             result.player.spells[id] = src;
                         } else {
                             dst.totaldmg += src.totaldmg;
+                            dst.totalthreat += src.totalthreat;
                             for (let i = 0; i < src.data.length; ++i) {
                                 dst.data[i] += src.data[i];
                             }
@@ -114,6 +115,7 @@ class SimulationWorkerParallel {
                         if (dst) {
                             dst.totaldmg += src.totaldmg;
                             dst.totalprocdmg += src.totalprocdmg;
+                            dst.totalthreat += src.totalthreat;
                             for (let i = 0; i < src.data.length; ++i) {
                                 dst.data[i] += src.data[i];
                             }

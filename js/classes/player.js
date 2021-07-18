@@ -660,7 +660,23 @@ class Player {
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
         let threat = this.dealthreat(done, result, spell);
-        spell.data[result]++;
+
+        /* Manually override FF results with new roll */
+        if (spell && (spell.name != 'Faerie Fire')) {
+            spell.data[result]++;
+        }
+        else {
+            let roll = rng10k();
+            if (rng10k() < 1700) {
+                result = RESULT.MISS;
+                threat = 0;
+            }
+            else {
+                result = RESULT.HIT;
+            }
+            spell.data[result]++;
+        }
+
         spell.totaldmg += done;
         spell.totalthreat += threat;
         this.mh.totalprocdmg += procdmg;
@@ -670,7 +686,10 @@ class Player {
         return damage_threat_arr;
     }
     dealdamage(dmg, result, weapon, spell) {
-        if (result != RESULT.MISS && result != RESULT.DODGE) {
+        if (spell && (spell.name) == 'Faerie Fire') {
+            return 0;
+        }
+        else if (result != RESULT.MISS && result != RESULT.DODGE) {
             dmg *= this.stats.dmgmod;
             dmg *= (1 - this.armorReduction);
             this.addRage(dmg, result, weapon, spell);
@@ -701,7 +720,7 @@ class Player {
                 threat = (dmg + 344) * this.stats.threatmod;
             }
             else {
-                log(`Unknown spell for threat -- =  + ${spell.name}`);
+                this.log(`Unknown spell for threat -- =  + ${spell.name}`);
             }
         }
         return threat;
