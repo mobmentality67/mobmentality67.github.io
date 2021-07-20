@@ -1646,8 +1646,8 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 23529,
-         "name": "Adamantite Sharpening Stone",
+         "id": 28421,
+         "name": "Adamantite Weightstone",
          "bonusdmg": 12,
          "critrating": 14,
          "phase": 1,
@@ -1657,7 +1657,7 @@ var enchant = {
          "id": 23122,
          "name": "Consecrated Sharpening Stone",
          "ap": 108,
-         "phase": 6,
+         "phase": 1,
          "temp": true,
       },
    ]
