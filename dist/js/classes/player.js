@@ -1,0 +1,889 @@
+class Player {
+    static getConfig(base) {
+        return {
+            race: $('select[name="race"]').val(),
+            weaponrng: $('select[name="weaponrng"]').val() == "Yes",
+            spelldamage: parseInt($('input[name="spelldamage"]').val()),
+            target: {
+                level: parseInt($('input[name="targetlevel"]').val()),
+                basearmor: parseInt($('input[name="targetarmor"]').val()),
+                armor: parseInt($('input[name="targetarmor"]').val()),
+                def: parseInt($('input[name="targetlevel"]').val()) * 5,
+                mitigation: 1 - 15 * (parseInt($('input[name="targetresistance"]').val()) / 6000),
+                binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
+            },
+            activetank: $('select[name="activetank"]').val() == "Yes",
+            incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
+            incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
+        };
+    }
+    constructor(testItem, testType, enchtype, config) {
+        if (!config) config = Player.getConfig();
+        this.rage = 0;
+        this.level = 70;
+        this.timer = 0;
+        this.itemtimer = 0;
+        this.extraattacks = 0;
+        this.batchedextras = 0;
+        this.nextswinghs = false;
+        this.nextswingcl = false;
+        this.race = config.race;
+        this.weaponrng = config.weaponrng;
+        this.spelldamage = config.spelldamage;
+        this.target = config.target;
+        this.activetank = config.activetank;
+        this.incswingdamage = config.incswingdamage;
+        this.incswingtimer = config.incswingtimer * 1000;
+        this.base = {
+            sta: 0,
+            ac: 0,
+            def: 0,
+            res: 0,
+            ap: 0,
+            agi: 0,
+            str: 0,
+            incdodge: 0,
+            incdodgerating: 0,
+            incswingtimer: config.incswingtimer * 1000,
+            incmiss: 0,
+            hit: 0,
+            hitrating: 0,
+            crit: 0,
+            critrating: 0,
+            spellcrit: 0,
+            exp: 0,
+            skill: this.level * 5,
+            haste: 1,
+            stammod: 1,
+            armormod: 5.0,
+            strmod: 1,
+            agimod: 1,
+            dmgmod: 1,
+            threatmod: 1,
+            stammod: 1,
+            apmod: 1
+        };
+        if (enchtype == 1) {
+            this.testEnch = testItem;
+            this.testEnchType = testType;
+        }
+        else if (enchtype == 2) {
+            this.testTempEnch = testItem;
+            this.testTempEnchType = testType;
+        }
+        else if (enchtype == 3) {
+            if (testType == 0) {
+                this.base.ap += testItem;
+            }
+            else if (testType == 1) {
+                this.base.crit += testItem;
+            }
+            else if (testType == 2) {
+                this.base.hit += testItem;
+            }
+            else if (testType == 3) {
+                this.base.str += testItem;
+            }
+        }
+        else {
+            this.testItem = testItem;
+            this.testItemType = testType;
+        }
+        this.stats = {};
+        this.auras = {};
+        this.spells = {};
+        this.items = [];
+        this.addRace();
+        this.addTalents();
+        this.addGear();
+        if (!this.mh) return;
+        this.addSets();
+        this.addEnchants();
+        this.addTempEnchants();
+        this.addBuffs();
+        this.addSpells();
+
+
+        this.auras.laceratedot = new LacerateDOT(this);
+        if (this.items.includes(9449)) this.auras.pummeler = new Pummeler(this);
+        if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
+        if (this.items.includes(22954)) this.auras.spider = new Spider(this);
+        if (this.items.includes(21180)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
+        if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
+        this.update();
+    }
+    addRace() {
+        for (let race of races) {
+            if (race.name == this.race) {
+                this.base.aprace = race.ap;
+                this.base.ap += race.ap;
+                this.base.str += race.str;
+                this.base.agi += race.agi;
+            }
+        }
+    }
+    addTalents() {
+        this.talents = {};
+        for (let tree in talents) {
+            for (let talent of talents[tree].t) {
+                this.talents = Object.assign(this.talents, talent.aura(talent.c));
+            }
+        }
+    }
+    addGear() {
+        for (let type in gear) {
+            for (let item of gear[type]) {
+                if ((this.testItemType == type && this.testItem == item.id) ||
+                    (this.testItemType != type && item.selected)) {
+                    for (let prop in this.base)
+                        this.base[prop] += item[prop] || 0;
+
+                    if (type == "mainhand" || type == "offhand" || type == "twohand")
+                        this.addWeapon(item, type);
+                   
+                    if (item.procchance && (type == "trinket1" || type == "trinket2")) {
+                        let proc = {};
+                        proc.chance = item.procchance * 100;
+                        proc.extra = item.procextra;
+                        proc.magicdmg = item.magicdmg;
+                        if (item.procspell) {
+                            this.auras[item.procspell.toLowerCase()] = eval('new ' + item.procspell + '(this)');
+                            proc.spell = this.auras[item.procspell.toLowerCase()];
+                        }
+                        this["trinketproc" + (this.trinketproc1 ? 2 : 1)] = proc;
+                    }
+
+                    this.items.push(item.id);
+                }
+            }
+        }
+    }
+    addWeapon(item, type) {
+
+        let ench, tempench;
+        for (let item of enchant[type]) {
+            if (item.temp) continue;
+            if (this.testEnchType == type && this.testEnch == item.id) ench = item;
+            else if (this.testEnchType != type && item.selected) ench = item;
+        }
+        for (let item of enchant[type]) {
+            if (!item.temp) continue;
+            if (this.testTempEnchType == type && this.testTempEnch == item.id) tempench = item;
+            else if (this.testTempEnchType != type && item.selected) tempench = item;
+        }
+
+        if (type == "mainhand")
+            this.mh = new Weapon(this, item, ench, tempench, false, false);
+
+        if (type == "twohand")
+            this.mh = new Weapon(this, item, ench, tempench, false, true);
+
+    }
+    addEnchants() {
+        for (let type in enchant) {
+            for (let item of enchant[type]) {
+                if (item.temp) continue;
+                if ((this.testEnchType == type && this.testEnch == item.id) ||
+                    (this.testEnchType != type && item.selected)) {
+
+                    for (let prop in this.base) {
+                        if (prop == 'haste')
+                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
+                        else
+                            this.base[prop] += item[prop] || 0;
+                    }
+                }
+            }
+        }
+    }
+    addTempEnchants() {
+        for (let type in enchant) {
+            for (let item of enchant[type]) {
+                if (!item.temp) continue;
+                if ((this.testTempEnchType == type && this.testTempEnch == item.id) ||
+                    (this.testTempEnchType != type && item.selected)) {
+
+                    for (let prop in this.base) {
+                        if (prop == 'haste')
+                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
+                        else
+                            this.base[prop] += item[prop] || 0;
+                    }
+                }
+            }
+        }
+    }
+    addSets() {
+        for (let set of sets) {
+            let counter = 0;
+            for (let item of set.items)
+                if (this.items.includes(item))
+                    counter++;
+            if (counter == 0)
+                continue;
+            for (let bonus of set.bonus) {
+                if (counter >= bonus.count) {
+                    for (let prop in bonus.stats)
+                        this.base[prop] += bonus.stats[prop] || 0;
+                    if (bonus.stats.procspell) {
+                        this.attackproc = {};
+                        this.attackproc.chance = bonus.stats.procchance * 100;
+                        this.auras[bonus.stats.procspell.toLowerCase()] = eval('new ' + bonus.stats.procspell + '(this)');
+                        this.attackproc.spell = this.auras[bonus.stats.procspell.toLowerCase()];
+                    }
+                    if (bonus.stats.enhancedbs) {
+                        this.enhancedbs = true;
+                    }
+                }
+            }
+        }
+    }
+    addBuffs() {
+        for (let buff of buffs) {
+            if (buff.active) {
+                let apbonus = 0;
+                if (buff.group == "battleshout") {
+                    let shoutap = buff.ap;
+                    if (buff.id == 27578 && this.enhancedbs) shoutap += 30;
+                    shoutap = ~~(shoutap * (1 + this.talents.impbattleshout));
+                    apbonus = shoutap - buff.ap;
+                }
+
+                this.base.sta += buff.sta || 0;
+                this.base.ac += buff.ac || 0;
+                this.base.ap += (buff.ap || 0) + apbonus;
+                this.base.agi += buff.agi || 0;
+                this.base.res += buff.res || 0;
+                this.base.def += buff.def || 0;
+                this.base.str += buff.str || 0;
+                this.base.crit += buff.crit || 0;
+                this.base.hit += buff.hit || 0;
+                this.base.spellcrit += buff.spellcrit || 0;
+                this.base.agimod *= (1 + buff.agimod / 100) || 1;
+                this.base.strmod *= (1 + buff.strmod / 100) || 1;
+                this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
+                this.base.stammod *= (1 + buff.stammod / 100) || 1;
+                this.base.haste *= (1 + buff.haste / 100) || 1;
+
+            }
+        }
+    }
+    addSpells() {
+        for (let spell of spells) {
+            if (spell.active) {
+                if (spell.aura) this.auras[spell.classname.toLowerCase()] = eval(`new ${spell.classname}(this)`);
+                else this.spells[spell.classname.toLowerCase()] = eval(`new ${spell.classname}(this)`);
+            }
+        }
+    }
+    reset(rage) {
+        this.rage = rage;
+        this.timer = 0;
+        this.itemtimer = 0;
+        this.spelldelay = 0;
+        this.heroicdelay = 0;
+        this.mh.timer = 0;
+        this.extraattacks = 0;
+        this.batchedextras = 0;
+        this.nextswinghs = false;
+        this.nextswingcl = false;
+        for (let s in this.spells) {
+            this.spells[s].timer = 0;
+            this.spells[s].stacks = 0;
+        }
+        for (let s in this.auras) {
+            this.auras[s].timer = 0;
+            this.auras[s].firstuse = true;
+            this.auras[s].stacks = 0;
+        }
+        if (this.auras.laceratedot) {
+            this.auras.laceratedot.idmg = 0;
+        }
+        this.update();
+    }
+    update() {
+        this.updateAuras();
+        this.updateArmorReduction();
+        this.mh.glanceChance = this.getGlanceChance(this.mh);
+        this.mh.miss = this.getMissChance(this.mh);
+        this.mh.dodge = this.getDodgeChance(this.mh);
+        this.mh.parry = this.getParryChance(this.mh);
+        this.stats.stammod += this.talents.survivalofthefittest * .01;
+        if (this.race.name == 'Tauren') this.stats.stammod += .05;
+        this.stats.armormod *= this.talents.thickhidemod;
+        this.updateArmor();
+        this.stats.dmgmod += this.talents.naturalistmod;
+        this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
+        this.stats.apmod += this.talents.heartofthewild * .02;
+        this.stats.strmod += this.talents.survivalofthefittest * .01;
+        this.stats.agimod += this.talents.survivalofthefittest * .01;    
+        this.updateIncAttackTable();
+    }
+    updateIncAttackTable() {
+        // Incoming attack table constant setup
+        // Agi dodge + dodge rating + def rating
+        this.stats.incdodge = 3.19 + this.stats.agi / 14.7059 + this.stats.incdodgerating / 18.923 + this.stats.def * .04 / 2.3654; 
+        if (this.race.name == 'Night Elf') this.stats.incdodge += 1;
+        // 4.4 base miss + miss from defense rating
+        this.stats.incmiss = 4.4 + this.stats.def * .04 / 2.3654;
+        this.stats.inccrit = Math.max(0, 5.6 - this.stats.def * .04 / 2.3654 - this.stats.res * 0.0254);
+        this.stats.inccrush = 15;
+
+        if (log) {
+            this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
+                +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
+        }
+    }
+
+    updateAuras() {
+        for (let prop in this.base)
+            this.stats[prop] = this.base[prop];
+        for (let name in this.auras) {
+            if (this.auras[name].timer) {
+                for (let prop in this.auras[name].stats)
+                    this.stats[prop] += this.auras[name].stats[prop];
+                for (let prop in this.auras[name].mult_stats)
+                    this.stats[prop] *= (1 + this.auras[name].mult_stats[prop] / 100);
+            }
+        }
+        this.stats.str = ~~(this.stats.str * this.stats.strmod);
+        this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
+        this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
+        this.stats.ap += this.stats.str * 2;
+        this.stats.crit += this.stats.agi / 25;
+        this.crit = this.getCritChance();
+        if (this.stats.apmod != 1)
+            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+    }
+    updateStrength() {
+        this.stats.str = this.base.str;
+        this.stats.ap = this.base.ap;
+        
+        for (let name in this.auras) {
+            if (this.auras[name].timer) {
+                if (this.auras[name].stats.str)
+                    this.stats.str += this.auras[name].stats.str;
+                if (this.auras[name].stats.ap)
+                    this.stats.ap += this.auras[name].stats.ap;
+            }
+        }
+        this.stats.str = ~~(this.stats.str * this.stats.strmod);
+        this.stats.ap += this.stats.str * 2;
+
+        if (this.stats.apmod != 1)
+            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+    }
+    updateAP() {
+        this.stats.ap = this.base.ap;
+        for (let name in this.auras) {
+            if (this.auras[name].timer && this.auras[name].stats.ap)
+                this.stats.ap += this.auras[name].stats.ap;
+        }
+        this.stats.ap += this.stats.str * 2;
+
+        if (this.stats.apmod != 1)
+            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+    }
+
+    updateArmor() {
+        this.stats.ac = this.base.armor;
+
+        /* Initial armor setup with multiplier */
+        if (this.stats.armormod != 1)
+            this.stats.ac =(this.base.ac) * (this.stats.armormod);
+
+        /* Calculate agi/buffs armor after armor mod */
+        this.stats.ac += this.stats.agi * 2;
+        for (let name in this.auras) {
+            if (this.auras[name].timer && this.auras[name].stats.ac)
+                this.stats.ac += this.auras[name].stats.ac;
+        }
+    }
+
+    updateHaste() {
+        this.stats.haste = this.base.haste;
+        if (this.auras.pummeler && this.auras.pummeler.timer)
+            this.stats.haste *= (1 + this.auras.pummeler.mult_stats.haste / 100);
+        if (this.auras.spider && this.auras.spider.timer)
+            this.stats.haste *= (1 + this.auras.spider.mult_stats.haste / 100);
+    }
+    updateBonusDmg() {
+        let bonus = 0;
+        if (this.auras.zeal && this.auras.zeal.timer)
+            bonus += this.auras.zeal.stats.bonusdmg;
+        if (this.auras.zandalarian && this.auras.zandalarian.timer)
+            bonus += this.auras.zandalarian.stats.bonusdmg;
+        this.mh.bonusdmg = this.mh.basebonusdmg + bonus;
+    }
+    updateArmorReduction() {
+        this.target.armor = this.target.basearmor;
+        if (this.auras.annihilator && this.auras.annihilator.timer)
+            this.target.armor = Math.max(this.target.armor - (this.auras.annihilator.stacks * this.auras.annihilator.armor), 0);
+        if (this.auras.rivenspike && this.auras.rivenspike.timer)
+            this.target.armor = Math.max(this.target.armor - (this.auras.rivenspike.stacks * this.auras.rivenspike.armor), 0);
+        if (this.auras.bonereaver && this.auras.bonereaver.timer)
+            this.target.armor = Math.max(this.target.armor - (this.auras.bonereaver.stacks * this.auras.bonereaver.armor), 0);
+        if (this.auras.swarmguard && this.auras.swarmguard.timer)
+            this.target.armor = Math.max(this.target.armor - (this.auras.swarmguard.stacks * this.auras.swarmguard.armor), 0);
+        this.armorReduction = this.getArmorReduction();
+    }
+    updateDmgMod() {
+        this.stats.dmgmod = this.base.dmgmod;
+        for (let name in this.auras) {
+            if (this.auras[name].timer && this.auras[name].mult_stats.dmgmod)
+                this.stats.dmgmod *= (1 + this.auras[name].mult_stats.dmgmod / 100);
+        }
+        this.stats.dmgmod *= this.talents.naturalistmod;
+    }
+    getGlanceReduction(weapon) {
+        let diff = this.target.defense - this.stats.skill;
+        let low = Math.min(1.3 - 0.05 * diff, 0.91);
+        let high = Math.min(1.2 - 0.03 * diff, 0.99);
+        if (this.weaponrng) return Math.random() * (high - low) + low;
+        else return avg(low, high);
+    }
+    getGlanceChance(weapon) {
+        return 10 + (this.target.defense - Math.min(this.level * 5, this.stats.skill)) * 2;
+    }
+    getMissChance(weapon) {
+        let diff = this.target.defense - this.stats.skill;
+        let miss = 5 + (diff > 10 ? diff * 0.2 : diff * 0.1);
+        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating / 15.77 + 1, 0);
+        return missChance;
+    }
+
+    getCritChance() {
+        let crit = this.stats.crit + (this.stats.critrating / 22.1) + (this.talents.sharpenedclawsmod || 0) + 
+        this.talents.abilitiescrit + // LOTP
+        (this.level - this.target.level) * 1 + // Level-based crit suppression
+        (this.level - this.target.level) * 0.6; // Boss-based crit suppression
+        return Math.max(crit, 0);
+    }
+    getDodgeChance(weapon) {
+        return Math.min(5 + (this.target.defense - this.stats.skill) * 0.1 - this.stats.exp / 15.77, 0);
+    }
+
+    getParryChance(weapon) {
+        if (!this.activetank) {
+            return 0;
+        }
+        else {
+            return Math.max(14 - this.stats.exp / 15.77, 0);
+        }
+    }
+
+    getArmorReduction() {
+        let r = this.target.armor / (this.target.armor + 400 + 85 * ((5.5 * this.level) - 265.5))
+        return r > 0.75 ? 0.75 : r;
+    }
+    addRage(dmg, result, weapon, spell) {
+        let rageAdded;
+        let factor;
+        if (spell) {
+            if (result == RESULT.MISS || result == RESULT.DODGE || result == RESULT.PARRY) {
+                rageAdded = spell.refund ? spell.cost * 0.8 : 0;
+                this.rage += rageAdded;
+            }
+            else {
+                rageAdded = 0;
+            }
+        }
+        else {
+            if (result == RESULT.DODGE) {
+                factor = 3.5;
+                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2 * 0.75;
+            }
+            else if (result != RESULT.MISS) {
+                factor = result == RESULT.CRIT ? 7.0 : 3.5;
+                rageAdded = (dmg / 274.7 * 7.5 + weapon.swingspeed * factor) / 2;
+            }
+            else {
+                rageAdded = 0;
+            }
+            this.rage += rageAdded;
+        }
+        if (this.rage > 100) this.rage = 100;
+        if (log)  
+        {
+            if (spell) {
+                this.log(`Cast ${spell.name} for ${dmg}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+            }
+            else {
+                this.log(`Swung for ${dmg}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+            }
+        }
+    }
+    addDamageTakenRage(dmg) {
+        let rageAdded = dmg / 274.7 * 2.5; 
+        this.rage += rageAdded;
+        if (this.rage > 100) this.rage = 100;
+        if (log)  
+        {
+            this.log(`Received swing for ${dmg.toFixed(2)}, added ${rageAdded.toFixed(2)} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+        }
+    }
+    steptimer(a) {
+        if (this.timer <= a) {
+            this.timer = 0;
+            //if (log) this.log('Global CD off');
+            return true;
+        }
+        else {
+            this.timer -= a;
+            return false;
+        }
+    }
+    stepitemtimer(a) {
+        if (this.itemtimer <= a) {
+            this.itemtimer = 0;
+            //if (log) this.log('Item CD off');
+            return true;
+        }
+        else {
+            this.itemtimer -= a;
+            return false;
+        }
+    }
+
+    stepauras() {
+
+        if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.step();
+        if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.step();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
+        if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.step();
+        if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.step();
+
+        if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
+    }
+    endauras() {
+
+        if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.end();
+        if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.end();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
+        if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.end();
+        if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.end();
+
+        if (this.auras.flurry && this.auras.flurry.timer) this.auras.flurry.end();
+        if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
+
+    }
+    rollweapon(weapon) {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += Math.max(weapon.miss, 0) * 100;
+        if (roll < tmp) return RESULT.MISS;
+        tmp += weapon.parry * 100;
+        if (roll < tmp) return RESULT.PARRY;
+        tmp += weapon.dodge * 100;
+        if (roll < tmp) return RESULT.DODGE;
+        tmp += weapon.glanceChance * 100;
+        if (roll < tmp) return RESULT.GLANCE;
+        tmp += (this.crit + weapon.crit) * 100;
+        if (roll < tmp) return RESULT.CRIT;
+        return RESULT.HIT;
+    }
+    rollattacktaken() {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += (4.4 + this.stats.def * 0.04) * 100;
+        if (roll < tmp) return RESULT.MISS;
+        tmp += (3.19 + this.stats.incdodge) * 100
+        if (roll < tmp) return RESULT.DODGE;
+        tmp += 15.0 * 100;
+        if (roll < tmp) return RESULT.CRUSHING;
+        tmp += (Math.max(5.6 - this.talents.survivalofthefittest - this.stats.res * 0.02564 - this.stats.def * 0.04, 0)) * 100;
+        if (roll < tmp) return RESULT.CRIT;
+        return RESULT.HIT;
+    }
+    rollspell(spell) {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += Math.max(this.mh.miss, 0) * 100;
+        if (roll < tmp) return RESULT.MISS;
+        tmp += this.mh.parry * 100;
+        if (roll < tmp) return RESULT.PARRY;
+        if (spell.canDodge) {
+            tmp += this.mh.dodge * 100;
+            if (roll < tmp) return RESULT.DODGE;
+        }
+        if (!spell.weaponspell) {
+            roll = rng10k();
+            tmp = 0;
+        }
+        let crit = this.crit + this.mh.crit;
+        tmp += crit * 100;
+        if (roll < tmp && !spell.nocrit) return RESULT.CRIT;
+        return RESULT.HIT;
+    }
+    attackmh(weapon, damage_threat_arr) {
+        this.stepauras();
+
+        let spell = null;
+        let procdmg = 0;
+        let result;
+
+        if (this.nextswinghs) {
+            this.nextswinghs = false;
+            if (this.spells.maul && this.spells.maul.cost <= this.rage) {
+                result = this.rollspell(this.spells.maul);
+                spell = this.spells.maul;
+                this.rage -= spell.cost;
+            }
+            else {
+                result = this.rollweapon(weapon);
+            }
+        }
+        else {
+            result = this.rollweapon(weapon);
+        }
+
+        let dmg = weapon.dmg(spell);
+        procdmg = this.procattack(spell, weapon, result);
+
+        if (result == RESULT.GLANCE) {
+            dmg *= this.getGlanceReduction(weapon);
+        }
+        if (result == RESULT.CRIT) {
+            dmg *= 2 + (spell ? 2 * this.talents.predatoryinstincts / 100.0 : 0);
+            this.proccrit();
+        }
+
+        weapon.use();
+        let done = this.dealdamage(dmg, result, weapon, spell);
+        let threat = this.attackmhthreat(dmg, result, weapon, spell);
+        
+        if (spell) {
+            spell.totaldmg += done;
+            spell.totalthreat += threat;
+            spell.data[result]++;
+        }
+        else {
+            weapon.totaldmg += done;
+            weapon.totalthreat += threat;
+            weapon.data[result]++;
+        }
+        weapon.totalprocdmg += procdmg;
+        //if (log) this.log(`${spell ? spell.name + ' for' : 'Main hand attack for'} ${done + procdmg} (${Object.keys(RESULT)[result]})`);
+        damage_threat_arr[0] = done + procdmg;
+        damage_threat_arr[1] = threat;
+        return damage_threat_arr;
+    }
+
+    attackmhthreat(damage, result, weapon, spell) {
+        let threat = 0;
+        if (spell) {
+            threat = this.dealthreat(damage, result, spell);
+        }
+        else {
+            threat = damage * this.stats.threatmod;
+        }
+        return threat;
+    }
+
+    takeattack() {
+        this.incswingtimer = this.base.incswingtimer;
+        let result = this.rollattacktaken();
+        let dmg = this.incswingdamage;
+        if (result == RESULT.HIT) {
+            dmg *= 1.0;
+        }
+        else if (result == RESULT.CRIT) {
+            dmg *= 2.0;
+        }
+        else if (result == RESULT.CRUSH) {
+            dmg *= 1.5;
+        }
+        else {
+            dmg = 0.0;
+            if (log) {
+                this.log("Boss swing missed");
+            }
+            return;
+        }
+        dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
+        this.addDamageTakenRage(dmg);
+    }
+
+    cast(spell, damage_threat_arr) {
+        this.stepauras();
+        spell.use();
+        if (spell.useonly) { 
+            //if (log) this.log(`${spell.name} used`);
+            return 0; 
+        }
+        let procdmg = 0;
+        let dmg = spell.dmg();
+        let result = this.rollspell(spell);
+        procdmg = this.procattack(spell, this.mh, result);
+
+        if (result == RESULT.CRIT) {
+            dmg *= 2 + this.talents.predatoryinstincts * .02;
+            this.proccrit();
+        }
+
+        let done = this.dealdamage(dmg, result, this.mh, spell);
+        let threat = this.dealthreat(done, result, spell);
+
+        /* Manually override FF results with new roll */
+        if (spell && (spell.name != 'Faerie Fire')) {
+            spell.data[result]++;
+        }
+        else {
+            let roll = rng10k();
+            if (rng10k() < 1700) {
+                result = RESULT.MISS;
+                threat = 0;
+            }
+            else {
+                result = RESULT.HIT;
+            }
+            spell.data[result]++;
+        }
+
+        spell.totaldmg += done;
+        spell.totalthreat += threat;
+        this.mh.totalprocdmg += procdmg;
+        //if (log) this.log(`${spell.name} for ${done + procdmg} (${Object.keys(RESULT)[result]}).`);
+        damage_threat_arr[0] = done;
+        damage_threat_arr[1] = threat;
+        return damage_threat_arr;
+    }
+    dealdamage(dmg, result, weapon, spell) {
+        if (spell && (spell.name) == 'Faerie Fire') {
+            return 0;
+        }
+        else if (result != RESULT.MISS && result != RESULT.DODGE) {
+            dmg *= this.stats.dmgmod;
+            dmg *= (1 - this.armorReduction);
+            this.addRage(dmg, result, weapon, spell);
+            return ~~dmg;
+        }
+        else {
+            this.addRage(dmg, result, weapon, spell);
+            return 0;
+        }
+    }
+
+    dealthreat(dmg, result, spell) {
+        let threat = 0;
+        if (spell && spell.name == 'Faerie Fire') {
+            threat = 131 * this.stats.threatmod;
+        }
+        else if (result != RESULT.MISS && result != RESULT.DODGE) {
+            if (spell.name == 'Mangle') {
+                threat = dmg * this.stats.threatmod * 1.3;
+            }
+            else if (spell.name == 'Swipe') {
+                threat = dmg * this.stats.threatmod;
+            }
+            else if (spell.name == 'Lacerate') {
+                threat = (dmg * 0.5 + 267) * this.stats.threatmod;
+            }
+            else if (spell.name == 'Maul') {
+                threat = (dmg + 344) * this.stats.threatmod;
+            }
+            else if (spell.name == 'Lacerate DOT') {
+                threat = dmg * 0.5 * this.stats.threatmod;
+            }
+            else {
+                this.log(`Unknown spell for threat -- =  + ${spell.name}`);
+            }
+        }
+        return threat;
+    }
+
+    proccrit() {
+        if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
+            this.rage += 5.0;
+        } 
+    }
+    procattack(spell, weapon, result) {
+        let procdmg = 0;
+        if (result != RESULT.MISS && result != RESULT.DODGE) {
+            if (weapon.proc1 && rng10k() < weapon.proc1.chance) {
+                //if (log) this.log(`${weapon.name} proc`);
+                if (weapon.proc1.spell && !(weapon.proc1.gcd && this.timer && this.timer < 1500)) weapon.proc1.spell.use();
+                if (weapon.proc1.magicdmg) procdmg += this.magicproc(weapon.proc1);
+                if (weapon.proc1.physdmg) procdmg += this.physproc(weapon.proc1.physdmg);
+                if (weapon.proc1.extra) this.extraattacks += weapon.proc1.extra;
+            }
+            if (weapon.proc2 && rng10k() < weapon.proc2.chance) {
+                if (weapon.proc2.spell) weapon.proc2.spell.use();
+                if (weapon.proc2.magicdmg) procdmg += this.magicproc(weapon.proc2);
+            }
+            if (this.trinketproc1 && rng10k() < this.trinketproc1.chance) {
+                //if (log) this.log(`Trinket 1 proc`);
+                if (this.trinketproc1.extra)
+                    this.batchedextras += this.trinketproc1.extra;
+                if (this.trinketproc1.magicdmg) procdmg += this.magicproc(this.trinketproc1);
+                if (this.trinketproc1.spell) this.trinketproc1.spell.use();
+            }
+            if (this.trinketproc2 && rng10k() < this.trinketproc2.chance) {
+                //if (log) this.log(`Trinket 2 proc`);
+                if (this.trinketproc2.extra)
+                    this.batchedextras += this.trinketproc2.extra;
+                if (this.trinketproc2.magicdmg) procdmg += this.magicproc(this.trinketproc2);
+                if (this.trinketproc2.spell) this.trinketproc2.spell.use();
+            }
+            if (this.attackproc && rng10k() < this.attackproc.chance) {
+                if (this.attackproc.magicdmg) procdmg += this.magicproc(this.attackproc);
+                if (this.attackproc.spell) this.attackproc.spell.use();
+                //if (log) this.log(`Misc proc`);
+            }
+            if (this.talents.swordproc && weapon.type == WEAPONTYPE.SWORD) {
+                if (rng10k() < this.talents.swordproc * 100){
+                    this.extraattacks++;
+                    //if (log) this.log(`Sword talent proc`);
+                }
+            }
+            if (this.auras.swarmguard && this.auras.swarmguard.timer && rng10k() < this.auras.swarmguard.chance) {
+                this.auras.swarmguard.proc();
+            }
+            if (this.auras.zandalarian && this.auras.zandalarian.timer) {
+                this.auras.zandalarian.proc();
+            }
+            if (this.dragonbreath && rng10k() < 400) {
+                procdmg += this.magicproc({ magicdmg: 60, coeff: 1 });
+            }
+        }
+        if (!spell || spell instanceof Maul) {
+            if (this.auras.flurry && this.auras.flurry.stacks)
+                this.auras.flurry.proc();
+        }
+        return procdmg;
+    }
+    magicproc(proc) {
+        let mod = 1;
+        let miss = 1700;
+        let dmg = proc.magicdmg;
+        //if (proc.gcd && this.timer && this.timer < 1500) return 0;
+        if (proc.binaryspell) miss = this.target.binaryresist;
+        else mod *= this.target.mitigation;
+        if (rng10k() < miss) return 0;
+        if (rng10k() < (this.stats.spellcrit * 100)) mod *= 1.5;
+        if (proc.coeff) dmg += this.spelldamage * proc.coeff;
+        return ~~(dmg * mod);
+    }
+    physproc(dmg) {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += Math.max(this.mh.miss, 0) * 100;
+        if (roll < tmp) dmg = 0;
+        tmp += this.mh.dodge * 100;
+        if (roll < tmp) { dmg = 0; }
+        roll = rng10k();
+        let crit = this.crit + this.mh.crit;
+        if (roll < (crit * 100)) dmg *= 2;
+        return dmg * this.stats.dmgmod;
+    }
+    serializeStats() {
+        return {
+            auras: this.auras,
+            spells: this.spells,
+            mh: this.mh,
+        };
+    }
+    log(msg) {
+        console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${msg}`);
+    }
+}
