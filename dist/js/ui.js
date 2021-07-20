@@ -611,7 +611,6 @@ SIM.UI = {
         let mhcrit = player.crit + player.mh.crit;
         view.sidebar.find('#crit').html(mhcrit.toFixed(2));
         let mhcap = 100 - player.mh.dodge - player.mh.glanceChance;
-        view.sidebar.find('#critcap').html(mhcap.toFixed(2));
         let dmgmod = player.stats.dmgmod * 100;
         view.sidebar.find('#dmgmod').html(dmgmod.toFixed(2));
         view.sidebar.find('#haste').html((player.stats.haste * 100).toFixed(2) + '%');
@@ -807,7 +806,7 @@ SIM.UI = {
                         <td>${item.def || ''}</td>
                         <td>${item.armor || ''}</td>
                         <td>${item.res || ''}</td>
-                        <td>${item.TPS || ''}</td>
+                        <td>${item.tps || ''}</td>
                     </tr>`;
         }
 
