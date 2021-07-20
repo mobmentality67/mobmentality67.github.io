@@ -108,7 +108,7 @@ var talents = [
             y: 1,
             c: 0,
             iconname: 'thickhide',
-            aura: function (count) { return { thickhidemod: count * 0.03333 } },
+            aura: function (count) { return { thickhidemod: 1 + count * 0.036666667 } },
          },
          {
             i: 311,

@@ -9,7 +9,7 @@ SIM.UI = {
         view.variables();
         view.events();
         view.loadSession();
-        view.loadWeapons("mainhand");
+        view.loadWeapons("twohand");
         view.updateSidebar();
 
         view.body.on('click', '.wh-tooltip, .tablesorter-default a', function (e) {
@@ -314,6 +314,7 @@ SIM.UI = {
             },
             error => {
                 btn.css('background', '');
+                view.sidebar.find('#tps').text('ERROR');
                 view.sidebar.find('#dps').text('ERROR');
                 view.sidebar.find('#dpserr').text('');
                 view.endLoading();
@@ -412,20 +413,20 @@ SIM.UI = {
         var sim = new SimulationWorker(
             (report) => {
                 // Finished
-                let span = $('<span></span>');
+                //let span = $('<span></span>');
                 let spantps = $('<span></span>');
                 let calc = report.totaldmg / report.totalduration;
-                let calctps = report.totaldmg / report.totalduration;
+                let calctps = report.totalthreat / report.totalduration;
                 let diff = calc - base;
-                let difftps = calc - base;
-                span.text(diff.toFixed(2));
+                let difftps = calctps - basetps;
+                //span.text(difftps.toFixed(2));
                 spantps.text(difftps.toFixed(2));
-                if (diff >= 0) span.addClass('p');
-                else span.addClass('n');
+                //if (diff >= 0) span.addClass('p');
+                //else span.addClass('n');
                 if (difftps >= 0) spantps.addClass('p');
                 else spantps.addClass('n');
-                dps.text(calc.toFixed(2)).append(span);
-                tps.text(calc.toFixed(2)).append(span);
+                //dps.text(calc.toFixed(2)).append(span);
+                tps.text(calctps.toFixed(2)).append(spantps);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -441,13 +442,13 @@ SIM.UI = {
                 if (isench) {
                     for(let i of enchant[type])
                         if (i.id == item) {
-                            i.dps = calc.toFixed(2);
+                            i.tps = calctps.toFixed(2);
                         }
                 }
                 else {
                     for(let i of gear[type])
                         if (i.id == item) {
-                            i.dps = calc.toFixed(2);
+                            i.tps = calctps.toFixed(2);
                         }
                 }
             },
@@ -594,21 +595,25 @@ SIM.UI = {
         var view = this;
         var player = new Player();
 
+        // Calculate current hit
+        let fullhit = (player.stats.hit + player.stats.hitrating / 15.77).toFixed(2);
+
         let space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         if (!player.mh) return;
-        view.sidebar.find('#stam').text(player.stats.stam);
-        view.sidebar.find('#armor').html((player.stats.armor || 0));
+        view.sidebar.find('#sta').text(player.stats.sta);
+        view.sidebar.find('#armor').html((player.stats.ac.toFixed(2) || 0));
+        view.sidebar.find('#def').html(((player.level * 5 + player.stats.def) || 0));
+        view.sidebar.find('#res').html((player.stats.res || 0));
         view.sidebar.find('#str').text(player.stats.str);
         view.sidebar.find('#agi').text(player.stats.agi);
         view.sidebar.find('#ap').text(player.stats.ap);
-        view.sidebar.find('#skill').html(player.stats['skill_' + player.mh.type]);
-        view.sidebar.find('#hit').html((player.stats.hit || 0) + '%');
+        view.sidebar.find('#hit').html((fullhit || 0) + '%');
         let mhcrit = player.crit + player.mh.crit;
         view.sidebar.find('#crit').html(mhcrit.toFixed(2));
-        let mhcap = 100 - player.mh.dwmiss - player.mh.dodge - player.mh.glanceChance;
+        let mhcap = 100 - player.mh.dodge - player.mh.glanceChance;
         view.sidebar.find('#critcap').html(mhcap.toFixed(2));
-        let mhdmg = player.stats.dmgmod * player.mh.modifier * 100;
-        view.sidebar.find('#dmgmod').html(mhdmg.toFixed(2));
+        let dmgmod = player.stats.dmgmod * 100;
+        view.sidebar.find('#dmgmod').html(dmgmod.toFixed(2));
         view.sidebar.find('#haste').html((player.stats.haste * 100).toFixed(2) + '%');
         view.sidebar.find('#race').text(localStorage.race);
         view.sidebar.find('#sets').empty();
@@ -633,7 +638,6 @@ SIM.UI = {
         localStorage.simulations = view.fight.find('input[name="simulations"]').val();
         localStorage.timesecsmin = view.fight.find('input[name="timesecsmin"]').val();
         localStorage.timesecsmax = view.fight.find('input[name="timesecsmax"]').val();
-        localStorage.executeperc = view.fight.find('input[name="executeperc"]').val();
         localStorage.startrage = view.fight.find('input[name="startrage"]').val();
         localStorage.targetlevel = view.fight.find('input[name="targetlevel"]').val();
         localStorage.targetarmor = view.fight.find('input[name="targetarmor"]').val();
@@ -642,7 +646,13 @@ SIM.UI = {
         localStorage.adjacentlevel = view.fight.find('input[name="adjacentlevel"]').val();
         localStorage.weaponrng = view.fight.find('select[name="weaponrng"]').val();
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
-        localStorage.batching = view.fight.find('select[name="batching"]').val();
+        localStorage.activetank = view.fight.find('select[name="activetank"]').val();
+        localStorage.incswingtimer = view.fight.find('input[name="incswingtimer"]').val();
+        localStorage.incswingdamage = view.fight.find('input[name="incswingdamage"]').val();
+
+        // Console.log('swing timer, dmg\n\n\ntest');
+        // Console.log(view.fight.find('input[name="incswingtimer"]').val());
+        // Console.log(view.fight.find('input[name="incswingdamage"]').val());
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {};
         view.buffs.find('.active').each(function () { _buffs.push($(this).attr('data-id')); });
@@ -669,14 +679,14 @@ SIM.UI = {
         for (let type in gear) {
             _gear[type] = [];
             for (let item of gear[type]) {
-                _gear[type].push({id:item.id,selected:item.selected,dps:item.dps,hidden:item.hidden});
+                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
             }
         }
 
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,dps:item.dps,hidden:item.hidden});
+                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
             }
         }
 
@@ -748,13 +758,11 @@ SIM.UI = {
                                 <th>AP</th>
                                 <th>Crit</th>
                                 <th>Hit</th>
-                                <th>Min</th>
-                                <th>Max</th>
-                                <th>Speed</th>
-                                <th>Skill</th>
-                                <th>Type</th>
-                                <th>PPM</th>
-                                <th>DPS</th>
+                                <th>Exp</th>
+                                <th>Def</th>
+                                <th>Armor</th>
+                                <th>Res</th>
+                                <th>TPS</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -773,8 +781,6 @@ SIM.UI = {
             }
 
             let source = item.source.toLowerCase(), phase = item.phase;
-            if (item.source == 'Lethon' || item.source == 'Emeriss' || item.source == 'Kazzak' || item.source == 'Azuregos' || item.source == 'Ysondre' || item.source == 'Taerar' || item.source == 'Green Dragons')
-                source = 'worldboss';
 
             if (phase && !view.filter.find('.phases [data-id="' + phase + '"]').hasClass('active'))
                 continue;
@@ -795,15 +801,13 @@ SIM.UI = {
                         <td>${item.str || ''}</td>
                         <td>${item.agi || ''}</td>
                         <td>${item.ap || ''}</td>
-                        <td>${item.crit || ''}</td>
-                        <td>${item.hit || ''}</td>
-                        <td>${item.minhit || ''}</td>
-                        <td>${item.maxhit || ''}</td>
-                        <td>${item.speed || ''}</td>
-                        <td>${item.skill || ''}</td>
-                        <td>${item.type || ''}</td>
-                        <td class="ppm"><p contenteditable="true">${item.ppm || ''}</p></td>
-                        <td>${item.dps || ''}</td>
+                        <td>${item.critrating || ''}</td>
+                        <td>${item.hitrating || ''}</td>
+                        <td>${item.exp || ''}</td>
+                        <td>${item.def || ''}</td>
+                        <td>${item.armor || ''}</td>
+                        <td>${item.res || ''}</td>
+                        <td>${item.TPS || ''}</td>
                     </tr>`;
         }
 
@@ -845,11 +849,13 @@ SIM.UI = {
                                 <th>Str</th>
                                 <th>Agi</th>
                                 <th>AP</th>
-                                <th>Hit</th>
                                 <th>Crit</th>
-                                <th>Skill</th>
-                                <th>Type</th>
-                                <th>DPS</th>
+                                <th>Hit</th>
+                                <th>Exp</th>
+                                <th>Def</th>
+                                <th>Armor</th>
+                                <th>Res</th>
+                                <th>TPS</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -885,11 +891,13 @@ SIM.UI = {
                         <td>${item.str || ''}</td>
                         <td>${item.agi || ''}</td>
                         <td>${item.ap || ''}</td>
-                        <td>${item.hit || ''}</td>
-                        <td>${item.crit || ''}</td>
-                        <td>${item.skill || ''}</td>
-                        <td>${item.type || ''}</td>
-                        <td>${item.dps || ''}</td>
+                        <td>${item.critrating || ''}</td>
+                        <td>${item.hitrating || ''}</td>
+                        <td>${item.exp || ''}</td>
+                        <td>${item.def || ''}</td>
+                        <td>${item.ac || ''}</td>
+                        <td>${item.res || ''}</td>
+                        <td>${item.tps || ''}</td>
                     </tr>`;
         }
 
@@ -899,7 +907,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[11, 1],[1, 0]] : [[10, 1],[0, 0]],
+            sortList: editmode ? [[14, 1],[1, 0]] : [[13, 1],[0, 0]],
             textSorter : {
                 10 : function(a, b, direction, column, table) {
                     var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
@@ -932,7 +940,6 @@ SIM.UI = {
                                 <th>AP</th>
                                 <th>Hit</th>
                                 <th>Crit</th>
-                                <th>Skill</th>
                                 <th>DPS</th>
                             </tr>
                         </thead>
@@ -947,8 +954,7 @@ SIM.UI = {
                         <td>${item.agi || ''}</td>
                         <td>${item.ap || ''}</td>
                         <td>${item.hit || ''}</td>
-                        <td>${item.crit || ''}</td>
-                        <td>${item.skill_1 || ''}</td>
+                        <td>${item.critrating || ''}</td>
                         <td>${item.dps || ''}</td>
                     </tr>`;
         }
@@ -980,8 +986,7 @@ SIM.UI = {
                                 <th>Haste</th>
                                 <th>Crit</th>
                                 <th>Damage</th>
-                                <th>PPM</th>
-                                <th>DPS</th>
+                                <th>TPS</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1000,10 +1005,9 @@ SIM.UI = {
                         <td>${item.agi || ''}</td>
                         <td>${item.ap || ''}</td>
                         <td>${item.haste || ''}</td>
-                        <td>${item.crit || ''}</td>
-                        <td>${item.dmg || ''}</td>
-                        <td>${item.ppm || ''}</td>
-                        <td>${item.dps || ''}</td>
+                        <td>${item.critrating || ''}</td>
+                        <td>${item.bonusdmg || ''}</td>
+                        <td>${item.tps || ''}</td>
                     </tr>`;
         }
 

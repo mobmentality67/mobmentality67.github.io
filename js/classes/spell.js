@@ -54,7 +54,7 @@ class Mangle extends Spell {
         let dmg;
         if (this.player.weaponrng) dmg = rng(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
         else dmg = avg(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
-        return (dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + 155;
+        return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + 155) * this.player.stats.dmgmod;
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && this.player.rage >= this.threshold;
@@ -77,7 +77,7 @@ class Swipe extends Spell {
     }
 
     dmg() {
-        return (this.player.stats.ap * 0.07) + 84;
+        return ((this.player.stats.ap * 0.07) + 84) * this.player.stats.dmgmod;
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold &&
@@ -96,7 +96,7 @@ class Lacerate extends Spell {
         this.maxdelay = parseInt(spells[2].reaction);
     }
     dmg() {
-        return 31 + this.player.stats.ap / 100;
+        return (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod;
     }
     use() {
         this.player.rage -= this.cost;
@@ -169,6 +169,7 @@ class Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.player.updateAuras();
+        this.player.updateIncAttackTable();
         if (log) this.player.log(`${this.name} applied`);
     }
     step() {
@@ -177,6 +178,7 @@ class Aura {
             this.timer = 0;
             this.firstuse = false;
             this.player.updateAuras();
+            this.player.updateIncAttackTable();
             if (log) this.player.log(`${this.name} removed`);
         }
     }

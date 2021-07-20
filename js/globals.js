@@ -4,7 +4,7 @@ function getGlobalsDelta() {
         _gear[type] = gear[type].map((item) => {
             return {
                 id: item.id,
-                dps: item.dps,
+                tps: item.tps,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -15,7 +15,7 @@ function getGlobalsDelta() {
         _enchant[type] = enchant[type].map((item) => {
             return {
                 id: item.id,
-                dps: item.dps,
+                tps: item.tps,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -59,7 +59,7 @@ function updateGlobals(params) {
             if (gear[type])
                 for (let j of gear[type])
                     if (i.id == j.id) {
-                        j.dps = i.dps;
+                        j.tps = i.tps;
                         j.selected = i.selected;
                         j.hidden = i.hidden;
                     }
@@ -68,7 +68,7 @@ function updateGlobals(params) {
         for (let i of params.enchant[type])
             for (let j of enchant[type])
                 if (i.id == j.id) {
-                    j.dps = i.dps;
+                    j.tps = i.tps;
                     j.selected = i.selected;
                     j.hidden = i.hidden;
                 }

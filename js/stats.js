@@ -203,7 +203,7 @@ SIM.STATS = {
                 maintainAspectRatio: false,
                 title: {
                     display: false,
-                    text: 'DPS',
+                    text: 'TPS',
                     fontColor: '#ccc',
                     position: 'bottom'
                 },
@@ -220,7 +220,7 @@ SIM.STATS = {
                 },
                 tooltips: {
                     callbacks: {
-                        label: (item, obj) => ` ${obj.labels[item.index]}: ${obj.datasets[0].data[item.index]} DPS`,
+                        label: (item, obj) => ` ${obj.labels[item.index]}: ${obj.datasets[0].data[item.index]} TPS`,
                     }
                 },
             }

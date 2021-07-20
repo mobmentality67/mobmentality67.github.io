@@ -16,7 +16,7 @@ var buffs = [
       str: 18,
       agi: 18,
       int: 18,
-      stam: 18
+      sta: 18
    },
    {
       id: 20217,
@@ -65,7 +65,7 @@ var buffs = [
       name: "Elixir of Major Agility",
       iconname: "major_agility",
       group: "elixir",
-      agi: 25,
+      agi: 35,
       critrating: 20
    },
    {

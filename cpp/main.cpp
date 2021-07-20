@@ -74,6 +74,9 @@ int main()
     cfg->sim.executeperc = 20;
     cfg->sim.startrage = 0;
     cfg->sim.iterations = 1000;
+    cfg->sim.activetank = 1;
+    cfg->sim.incbossdamage = 17000;
+    cfg->sim.incswingtimer = 2.0;
     cfg->player.testId = -1;
     cfg->player.testType = -1;
     cfg->player.enchType = -1;

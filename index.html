@@ -67,7 +67,15 @@ profiles
       <ul>
         <li>
           <label>Stamina</label>
-          <span id="stam"></span>
+          <span id="sta"></span>
+        </li>
+        <li>
+          <label>Defense</label>
+          <span id="def"></span>
+        </li>
+        <li>
+          <label>Resilience</label>
+          <span id="res"></span>
         </li>
         <li>
           <label>Armor</label>
@@ -88,10 +96,6 @@ profiles
         <li>
           <label>Hit</label>
           <span id="hit"></span>
-        </li>
-        <li>
-          <label>Skill</label>
-          <span id="skill"></span>
         </li>
         <li>
           <label>Crit</label>
@@ -204,10 +208,19 @@ profiles
             <input type="text" name="spelldamage" value="0" data-numberonly="true">
           </li>
           <li>
-            <label>Spell Batching</label>
-            <select name="batching" dir="rtl">
-              <option value="10 selected">10</option>
+            <label>Active Tank </label>
+            <select dir="rtl" name="activetank" >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
+          </li>
+          <li>
+            <label>Boss Damage (If Active Tank)</label>
+              <input type="text" name="incswingdamage" value="17000" data-numberonly="true">
+          </li>
+          <li>
+            <label>Boss Swing Timer (If Active Tank)</label>
+              <input type="text" name="incswingtimer" value="2.0" data-numberonly="true">
           </li>
         </ul>
       </article>
@@ -230,19 +243,18 @@ profiles
           <li data-id="quest">Quest</li>
           <li data-id="crafting">Crafting</li>
           <li data-id="dungeon">Dungeon</li>
-          <li data-id="onyxia">Onyxia</li>
-          <li data-id="mc">Molten Core</li>
-          <li data-id="bwl">Blackwing Lair</li>
-          <li data-id="zg">Zul'Gurub</li>
-          <li data-id="aq20">AQ20</li>
-          <li data-id="aq40">AQ40</li>
-          <li data-id="naxx">Naxxramas</li>
+          <li data-id="heroic">Heroic</li>
+          <li data-id="reputation">Crafting</li>
+          <li data-id="badges">Badges</li>
+          <li data-id="karazhan">Karazhan</li>
+          <li data-id="gruuls">Gruuls</li>
+          <li data-id="magtheridon">Magtheridon</li>
           <li data-id="worldboss">World Boss</li>
           <li data-id="pvp">PvP</li>
           <li data-id="other">Other</li>
         </ul>
         <ul class="phases">
-          <li data-id="1" data-sources="onyxia,mc">P1</li>
+          <li data-id="1" data-sources="quest, crafting, dungeon, heroic, reputation, badges, karazhan, gruuls, magtheridon, worldboss, pvp, other">P1</li>
         </ul>
       </article>
 
@@ -280,43 +292,11 @@ profiles
   <section class="main">
     <nav>
       <ul>
-        <li data-type="mainhand" class="active">
-          <p>Main Hand</p>
-          <ul class="filter">
-            <li class="active"><p>All</p></li>
-            <li><p>Axe</p></li>
-            <li><p>Dagger</p></li>
-            <li><p>Fist</p></li>
-            <li><p>Mace</p></li>
-            <li><p>Sword</p></li>
-            <li><p>Mace & Sword</p></li>
-            <li><p>Axe, Dagger & Sword</p></li>
-          </ul>
-        </li>
-        <li data-type="offhand">
-          <p>Off Hand</p>
-          <ul class="filter">
-            <li class="active"><p>All</p></li>
-            <li><p>Axe</p></li>
-            <li><p>Dagger</p></li>
-            <li><p>Fist</p></li>
-            <li><p>Mace</p></li>
-            <li><p>Sword</p></li>
-            <li><p>Mace & Sword</p></li>
-            <li><p>Axe, Dagger & Sword</p></li>
-          </ul>
-        </li>
-        <li data-type="twohand">
+         <li data-type="twohand" class="active">
           <p>Two Hand</p>
-          <ul class="filter">
-            <li class="active"><p>All</p></li>
-            <li><p>Axe</p></li>
-            <li><p>Mace</p></li>
-            <li><p>Polearm</p></li>
-            <li><p>Sword</p></li>
-            <li><p>Mace & Sword</p></li>
-          </ul>
         </li>
+        <li data-type="mainhand"><p>Main Hand</p></li>
+        <li data-type="offhand"><p>Off Hand</p> </li>
         <li data-type="head"><p>Head</p></li>
         <li data-type="neck"><p>Neck</p></li>
         <li data-type="shoulder"><p>Shoulder</p></li>

@@ -1,9 +1,11 @@
 var RESULT = {
     HIT: 0,
-    MISS: 1,
-    DODGE: 2,
-    CRIT: 3,
-    GLANCE: 4
+    PARRY: 1,
+    MISS: 2,
+    DODGE: 3,
+    CRIT: 4,
+    GLANCE: 5,
+    CRUSH: 6
 }
 
 var batching = 0;
@@ -162,8 +164,10 @@ class Simulation {
             executeperc: parseInt($('input[name="executeperc"]').val()),
             startrage: parseInt($('input[name="startrage"]').val()),
             iterations: parseInt($('input[name="simulations"]').val()),
+            activetank: ($('input[name="activetank"]').val()) == "Yes",
+            incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
+            incswingtimer: parseFloat($('input[name="simulations"]').val()),
             priorityap: parseInt(spells[1].priorityap),
-            batching: parseInt($('select[name="batching"]').val()),
         };
     }
     constructor(player, callback_finished, callback_update, config) {
@@ -174,7 +178,8 @@ class Simulation {
         this.executeperc = config.executeperc;
         this.startrage = config.startrage;
         this.iterations = config.iterations;
-        batching = config.batching;
+        this.activetank = config.activetank;
+        this.incswingdamage = config.incswingdamage;
         this.idmg = 0;
         this.ithreat = 0;
         this.totaldmg = 0;
@@ -235,7 +240,6 @@ class Simulation {
         player.reset(this.startrage);
         this.maxsteps = rng(this.timesecsmin * 1000, this.timesecsmax * 1000);
         this.duration = this.maxsteps / 1000;
-        this.executestep = this.maxsteps - parseInt(this.maxsteps * (this.executeperc / 100));
         let delayedspell, delayedheroic;
         let spellcheck = false;
         let next = 0;
@@ -257,13 +261,19 @@ class Simulation {
 
         while (step < this.maxsteps) {
 
-            // Attacks
+            // Attack boss
             if (player.mh.timer <= 0) {
                 damage_threat = player.attackmh(player.mh, damage_threat);
                 damageDone = damage_threat[0];
                 threatDone = damage_threat[1];
                 this.idmg += damageDone;
                 this.ithreat += threatDone;
+                spellcheck = true;
+            }
+
+            // Incoming attack
+            if (player.activetank && player.incswingtimer <= 0) {
+                player.takeattack();
                 spellcheck = true;
             }
 
@@ -335,6 +345,7 @@ class Simulation {
             if (player.spelldelay && (delayedspell.maxdelay - player.spelldelay) < next) next = delayedspell.maxdelay - player.spelldelay + 1;
             if (player.heroicdelay && (delayedheroic.maxdelay - player.heroicdelay) < next) next = delayedheroic.maxdelay - player.heroicdelay + 1;
             if (player.timer && player.timer < next) next = player.timer;
+            if (!player.incswingtimer && player.incswingtimer < next) next = player.incswingtimer;
             if (player.itemtimer && player.itemtimer < next) next = player.itemtimer;
 
             if (player.spells.mangle && player.spells.mangle.timer && player.spells.mangle.timer < next) next = player.spells.mangle.timer;
@@ -345,6 +356,7 @@ class Simulation {
             step += next;
             player.mh.step(next);
             if (player.timer && player.steptimer(next) && !player.spelldelay) spellcheck = true;
+            if (player.incswingtimer && stepincswingtimer(next, player, log)) spellcheck = true;
             if (player.itemtimer && player.stepitemtimer(next) && !player.spelldelay) spellcheck = true;
             if (player.spelldelay) player.spelldelay += next;
             if (player.heroicdelay) player.heroicdelay += next;
@@ -357,11 +369,11 @@ class Simulation {
         // Fight done
         player.endauras();
 
-        if (player.auras.laceratedot) {
+        if (player.auras.laceratedot && player.spells.lacerate) {
             this.idmg += player.auras.laceratedot.idmg;
-            this.ithreat += player.auras.laceratedot.idmg * 0.50;
-            player.spells.lacerate.totalthreat += player.auras.laceratedot.idmg * 0.50;
-
+            let threat = player.dealthreat(player.auras.laceratedot.idmg, RESULT.HIT, player.auras.laceratedot);
+            this.ithreat += threat;
+            player.spells.lacerate.totalthreat += threat;
         }
         this.totaldmg += this.idmg;
         this.totalthreat += this.ithreat;
@@ -410,6 +422,17 @@ class Simulation {
                 endtime: this.endtime,
             });
         }
+    }
+}
+
+function stepincswingtimer(a, player, log) {
+    if (player.incswingtimer <= a) {
+        player.incswingtimer = 0;
+        return true;
+    }
+    else {
+        player.incswingtimer -= a;
+        return false;
     }
 }
 

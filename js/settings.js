@@ -150,6 +150,19 @@ SIM.SETTINGS = {
             SIM.UI.updateSidebar();
         });
 
+        view.fight.on('change', 'select[name="activetank"]', function (e) {
+            SIM.UI.updateSession();
+            SIM.UI.updateSidebar();
+        });
+
+        view.fight.on('change', 'select[name="incswingdamage"]', function (e) {
+            SIM.UI.updateSession();
+            SIM.UI.updateSidebar();
+        });
+        view.fight.on('change', 'select[name="incswingtimer"]', function (e) {
+            SIM.UI.updateSession();
+            SIM.UI.updateSidebar();
+        });
     },
 
     buildSpells: function () {

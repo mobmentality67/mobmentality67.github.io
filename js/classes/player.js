@@ -8,10 +8,13 @@ class Player {
                 level: parseInt($('input[name="targetlevel"]').val()),
                 basearmor: parseInt($('input[name="targetarmor"]').val()),
                 armor: parseInt($('input[name="targetarmor"]').val()),
-                defense: parseInt($('input[name="targetlevel"]').val()) * 5,
+                def: parseInt($('input[name="targetlevel"]').val()) * 5,
                 mitigation: 1 - 15 * (parseInt($('input[name="targetresistance"]').val()) / 6000),
                 binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
             },
+            activetank: $('select[name="activetank"]').val() == "Yes",
+            incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
+            incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
         };
     }
     constructor(testItem, testType, enchtype, config) {
@@ -28,23 +31,31 @@ class Player {
         this.weaponrng = config.weaponrng;
         this.spelldamage = config.spelldamage;
         this.target = config.target;
+        this.activetank = config.activetank;
+        this.incswingdamage = config.incswingdamage;
+        this.incswingtimer = config.incswingtimer * 1000;
         this.base = {
-            stam: 0,
-            armor: 0,
+            sta: 0,
+            ac: 0,
+            def: 0,
+            res: 0,
             ap: 0,
             agi: 0,
             str: 0,
+            incdodge: 0,
+            incdodgerating: 0,
+            incswingtimer: config.incswingtimer * 1000,
+            incmiss: 0,
             hit: 0,
+            hitrating: 0,
             crit: 0,
             critrating: 0,
             spellcrit: 0,
-            skill_0: this.level * 5,
-            skill_1: this.level * 5,
-            skill_2: this.level * 5,
-            skill_3: this.level * 5,
-            skill_4: this.level * 5,
-            skill_5: this.level * 5,
+            exp: 0,
+            skill: this.level * 5,
             haste: 1,
+            stammod: 1,
+            armormod: 5.0,
             strmod: 1,
             agimod: 1,
             dmgmod: 1,
@@ -108,10 +119,6 @@ class Player {
                 this.base.ap += race.ap;
                 this.base.str += race.str;
                 this.base.agi += race.agi;
-                this.base.skill_0 += race.skill_0;
-                this.base.skill_1 += race.skill_1;
-                this.base.skill_2 += race.skill_2;
-                this.base.skill_3 += race.skill_3;
             }
         }
     }
@@ -130,17 +137,6 @@ class Player {
                     (this.testItemType != type && item.selected)) {
                     for (let prop in this.base)
                         this.base[prop] += item[prop] || 0;
-                    if (item.skill && item.skill > 0) {
-                        if (item.type == 'Varied') {
-                            this.base['skill_1'] += item.skill;
-                            this.base['skill_2'] += item.skill;
-                            this.base['skill_3'] += item.skill;
-                        }
-                        else {
-                            let sk = WEAPONTYPE[item.type.toUpperCase()];
-                            this.base['skill_' + sk] += item.skill;
-                        }
-                    }
 
                     if (type == "mainhand" || type == "offhand" || type == "twohand")
                         this.addWeapon(item, type);
@@ -158,28 +154,6 @@ class Player {
                     }
 
                     this.items.push(item.id);
-                }
-            }
-        }
-
-        if (this.mh && this.mh.twohand) {
-            for (let type in gear) {
-                for (let item of gear[type]) {
-                    if (type != "hands" && type != "head") continue;
-                    if ((this.testItemType == type && this.testItem == item.id) ||
-                        (this.testItemType != type && item.selected)) {
-                        if (item.skill && item.skill > 0) {
-                            if (item.type == 'Varied') {
-                                this.base['skill_1'] -= item.skill;
-                                this.base['skill_2'] -= item.skill;
-                                this.base['skill_3'] -= item.skill;
-                            }
-                            else {
-                                let sk = WEAPONTYPE[item.type.toUpperCase()];
-                                this.base['skill_' + sk] -= item.skill;
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -214,7 +188,7 @@ class Player {
 
                     for (let prop in this.base) {
                         if (prop == 'haste')
-                            this.base.haste *= (1 + item.haste / 100) || 1;
+                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
                         else
                             this.base[prop] += item[prop] || 0;
                     }
@@ -231,7 +205,7 @@ class Player {
 
                     for (let prop in this.base) {
                         if (prop == 'haste')
-                            this.base.haste *= (1 + item.haste / 100) || 1;
+                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
                         else
                             this.base[prop] += item[prop] || 0;
                     }
@@ -275,10 +249,12 @@ class Player {
                     apbonus = shoutap - buff.ap;
                 }
 
-                this.base.stam += buff.stam || 0;
-                this.base.armor += buff.armor || 0;
+                this.base.sta += buff.sta || 0;
+                this.base.ac += buff.ac || 0;
                 this.base.ap += (buff.ap || 0) + apbonus;
                 this.base.agi += buff.agi || 0;
+                this.base.res += buff.res || 0;
+                this.base.def += buff.def || 0;
                 this.base.str += buff.str || 0;
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
@@ -330,16 +306,35 @@ class Player {
         this.updateArmorReduction();
         this.mh.glanceChance = this.getGlanceChance(this.mh);
         this.mh.miss = this.getMissChance(this.mh);
-        this.mh.dwmiss = this.mh.miss;
         this.mh.dodge = this.getDodgeChance(this.mh);
+        this.mh.parry = this.getParryChance(this.mh);
         this.stats.stammod += this.talents.survivalofthefittest * .01;
-        this.stats.armormod *= this.talents.thickhide * .01;
+        if (this.race.name == 'Tauren') this.stats.stammod += .05;
+        this.stats.armormod *= this.talents.thickhidemod;
+        this.updateArmor();
         this.stats.dmgmod += this.talents.naturalistmod;
         this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
         this.stats.apmod += this.talents.heartofthewild * .02;
         this.stats.strmod += this.talents.survivalofthefittest * .01;
         this.stats.agimod += this.talents.survivalofthefittest * .01;    
+        this.updateIncAttackTable();
     }
+    updateIncAttackTable() {
+        // Incoming attack table constant setup
+        // Agi dodge + dodge rating + def rating
+        this.stats.incdodge = 3.19 + this.stats.agi / 14.7059 + this.stats.incdodgerating / 18.923 + this.stats.def * .04 / 2.3654; 
+        if (this.race.name == 'Night Elf') this.stats.incdodge += 1;
+        // 4.4 base miss + miss from defense rating
+        this.stats.incmiss = 4.4 + this.stats.def * .04 / 2.3654;
+        this.stats.inccrit = Math.max(0, 5.6 - this.stats.def * .04 / 2.3654 - this.stats.res * 0.0254);
+        this.stats.inccrush = 15;
+
+        if (log) {
+            this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
+                +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
+        }
+    }
+
     updateAuras() {
         for (let prop in this.base)
             this.stats[prop] = this.base[prop];
@@ -353,12 +348,10 @@ class Player {
         }
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
-        this.stats.stam = ~~(this.stats.stam * this.stats.stammod);
+        this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
         this.stats.ap += this.stats.str * 2;
         this.stats.crit += this.stats.agi / 25;
-        this.stats.armor += this.stats.agi * 2;
         this.crit = this.getCritChance();
-
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
     }
@@ -393,17 +386,17 @@ class Player {
     }
 
     updateArmor() {
-        this.stats.armor = this.base.armor;
+        this.stats.ac = this.base.armor;
 
         /* Initial armor setup with multiplier */
         if (this.stats.armormod != 1)
-            this.stats.armor += ~~((this.base.armor) * (this.stats.armormod));
+            this.stats.ac =(this.base.ac) * (this.stats.armormod);
 
         /* Calculate agi/buffs armor after armor mod */
-        this.stats.armor += this.stats.agi * 2;
+        this.stats.ac += this.stats.agi * 2;
         for (let name in this.auras) {
-            if (this.auras[name].timer && this.auras[name].stats.armor)
-                this.stats.armor += this.auras[name].stats.armor;
+            if (this.auras[name].timer && this.auras[name].stats.ac)
+                this.stats.ac += this.auras[name].stats.ac;
         }
     }
 
@@ -443,29 +436,22 @@ class Player {
         this.stats.dmgmod *= this.talents.naturalistmod;
     }
     getGlanceReduction(weapon) {
-        let diff = this.target.defense - this.stats['skill_' + weapon.type];
+        let diff = this.target.defense - this.stats.skill;
         let low = Math.min(1.3 - 0.05 * diff, 0.91);
         let high = Math.min(1.2 - 0.03 * diff, 0.99);
         if (this.weaponrng) return Math.random() * (high - low) + low;
         else return avg(low, high);
     }
     getGlanceChance(weapon) {
-        return 10 + (this.target.defense - Math.min(this.level * 5, this.stats['skill_' + weapon.type])) * 2;
+        return 10 + (this.target.defense - Math.min(this.level * 5, this.stats.skill)) * 2;
     }
     getMissChance(weapon) {
-        let diff = this.target.defense - this.stats['skill_' + weapon.type];
+        let diff = this.target.defense - this.stats.skill;
         let miss = 5 + (diff > 10 ? diff * 0.2 : diff * 0.1);
-        miss -= (diff > 10 ? this.stats.hit - 1 : this.stats.hit);
-        return miss;
+        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating / 15.77 + 1, 0);
+        return missChance;
     }
-    getDWMissChance(weapon) {
-        let diff = this.target.defense - this.stats['skill_' + weapon.type];
-        let miss = 5 + (diff > 10 ? diff * 0.2 : diff * 0.1);
-        miss = miss * 0.8 + 20; //v1
-        //miss += 19; // v2
-        miss -= (diff > 10 ? this.stats.hit - 1 : this.stats.hit);
-        return miss;
-    }
+
     getCritChance() {
         let crit = this.stats.crit + (this.stats.critrating / 22.1) + (this.talents.sharpenedclawsmod || 0) + 
         this.talents.abilitiescrit + // LOTP
@@ -474,8 +460,18 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return 5 + (this.target.defense - this.stats['skill_' + weapon.type]) * 0.1;
+        return Math.min(5 + (this.target.defense - this.stats.skill) * 0.1 - this.stats.exp / 15.77, 0);
     }
+
+    getParryChance(weapon) {
+        if (!this.activetank) {
+            return 0;
+        }
+        else {
+            return Math.max(14 - this.stats.exp / 15.77, 0);
+        }
+    }
+
     getArmorReduction() {
         let r = this.target.armor / (this.target.armor + 400 + 85 * ((5.5 * this.level) - 265.5))
         return r > 0.75 ? 0.75 : r;
@@ -484,7 +480,7 @@ class Player {
         let rageAdded;
         let factor;
         if (spell) {
-            if (result == RESULT.MISS || result == RESULT.DODGE) {
+            if (result == RESULT.MISS || result == RESULT.DODGE || result == RESULT.PARRY) {
                 rageAdded = spell.refund ? spell.cost * 0.8 : 0;
                 this.rage += rageAdded;
             }
@@ -515,6 +511,15 @@ class Player {
             else {
                 this.log(`Swung for ${dmg}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
             }
+        }
+    }
+    addDamageTakenRage(dmg) {
+        let rageAdded = dmg / 274.7 * 2.5; 
+        this.rage += rageAdded;
+        if (this.rage > 100) this.rage = 100;
+        if (log)  
+        {
+            this.log(`Received swing for ${dmg.toFixed(2)}, added ${rageAdded.toFixed(2)} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
         }
     }
     steptimer(a) {
@@ -565,8 +570,10 @@ class Player {
     rollweapon(weapon) {
         let tmp = 0;
         let roll = rng10k();
-        tmp += Math.max(this.nextswinghs ? weapon.miss : weapon.dwmiss, 0) * 100;
+        tmp += Math.max(weapon.miss, 0) * 100;
         if (roll < tmp) return RESULT.MISS;
+        tmp += weapon.parry * 100;
+        if (roll < tmp) return RESULT.PARRY;
         tmp += weapon.dodge * 100;
         if (roll < tmp) return RESULT.DODGE;
         tmp += weapon.glanceChance * 100;
@@ -575,11 +582,26 @@ class Player {
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
+    rollattacktaken() {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += (4.4 + this.stats.def * 0.04) * 100;
+        if (roll < tmp) return RESULT.MISS;
+        tmp += (3.19 + this.stats.incdodge) * 100
+        if (roll < tmp) return RESULT.DODGE;
+        tmp += 15.0 * 100;
+        if (roll < tmp) return RESULT.CRUSHING;
+        tmp += (Math.max(5.6 - this.talents.survivalofthefittest - this.stats.res * 0.02564 - this.stats.def * 0.04, 0)) * 100;
+        if (roll < tmp) return RESULT.CRIT;
+        return RESULT.HIT;
+    }
     rollspell(spell) {
         let tmp = 0;
         let roll = rng10k();
         tmp += Math.max(this.mh.miss, 0) * 100;
         if (roll < tmp) return RESULT.MISS;
+        tmp += this.mh.parry * 100;
+        if (roll < tmp) return RESULT.PARRY;
         if (spell.canDodge) {
             tmp += this.mh.dodge * 100;
             if (roll < tmp) return RESULT.DODGE;
@@ -651,13 +673,35 @@ class Player {
         let threat = 0;
         if (spell) {
             threat = this.dealthreat(damage, result, spell);
-            spell.totalthreat += threat;
         }
         else {
             threat = damage * this.stats.threatmod;
-            weapon.totalthreat += threat;
         }
         return threat;
+    }
+
+    takeattack() {
+        this.incswingtimer = this.base.incswingtimer;
+        let result = this.rollattacktaken();
+        let dmg = this.incswingdamage;
+        if (result == RESULT.HIT) {
+            dmg *= 1.0;
+        }
+        else if (result == RESULT.CRIT) {
+            dmg *= 2.0;
+        }
+        else if (result == RESULT.CRUSH) {
+            dmg *= 1.5;
+        }
+        else {
+            dmg = 0.0;
+            if (log) {
+                this.log("Boss swing missed");
+            }
+            return;
+        }
+        dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
+        this.addDamageTakenRage(dmg);
     }
 
     cast(spell, damage_threat_arr) {
@@ -668,7 +712,7 @@ class Player {
             return 0; 
         }
         let procdmg = 0;
-        let dmg = spell.dmg() * this.mh.modifier;
+        let dmg = spell.dmg();
         let result = this.rollspell(spell);
         procdmg = this.procattack(spell, this.mh, result);
 
@@ -737,6 +781,9 @@ class Player {
             }
             else if (spell.name == 'Maul') {
                 threat = (dmg + 344) * this.stats.threatmod;
+            }
+            else if (spell.name == 'Lacerate DOT') {
+                threat = dmg * 0.5 * this.stats.threatmod;
             }
             else {
                 this.log(`Unknown spell for threat -- =  + ${spell.name}`);
@@ -827,7 +874,7 @@ class Player {
         roll = rng10k();
         let crit = this.crit + this.mh.crit;
         if (roll < (crit * 100)) dmg *= 2;
-        return dmg * this.stats.dmgmod * this.mh.modifier;
+        return dmg * this.stats.dmgmod;
     }
     serializeStats() {
         return {

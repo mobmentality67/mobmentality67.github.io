@@ -98,6 +98,9 @@ struct Config
         int startrage;
         int iterations;
         int batching;
+        int activeTank;
+        double incswingdamage;
+        double incswingtimer;
     } sim;
 };
 #pragma pack( pop )
