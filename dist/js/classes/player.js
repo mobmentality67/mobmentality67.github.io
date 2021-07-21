@@ -60,7 +60,6 @@ class Player {
             agimod: 1,
             dmgmod: 1,
             threatmod: 1,
-            stammod: 1,
             apmod: 1
         };
         if (enchtype == 1) {
@@ -304,7 +303,7 @@ class Player {
     update() {
         this.updateAuras();
         this.updateArmorReduction();
-        this.mh.glanceChance = this.getGlanceChance(this.mh);
+        this.mh.glanceChance = this.getGlanceChance();
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dodge = this.getDodgeChance(this.mh);
         this.mh.parry = this.getParryChance(this.mh);
@@ -432,7 +431,7 @@ class Player {
             this.target.armor = Math.max(this.target.armor - (this.auras.bonereaver.stacks * this.auras.bonereaver.armor), 0);
         if (this.auras.swarmguard && this.auras.swarmguard.timer)
             this.target.armor = Math.max(this.target.armor - (this.auras.swarmguard.stacks * this.auras.swarmguard.armor), 0);
-        this.armorReduction = this.getArmorReduction();
+        this.armorReduction = this.getArmorReduction(this.target.armor, this.target.level);
     }
     updateDmgMod() {
         this.stats.dmgmod = this.base.dmgmod;
@@ -444,13 +443,13 @@ class Player {
     }
     getGlanceReduction(weapon) {
         let diff = this.target.defense - this.stats.skill;
-        let low = Math.min(1.3 - 0.05 * diff, 0.91);
-        let high = Math.min(1.2 - 0.03 * diff, 0.99);
+        let low = Math.min(1.4 - 0.05 * diff, 0.91);
+        let high = Math.min(1.3 - 0.03 * diff, 0.99);
         if (this.weaponrng) return Math.random() * (high - low) + low;
         else return avg(low, high);
     }
-    getGlanceChance(weapon) {
-        return 10 + (this.target.defense - Math.min(this.level * 5, this.stats.skill)) * 2;
+    getGlanceChance() {
+        return 25;
     }
     getMissChance(weapon) {
         let diff = this.target.defense - this.stats.skill;
@@ -479,10 +478,16 @@ class Player {
         }
     }
 
-    getArmorReduction() {
-        let r = this.target.armor / (this.target.armor + 400 + 85 * ((5.5 * this.level) - 265.5))
+    getArmorReduction(armor, attackerlevel) {
+        let r = armor / (armor + 400 + 85 * ((5.5 * attackerlevel) - 265.5))
         return r > 0.75 ? 0.75 : r;
     }
+
+    getEHP() {
+        let ehp = (this.stats.sta * 10) / (1 - this.getArmorReduction(this.stats.ac, 73)) / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100);
+        return ehp;
+    }
+
     addRage(dmg, result, weapon, spell) {
         let rageAdded;
         let factor;
