@@ -84,7 +84,6 @@ onmessage = (event) => {
         module.HEAP32[cfg + 9] = params.player[3].target.armor;
         module.HEAP32[cfg + 10] = params.player[3].target.defense;
         module.HEAP32[cfg + 11] = params.player[3].target.binaryresist;
-        module.HEAPF64[(cfg + 12) >> 1] = params.player[3].target.mitigation;
         module.HEAP32[cfg + 14] = params.sim.timesecsmin;
         module.HEAP32[cfg + 15] = params.sim.timesecsmax;
         module.HEAP32[cfg + 16] = params.sim.executeperc;

@@ -345,7 +345,7 @@ class Simulation {
             if (player.spelldelay && (delayedspell.maxdelay - player.spelldelay) < next) next = delayedspell.maxdelay - player.spelldelay + 1;
             if (player.heroicdelay && (delayedheroic.maxdelay - player.heroicdelay) < next) next = delayedheroic.maxdelay - player.heroicdelay + 1;
             if (player.timer && player.timer < next) next = player.timer;
-            if (!player.incswingtimer && player.incswingtimer < next) next = player.incswingtimer;
+            if (player.activetank && !player.incswingtimer && player.incswingtimer < next) next = player.incswingtimer;
             if (player.itemtimer && player.itemtimer < next) next = player.itemtimer;
 
             if (player.spells.mangle && player.spells.mangle.timer && player.spells.mangle.timer < next) next = player.spells.mangle.timer;

@@ -10,7 +10,7 @@ class Spell {
         this.canDodge = true;
         this.totaldmg = 0;
         this.totalthreat = 0;
-        this.data = [0, 0, 0, 0, 0];
+        this.data = [0, 0, 0, 0, 0, 0];
         this.name = this.constructor.name;
         this.useonly = false;
         this.maxdelay = 100;

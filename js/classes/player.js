@@ -8,8 +8,7 @@ class Player {
                 level: parseInt($('input[name="targetlevel"]').val()),
                 basearmor: parseInt($('input[name="targetarmor"]').val()),
                 armor: parseInt($('input[name="targetarmor"]').val()),
-                def: parseInt($('input[name="targetlevel"]').val()) * 5,
-                mitigation: 1 - 15 * (parseInt($('input[name="targetresistance"]').val()) / 6000),
+                defense: parseInt($('input[name="targetlevel"]').val()) * 5,
                 binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
             },
             activetank: $('select[name="activetank"]').val() == "Yes",
@@ -54,6 +53,7 @@ class Player {
             exp: 0,
             skill: this.level * 5,
             haste: 1,
+            hasterating: 0,
             stammod: 1,
             armormod: 5.0,
             strmod: 1,
@@ -317,6 +317,7 @@ class Player {
         this.stats.apmod += this.talents.heartofthewild * .02;
         this.stats.strmod += this.talents.survivalofthefittest * .01;
         this.stats.agimod += this.talents.survivalofthefittest * .01;    
+        this.stats.def = this.stats.def / 2.3654; // Adjust defense skill for defense rating
         this.updateIncAttackTable();
     }
     updateIncAttackTable() {
@@ -403,9 +404,15 @@ class Player {
     updateHaste() {
         this.stats.haste = this.base.haste;
         if (this.auras.pummeler && this.auras.pummeler.timer)
-            this.stats.haste *= (1 + this.auras.pummeler.mult_stats.haste / 100);
+            this.stats.hasterating += this.auras.pummeler.mult_stats.rating;
         if (this.auras.spider && this.auras.spider.timer)
-            this.stats.haste *= (1 + this.auras.spider.mult_stats.haste / 100);
+            this.stats.hasterating += this.auras.spider.mult_stats.rating;
+        if (this.auras.abacus && this.auras.abacus.timer)
+            this.stats.hasterating += this.auras.abacus.mult_stats.rating;
+        if (this.auras.dst && this.auras.dst.timer)
+            this.stats.hasterating += this.auras.dst.mult_stats.rating;
+        if (this.auras.bloodlust && this.auras.bloodlust.timer)
+            this.stats.haste *= this.auras.bloodlust.mult_stats.haste;
     }
     updateBonusDmg() {
         let bonus = 0;
@@ -460,7 +467,7 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return Math.min(5 + (this.target.defense - this.stats.skill) * 0.1 - this.stats.exp / 15.77, 0);
+        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp / 15.77, 0);
     }
 
     getParryChance(weapon) {
@@ -578,7 +585,7 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += weapon.glanceChance * 100;
         if (roll < tmp) return RESULT.GLANCE;
-        tmp += (this.crit + weapon.crit) * 100;
+        tmp += (this.stats.crit + weapon.crit) * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
@@ -858,7 +865,7 @@ class Player {
         let dmg = proc.magicdmg;
         //if (proc.gcd && this.timer && this.timer < 1500) return 0;
         if (proc.binaryspell) miss = this.target.binaryresist;
-        else mod *= this.target.mitigation;
+        else mod *= 24;
         if (rng10k() < miss) return 0;
         if (rng10k() < (this.stats.spellcrit * 100)) mod *= 1.5;
         if (proc.coeff) dmg += this.spelldamage * proc.coeff;

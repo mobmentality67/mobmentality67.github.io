@@ -149,7 +149,7 @@
             font-weight: bold;
         }
         .stat-dps {
-            font-size: 20px;
+            font-size: 19;
             font-weight: bold;
             color: $item-uncommon;
             &:after {
@@ -160,8 +160,22 @@
                 display: none;
             }
         }
+
+        .stat-ehp {
+            font-size: 19;
+            font-weight: bold;
+            color: $item-uncommon;
+            &:after {
+                content: " EHP";
+                font-size: 12px;
+            }
+            &:empty:after {
+                display: none;
+            }
+        }
+
         .stat-tps {
-            font-size: 20px;
+            font-size: 19;
             font-weight: bold;
             color: $item-uncommon;
             &:after {
