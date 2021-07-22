@@ -126,6 +126,7 @@ class SimulationWorkerParallel {
                             return src;
                         }
                     }
+                    result.ehp = player.getEHP().toFixed(2);
                     result.player.mh = mergeWeapon(result.player.mh, data.player.mh);
                 }
             });
@@ -378,6 +379,7 @@ class Simulation {
         this.totaldmg += this.idmg;
         this.totalthreat += this.ithreat;
         this.totalduration += this.duration;
+        this.ehp = this.player.getEHP();
         let dps = this.idmg / this.duration;
         let tps = this.ithreat / this.duration;
         if (dps < this.mindps) this.mindps = dps;
@@ -401,6 +403,7 @@ class Simulation {
                 totaldmg: this.totaldmg,
                 totalthreat: this.totalthreat,
                 totalduration: this.totalduration,
+                ehp: this.player.getEHP()
             });
         }
     }
@@ -420,6 +423,7 @@ class Simulation {
                 sumthreat: this.sumthreat,
                 starttime: this.starttime,
                 endtime: this.endtime,
+                ehp: this.ehp
             });
         }
     }

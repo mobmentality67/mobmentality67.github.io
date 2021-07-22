@@ -399,6 +399,7 @@ SIM.UI = {
         var view = this;
         var dps = tr.find('td:last-of-type');
         var tps = tr.find('td:last-of-type');
+        var ehp = tr.find('td:nth-last-of-type(2)');
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
@@ -427,6 +428,7 @@ SIM.UI = {
                 else spantps.addClass('n');
                 //dps.text(calc.toFixed(2)).append(span);
                 tps.text(calctps.toFixed(2)).append(spantps);
+                ehp.text(report.ehp.toFixed(2) || 0);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -762,6 +764,7 @@ SIM.UI = {
                                 <th>Def</th>
                                 <th>Armor</th>
                                 <th>Res</th>
+                                <th>EHP</th>
                                 <th>TPS</th>
                             </tr>
                         </thead>
@@ -805,8 +808,9 @@ SIM.UI = {
                         <td>${item.hitrating || ''}</td>
                         <td>${item.exp || ''}</td>
                         <td>${item.def || ''}</td>
-                        <td>${item.armor || ''}</td>
+                        <td>${item.ac || ''}</td>
                         <td>${item.res || ''}</td>
+                        <td>${item.ehp || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -855,6 +859,7 @@ SIM.UI = {
                                 <th>Def</th>
                                 <th>Armor</th>
                                 <th>Res</th>
+                                <th>EHP</th>
                                 <th>TPS</th>
                             </tr>
                         </thead>
@@ -897,6 +902,7 @@ SIM.UI = {
                         <td>${item.def || ''}</td>
                         <td>${item.ac || ''}</td>
                         <td>${item.res || ''}</td>
+                        <td>${item.ehp || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -986,6 +992,7 @@ SIM.UI = {
                                 <th>Haste</th>
                                 <th>Crit</th>
                                 <th>Damage</th>
+                                <th>EHP</th>
                                 <th>TPS</th>
                             </tr>
                         </thead>
@@ -1007,6 +1014,7 @@ SIM.UI = {
                         <td>${item.haste || ''}</td>
                         <td>${item.critrating || ''}</td>
                         <td>${item.bonusdmg || ''}</td>
+                        <td>${item.ehp || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
