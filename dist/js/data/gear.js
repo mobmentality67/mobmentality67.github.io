@@ -655,6 +655,19 @@ var gear = {
          "source": "Gruuls",
          "phase": 1,
          "id": 29099,
+      },
+      {
+         "name": "Clefthoof Hide Leggings",
+         "sta": 24,
+         "agi": 30,
+         "str": 30,
+         "ac": 243,
+         "exp": 18,
+         "hitrating": 17,
+         "ac": 243,
+         "source": "Quest",
+         "phase": 1,
+         "id": 31544,
       }
    ],
    "feet": [
