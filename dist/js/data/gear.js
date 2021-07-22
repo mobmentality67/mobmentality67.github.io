@@ -981,7 +981,7 @@ var gear = {
          "name": "Drake Fang Talisman",
          "hitrating": 20,
          "ap": 56,
-         "dodgerating": 12,
+         "incdodgerating": 12,
          "source": "Other",
          "phase": "1",
          "id": 19406
@@ -1005,7 +1005,7 @@ var gear = {
       },
       {
          "name": "Mark of Tyranny",
-         "dodgerating": 12,
+         "incdodgerating": 12,
          "ac": 180,
          "phase": "1",
          "source": "Quest",
@@ -1065,7 +1065,7 @@ var gear = {
          "name": "Drake Fang Talisman",
          "hitrating": 20,
          "ap": 56,
-         "dodgerating": 12,
+         "incdodgerating": 12,
          "source": "Other",
          "phase": "1",
          "id": 19406
@@ -1089,7 +1089,7 @@ var gear = {
       },
       {
          "name": "Mark of Tyranny",
-         "dodgerating": 12,
+         "incdodgerating": 12,
          "ac": 180,
          "phase": "1",
          "source": "Quest",
