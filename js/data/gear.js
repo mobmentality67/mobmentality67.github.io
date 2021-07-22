@@ -1040,13 +1040,6 @@ var gear = {
          "id": 29181
       },
       {
-         "name": "Slayer's Crest (Used last 20 secs)",
-         "ap": 64,
-         "source": "Other",
-         "phase": "1",
-         "id": 23041,
-      },
-      {
          "name": "Mark of the Champion (vs Undead)",
          "ap": 150,
          "source": "Other",
