@@ -736,7 +736,7 @@ var gear = {
          "ac": 307,
          "source": "PVP",
          "phase": 1,
-         "id": 28987
+         "id": 28977
       }
    ],
    "finger1": [
