@@ -21,7 +21,6 @@ var gear = {
          "critrating": 22,
          "hitrating": 18,
          "ap": 56,
-         "critrating": 22,
          "source": "Heroic",
          "phase": 1,
          "id": 28224
@@ -277,7 +276,6 @@ var gear = {
       {
          "name": "Royal Cloak of Arathi Kings",
          "sta": 31,
-         "sta": 26,
          "ac": 97,
          "hitrating": 16,
          "source": "Karazhan",
@@ -664,7 +662,6 @@ var gear = {
          "ac": 243,
          "exp": 18,
          "hitrating": 17,
-         "ac": 243,
          "source": "Quest",
          "phase": 1,
          "id": 31544,
@@ -1463,10 +1460,21 @@ var gear = {
 var enchant = {
    "head": [
       {
-         "id": 18329,
-         "name": "Arcanum of Rapidity",
-         "haste": 1,
-         "phase": 2
+         "id": 29186,
+         "name": "Glyph of the Defender",
+         "dodgerating": 17,
+         "def": 16
+      },
+      {
+         "id": 29192,
+         "name": "Glyph of Ferocity",
+         "ap": 34,
+         "hitrating": 16
+      },
+      {
+         "id": 30846,
+         "name": "Glyph of the Outcast",
+         "str": 17,
       },
       {
          "id": 11647,
@@ -1483,37 +1491,98 @@ var enchant = {
    ],
    "shoulder": [
       {
+         "id": 35417,
+         "spellid": true,
+         "name": "Greater Inscription of Vengeance",
+         "ap": 30,
+         "critrating": 10,
+         "phase": 1
+      },
+      {
+         "id": 35407,
+         "spellid": true,
+         "name": "Inscription of Vengeance",
+         "ap": 26,
+         "phase": 1
+      },
+      {
+         "id": 35402,
+         "spellid": true,
+         "name": "Greater Inscription of Warding",
+         "incdodgerating": 30,
+         "critrating": 10,
+         "phase": 1
+      },
+      {
+         "id": 28882,
+         "spellid": true,
+         "name": "Inscription of Warding",
+         "incdodgerating": 13,
+         "phase": 1
+      },
+      {
          "id": 29483,
          "spellid": true,
          "name": "Might of the Scourge",
          "ap": 26,
          "crit": 1,
-         "phase": 6
+         "phase": 1
+      },
+      {
+         "id": 29480,
+         "spellid": true,
+         "name": "Fortitude of the Scourge",
+         "bonusac": 100,
+         "sta": 16,
+         "phase": 1
       },
       {
          "id": 24422,
          "spellid": true,
          "name": "Zandalar Signet of Might",
          "ap": 30,
-         "phase": 4
+         "phase": 1
       },
    ],
    "back": [
       {
-         "id": 25084,
+         "id": 46510,
          "spellid": true,
-         "name": "Subtlety",
-         "phase": 5
+         "name": "Major Armor",
+         "phase" : 1,
+         "bonusac" : 120
       },
       {
-         "id": 13882,
+         "id": 46505,
          "spellid": true,
-         "name": "Lesser Agility",
-         "agi": 3,
+         "name": "Greater Agility",
+         "agi": 12,
          "phase": 1
       },
    ],
    "chest": [
+      {
+         "id": 46502,
+         "spellid": true,
+         "name": "Greater Stats",
+         "agi": 6,
+         "str": 6,
+         "sta": 6,
+         "phase": 1
+      },
+      {
+         "id": 46501,
+         "spellid": true,
+         "name": "Exceptional Health",
+         "phase": 1
+      },
+      {
+         "id": 33992,
+         "spellid": true,
+         "name": "Major Resilience",
+         "res": 15,
+         "phase": 1
+      },
       {
          "id": 20025,
          "spellid": true,
@@ -1522,51 +1591,73 @@ var enchant = {
          "str": 4,
          "phase": 1
       },
-      {
-         "id": 13941,
-         "spellid": true,
-         "name": "Stats",
-         "agi": 3,
-         "str": 3,
-         "phase": 1
-      },
    ],
    "wrist": [
       {
-         "id": 13939,
+         "id": 34002,
          "spellid": true,
-         "name": "Greater Strength",
-         "str": 7,
+         "name": "Assault",
+         "ap": 24,
          "phase": 1
       },
       {
-         "id": 20010,
+         "id": 35420,
          "spellid": true,
-         "name": "Superior Strength",
-         "str": 9,
+         "name": "Brawn",
+         "str": 12,
+         "phase": 1
+      },
+      {
+         "id": 27914,
+         "spellid": true,
+         "name": "Major Defense",
+         "def": 12,
+         "phase": 1
+      },
+      {
+         "id": 27906,
+         "spellid": true,
+         "name": "Fortitude",
+         "sta": 12,
+         "phase": 1
+      },
+      {
+         "id": 35426,
+         "spellid": true,
+         "name": "Stats",
+         "str": 4,
+         "sta": 4,
+         "agi": 4,
          "phase": 1
       },
    ],
    "hands": [
       {
+         "id": 25072,
+         "spellid": true,
+         "name": "Threat",
+         "threatmod": .02,
+         "phase": 1
+      },
+      {
          "id": 25080,
          "spellid": true,
          "name": "Superior Agility",
          "agi": 15,
-         "phase": 5
-      },
-      {
-         "id": 20012,
-         "spellid": true,
-         "name": "Greater Agility",
-         "agi": 7,
          "phase": 1
       },
       {
-         "id": 20013,
+         "id": 33995,
          "spellid": true,
-         "name": "Greater Strength",
-         "str": 7,
+         "name": "Major Strength",
+         "str": 15,
+         "phase": 1
+      },
+      {
+         "id": 46511,
+         "spellid": true,
+         "name": "Assault",
+         "ap": 26,
          "phase": 1
       },
       {
@@ -1579,10 +1670,36 @@ var enchant = {
    ],
    "legs": [
       {
-         "id": 18329,
-         "name": "Arcanum of Rapidity",
-         "haste": 1,
-         "phase": 2
+         "id": 35495,
+         "spellid": true,
+         "name": "Nethercleft Leg Armor",
+         "sta": 40,
+         "agi": 10,
+         "phase": 1
+      },
+      {
+         "id": 35490,
+         "spellid": true,
+         "name": "Nethercobra Leg Armor",
+         "ap": 50,
+         "critrating": 12,
+         "phase": 1
+      },
+      {
+         "id": 35489,
+         "spellid": true,
+         "name": "Clefthide Leg Armor",
+         "sta": 30,
+         "agi": 10,
+         "phase": 1
+      },
+      {
+         "id": 35488,
+         "spellid": true,
+         "name": "Cobrahide Leg Armor",
+         "ap": 40,
+         "critrating": 10,
+         "phase": 1
       },
       {
          "id": 11647,
@@ -1595,22 +1712,80 @@ var enchant = {
          "name": "Lesser Arcanum of Voracity (Str)",
          "str": 8,
          "phase": 1
-      },
+      }
    ],
    "feet": [
       {
-         "id": 20023,
+         "id": 46472,
          "spellid": true,
-         "name": "Greater Agility",
-         "agi": 7,
+         "name": "Dexterity",
+         "agi": 12,
          "phase": 1
       },
       {
-         "id": 13890,
+         "id": 46471,
          "spellid": true,
-         "name": "Minor Speed",
+         "agi": 6,
+         "name": "Cat's Swiftness",
          "phase": 1
       },
+      {
+         "id": 46490,
+         "spellid": true,
+         "sta": 12,
+         "name": "Fortitude",
+         "phase": 1
+      },
+      {
+         "id": 46470,
+         "spellid": true,
+         "sta": 9,
+         "name": "Boar's Speed",
+         "phase": 1
+      },
+      {
+         "id": 46491,
+         "spellid": true,
+         "hitrating": 10,
+         "name": "Surefooted",
+         "phase": 1
+      },
+   ],
+"finger1": [
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Stats",
+         "agi": 2,
+         "str": 2,
+         "sta": 2,
+         "phase": 3
+      },
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Striking",
+         "bonusdmg": 2,
+         "phase": 1
+      }
+   ],
+"finger2": [
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Stats",
+         "agi": 2,
+         "str": 2,
+         "sta": 2,
+         "phase": 3
+      },
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Striking",
+         "bonusdmg": 2,
+         "phase": 1
+      }
    ],
    "mainhand": [
       {

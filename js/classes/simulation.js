@@ -5,7 +5,8 @@ var RESULT = {
     DODGE: 3,
     CRIT: 4,
     GLANCE: 5,
-    CRUSH: 6
+    CRUSH: 6,
+    BLOCK: 7
 }
 
 var batching = 0;

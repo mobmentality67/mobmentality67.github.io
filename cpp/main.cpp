@@ -42,7 +42,7 @@ int main()
     enableItem( ITEM_MAINHAND, 23054, 1 );
     enableItem( ITEM_OFFHAND, 23577, 1 );
     int* options;
-    options = spellOptions( 33987 ); options[0] = 1; options[1] = 20; options[2] = 100; // Mangle | Enabled | Minrage | Reaction
+    options = spellOptions( 33987 ); options[0] = 1; options[1] = 100; // Mangle | Enabled | Reaction
     options = spellOptions( 26997 ); options[0] = 1; options[1] = 30; options[2] = 2; options[2] = 100; // Swipe | Enabled | Minrage | Main CD | Reaction
     options = spellOptions( 33745 ); options[0] = 1; options[1] = 30; options[2] = 2; options[3] = 100; options[4] = 2600; // Lacerate | Enabled | Minrage | Main CD | Reaction | Priority AP
     options = spellOptions( 26996 ); options[0] = 1; options[1] = 50; options[2] = 300; // Maul | Enabled | Minrage | Reaction

@@ -946,7 +946,7 @@ SIM.UI = {
                                 <th>AP</th>
                                 <th>Hit</th>
                                 <th>Crit</th>
-                                <th>DPS</th>
+                                <th>TPS</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -961,7 +961,7 @@ SIM.UI = {
                         <td>${item.ap || ''}</td>
                         <td>${item.hit || ''}</td>
                         <td>${item.critrating || ''}</td>
-                        <td>${item.dps || ''}</td>
+                        <td>${item.tps || ''}</td>
                     </tr>`;
         }
 
@@ -971,7 +971,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[11, 1]] : [[10, 1]],
+            sortList: editmode ? [[7, 1]] : [[6, 1]],
         });
     },
 

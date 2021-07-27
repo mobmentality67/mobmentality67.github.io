@@ -65,7 +65,7 @@ onmessage = (event) => {
             module.HEAP32[ptr] = opt.active ? 1 : 0;
             fields.forEach((f, i) => module.HEAP32[ptr + i + 1] = opt[f]);
         }
-        spellOptions(0, "minrage", "reaction"); // Mangle
+        spellOptions(0, "reaction"); // Mangle
         spellOptions(1, "minrage", "maincd", "reaction", "priorityap"); // Swipe
         spellOptions(2, "minrage", "maincd", "reaction"); // Lacerate
         spellOptions(3, "minrage", "reaction"); // Maul

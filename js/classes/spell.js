@@ -10,7 +10,7 @@ class Spell {
         this.canDodge = true;
         this.totaldmg = 0;
         this.totalthreat = 0;
-        this.data = [0, 0, 0, 0, 0, 0];
+        this.data = [0, 0, 0, 0, 0, 0, 0, 0];
         this.name = this.constructor.name;
         this.useonly = false;
         this.maxdelay = 100;
@@ -45,10 +45,9 @@ class Mangle extends Spell {
         this.cost = 20 - player.talents.ferocity;   
         this.cooldown = 6;
         this.refund = false;
-        this.threshold = parseInt(spells[0].minrage);
         this.maxdelay = parseInt(spells[0].reaction);
-        this.weaponspell = false;
         this.name = 'Mangle';
+        this.weaponspell = true;
     }
     dmg() {
         let dmg;
@@ -57,7 +56,7 @@ class Mangle extends Spell {
         return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + 155) * this.player.stats.dmgmod;
     }
     canUse() {
-        return !this.timer && !this.player.timer && this.cost <= this.player.rage && this.player.rage >= this.threshold;
+        return !this.timer && !this.player.timer && this.cost <= this.player.rage;
     }
 }
 
@@ -71,6 +70,7 @@ class Swipe extends Spell {
         this.maxdelay = parseInt(spells[1].reaction);
         this.priorityap = parseInt(spells[1].priorityap);
         this.maincd = parseInt(spells[1].maincd) * 1000;
+        this.weaponspell = false;
     }
     getPriorityAP() {
         return this.priorityap;
@@ -94,6 +94,7 @@ class Lacerate extends Spell {
         this.threshold = parseInt(spells[2].minrage);
         this.maincd = parseInt(spells[2].maincd) * 1000;
         this.maxdelay = parseInt(spells[2].reaction);
+        this.weaponspell = false;
     }
     dmg() {
         return (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod;

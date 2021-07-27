@@ -248,7 +248,7 @@ SIM.STATS = {
             let total = data.reduce((a, b) => a + b, 0);
             if (!total) continue;
             let tps = (sim.player.spells[name].totalthreat / sim.totalduration).toFixed(2);
-            html += `<tr><td>${n}</td><td>${(data[0] / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[5] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
+            html += `<tr><td>${n}</td><td>${((data[0] + data[7]) / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[5] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
         }
 
         html += '</tbody></table>';

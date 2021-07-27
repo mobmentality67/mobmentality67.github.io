@@ -41,6 +41,7 @@ class Player {
             ap: 0,
             agi: 0,
             str: 0,
+            bonusac: 0,
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
@@ -386,11 +387,8 @@ class Player {
     }
 
     updateArmor() {
-        this.stats.ac = this.base.armor;
-
         /* Initial armor setup with multiplier */
-        if (this.stats.armormod != 1)
-            this.stats.ac =(this.base.ac) * (this.stats.armormod);
+        this.stats.ac = (this.base.ac) * (this.stats.armormod);
 
         /* Calculate agi/buffs armor after armor mod */
         this.stats.ac += this.stats.agi * 2;
@@ -398,6 +396,7 @@ class Player {
             if (this.auras[name].timer && this.auras[name].stats.ac)
                 this.stats.ac += this.auras[name].stats.ac;
         }
+        this.stats.ac += this.base.bonusac;
     }
 
     updateHaste() {
@@ -614,13 +613,16 @@ class Player {
         if (roll < tmp) return RESULT.MISS;
         tmp += this.mh.parry * 100;
         if (roll < tmp) return RESULT.PARRY;
-        if (spell.canDodge) {
-            tmp += this.mh.dodge * 100;
-            if (roll < tmp) return RESULT.DODGE;
-        }
+        tmp += this.mh.dodge * 100;
+        if (roll < tmp) return RESULT.DODGE;
         if (!spell.weaponspell) {
             roll = rng10k();
             tmp = 0;
+        }
+        else {
+            // If a weapon-based spell is blocked, it can't crit */
+            tmp += 6.5 * 100;
+            if (roll < tmp) return RESULT.BLOCK;
         }
         let crit = this.crit + this.mh.crit;
         tmp += crit * 100;
@@ -655,7 +657,10 @@ class Player {
         if (result == RESULT.GLANCE) {
             dmg *= this.getGlanceReduction(weapon);
         }
-        if (result == RESULT.CRIT) {
+        else if (result == RESULT.BLOCK) {
+            dmg = Math.max(dmg - 54, 0);
+        }
+        else if (result == RESULT.CRIT) {
             dmg *= 2 + (spell ? 2 * this.talents.predatoryinstincts / 100.0 : 0);
             this.proccrit();
         }
@@ -721,7 +726,7 @@ class Player {
         spell.use();
         if (spell.useonly) { 
             //if (log) this.log(`${spell.name} used`);
-            return 0; 
+            return damage_threat_arr; 
         }
         let procdmg = 0;
         let dmg = spell.dmg();

@@ -5,7 +5,6 @@ var spells = [
     name: 'Mangle',
     classname: 'Mangle',
     iconname: 'ability_druid_mangle2',
-    minrage: 15,
     reaction: 100,
 },
 {
