@@ -108,7 +108,7 @@ class Player {
         if (this.items.includes(9449)) this.auras.pummeler = new Pummeler(this);
         if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
-        if (this.items.includes(21180)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
+        if (this.items.includes(29383)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
         if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
         this.update();
     }
@@ -301,23 +301,13 @@ class Player {
         }
         this.update();
     }
-    update() {
+    update() { 
         this.updateAuras();
         this.updateArmorReduction();
         this.mh.glanceChance = this.getGlanceChance();
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dodge = this.getDodgeChance(this.mh);
         this.mh.parry = this.getParryChance(this.mh);
-        this.stats.stammod += this.talents.survivalofthefittest * .01;
-        if (this.race.name == 'Tauren') this.stats.stammod += .05;
-        this.stats.armormod *= this.talents.thickhidemod;
-        this.updateArmor();
-        this.stats.dmgmod += this.talents.naturalistmod;
-        this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
-        this.stats.apmod += this.talents.heartofthewild * .02;
-        this.stats.strmod += this.talents.survivalofthefittest * .01;
-        this.stats.agimod += this.talents.survivalofthefittest * .01;    
-        this.stats.def = this.stats.def / 2.3654; // Adjust defense skill for defense rating
         this.updateIncAttackTable();
     }
     updateIncAttackTable() {
@@ -330,23 +320,30 @@ class Player {
         this.stats.inccrit = Math.max(0, 5.6 - this.stats.def * .04 / 2.3654 - this.stats.res * 0.0254);
         this.stats.inccrush = 15;
 
-        if (log) {
-            this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
-                +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
-        }
+        // if (log) {
+        //     this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
+        //         +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
+        // }
     }
 
     updateAuras() {
         for (let prop in this.base)
             this.stats[prop] = this.base[prop];
         for (let name in this.auras) {
-            if (this.auras[name].timer) {
+            if (this.auras[name].active) {
                 for (let prop in this.auras[name].stats)
                     this.stats[prop] += this.auras[name].stats[prop];
                 for (let prop in this.auras[name].mult_stats)
                     this.stats[prop] *= (1 + this.auras[name].mult_stats[prop] / 100);
             }
         }
+        this.stats.dmgmod += this.talents.naturalistmod;
+        this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
+        this.stats.strmod += this.talents.survivalofthefittest * .01;
+        this.stats.agimod += this.talents.survivalofthefittest * .01;   
+        this.stats.stammod += this.talents.survivalofthefittest * .01 + this.talents.heartofthewild * .04;
+        if (this.race == 'Tauren') this.stats.stammod += .05;
+
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
@@ -355,6 +352,9 @@ class Player {
         this.crit = this.getCritChance();
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+        this.stats.armormod *= this.talents.thickhidemod;
+        this.updateArmor();
+        this.stats.def = this.stats.def / 2.3654; // Adjust defense skill for defense rating
     }
     updateStrength() {
         this.stats.str = this.base.str;
@@ -375,15 +375,24 @@ class Player {
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
     }
     updateAP() {
+        if (log)  
+        {
+            this.log(`Updating AP... before, Crit = ${this.crit}, AP = ${this.stats.ap}`);
+        }
         this.stats.ap = this.base.ap;
         for (let name in this.auras) {
-            if (this.auras[name].timer && this.auras[name].stats.ap)
+            if (this.auras[name].active && this.auras[name].stats.ap)
                 this.stats.ap += this.auras[name].stats.ap;
         }
         this.stats.ap += this.stats.str * 2;
 
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+        if (log)  
+        {
+            this.log(`Updating AP... after, Crit = ${this.crit}, AP = ${this.stats.ap}`);
+        }
+
     }
 
     updateArmor() {
@@ -401,15 +410,20 @@ class Player {
 
     updateHaste() {
         this.stats.haste = this.base.haste;
-        if (this.auras.pummeler && this.auras.pummeler.timer)
+
+        /* Apply additive haste */
+        if (this.auras.pummeler && this.auras.pummeler.active)
             this.stats.hasterating += this.auras.pummeler.mult_stats.rating;
-        if (this.auras.spider && this.auras.spider.timer)
+        if (this.auras.spider && this.auras.spider.active)
             this.stats.hasterating += this.auras.spider.mult_stats.rating;
-        if (this.auras.abacus && this.auras.abacus.timer)
+        if (this.auras.abacus && this.auras.abacus.active)
             this.stats.hasterating += this.auras.abacus.mult_stats.rating;
-        if (this.auras.dst && this.auras.dst.timer)
+        if (this.auras.dst && this.auras.dst.active)
             this.stats.hasterating += this.auras.dst.mult_stats.rating;
-        if (this.auras.bloodlust && this.auras.bloodlust.timer)
+
+        /* Apply multiplicative haste */
+        this.stats.haste += this.stats.hasterating / 15.8 / 100;
+        if (this.auras.bloodlust && this.auras.bloodlust.active)
             this.stats.haste *= this.auras.bloodlust.mult_stats.haste;
     }
     updateBonusDmg() {
@@ -483,7 +497,9 @@ class Player {
     }
 
     getEHP() {
-        let ehp = (this.stats.sta * 10) / (1 - this.getArmorReduction(this.stats.ac, 73)) / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100);
+        // EHP = HP / (armor * weighted attack table)
+        let ehp = (this.stats.sta * 10) / (1 - this.getArmorReduction(this.stats.ac, 73)) 
+            / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100 + this.stats.inccrush * 1.5 / 100 + this.stats.inccrit * 2 / 100);
         return ehp;
     }
 
@@ -547,7 +563,7 @@ class Player {
     stepitemtimer(a) {
         if (this.itemtimer <= a) {
             this.itemtimer = 0;
-            //if (log) this.log('Item CD off');
+            if (log) this.log('Item CD off');
             return true;
         }
         else {
@@ -589,7 +605,7 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += weapon.glanceChance * 100;
         if (roll < tmp) return RESULT.GLANCE;
-        tmp += (this.stats.crit + weapon.crit) * 100;
+        tmp += (this.crit + weapon.crit) * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
@@ -726,6 +742,8 @@ class Player {
         spell.use();
         if (spell.useonly) { 
             //if (log) this.log(`${spell.name} used`);
+            damage_threat_arr[0] = 0;
+            damage_threat_arr[1] = 1;
             return damage_threat_arr; 
         }
         let procdmg = 0;

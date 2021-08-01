@@ -251,15 +251,25 @@ class Simulation {
 
         // item steps
         let itemdelay = 0;
-        if (player.auras.slayer) { this.slayerstep = Math.max(this.maxsteps - itemdelay - 20000, 0); itemdelay += 20000; }
-        if (player.auras.spider) { this.spiderstep = Math.max(this.maxsteps - itemdelay - 15000, 0); itemdelay += 15000; }
-        if (player.auras.bloodlustbrooch) { this.broochstep = Math.max(this.maxsteps - itemdelay - 20000, 0); itemdelay += 20000; }
-        if (player.auras.pummeler) { this.pummelstep = Math.max(this.maxsteps - itemdelay - 30000, 0); itemdelay += 30000; }
+        if (player.auras.slayer) { this.slayerstep = 0; itemdelay += 20000; }
+        if (player.auras.spider) { this.spiderstep = 0; itemdelay += 15000; }
+        if (player.auras.bloodlustbrooch) { this.broochstep = 0; itemdelay += 20000; }
+        if (player.auras.pummeler) { this.pummelstep = 0; itemdelay += 30000; }
 
         if (player.auras.swarmguard) { player.auras.swarmguard.usestep = Math.max(this.maxsteps - player.auras.swarmguard.timetoend, 0); }
 
 
         if (log) console.log(' TIME |   RAGE | EVENT');
+
+        // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells
+        if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { delayedspell = player.auras.swarmguard; }
+            else if (player.auras.slayer && player.auras.slayer.canUse()) { delayedspell = player.auras.slayer; }
+            else if (player.auras.spider && player.auras.spider.canUse()) { delayedspell = player.auras.spider; }
+            else if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse()) { delayedspell = player.auras.bloodlustbrooch; }
+            else if (player.auras.pummeler && player.auras.pummeler.canUse()) { delayedspell = player.auras.pummeler; } 
+        if (delayedspell) {
+            player.cast(delayedspell, damage_threat);
+        }            
 
         while (step < this.maxsteps) {
 
@@ -284,12 +294,10 @@ class Simulation {
 
                 // No GCD
                 if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { player.spelldelay = 1; delayedspell = player.auras.swarmguard; }
-                
-                // GCD spells
                 else if (player.auras.slayer && player.auras.slayer.canUse() && step > this.slayerstep) { player.spelldelay = 1; delayedspell = player.auras.slayer; }
                 else if (player.auras.spider && player.auras.spider.canUse() && step > this.spiderstep) { player.spelldelay = 1; delayedspell = player.auras.spider; }
-                else if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse() && step > this.brooochstep) { player.spelldelay = 1; delayedspell = player.auras.bloodlustbrooch; }
-                else if (player.auras.pummeler && player.auras.pummeler.canUse() && step > this.pummelstep) { player.spelldelay = 1; delayedspell = player.auras.pummeler; }
+                else if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse() && step > this.broochstep) { player.spelldelay = 1; delayedspell = player.auras.bloodlustbrooch; }
+                else if (player.auras.pummeler && player.auras.pummeler.canUse() && step > this.pummelstep) { player.spelldelay = 1; delayedspell = player.auras.pummeler; }                
 
                 // Normal phase
                 else if (player.spells.faeriefire && player.spells.faeriefire.canUse()) { player.spelldelay = 1; delayedspell = player.spells.faeriefire; }

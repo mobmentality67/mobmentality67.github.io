@@ -104,8 +104,8 @@ class Lacerate extends Spell {
         this.player.auras.laceratedot.use();
     }
     canUse() {
-        return !this.timer && !this.player.timer && this.cost <= this.player.rage && this.player.rage >= this.threshold &&
-            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd) && 
+        return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold ||
+            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd)) && 
             (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap)));
     }
 }
@@ -125,8 +125,8 @@ class Maul extends Spell {
         this.player.nextswinghs = true;
     }
     canUse() {
-        return !this.player.nextswinghs && this.cost <= this.player.rage && (this.player.rage >= this.threshold) &&
-            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd);
+        return !this.player.nextswinghs && this.cost <= this.player.rage && ((this.player.rage >= this.threshold) ||
+            (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd));
     }
 }
 
@@ -164,6 +164,7 @@ class Aura {
         this.name = this.constructor.name;
         this.maxdelay = 100;
         this.useonly = true;
+        this.active = false;
     }
     use() {
         if (this.timer) this.uptime += (step - this.starttimer);
@@ -172,6 +173,7 @@ class Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         if (log) this.player.log(`${this.name} applied`);
+        this.active = true;
     }
     step() {
         if (step >= this.timer) {
@@ -180,13 +182,18 @@ class Aura {
             this.firstuse = false;
             this.player.updateAuras();
             this.player.updateIncAttackTable();
+            if (log) console.log(`Removing ${this.name}`)
+            this.player.updateAP();
             if (log) this.player.log(`${this.name} removed`);
         }
     }
     end() {
-        this.uptime += (step - this.starttimer);
+        if (this.active) {
+           this.uptime += (step - this.starttimer);
+        }
         this.timer = 0;
         this.stacks = 0;
+        this.active = false;
     }
 }
 
@@ -238,7 +245,7 @@ class Pummeler extends Aura {
         this.name = 'Manual Crowd Pummeler';
     }
     use() {
-        this.player.timer = 1500;
+        this.player.timer = 0;
         if (this.timer) this.uptime += (step - this.starttimer);
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -294,43 +301,71 @@ class Swarmguard extends Aura {
     }
 }
 
+class Spider extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 15;
+        this.mult_stats = { rating: 200 };
+        this.cooldown = 120 * 1000;
+        this.name = 'Kiss of the Spider';
+        this.active = false;
+    }
+    use() {
+        this.player.timer = 0;
+        this.player.itemtimer = this.duration * 1000;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateHaste();
+        if (log) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
+            this.player.updateHaste();
+            this.uptime += (step - this.starttimer);
+            if (log) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
 class Slayer extends Aura {
     constructor(player) {
         super(player);
         this.duration = 20;
         this.stats = { ap: 260 };
         this.name = 'Slayer\'s Crest';
+        this.cooldown = 120 * 1000;
+        this.active = false;
     }
     use() {
-        this.player.timer = 1500;
+        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
+        this.active = true;
         this.player.updateAP();
-        //if (log) this.player.log(`${this.name} applied`);
+        if (log) this.player.log(`${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
+            this.player.updateAP();
+            this.uptime += (step - this.starttimer);
+            if (log) this.player.log(`${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
     }
     canUse() {
-        return this.firstuse && !this.timer && !this.player.timer && !this.player.itemtimer;
-    }
-}
-
-class Spider extends Aura {
-    constructor(player) {
-        super(player);
-        this.duration = 15;
-        this.mult_stats = { haste: 20 };
-        this.name = 'Kiss of the Spider';
-    }
-    use() {
-        this.player.timer = 1500;
-        this.player.itemtimer = this.duration * 1000;
-        this.timer = step + this.duration * 1000;
-        this.starttimer = step;
-        this.player.updateHaste();
-        //if (log) this.player.log(`${this.name} applied`);
-    }
-    canUse() {
-        return this.firstuse && !this.timer && !this.player.timer && !this.player.itemtimer;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
     }
 }
 
@@ -339,17 +374,31 @@ class BloodlustBrooch extends Aura {
         super(player);
         this.duration = 20;
         this.stats = { ap: 278 };
+        this.name = 'Bloodlust Brooch';
+        this.cooldown = 120 * 1000;
+        this.active = false;
     }
     use() {
-        this.player.timer = 2000;
+        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
+        this.active = true;
         this.player.updateAP();
-        //if (log) this.player.log(`${this.name} applied`);
+        if (log) this.player.log(`${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
+            this.player.updateAP();
+            if (log) this.player.log(`${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
     }
     canUse() {
-        return this.firstuse && !this.timer && !this.player.timer && !this.player.itemtimer;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
     }
 }
 

@@ -962,9 +962,9 @@ var gear = {
    ],
    "trinket1": [
       {
-         "name": "Badge of the Swarmguard (Used last 30 secs / 50% proc chance)",
-         "source": "AQ40",
-         "phase": "5",
+         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance /)",
+         "source": "Other",
+         "phase": "6",
          "id": 21670
       },
       {
@@ -984,11 +984,11 @@ var gear = {
          "id": 19406
       },
       {
-         "name": "Kiss of the Spider (Used last 15 secs)",
+         "name": "Kiss of the Spider (Used first 15 secs / on CD)",
          "critrating": 14,
          "hitrating": 10,
-         "source": "Naxx",
-         "phase": "6",
+         "source": "Other",
+         "phase": "1",
          "id": 22954,
       },
       {
@@ -997,7 +997,7 @@ var gear = {
          "str": 15,
          "sta": 15,
          "source": "Other",
-         "phase": "16",
+         "phase": "1",
          "id": 13503,
       },
       {
@@ -1012,21 +1012,21 @@ var gear = {
          "name": "Goblin Rocket Launcher",
          "sta": 45,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Crafting",
          "id": 23836,
       },
       {
          "name": "Argussian Compass",
          "sta": 36,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Heroic",
          "id": 27770,
       },
       {
          "name": "Violet Badge",
          "sta": 36,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Reputation",
          "id": 31113,
       },
       {
@@ -1035,6 +1035,20 @@ var gear = {
          "source": "Reputation",
          "phase": "1",
          "id": 29181
+      },
+      {
+         "name": "Bloodlust Brooch (Used first 20 secs / on CD)",
+         "ap": 72,
+         "source": "Badges",
+         "phase": "1",
+         "id": 29383,
+      },
+      {
+         "name": "Slayer's Crest (Used first 20 secs / on CD)",
+         "ap": 64,
+         "source": "Other",
+         "phase": "1",
+         "id": 23041,
       },
       {
          "name": "Mark of the Champion (vs Undead)",
@@ -1046,9 +1060,9 @@ var gear = {
    ],
    "trinket2": [
       {
-         "name": "Badge of the Swarmguard (Used last 30 secs / 50% proc chance)",
-         "source": "AQ40",
-         "phase": "5",
+         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
+         "source": "Other",
+         "phase": "6",
          "id": 21670
       },
       {
@@ -1068,11 +1082,11 @@ var gear = {
          "id": 19406
       },
       {
-         "name": "Kiss of the Spider (Used last 15 secs)",
+         "name": "Kiss of the Spider (Used first 15 secs)",
          "critrating": 14,
          "hitrating": 10,
-         "source": "Naxx",
-         "phase": "6",
+         "source": "Other",
+         "phase": "1",
          "id": 22954,
       },
       {
@@ -1081,7 +1095,7 @@ var gear = {
          "str": 15,
          "sta": 15,
          "source": "Other",
-         "phase": "16",
+         "phase": "1",
          "id": 13503,
       },
       {
@@ -1096,21 +1110,21 @@ var gear = {
          "name": "Goblin Rocket Launcher",
          "sta": 45,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Crafting",
          "id": 23836,
       },
       {
          "name": "Argussian Compass",
          "sta": 36,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Heroic",
          "id": 27770,
       },
       {
          "name": "Violet Badge",
          "sta": 36,
          "phase": "1",
-         "source": "Crafted",
+         "source": "Reputation",
          "id": 31113,
       },
       {
@@ -1121,7 +1135,14 @@ var gear = {
          "id": 29181
       },
       {
-         "name": "Slayer's Crest (Used last 20 secs)",
+         "name": "Bloodlust Brooch (Used first 20 secs / on CD)",
+         "ap": 72,
+         "source": "Badges",
+         "phase": "1",
+         "id": 29383,
+      },
+      {
+         "name": "Slayer's Crest (Used first 20 secs / on CD)",
          "ap": 64,
          "source": "Other",
          "phase": "1",
