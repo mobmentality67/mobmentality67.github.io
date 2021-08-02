@@ -51,9 +51,10 @@ class Mangle extends Spell {
     }
     dmg() {
         let dmg;
+        let bonusdmg = this.player.items.includes(28064) ? 155 + 52 : 155;
         if (this.player.weaponrng) dmg = rng(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
         else dmg = avg(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
-        return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + 155) * this.player.stats.dmgmod;
+        return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + bonusdmg) * this.player.stats.dmgmod;
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage;
@@ -77,7 +78,8 @@ class Swipe extends Spell {
     }
 
     dmg() {
-        return ((this.player.stats.ap * 0.07) + 84) * this.player.stats.dmgmod;
+        let bonusdamage = this.player.items.includes(23198) ? 84 + 10 : 84;
+        return ((this.player.stats.ap * 0.07) + bonusdamage) * this.player.stats.dmgmod;
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold &&
@@ -119,7 +121,7 @@ class Maul extends Spell {
         this.threshold = parseInt(spells[3].minrage);
         this.maincd = parseInt(spells[3].maincd) * 1000;
         this.name = 'Maul';
-        this.bonus = 226;
+        this.bonus = this.player.items.includes(23198) ? 226 + 50 : 226;
         this.maxdelay = parseInt(spells[3].reaction);
         this.useonly = true;
     }

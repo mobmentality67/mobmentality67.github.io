@@ -120,6 +120,15 @@ var gear = {
          "id": 29381
       },
       {
+         "name": "Hailstone Pendant",
+         "def": 22,
+         "sta": 33,
+         "hitrating": 19,
+         "source": "Heroic",
+         "phase": 1,
+         "id": 35511
+      },
+      {
          "name": "Worgen Claw Necklace",
          "agi": 20,
          "sta": 21,
@@ -583,7 +592,7 @@ var gear = {
          "ac": 219,
          "source": "PVP",
          "phase": 1,
-         "id": 28968
+         "id": 28986
       },
       {
          "name": "Girdle of the Deathdealer",
