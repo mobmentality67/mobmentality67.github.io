@@ -186,7 +186,7 @@ SIM.SETTINGS = {
             if (spell.haste !== undefined)
                 div.find('.options').append(`<li>Attack speed at <input type="text" name="haste" value="${spell.haste}" data-numberonly="true" /> %</li>`);
             if (spell.priorityap !== undefined)
-                div.find('.options').append(`<li>Prioritize Swipe when >= <input style="width:25px" type="text" name="priorityap" value="${spell.priorityap}" data-numberonly="true" /> AP</li>`);
+                div.find('.options').append(`<li>Prioritize Swipe when >= <input style="width:25px" type="text" name="priorityap" value="${spell.priorityap}" data-numberonly="true" /> AP</li> and 5 stacks of Lacerate > 5 seconds left`);
             if (spell.reaction !== undefined)
                 div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
             if (spell.hidden)

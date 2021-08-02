@@ -72,6 +72,7 @@ class Player {
             this.testTempEnchType = testType;
         }
         else if (enchtype == 3) {
+            this.log(`Test type = ${testType}`);
             if (testType == 0) {
                 this.base.ap += testItem;
             }
@@ -83,6 +84,12 @@ class Player {
             }
             else if (testType == 3) {
                 this.base.str += testItem;
+            }
+            else if (testType == 4) {
+                this.base.agi += testItem;
+            }
+            else if (testType == 5) {
+                this.base.hasterating += testItem;
             }
         }
         else {
@@ -188,7 +195,9 @@ class Player {
 
                     for (let prop in this.base) {
                         if (prop == 'haste')
-                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
+                            this.base.haste *= item.haste || 1;
+                        else if (prop == 'hasterating')
+                            this.base.hasterating += item.hasterating || 0;
                         else
                             this.base[prop] += item[prop] || 0;
                     }
@@ -313,11 +322,11 @@ class Player {
     updateIncAttackTable() {
         // Incoming attack table constant setup
         // Agi dodge + dodge rating + def rating
-        this.stats.incdodge = 3.19 + this.stats.agi / 14.7059 + this.stats.incdodgerating / 18.923 + this.stats.def * .04 / 2.3654; 
-        if (this.race.name == 'Night Elf') this.stats.incdodge += 1;
-        // 4.4 base miss + miss from defense rating
-        this.stats.incmiss = 4.4 + this.stats.def * .04 / 2.3654;
-        this.stats.inccrit = Math.max(0, 5.6 - this.stats.def * .04 / 2.3654 - this.stats.res * 0.0254);
+        this.stats.incdodge = this.stats.agi / 14.7059 + this.stats.incdodgerating / 18.9231 + this.stats.def * .04; 
+        if (this.race == 'Night Elf') this.stats.incdodge += 1;
+   `  `   // 4.4 base miss + miss from defense rating
+        this.stats.incmiss = 4.4 + this.stats.def * .04;
+        this.stats.inccrit = Math.max(0, 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.0254);
         this.stats.inccrush = 15;
 
         // if (log) {
@@ -354,7 +363,8 @@ class Player {
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
         this.stats.armormod *= this.talents.thickhidemod;
         this.updateArmor();
-        this.stats.def = this.stats.def / 2.3654; // Adjust defense skill for defense rating
+        this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
+        this.stats.haste = this.base.haste + this.base.hasterating / 15.8 / 100; 
     }
     updateStrength() {
         this.stats.str = this.base.str;
@@ -617,7 +627,7 @@ class Player {
         tmp += (3.19 + this.stats.incdodge) * 100
         if (roll < tmp) return RESULT.DODGE;
         tmp += 15.0 * 100;
-        if (roll < tmp) return RESULT.CRUSHING;
+        if (roll < tmp) return RESULT.CRUSH;
         tmp += (Math.max(5.6 - this.talents.survivalofthefittest - this.stats.res * 0.02564 - this.stats.def * 0.04, 0)) * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
@@ -719,18 +729,19 @@ class Player {
         let dmg = this.incswingdamage;
         if (result == RESULT.HIT) {
             dmg *= 1.0;
+            if (log) this.log(`Boss hit for ${dmg}`);
         }
         else if (result == RESULT.CRIT) {
             dmg *= 2.0;
+            if (log) this.log(`Boss crit for ${dmg}`);
         }
         else if (result == RESULT.CRUSH) {
             dmg *= 1.5;
+            if (log) this.log(`Boss crushed for ${dmg}`);
         }
         else {
             dmg = 0.0;
-            if (log) {
-                this.log("Boss swing missed");
-            }
+            if (log) this.log("Boss swing missed");
             return;
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));

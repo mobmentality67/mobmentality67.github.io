@@ -83,6 +83,8 @@ class SimulationWorkerParallel {
                 result.maxtps = Math.min(result.maxtps, data.maxtps);
                 result.sumdps += data.sumdps;
                 result.sumdps2 += data.sumdps2;
+                result.sumthreat += data.sumthreat;
+                result.sumthreat2 += data.sumthreat2;
                 result.starttime = Math.min(result.starttime, data.starttime);
                 result.endtime = Math.min(result.endtime, data.endtime);
                 if (result.spread && data.spread) {
@@ -194,6 +196,7 @@ class Simulation {
         this.sumdps = 0;
         this.sumdps2 = 0;
         this.sumthreat = 0;
+        this.sumthreat2 = 0;
         this.maxcallstack = Math.min(Math.floor(this.iterations / 10), 1000);
         this.starttime = 0;
         this.endtime = 0;
@@ -398,6 +401,7 @@ class Simulation {
         this.sumdps += dps;
         this.sumdps2 += dps * dps;
         this.sumthreat += tps;
+        this.sumthreat2 += tps * tps;
         dps = Math.round(dps);
         tps = Math.round(tps);
         if (!this.spread[dps]) this.spread[dps] = 1;
@@ -430,6 +434,7 @@ class Simulation {
                 sumdps: this.sumdps,
                 sumdps2: this.sumdps2,
                 sumthreat: this.sumthreat,
+                sumthreat2: this.sumthreat2,
                 starttime: this.starttime,
                 endtime: this.endtime,
                 ehp: this.ehp

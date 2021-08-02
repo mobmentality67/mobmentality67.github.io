@@ -100,13 +100,15 @@ class Lacerate extends Spell {
         return (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod;
     }
     use() {
+        this.player.timer = 1500;
         this.player.rage -= this.cost;
         this.player.auras.laceratedot.use();
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.rage >= this.threshold ||
             (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd)) && 
-            (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap)));
+            (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap) && 
+                this.player.auras.laceratedot && this.player.auras.laceratedot.stacks == 5 && (this.player.auras.laceratedot.timer - step) > 5000));
     }
 }
 
@@ -141,7 +143,7 @@ class FaerieFire extends Spell {
         this.name = 'Faerie Fire';
     }
     use() {
-        this.player.timer = 4000;
+        this.player.timer = 1500;
         this.player.rage -= this.cost;
         this.stacks++;
     }

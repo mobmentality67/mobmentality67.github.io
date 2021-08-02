@@ -234,7 +234,7 @@ SIM.UI = {
                 tps.text(meantps.toFixed(2));
                 dps.text(mean.toFixed(2));
 
-                const s1 = report.sumdps, s2 = report.sumdps2, n = report.iterations;
+                const s1 = report.sumthreat, s2 = report.sumthreat2, n = report.iterations;
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
                 error.text((1.96 * Math.sqrt(varmean)).toFixed(2));
 
@@ -243,7 +243,7 @@ SIM.UI = {
                 tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
                 btn.css('background', '');
                 if (rows) view.simulateRows(Array.from(rows));
-                else if (weights) view.simulateWeights(player, mean, varmean);
+                else if (weights) view.simulateWeights(player, meantps, varmean);
                 else view.endLoading();
 
                 SIM.STATS.initCharts(report);
@@ -290,21 +290,21 @@ SIM.UI = {
         async function simulateAll() {
             const ap = await simulateWeight(0, 50);
             updateStat("ap", ap);
-            console.log(player.auras.bloodfury);
-            if (player.auras.bloodfury) {
-                updateStat("str", await simulateWeight(3, 25));
-            } else {
-                const strAp = 2 * player.stats.strmod;
-                updateStat("str", {weight: ap.weight * strAp, error: ap.error * strAp});
-            }
+
+            const strAp = 2 * player.stats.strmod;
+            updateStat("str", {weight: ap.weight * strAp, error: ap.error * strAp});
 
             const crit = await simulateWeight(1, 2);
             updateStat("crit", crit);
 
-            const agiCrit = player.stats.agimod / 20;
-            updateStat("agi", {weight: crit.weight * agiCrit, error: crit.error * agiCrit});
+            const agi = await simulateWeight(4, 10);
+            updateStat("agi", {weight: agi.weight * player.stats.agimod, error: agi.error * player.stats.agimod});
 
             updateStat("hit", await simulateWeight(2, 2));
+
+            const haste = await simulateWeight(5, 50);
+            updateStat("haste", {weight: haste.weight * player.stats.agimod, error: haste.error * player.stats.agimod});
+
         }
 
         simulateAll().then(
@@ -332,15 +332,15 @@ SIM.UI = {
             var sim = new SimulationWorkerParallel(
                 MAX_WORKERS,
                 (report) => {
-                    const mean = report.totaldmg / report.totalduration;
+                    const mean = report.totalthreat / report.totalduration;
 
-                    const s1 = report.sumdps, s2 = report.sumdps2, n = report.iterations;
+                    const s1 = report.sumthreat, s2 = report.sumthreat2, n = report.iterations;
                     const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
 
                     resolve({mean, varmean});
                 },
                 (iteration, report) => {
-                    if (updateFn) updateFn(iteration / report.iterations, report.totaldmg / report.totalduration);
+                    if (updateFn) updateFn(iteration / report.iterations, report.totalthreat / report.totalduration);
                 },
                 (error) => reject(error),
             );
@@ -946,6 +946,7 @@ SIM.UI = {
                                 <th>AP</th>
                                 <th>Hit</th>
                                 <th>Crit</th>
+                                <th>EHP</th>
                                 <th>TPS</th>
                             </tr>
                         </thead>
@@ -961,6 +962,7 @@ SIM.UI = {
                         <td>${item.ap || ''}</td>
                         <td>${item.hit || ''}</td>
                         <td>${item.critrating || ''}</td>
+                        <td>${item.ehp || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -971,7 +973,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[7, 1]] : [[6, 1]],
+            sortList: editmode ? [[8, 1]] : [[7, 1]],
         });
     },
 

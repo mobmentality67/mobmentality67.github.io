@@ -54,10 +54,10 @@ var gear = {
       },
       {
          "name": "Stag-Helm of Malorne",
-         "ac": 356,
-         "sta": 45,
-         "str": 33,
-         "agi": 20,
+         "ac": 490,
+         "sta": 30,
+         "str": 41,
+         "agi": 33,
          "socket0": "meta",
          "socket1": "yellow",
          "source": "Karazhan",
@@ -248,7 +248,7 @@ var gear = {
       {
          "name": "Gilded Thorium Cloak",
          "ac": 385,
-         "def": 19,
+         "def": 24,
          "sta": 30,
          "source": "Karazhan",
          "phase": 1,
@@ -550,7 +550,7 @@ var gear = {
          "id": 28750
       },
       {
-         "name": "Gronn-Stiched Girl",
+         "name": "Gronn-Stiched Girdle",
          "sta": 27,
          "critrating": 25,
          "ac": 222,
@@ -572,6 +572,18 @@ var gear = {
          "source": "PVP",
          "phase": 1,
          "id": 28976
+      },
+      {
+         "name": "Marshal's Leather Belt",
+         "res": 26,
+         "ap": 30,
+         "sta": 39,
+         "agi": 27,
+         "critrating": 15,
+         "ac": 219,
+         "source": "PVP",
+         "phase": 1,
+         "id": 28968
       },
       {
          "name": "Girdle of the Deathdealer",
@@ -1437,43 +1449,33 @@ var gear = {
       },
       {
          "id": 16,
-         "name": "+ 4 Skill",
-         "skill_0": 4,
-         "skill_1": 4,
-         "skill_2": 4,
-         "skill_3": 4,
-         "skill_4": 4,
-         "skill_5": 4,
+         "name": "+ 10 Haste Rating",
+         "hasterating": 5
       },
       {
          "id": 17,
-         "name": "+ 5 Skill",
-         "skill_0": 5,
-         "skill_1": 5,
-         "skill_2": 5,
-         "skill_3": 5,
-         "skill_4": 5,
-         "skill_5": 5,
+         "name": "+ 50 Haste Rating",
+         "hasterating": 50
       },
       {
          "id": 18,
-         "name": "+ 7 Skill",
-         "skill_0": 7,
-         "skill_1": 7,
-         "skill_2": 7,
-         "skill_3": 7,
-         "skill_4": 7,
-         "skill_5": 7,
+         "name": "+ 100 Haste Rating",
+         "hasterating": 100
       },
       {
          "id": 19,
-         "name": "+ 12 Skill",
-         "skill_0": 12,
-         "skill_1": 12,
-         "skill_2": 12,
-         "skill_3": 12,
-         "skill_4": 12,
-         "skill_5": 12,
+         "name": "+ 5 Expertise Rating",
+         "exp": 5
+      },
+      {
+         "id": 20,
+         "name": "+ 20 Expertise Rating",
+         "exp": 20
+      },
+      {
+         "id": 21,
+         "name": "+ 40 Expertise Rating",
+         "exp": 40
       },
    ]
 };
@@ -1695,7 +1697,7 @@ var enchant = {
          "spellid": true,
          "name": "Nethercleft Leg Armor",
          "sta": 40,
-         "agi": 10,
+         "agi": 12,
          "phase": 1
       },
       {
