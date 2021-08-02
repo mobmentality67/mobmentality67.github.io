@@ -258,6 +258,7 @@ class Simulation {
         if (player.auras.spider) { this.spiderstep = 0; itemdelay += 15000; }
         if (player.auras.bloodlustbrooch) { this.broochstep = 0; itemdelay += 20000; }
         if (player.auras.pummeler) { this.pummelstep = 0; itemdelay += 30000; }
+        if (player.auras.abacus) { this.abacusstep = 0; itemdelay += 10000; }
 
         if (player.auras.swarmguard) { player.auras.swarmguard.usestep = Math.max(this.maxsteps - player.auras.swarmguard.timetoend, 0); }
 
@@ -268,6 +269,7 @@ class Simulation {
         if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { delayedspell = player.auras.swarmguard; }
             else if (player.auras.slayer && player.auras.slayer.canUse()) { delayedspell = player.auras.slayer; }
             else if (player.auras.spider && player.auras.spider.canUse()) { delayedspell = player.auras.spider; }
+            else if (player.auras.abacus && player.auras.abacus.canUse()) { delayedspell = player.auras.abacus; }
             else if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse()) { delayedspell = player.auras.bloodlustbrooch; }
             else if (player.auras.pummeler && player.auras.pummeler.canUse()) { delayedspell = player.auras.pummeler; } 
         if (delayedspell) {
@@ -301,6 +303,7 @@ class Simulation {
                 else if (player.auras.spider && player.auras.spider.canUse() && step > this.spiderstep) { player.spelldelay = 1; delayedspell = player.auras.spider; }
                 else if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse() && step > this.broochstep) { player.spelldelay = 1; delayedspell = player.auras.bloodlustbrooch; }
                 else if (player.auras.pummeler && player.auras.pummeler.canUse() && step > this.pummelstep) { player.spelldelay = 1; delayedspell = player.auras.pummeler; }                
+                else if (player.auras.abacus && player.auras.abacus.canUse() && step > this.abacusstep) { player.spelldelay = 1; delayedspell = player.auras.abacus; }                
 
                 // Normal phase
                 else if (player.spells.faeriefire && player.spells.faeriefire.canUse()) { player.spelldelay = 1; delayedspell = player.spells.faeriefire; }
@@ -358,7 +361,7 @@ class Simulation {
             if (player.spelldelay && (delayedspell.maxdelay - player.spelldelay) < next) next = delayedspell.maxdelay - player.spelldelay + 1;
             if (player.heroicdelay && (delayedheroic.maxdelay - player.heroicdelay) < next) next = delayedheroic.maxdelay - player.heroicdelay + 1;
             if (player.timer && player.timer < next) next = player.timer;
-            if (player.activetank && !player.incswingtimer && player.incswingtimer < next) next = player.incswingtimer;
+            if (player.activetank && player.incswingtimer && player.incswingtimer < next) next = player.incswingtimer;
             if (player.itemtimer && player.itemtimer < next) next = player.itemtimer;
 
             if (player.spells.mangle && player.spells.mangle.timer && player.spells.mangle.timer < next) next = player.spells.mangle.timer;

@@ -117,6 +117,7 @@ class Player {
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
         if (this.items.includes(29383)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
         if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
+        if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         this.update();
     }
     addRace() {
@@ -240,8 +241,8 @@ class Player {
                         this.auras[bonus.stats.procspell.toLowerCase()] = eval('new ' + bonus.stats.procspell + '(this)');
                         this.attackproc.spell = this.auras[bonus.stats.procspell.toLowerCase()];
                     }
-                    if (bonus.stats.enhancedbs) {
-                        this.enhancedbs = true;
+                    if (bonus.stats.t4rageproc) {
+                        this.t4rageproc = true;
                     }
                 }
             }
@@ -253,7 +254,6 @@ class Player {
                 let apbonus = 0;
                 if (buff.group == "battleshout") {
                     let shoutap = buff.ap;
-                    if (buff.id == 27578 && this.enhancedbs) shoutap += 30;
                     shoutap = ~~(shoutap * (1 + this.talents.impbattleshout));
                     apbonus = shoutap - buff.ap;
                 }
@@ -588,7 +588,11 @@ class Player {
         if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.step();
         if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
         if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.step();
+        if (this.auras.abacus && this.auras.abacus.firstuse && this.auras.abacus.timer) this.auras.abacus.step();
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.step();
+        if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.step();
+        if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.step();
+        if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.step();
 
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
@@ -597,10 +601,13 @@ class Player {
         if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.end();
         if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.end();
         if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
+        if (this.auras.abacus && this.auras.abacus.firstuse && this.auras.abacus.timer) this.auras.abacus.end();
         if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.end();
         if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.end();
+        if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.end();
+        if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.end();
+        if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.end();
 
-        if (this.auras.flurry && this.auras.flurry.timer) this.auras.flurry.end();
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
 
     }
@@ -846,56 +853,41 @@ class Player {
     procattack(spell, weapon, result) {
         let procdmg = 0;
         if (result != RESULT.MISS && result != RESULT.DODGE) {
-            if (weapon.proc1 && rng10k() < weapon.proc1.chance) {
-                //if (log) this.log(`${weapon.name} proc`);
-                if (weapon.proc1.spell && !(weapon.proc1.gcd && this.timer && this.timer < 1500)) weapon.proc1.spell.use();
-                if (weapon.proc1.magicdmg) procdmg += this.magicproc(weapon.proc1);
-                if (weapon.proc1.physdmg) procdmg += this.physproc(weapon.proc1.physdmg);
-                if (weapon.proc1.extra) this.extraattacks += weapon.proc1.extra;
+            if (this.t4rageproc && rng10k() < 1000) {
+                if (log) this.log(`T4 Bloodlust Proc, +10 rage`);
+                this.rage += 10.0;
             }
-            if (weapon.proc2 && rng10k() < weapon.proc2.chance) {
-                if (weapon.proc2.spell) weapon.proc2.spell.use();
-                if (weapon.proc2.magicdmg) procdmg += this.magicproc(weapon.proc2);
-            }
-            if (this.trinketproc1 && rng10k() < this.trinketproc1.chance) {
+            // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
+            if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc1.chance) {
                 //if (log) this.log(`Trinket 1 proc`);
                 if (this.trinketproc1.extra)
                     this.batchedextras += this.trinketproc1.extra;
                 if (this.trinketproc1.magicdmg) procdmg += this.magicproc(this.trinketproc1);
-                if (this.trinketproc1.spell) this.trinketproc1.spell.use();
+                if (this.trinketproc1.spell && this.trinketproc1.spell.canUse()) this.trinketproc1.spell.use();
             }
-            if (this.trinketproc2 && rng10k() < this.trinketproc2.chance) {
+            // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
+            if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc2.chance) {
                 //if (log) this.log(`Trinket 2 proc`);
                 if (this.trinketproc2.extra)
                     this.batchedextras += this.trinketproc2.extra;
                 if (this.trinketproc2.magicdmg) procdmg += this.magicproc(this.trinketproc2);
-                if (this.trinketproc2.spell) this.trinketproc2.spell.use();
+                if (this.trinketproc2.spell && this.trinketproc2.spell.canUse()) this.trinketproc2.spell.use();
             }
             if (this.attackproc && rng10k() < this.attackproc.chance) {
                 if (this.attackproc.magicdmg) procdmg += this.magicproc(this.attackproc);
                 if (this.attackproc.spell) this.attackproc.spell.use();
                 //if (log) this.log(`Misc proc`);
             }
-            if (this.talents.swordproc && weapon.type == WEAPONTYPE.SWORD) {
-                if (rng10k() < this.talents.swordproc * 100){
-                    this.extraattacks++;
-                    //if (log) this.log(`Sword talent proc`);
-                }
-            }
+
             if (this.auras.swarmguard && this.auras.swarmguard.timer && rng10k() < this.auras.swarmguard.chance) {
                 this.auras.swarmguard.proc();
             }
-            if (this.auras.zandalarian && this.auras.zandalarian.timer) {
-                this.auras.zandalarian.proc();
-            }
+
             if (this.dragonbreath && rng10k() < 400) {
                 procdmg += this.magicproc({ magicdmg: 60, coeff: 1 });
             }
         }
-        if (!spell || spell instanceof Maul) {
-            if (this.auras.flurry && this.auras.flurry.stacks)
-                this.auras.flurry.proc();
-        }
+
         return procdmg;
     }
     magicproc(proc) {

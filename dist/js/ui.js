@@ -913,9 +913,9 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[14, 1],[1, 0]] : [[13, 1],[0, 0]],
+            sortList: editmode ? [[15, 1],[1, 0]] : [[14, 1],[0, 0]],
             textSorter : {
-                10 : function(a, b, direction, column, table) {
+                13 : function(a, b, direction, column, table) {
                     var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
                     var b = parseFloat(b.substring(0,b.indexOf('.') + 3));
                     if (isNaN(a)) a = 0; 
@@ -924,7 +924,7 @@ SIM.UI = {
                 },
             },
             headers: {
-                10: { sorter: "text" }
+                13: { sorter: "text" }
             }
         });
 

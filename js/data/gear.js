@@ -989,6 +989,41 @@ var gear = {
          "id": 21670
       },
       {
+         "name": "Dragonspine Trophy",
+         "source": "Gruuls",
+         "phase": "1",
+         "id": 28830,
+         "ap": 40,
+         "procchance": 4.1667,
+         "procspell": "DST"
+      },
+      {
+         "name": "Tsunami Talisman",
+         "source": "Other",
+         "phase": "1",
+         "id": 30627,
+         "hitrating": 10,
+         "critrating": 38,
+         "procchance": 10,
+         "procspell": "Tsunami"
+      },
+      {
+         "name": "Abacus of Violet Odds",
+         "source": "Dungeon",
+         "phase": "1",
+         "id": 28288,
+         "ap": 64,
+      },
+      {
+         "name": "Hourglass of the Unraveller",
+         "source": "Dungeon",
+         "phase": "1",
+         "id": 28034,
+         "critrating": 32,
+         "procchance": 10,
+         "procspell": "Hourglass"
+      },
+      {
          "name": "Blackhand's Breadth",
          "critrating": 28,
          "source": "Quest",
@@ -1085,6 +1120,31 @@ var gear = {
          "source": "Other",
          "phase": "6",
          "id": 21670
+      },
+      {
+         "name": "Dragonspine Trophy",
+         "source": "Gruuls",
+         "phase": "1",
+         "id": 28830,
+         "ap": 40,
+         "procchance": 4.1667,
+         "procspell": "DST"
+      },
+      {
+         "name": "Abacus of Violet Odds (Used first 15 secs) / on CD",
+         "source": "Gruuls",
+         "phase": "1",
+         "id": 28288,
+         "ap": 64,
+      },
+      {
+         "name": "Hourglass of the Unraveller",
+         "source": "Dungeon",
+         "phase": "1",
+         "id": 28034,
+         "critrating": 32,
+         "procchance": 10,
+         "procspell": "Hourglass"
       },
       {
          "name": "Blackhand's Breadth",
@@ -1880,116 +1940,11 @@ var enchant = {
 var sets = [
    {
       id: 143,
-      name: 'Devilsaur Armor',
-      items: [15062, 15063],
+      name: 'Malorne Harness',
+      items: [29098, 29100, 29096, 29097, 29099],
       bonus: [
-         { count: 2, stats: { hit: 2 } }
+         { count: 2, stats: { t4rageproc: true } },
+         { count: 4, stats: { bonusac: 1200 } },
       ]
-   },
-   {
-      id: 533,
-      name: 'Battlegear of Undead Slaying (vs Undead)',
-      items: [23078, 23087, 23090],
-      bonus: [
-         { count: 3, stats: { dmgmod: .02 } }
-      ]
-   },
-   {
-      id: 189,
-      name: 'Battlegear of Valor',
-      items: [16736, 16734, 16735, 16730, 16737, 16731, 16732, 16733],
-      bonus: [
-         { count: 4, stats: { ap: 40 } }
-      ]
-   },
-   {
-      id: 489,
-      name: 'Black Dragon Mail',
-      items: [15050, 16984, 15052, 15051],
-      bonus: [
-         { count: 2, stats: { hit: 1 } },
-         { count: 3, stats: { crit: 2 } },
-      ]
-   },
-   {
-      id: 41,
-      name: 'Dal\'Rend\'s Arms',
-      items: [12940, 12939],
-      bonus: [
-         { count: 2, stats: { ap: 50 } }
-      ]
-   },
-   {
-      id: 384,
-      name: 'Field Marshal\'s Battlegear',
-      items: [16477, 16478, 16480, 16483, 16484, 16479],
-      bonus: [
-         { count: 2, stats: { sta: 40 } },
-         { count: 6, stats: { ap: 40 } }
-      ]
-   },
-   {
-      id: 545,
-      name: 'Lieutenant Commander\'s Battlearmor',
-      items: [23315,23314,23287,23286,23301,23300],
-      bonus: [
-         { count: 2, stats: { ap: 40 } }
-      ]
-   },
-   {
-      id: 218,
-      name: 'Battlegear of Wrath',
-      items: [16959, 16966, 16964, 16963, 16962, 16961, 16965, 16960],
-      bonus: [
-         { count: 3, stats: { enhancedbs: true  } }
-      ]
-   },
-   {
-      id: 511,
-      name: 'Battlegear of Heroism',
-      items: [21994, 21995, 21996, 21997, 21998, 21999, 22000, 22001],
-      bonus: [
-         { count: 6, stats: { ap: 40 } }
-      ]
-   },
-   {
-      id: 487,
-      name: 'The Defiler\'s Resolution',
-      items: [20204, 20208, 20212],
-      bonus: [
-         { count: 3, stats: { crit: 1 } }
-      ]
-   },
-   {
-      id: 466,
-      name: 'Major Mojo Infusion',
-      items: [19898, 19925],
-      bonus: [
-         { count: 2, stats: { ap: 30 } }
-      ]
-   },
-   {
-      id: 461,
-      name: 'The Twin Blades of Hakkari',
-      items: [19865, 19866],
-      bonus: [
-         { count: 2, stats: { skill_1: 6 } }
-      ]
-   },
-   {
-      id: 463,
-      name: 'Primal Blessing',
-      items: [19896, 19910],
-      bonus: [
-         { count: 2, stats: { procspell: "PrimalBlessing", procchance: 1 } }
-      ]
-   },
-   {
-      id: 209,
-      name: 'Battlegear of Might',
-      items: [16864,16861,16865,16863,16866,16867,16868,16862],
-      bonus: [
-         { count: 3, stats: { sta: 0 } }
-      ]
-   },
+   }
 ];
