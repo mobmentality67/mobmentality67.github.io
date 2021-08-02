@@ -302,8 +302,8 @@ SIM.UI = {
 
             updateStat("hit", await simulateWeight(2, 2));
 
-            const haste = await simulateWeight(5, 50);
-            updateStat("haste", {weight: haste.weight * player.stats.agimod, error: haste.error * player.stats.agimod});
+            const haste = await simulateWeight(5, 10);
+            updateStat("haste", {weight: haste.weight, error: haste.error});
 
         }
 

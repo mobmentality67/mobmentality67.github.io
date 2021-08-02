@@ -1519,7 +1519,7 @@ var gear = {
       {
          "id": 16,
          "name": "+ 10 Haste Rating",
-         "hasterating": 5
+         "hasterating": 10
       },
       {
          "id": 17,
