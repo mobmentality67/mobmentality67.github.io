@@ -346,7 +346,7 @@ class Player {
                     this.stats[prop] *= (1 + this.auras[name].mult_stats[prop] / 100);
             }
         }
-        this.stats.dmgmod += this.talents.naturalistmod;
+        this.stats.dmgmod *= 1 + this.talents.naturalistmod;
         this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
         this.stats.strmod += this.talents.survivalofthefittest * .01;
         this.stats.agimod += this.talents.survivalofthefittest * .01;   

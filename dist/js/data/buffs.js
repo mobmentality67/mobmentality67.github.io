@@ -82,6 +82,22 @@ var buffs = [
       group: "food",
       agi: 20
    },
+   {
+      id: 33602,
+      spellid: true,
+      name: "Improved Faerie Fire",
+      iconname: "spell_nature_faeriefire",
+      group: "",
+      hit: 3
+   },
+   {
+      id: 29859,
+      spellid: true,
+      name: "Blood Frenzy",
+      iconname: "ability_warrior_bloodfrenzy",
+      group: "",
+      dmgmod: 4
+   },
    
    
 ];

@@ -1,6 +1,47 @@
 var gear = {
    "head": [
       {
+         "name": "Nordrassil Headdress",
+         "ac": 565,
+         "agi": 33,
+         "sta": 43,
+         "str": 46,
+         "socket0": "red",
+         "socket1": "meta",
+         "socketbonus_sta": 6,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30228
+      },
+      {
+         "name": "Merciless Gladiator's Helm",
+         "ac": 404,
+         "agi": 27,
+         "sta": 52,
+         "str": 36,
+         "res": 25,
+         "socket0": "meta",
+         "socket1": "yellow",
+         "socketbonus_res": 4,
+         "source": "PVP",
+         "phase": 2,
+         "id": 31968
+      },
+      {
+         "name": "Deathblow X11 Goggles",
+         "ac": 326,
+         "agi": 48,
+         "sta": 28,
+         "ap": 76,
+         "hitrating": 11,
+         "socket0": "meta",
+         "socket1": "blue",
+         "socketbonus_agi": 4,
+         "source": "Crafting",
+         "phase": 2,
+         "id": 32478
+      },
+      {
          "name": "Helm of the Claw",
          "ac": 237,
          "agi": 25,
@@ -60,6 +101,7 @@ var gear = {
          "agi": 33,
          "socket0": "meta",
          "socket1": "yellow",
+         "socketbonus_agi": 4,
          "source": "Karazhan",
          "phase": 1,
          "id": 29098
@@ -100,14 +142,34 @@ var gear = {
    ],
    "neck": [
       {
-         "name": "Bone Chain Necklace",
-         "agi": 19,
-         "sta": 18,
-         "hitrating": 13,
-         "ap": 36,
+         "name": "Veteran's Pendant of Triumph",
+         "sta": 31,
+         "critrating": 18,
+         "ap": 42,
+         "res": 18,
+         "source": "PVP",
+         "socket0": "yellow",
+         "socketbonus_res": 4,
+         "phase": 2,
+         "id": 33066
+      },
+      {
+         "name": "Telonicus' Pendant of Mayhem",
+         "agi": 27,
+         "sta": 26,
+         "ap": 70,
+         "source": "TK",
+         "phase": 2,
+         "id": 30017
+      },
+      {
+         "name": "Frayed Tether of the Drowned",
+         "sta": 45,
+         "hitrating": 18,
+         "def": 24,
          "source": "Heroic",
-         "phase": 1,
-         "id": 27779
+         "phase": 2,
+         "id": 30099
       },
       {
          "name": "Choker of Vile Intent",
@@ -180,6 +242,47 @@ var gear = {
    ],
    "shoulder": [
       {
+         "name": "Nordrassil Feral-Mantle",
+         "str": 35,
+         "sta": 28,
+         "agi": 34,
+         "ac": 468,
+         "socket0" : "yellow",
+         "socket1" : "blue",
+         "socketbonus_str" : "3",
+         "source": "TK",
+         "phase": 2,
+         "id": 30230,
+      },
+      {
+         "name": "Merciless Gladiator's Dragonhide Spaulders",
+         "str": 30,
+         "sta": 39,
+         "agi": 21,
+         "ac": 377,
+         "res": 21,
+         "socket0" : "red",
+         "socket1" : "yellow",
+         "socketbonus_res" : "3",
+         "source": "PVP",
+         "phase": 2,
+         "id": 31971,
+      },
+      {
+         "name": "Shoulderpads of the Stranger",
+         "sta": 28,
+         "agi": 33,
+         "critrating": 16,
+         "exp": 10,
+         "ap": 60,
+         "ac": 303,
+         "socket0" : "red",
+         "socketbonus_agi" : "2",
+         "source": "SSC",
+         "phase": 2,
+         "id": 30055,
+      },
+      {
          "name": "Mantle of Malorne",
          "str": 33,
          "sta": 25,
@@ -247,6 +350,66 @@ var gear = {
    ],
    "back": [
       {
+         "name": "Thalassian Wildercloak",
+         "ac": 116,
+         "ap": 68,
+         "agi": 28,
+         "sta": 28,
+         "source": "TK",
+         "phase": 2,
+         "id": 29994
+      },
+      {
+         "name": "Sergeant's Heavy Cloak",
+         "ac": 104,
+         "ap": 38,
+         "critrating": 19,
+         "sta": 27,
+         "res": 19,
+         "source": "PVP",
+         "phase": 2,
+         "id": 28380
+      },
+      {
+         "name": "Razor-Scale Battlecloak",
+         "ac": 108,
+         "str": 33,
+         "agi": 23,
+         "sta": 22,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30098
+      },
+      {
+         "name": "Phoenix-Wing Cloak",
+         "ac": 108,
+         "def": 22,
+         "dodgerating": 27,
+         "sta": 37,
+         "source": "SSC",
+         "phase": 2,
+         "id": 29925
+      },
+      {
+         "name": "Cloak of the Pit Stalker",
+         "ac": 105,
+         "sta": 28,
+         "critrating": 24,
+         "ap": 56,
+         "source": "Magtheridon",
+         "phase": 1,
+         "id": 28777
+      },
+      {
+         "name": "Farstrider Wildcloak",
+         "ac": 105,
+         "sta": 36,
+         "ap": 70,
+         "source": "Karazhan",
+         "phase": 1,
+         "id": 28764
+      },
+      {
          "name": "Thoriumweave Cloak",
          "ac": 390,
          "sta": 35,
@@ -267,7 +430,7 @@ var gear = {
          "name": "Resolute Cape",
          "ac": 349,
          "sta": 30,
-         "source": "Crafted",
+         "source": "Crafting",
          "phase": 1,
          "id": 24258
       },
@@ -303,6 +466,35 @@ var gear = {
       }
    ],
    "chest": [
+      {
+         "name": "Nordrassil Chestplate",
+         "sta": 43,
+         "agi": 30,
+         "str": 46,
+         "ac": 727,
+         "socket0": "blue",
+         "socket1": "yellow",
+         "socket2": "red",
+         "socketbonus_str": 4,
+         "source": "TK",
+         "phase": 2,
+         "id": 30222
+      },
+      {
+         "name": "Merciless Gladiator's Tunic",
+         "sta": 48,
+         "agi": 22,
+         "str": 37,
+         "res": 26,
+         "ac": 498,
+         "socket0": "red",
+         "socket1": "red",
+         "socket2": "yellow",
+         "socketbonus_critrating": 4,
+         "source": "PVP",
+         "phase": 2,
+         "id": 31972
+      },
       {
          "name": "Heavy Clefthoof Vest",
          "sta": 45,
@@ -371,6 +563,39 @@ var gear = {
       }
    ],
    "wrist": [
+      {
+         "name": "Veteran's Dragonhide Bracers",
+         "str": 19,
+         "sta": 25,
+         "agi": 18,
+         "res": 17,
+         "ac": 216,
+         "source": "PVP",
+         "phase": "2",
+         "id": 32810
+      },
+      {
+         "name": "Veteran's Leather Bracers",
+         "ap": 20,
+         "sta": 29,
+         "agi": 21,
+         "res": 15,
+         "critrating": 9,
+         "ac": 174,
+         "source": "PVP",
+         "phase": "2",
+         "id": 32814
+      },
+      {
+         "name": "Vambraces of Ending",
+         "ap": 52,
+         "sta": 24,
+         "agi": 24,
+         "ac": 177,
+         "source": "TK",
+         "phase": "2",
+         "id": 29966
+      },
       {
          "name": "Forestheart Bracers",
          "str": 18,
@@ -442,6 +667,38 @@ var gear = {
       }
    ],
    "hands": [
+      {
+         "name": "Nordrassil Handgrips",
+         "str": 35,
+         "sta": 40,
+         "agi": 27,
+         "ac": 514,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30223
+      },
+      {
+         "name": "Merciless Gladiator's Dragonhide Gloves",
+         "str": 34,
+         "sta": 40,
+         "agi": 19,
+         "res": 22,
+         "ac": 324,
+         "source": "PVP",
+         "phase": 2,
+         "id": 31967
+      },
+      {
+         "name": "Gloves of the Searing Grip",
+         "ap": 66,
+         "sta": 37,
+         "agi": 33,
+         "ac": 252,
+         "exp": 18,
+         "source": "TK",
+         "phase": 2,
+         "id": 29947
+      },
       {
          "name": "Verdant Gloves",
          "str": 26,
@@ -526,6 +783,66 @@ var gear = {
    ],
    "waist": [
       {
+         "name": "Belt of Natural Power",
+         "str": 29,
+         "sta": 38,
+         "agi": 20,
+         "int": 12,
+         "ac": 423,
+         "source": "Crafting",
+         "socket0": "red",
+         "socket1": "red",
+         "phase": 2,
+         "id": 30042
+      },
+      {
+         "name": "Belt of One-Hundred Deaths",
+         "ap": 74,
+         "sta": 25,
+         "agi": 29,
+         "ac": 244,
+         "exp": 25,
+         "source": "SSC",
+         "socket0": "red",
+         "socket1": "blue",
+         "phase": 2,
+         "id": 30106
+      },
+      {
+         "name": "Veteran's Leather Belt",
+         "ap": 34,
+         "sta": 45,
+         "agi": 30,
+         "ac": 241,
+         "res": 30,
+         "critrating": 16,
+         "source": "PVP",
+         "phase": 2,
+         "id": 32802
+      },
+      {
+         "name": "Veteran's Dragonhide Belt",
+         "str": 27,
+         "sta": 39,
+         "agi": 26,
+         "ac": 283,
+         "res": 26,
+         "source": "PVP",
+         "phase": 2,
+         "id": 32798
+      },
+      {
+         "name": "Belt of Deep Shadow",
+         "ap": 66,
+         "sta": 14,
+         "agi": 32,
+         "ac": 227,
+         "hitrating": 18,
+         "source": "Crafting",
+         "phase": 2,
+         "id": 30040
+      },
+      {
          "name": "Manimal's Cinch",
          "str": 23,
          "sta": 24,
@@ -608,6 +925,41 @@ var gear = {
    ],
    "legs": [
       {
+         "name": "Nordrassil Feral-Kilt",
+         "sta": 42,
+         "ac": 703,
+         "agi": 37,
+         "str": 46,
+         "hitrating": 18,
+         "socket0": "blue",
+         "socketbonus_agi": 2,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30229,
+      },
+      {
+         "name": "Merciless Gladiator's Dragonhide Legguards",
+         "sta": 49,
+         "ac": 417,
+         "agi": 29,
+         "str": 43,
+         "res": 29,
+         "source": "PVP",
+         "phase": 2,
+         "id": 31969,
+      },
+      {
+         "name": "Leggings of Murderous Intent",
+         "sta": 31,
+         "ac": 380,
+         "agi": 45,
+         "critrating": 37,
+         "ap": 92,
+         "source": "KT",
+         "phase": 2,
+         "id": 29995,
+      },
+      {
          "name": "Heavy Clefthoof Leggings",
          "sta": 33,
          "ac": 503,
@@ -632,7 +984,7 @@ var gear = {
          "socket2": "red",
          "socketbonus_hit": 4,
          "socketbonus_critrating": 3,
-         "source": "Crafting",
+         "source": "Heroic",
          "phase": 1,
          "id": 30538,
       },
@@ -690,13 +1042,57 @@ var gear = {
    ],
    "feet": [
       {
+         "name": "Boots of Natural Grace",
+         "sta": 37,
+         "agi": 26,
+         "str": 33,
+         "hitrating": 14,
+         "ac": 474,
+         "source": "Crafting",
+         "phase": 2,
+         "id": 30041
+      },
+      {
+         "name": "Veteran's Leather Boots",
+         "res": 30,
+         "sta": 45,
+         "agi": 30,
+         "ap": 34,
+         "ac": 294,
+         "critrating": 16,
+         "source": "PVP",
+         "phase": 1,
+         "id": 32790
+      },
+      {
+         "name": "Veteran's Dragonhide Boots",
+         "res": 26,
+         "sta": 39,
+         "agi": 26,
+         "str": 27,
+         "ac": 336,
+         "source": "PVP",
+         "phase": 2,
+         "id": 32786
+      },
+      {
+         "name": "Boots of Effortless Striking",
+         "sta": 41,
+         "agi": 42,
+         "ap": 58,
+         "ac": 278,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30060
+      },
+      {
          "name": "Heavy Clefthoof Boots",
          "sta": 30,
          "ac": 394,
          "socket0": "yellow",
          "socket1": "blue",
          "socketbonus_dodge": 3,
-         "source": "Crafted",
+         "source": "Crafting",
          "phase": 1,
          "id": 25691
       },
@@ -758,6 +1154,44 @@ var gear = {
       }
    ],
    "finger1": [
+      {
+         "name": "The Seal of Danzalar",
+         "sta": 33,
+         "ac": 295,
+         "res": 21,
+         "source": "SSC",
+         "phase": "2",
+         "id": 33054
+      },
+      {
+         "name": "Ring of Lethality",
+         "sta": 19,
+         "agi": 24,
+         "ap": 50,
+         "hitrating": 19,
+         "source": "SSC",
+         "phase": "2",
+         "id": 30052
+      },
+      {
+         "name": "Band of the Ranger-General",
+         "sta": 27,
+         "ap": 56,
+         "critrating": 28,
+         "hitrating": 19,
+         "source": "TK",
+         "phase": "2",
+         "id": 29997
+      },
+      {
+         "name": "Band of Vile Aggression",
+         "sta": 37,
+         "ap": 50,
+         "res": 25,
+         "source": "SSC",
+         "phase": "2",
+         "id": 33055
+      },
       {
          "name": "Violet Signet of the Great Protector",
          "sta": 37,
@@ -871,6 +1305,44 @@ var gear = {
    ],
    "finger2": [
       {
+         "name": "The Seal of Danzalar",
+         "sta": 33,
+         "ac": 295,
+         "res": 21,
+         "source": "SSC",
+         "phase": "2",
+         "id": 33054
+      },
+      {
+         "name": "Ring of Lethality",
+         "sta": 19,
+         "agi": 24,
+         "ap": 50,
+         "hitrating": 19,
+         "source": "SSC",
+         "phase": "2",
+         "id": 30052
+      },
+      {
+         "name": "Band of the Ranger-General",
+         "sta": 27,
+         "ap": 56,
+         "critrating": 28,
+         "hitrating": 19,
+         "source": "TK",
+         "phase": "2",
+         "id": 29997
+      },
+      {
+         "name": "Band of Vile Aggression",
+         "sta": 37,
+         "ap": 50,
+         "res": 25,
+         "source": "SSC",
+         "phase": "2",
+         "id": 33055
+      },
+      {
          "name": "Violet Signet of the Great Protector",
          "sta": 37,
          "ac": 392,
@@ -983,6 +1455,13 @@ var gear = {
    ],
    "trinket1": [
       {
+         "name": "Badge of Tenacity (Never Used)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 32658
+      },
+      {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance /)",
          "source": "Other",
          "phase": "6",
@@ -999,8 +1478,8 @@ var gear = {
       },
       {
          "name": "Tsunami Talisman",
-         "source": "Other",
-         "phase": "1",
+         "source": "SSC",
+         "phase": "2",
          "id": 30627,
          "hitrating": 10,
          "critrating": 38,
@@ -1116,6 +1595,13 @@ var gear = {
    ],
    "trinket2": [
       {
+         "name": "Badge of Tenacity (Never Used)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 32658
+      },
+      {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
          "source": "Other",
          "phase": "6",
@@ -1129,6 +1615,16 @@ var gear = {
          "ap": 40,
          "procchance": 4.1667,
          "procspell": "DST"
+      },
+      {
+         "name": "Tsunami Talisman",
+         "source": "SSC",
+         "phase": "2",
+         "id": 30627,
+         "hitrating": 10,
+         "critrating": 38,
+         "procchance": 10,
+         "procspell": "Tsunami"
       },
       {
          "name": "Abacus of Violet Odds (Used first 15 secs) / on CD",
@@ -1312,6 +1808,20 @@ var gear = {
    ],
    "twohand": [
       {
+         "name": "Wildfury Greatstaff",
+         "sta": 75,
+         "ap": 992,
+         "ac": 500,
+         "mindmg": 135,
+         "maxdmg": 286,
+         "speed": 3.0,
+         "dodgerating": 54,
+         "id": 30021,
+         "source": "SSC",
+         "phase": 2,
+         "type": "Mace"
+      },
+      {
          "name": "Earthwarden",
          "sta": 39,
          "ap": 712,
@@ -1325,6 +1835,22 @@ var gear = {
          "source": "Reputation",
          "phase": 1,
          "type": "Axe"
+      },
+      {
+         "name": "Merciless Gladiator's Maul",
+         "sta": 55,
+         "ap": 1010,
+         "str": 42,
+         "mindmg": 90,
+         "maxdmg": 192,
+         "speed": 2.00,
+         "critrating": 42,
+         "hitrating": 18,
+         "res": 33,
+         "id": 32014,
+         "source": "PVP",
+         "phase": 2,
+         "type": "Mace",
       },
       {
          "name": "Gladiator's Maul",
@@ -1920,6 +2446,13 @@ var enchant = {
          "phase": 1
       },
       {
+         "id": 46462,
+         "spellid": true,
+         "name": "Savagery",
+         "ap": 70,
+         "phase": 1
+      },
+      {
          "id": 28421,
          "name": "Adamantite Weightstone",
          "bonusdmg": 12,
@@ -1934,6 +2467,28 @@ var enchant = {
          "phase": 1,
          "temp": true,
       },
+   ]
+};
+
+var gem = {
+   "head": [
+      {
+         "id": 32866,
+         "name": "Powerful Earthstorm Diamond",
+         "sta": 18,
+      },
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+         "hitrating": 16
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8,
+         "ap": 1000
+      }
    ]
 };
 
