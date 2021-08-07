@@ -654,8 +654,8 @@ class Player {
         }
         else {
             // If a weapon-based spell is blocked, it can't crit */
-            tmp += 6.5 * 100;
-            if (roll < tmp) return RESULT.BLOCK;
+            tmp += 5 * 100;
+            if (roll < tmp) return RESULT.HIT;
         }
         let crit = this.crit + this.mh.crit;
         tmp += crit * 100;
@@ -724,7 +724,7 @@ class Player {
         if (spell) {
             threat = this.dealthreat(damage, result, spell);
         }
-        else {
+        else if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             threat = damage * this.stats.threatmod;
         }
         return threat;
@@ -822,7 +822,7 @@ class Player {
         if (spell && spell.name == 'Faerie Fire') {
             threat = 131 * this.stats.threatmod;
         }
-        else if (result != RESULT.MISS && result != RESULT.DODGE) {
+        else if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             if (spell.name == 'Mangle') {
                 threat = dmg * this.stats.threatmod * 1.3;
             }

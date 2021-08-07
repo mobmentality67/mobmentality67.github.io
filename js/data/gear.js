@@ -213,7 +213,7 @@ var gear = {
          "socketbonus_hit" : 3,
          "hitrating": 13,
          "critrating": 21,
-         "source": "PVP",
+         "source": "Karazhan",
          "phase": 1,
          "id": 28755,
       },
@@ -1545,7 +1545,7 @@ var gear = {
          "id": 21,
          "name": "+ 40 Expertise Rating",
          "exp": 40
-      },
+      }
    ]
 };
 
