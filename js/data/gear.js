@@ -2282,7 +2282,7 @@ var enchant = {
          "id": 13948,
          "spellid": true,
          "name": "Minor Haste",
-         "haste": 1,
+         "hasterating": 10,
          "phase": 1
       },
    ],

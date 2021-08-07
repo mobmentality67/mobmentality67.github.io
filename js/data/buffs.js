@@ -34,7 +34,7 @@ var buffs = [
       name: "Blessing of Might",
       iconname: "spell_holy_fistofjustice",
       group: "blessingmight",
-      ap: 220
+      ap: 264
    },
    {
       id: 25359,
