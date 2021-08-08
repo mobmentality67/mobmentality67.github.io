@@ -100,7 +100,8 @@ class Lacerate extends Spell {
         this.weaponspell = false;
     }
     dmg() {
-        return (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod;
+        let bonusdmg = this.player.t5laceratebonus ? 31 + 15 : 31;
+        return (bonusdmg + this.player.stats.ap / 100) * this.player.stats.dmgmod;
     }
     use() {
         this.player.timer = 1500;

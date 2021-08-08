@@ -132,6 +132,7 @@ profiles
       <div id="tpsstats"></div>
       <div id="dps-box"><span id="dps"></span><span id="dpserr"></span></div>
       <div id="stats"></div>
+      <div id="pullvar"></div>
       <div id="time"></div>
       <a href="#" class="btn js-dps">TPS</a>
       <a href="#" class="btn js-weights">STAT WEIGHTS</a>
@@ -217,6 +218,18 @@ profiles
           <li>
             <label>Boss Swing Timer (If Active Tank)</label>
               <input type="text" name="incswingtimer" value="2.0" data-numberonly="true">
+          </li>
+          <li>
+            <label>Pull variance check at least </label>
+              <input type="text" name="pullvariancethreshold" value="20000" data-numberonly="true">
+          </li>
+          <li>
+            <label>Threat after seconds </label>
+              <input type="text" name="pullvariancetime" value="20" data-numberonly="true">
+          </li>
+          <li>
+            <label>Including misdirect threat for check </label>
+              <input type="text" name="pullvariancemdthreat" value="1300" data-numberonly="true">
           </li>
         </ul>
       </article>

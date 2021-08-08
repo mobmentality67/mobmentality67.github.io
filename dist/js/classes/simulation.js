@@ -85,6 +85,7 @@ class SimulationWorkerParallel {
                 result.sumdps2 += data.sumdps2;
                 result.sumthreat += data.sumthreat;
                 result.sumthreat2 += data.sumthreat2;
+                result.pullvariancemet += data.pullvariancemet;
                 result.starttime = Math.min(result.starttime, data.starttime);
                 result.endtime = Math.min(result.endtime, data.endtime);
                 if (result.spread && data.spread) {
@@ -172,6 +173,9 @@ class Simulation {
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="simulations"]').val()),
             priorityap: parseInt(spells[1].priorityap),
+            pullvariancethreshold: parseFloat($('input[name="pullvariancethreshold"]').val()),
+            pullvariancetime: parseFloat($('input[name="pullvariancetime"]').val()),
+            pullvariancemdthreat: parseFloat($('input[name="pullvariancemdthreat"]').val()),
         };
     }
     constructor(player, callback_finished, callback_update, config) {
@@ -184,6 +188,10 @@ class Simulation {
         this.iterations = config.iterations;
         this.activetank = config.activetank;
         this.incswingdamage = config.incswingdamage;
+        this.pullvariancethreshold = config.pullvariancethreshold;
+        this.pullvariancetime = config.pullvariancetime * 1000;
+        this.pullvariancemdthreat = config.pullvariancemdthreat;
+        this.pullvariancemet = 0;
         this.idmg = 0;
         this.ithreat = 0;
         this.totaldmg = 0;
@@ -369,6 +377,14 @@ class Simulation {
             if (player.spells.swipe && player.spells.swipe.timer && player.spells.swipe.timer < next) next = player.spells.swipe.timer;
 
             if (next == 0) { debugger; break; } // Something went wrong!
+
+            // Check if next is going to exceed pull variance and record current results if so 
+            if (step < this.pullvariancetime && (step + next) >= this.pullvariancetime) {
+                if (this.ithreat + this.pullvariancemdthreat > this.pullvariancethreshold ) {
+                    this.pullvariancemet++;
+                }
+            }
+
             step += next;
             player.mh.step(next);
             if (player.timer && player.steptimer(next) && !player.spelldelay) spellcheck = true;
@@ -438,6 +454,7 @@ class Simulation {
                 sumdps2: this.sumdps2,
                 sumthreat: this.sumthreat,
                 sumthreat2: this.sumthreat2,
+                pullvariancemet: this.pullvariancemet,
                 starttime: this.starttime,
                 endtime: this.endtime,
                 ehp: this.ehp

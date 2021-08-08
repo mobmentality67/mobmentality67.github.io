@@ -11,7 +11,8 @@ int main()
     enableBuff( 35359, 1 ); // Grace of Air
     enableBuff( 8075, 1 ); // Strength of Earth
     enableBuff( 22831, 1 );  // Major Agility
-    enableBuff( 27644, 1 ); // Grilled Mudfish
+    enableBuff( 33602, 1 ); // Imp FF
+    enableBuff( 29859, 1 ); // Blood Frenzy
     enableEnchant( ITEM_HEAD, 11645, 1 );
     enableEnchant( ITEM_SHOULDER, 29483, 1 );
     enableEnchant( ITEM_BACK, 13882, 1 );

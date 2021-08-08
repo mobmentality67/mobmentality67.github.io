@@ -2493,13 +2493,21 @@ var gem = {
 };
 
 var sets = [
-   {
-      id: 143,
-      name: 'Malorne Harness',
-      items: [29098, 29100, 29096, 29097, 29099],
-      bonus: [
-         { count: 2, stats: { t4rageproc: true } },
-         { count: 4, stats: { bonusac: 1200 } },
-      ]
-   }
+{
+   id: 143,
+   name: 'Malorne Harness',
+   items: [29098, 29100, 29096, 29097, 29099],
+   bonus: [
+      { count: 2, stats: { t4rageproc: true } },
+      { count: 4, stats: { bonusac: 1200 } },
+   ]
+},
+{
+   id: 144,
+   name: 'Nordrassil Rainment',
+   items: [30222, 30223, 30228, 30229, 30230],
+   bonus: [
+      { count: 4, stats: { t5laceratebonus: true } },
+   ]
+}
 ];

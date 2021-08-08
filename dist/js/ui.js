@@ -199,6 +199,7 @@ SIM.UI = {
         let stats = view.sidebar.find('#stats');
         let tpsstats = view.sidebar.find('#tpsstats');
         let time = view.sidebar.find('#time');
+        let pullvar = view.sidebar.find('#pullvar');
         let btn = view.sidebar.find('.js-dps');
         let weights = (rows === "stats");
         if (weights) {
@@ -208,6 +209,7 @@ SIM.UI = {
         dps.text('');
         error.text('');
         time.text('');
+        pullvar.text('');
         const params = {
             player: [undefined, undefined, undefined, Player.getConfig()],
             sim: Simulation.getConfig(),
@@ -238,6 +240,7 @@ SIM.UI = {
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
                 error.text((1.96 * Math.sqrt(varmean)).toFixed(2));
 
+                pullvar.text((report.pullvariancemet / report.iterations * 100).toFixed(2));
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
                 tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
