@@ -610,9 +610,9 @@ SIM.UI = {
         view.sidebar.find('#def').html(((player.level * 5 + player.stats.def) || 0).toFixed(2));
         view.sidebar.find('#res').html((player.stats.res || 0));
         view.sidebar.find('#ehp').html((player.getEHP().toFixed(2) || 0));
-        view.sidebar.find('#str').text(player.stats.str);
-        view.sidebar.find('#agi').text(player.stats.agi);
+        view.sidebar.find('#inccrit').html((player.stats.inccrit.toFixed(2) || 0));
         view.sidebar.find('#ap').text(player.stats.ap);
+        view.sidebar.find('#agi').text(player.stats.agi);
         view.sidebar.find('#hit').html((fullhit || 0) + '%');
         let mhcrit = player.crit + player.mh.crit;
         view.sidebar.find('#crit').html(mhcrit.toFixed(2));
