@@ -50,6 +50,14 @@ onmessage = (event) => {
                 }
             }
         }
+        for (let slot in params.globals.gem) {
+            const slotId = itemSlots.indexOf(slot);
+            for (let item of params.globals.gem[slot]) {
+                if (item.selected) {
+                    module._enableGem(slotId, item.id, 1);
+                }
+            }
+        }
         for (let slot in params.globals.gear) {
             const slotId = itemSlots.indexOf(slot);
             for (let item of params.globals.gear[slot]) {
@@ -77,19 +85,24 @@ onmessage = (event) => {
         module.HEAP32[cfg + 1] = params.player[1] != null ? (typeof params.player[1] === 'string' ? itemSlots.indexOf(params.player[1]) : params.player[1]) : -1;
         module.HEAP32[cfg + 2] = params.player[2] != null ? params.player[2] : -1;
         module.HEAP32[cfg + 3] = races.indexOf(params.player[3].race);
-        module.HEAP32[cfg + 5] = params.player[3].weaponrng ? 1 : 0;
-        module.HEAP32[cfg + 6] = params.player[3].spelldamage;
-        module.HEAP32[cfg + 7] = params.player[3].target.level;
-        module.HEAP32[cfg + 8] = params.player[3].target.basearmor;
-        module.HEAP32[cfg + 9] = params.player[3].target.armor;
-        module.HEAP32[cfg + 10] = params.player[3].target.defense;
-        module.HEAP32[cfg + 11] = params.player[3].target.binaryresist;
-        module.HEAP32[cfg + 14] = params.sim.timesecsmin;
-        module.HEAP32[cfg + 15] = params.sim.timesecsmax;
-        module.HEAP32[cfg + 16] = params.sim.executeperc;
-        module.HEAP32[cfg + 17] = params.sim.startrage;
-        module.HEAP32[cfg + 18] = params.sim.iterations;
-        module.HEAP32[cfg + 19] = params.sim.batching;
+        module.HEAP32[cfg + 4] = params.player[3].weaponrng ? 1 : 0;
+        module.HEAP32[cfg + 5] = params.player[3].spelldamage;
+        module.HEAP32[cfg + 6] = params.player[3].target.level;
+        module.HEAP32[cfg + 7] = params.player[3].target.basearmor;
+        module.HEAP32[cfg + 8] = params.player[3].target.armor;
+        module.HEAP32[cfg + 9] = params.player[3].target.defense;
+        module.HEAP32[cfg + 10] = params.player[3].target.binaryresist;
+        module.HEAP32[cfg + 11] = params.sim.timesecsmin;
+        module.HEAP32[cfg + 12] = params.sim.timesecsmax;
+        module.HEAP32[cfg + 13] = params.sim.startrage;
+        module.HEAP32[cfg + 14] = params.sim.iterations;
+        module.HEAP32[cfg + 15] = params.sim.batching;
+        module.HEAP32[cfg + 16] = params.sim.activetank;
+        module.HEAP32[cfg + 17] = params.sim.incswingtimer;
+        module.HEAP32[cfg + 18] = params.sim.incswingdamage;
+        module.HEAP32[cfg + 19] = params.sim.pullvariancethreshold;
+        module.HEAP32[cfg + 20] = params.sim.pullvariancetime;
+        module.HEAP32[cfg + 21] = params.sim.pullvariancemdthreat;
 
         const talentsPtr = module._allocTalents();
         for (let tree of talents) {

@@ -140,6 +140,15 @@ section.main {
         }
     }
 
+    table.gem {
+        margin-top: 40px;
+        tbody td:first-of-type:not(.hide),
+        tbody td.hide + td {
+            width: 40%;
+            min-width: 40%;
+        }
+    }
+
     progress {
         width: 80%;
         max-width: calc(100% - 320px);

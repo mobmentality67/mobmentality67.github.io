@@ -88,6 +88,16 @@ SIM.UI = {
             view.simulateDPS(rows);
         });
 
+        view.main.on('click', '.js-gem', function(e) {
+            e.preventDefault();
+            view.disableEditMode();
+            const rows = view.tcontainer.find('table.gem tbody tr'); 
+            rows.addClass('waiting');
+            view.tcontainer.find('table.gem tbody tr td:last-of-type').html('');
+            view.startLoading();
+            view.simulateDPS(rows);
+        });
+
         view.main.on('click', '.js-editmode', function(e) {
             e.preventDefault();
             $(this).toggleClass('active');
@@ -166,6 +176,34 @@ SIM.UI = {
             view.updateSession();
             view.updateSidebar();
         });
+
+        view.tcontainer.on('click', 'table.gem td:not(.ppm)', function(e) {
+            var table = $(this).parents('table');
+            var tr = $(this).parent();
+            var temp = tr.data('temp');
+            var max = table.data('max');
+
+            if (table.hasClass('editmode')) {
+                if (tr.hasClass('hidden'))
+                    view.rowShowGem(tr);
+                else
+                    view.rowHideGem(tr);
+                return;
+            }
+
+            if (tr.hasClass('active')) {
+                view.rowDisableGem(tr);
+            }
+            else {
+                var counter = table.find('tr.active').length;
+                if (counter >= max) view.rowDisableGem(table.find('tr.active').last());
+                view.rowEnableGem(tr);
+            }
+
+            view.updateSession();
+            view.updateSidebar();
+        });
+
     },
 
     enableEditMode: function() {
@@ -406,6 +444,7 @@ SIM.UI = {
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
+        var isgem = tr.parents('table').hasClass('gem');
         var istemp = tr.data('temp') == true;
         var base = parseFloat(view.sidebar.find('#dps').text());
         var basetps = parseFloat(view.sidebar.find('#tps').text());
@@ -450,6 +489,15 @@ SIM.UI = {
                             i.tps = calctps.toFixed(2);
                         }
                 }
+
+                if (isgem) {
+                    for(let i of gem[type])
+                        if (i.id == item) {
+                            i.tps = calctps.toFixed(2);
+                        }
+                }
+
+
                 else {
                     for(let i of gear[type])
                         if (i.id == item) {
@@ -557,6 +605,26 @@ SIM.UI = {
         }
     },
 
+    rowDisableGem: function(tr) {
+        var table = tr.parents('table');
+        var type = table.data('type');
+        tr.removeClass('active');
+        for(let i = 0; i < gem[type].length; i++) {
+            if (gem[type][i].id == tr.data('id'))
+                gem[type][i].selected = false;
+        }
+    },
+
+    rowEnableGem: function(tr) {
+        var table = tr.parents('table');
+        var type = table.data('type');
+        tr.addClass('active');
+        for(let i = 0; i < gem[type].length; i++) {
+            if (gem[type][i].id == tr.data('id'))
+                gem[type][i].selected = true;
+        }
+    },
+
     rowHideEnchant: function(tr) {
         var table = tr.parents('table');
         var type = table.data('type');
@@ -582,15 +650,40 @@ SIM.UI = {
         }
     },
 
+    rowHideGem: function(tr) {
+        var table = tr.parents('table');
+        var type = table.data('type');
+        tr.removeClass('active');
+        tr.addClass('hidden');
+        tr.find('.hide').html(eyesvghidden);
+        for(let i = 0; i < gem[type].length; i++) {
+            if (gem[type][i].id == tr.data('id')) {
+                gem[type][i].hidden = true;
+                gem[type][i].selected = false;
+            }
+        }
+    },
+
+    rowShowGem: function(tr) {
+        var table = tr.parents('table');
+        var type = table.data('type');
+        tr.removeClass('hidden');
+        tr.find('.hide').html(eyesvg);
+        for(let i = 0; i < gem[type].length; i++) {
+            if (gem[type][i].id == tr.data('id'))
+                gem[type][i].hidden = false;
+        }
+    },
+
     startLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
         btns.addClass('loading');
         btns.append('<span class="spinner"><span class="bounce1"></span><span class="bounce2"></span><span class="bounce3"></span></span>');
         $('section.main nav').addClass('loading');
     },
 
     endLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
         btns.removeClass('loading');
         btns.find('.spinner').remove();
         $('section.main nav').removeClass('loading');
@@ -654,12 +747,11 @@ SIM.UI = {
         localStorage.activetank = view.fight.find('select[name="activetank"]').val();
         localStorage.incswingtimer = view.fight.find('input[name="incswingtimer"]').val();
         localStorage.incswingdamage = view.fight.find('input[name="incswingdamage"]').val();
+        localStorage.pullvariancethreshold = parseFloat($('input[name="pullvariancethreshold"]').val());
+        localStorage.pullvariancetime = parseFloat($('input[name="pullvariancetime"]').val());
+        localStorage.pullvariancemdthreat = parseFloat($('input[name="pullvariancemdthreat"]').val());
 
-        // Console.log('swing timer, dmg\n\n\ntest');
-        // Console.log(view.fight.find('input[name="incswingtimer"]').val());
-        // Console.log(view.fight.find('input[name="incswingdamage"]').val());
-
-        let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {};
+        let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {}, _gem = {};
         view.buffs.find('.active').each(function () { _buffs.push($(this).attr('data-id')); });
         view.filter.find('.sources .active').each(function () { _sources.push($(this).attr('data-id')); });
         view.filter.find('.phases .active').each(function () { _phases.push($(this).attr('data-id')); });
@@ -695,6 +787,14 @@ SIM.UI = {
             }
         }
 
+        for (let type in gem) {
+            _gem[type] = [];
+            for (let item of gem[type]) {
+                _gem[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+            }
+        }
+
+
         localStorage.buffs = JSON.stringify(_buffs);
         localStorage.rotation = JSON.stringify(_rotation);
         localStorage.sources = JSON.stringify(_sources);
@@ -702,6 +802,7 @@ SIM.UI = {
         localStorage.talents = JSON.stringify(_talents);
         localStorage.gear = JSON.stringify(_gear);
         localStorage.enchant = JSON.stringify(_enchant);
+        localStorage.gem = JSON.stringify(_gem);
     },
 
     loadSession: function () {
@@ -722,6 +823,7 @@ SIM.UI = {
             rotation: !localStorage.rotation ? JSON.parse(session.rotation) : JSON.parse(localStorage.rotation),
             gear: !localStorage.gear ? JSON.parse(session.gear) : JSON.parse(localStorage.gear),
             enchant: !localStorage.enchant ? JSON.parse(session.enchant) : JSON.parse(localStorage.enchant),
+            gem: !localStorage.gem ? JSON.parse(session.gem) : JSON.parse(localStorage.gem),
         });
 
         let _sources = !localStorage.sources ? JSON.parse(session.sources) : JSON.parse(localStorage.sources);
@@ -932,6 +1034,7 @@ SIM.UI = {
         });
 
         view.loadEnchants(type, editmode);
+        view.loadGems(type, editmode);
         view.updateSession();
         view.updateSidebar();
     },
@@ -1035,6 +1138,61 @@ SIM.UI = {
         });
 
         view.main.find('.js-enchant').show();
+    },
+
+loadGems: function (type, editmode) {
+        var view = this;
+        view.main.find('.js-gem').hide();
+
+        if (!gem[type] || gem[type].length == 0) return;
+
+        let table = `<table class="gem ${editmode ? 'editmode' : ''}" data-type="${type}" data-max="1">
+                        <thead>
+                            <tr>
+                                ${editmode ? '<th></th>' : ''}
+                                <th>Gem</th>
+                                <th>Str</th>
+                                <th>Agi</th>
+                                <th>AP</th>
+                                <th>Stamina</th>
+                                <th>Crit</th>
+                                <th>Resilience</th>
+                                <th>TPS</th>
+                            </tr>
+                        </thead>
+                    <tbody>`;
+
+        for (let item of gem[type]) {
+
+            if (item.phase && !view.filter.find('.phases [data-id="' + item.phase + '"]').hasClass('active'))
+                continue;
+
+            if (item.hidden && !editmode) continue;
+
+            table += `<tr data-id="${item.id}" data-temp="${item.temp || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
+                        ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
+                        <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
+                        <td>${item.str || ''}</td>
+                        <td>${item.agi || ''}</td>
+                        <td>${item.ap || ''}</td>
+                        <td>${item.sta || ''}</td>
+                        <td>${item.critrating || ''}</td>
+                        <td>${item.res || ''}</td>
+                        <td>${item.tps || ''}</td>
+                    </tr>`;
+        }
+
+        table += '</tbody></table></section>';
+
+        if ($(table).find('tbody tr').length == 0) return;
+
+        view.tcontainer.append(table);
+        view.tcontainer.find('table.gem').tablesorter({
+            widthFixed: true,
+            sortList: editmode ? [[8, 1]] : [[7, 1]],
+        });
+
+        view.main.find('.js-gem').show();
     },
 
     addAlert: function (msg) {

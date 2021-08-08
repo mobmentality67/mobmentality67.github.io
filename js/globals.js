@@ -21,6 +21,17 @@ function getGlobalsDelta() {
             }
         });
     }
+    const _gem = {};
+    for (const type in gem) {
+        _gem[type] = gem[type].map((item) => {
+            return {
+                id: item.id,
+                tps: item.tps,
+                selected: item.selected,
+                hidden: item.hidden,
+            }
+        });
+    }
     return {
         talents: talents.map((tree) => {
             return {
@@ -33,13 +44,13 @@ function getGlobalsDelta() {
         rotation: spells,
         gear: _gear,
         enchant: _enchant,
+        gem: _gem,
     }
 }
 
 function updateGlobals(params) {
     for (let tree in params.talents) {
         for (let talent in params.talents[tree].t) {
-            //console.log(talent)
             talents[tree].t[talent].c = params.talents[tree].t[talent];
         }
     }
@@ -67,6 +78,14 @@ function updateGlobals(params) {
     for (let type in params.enchant)
         for (let i of params.enchant[type])
             for (let j of enchant[type])
+                if (i.id == j.id) {
+                    j.tps = i.tps;
+                    j.selected = i.selected;
+                    j.hidden = i.hidden;
+                }
+    for (let type in params.gem)
+        for (let i of params.gem[type])
+            for (let j of gem[type])
                 if (i.id == j.id) {
                     j.tps = i.tps;
                     j.selected = i.selected;

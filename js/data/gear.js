@@ -2473,7 +2473,7 @@ var enchant = {
 var gem = {
    "head": [
       {
-         "id": 32866,
+         "id": 25896,
          "name": "Powerful Earthstorm Diamond",
          "sta": 18,
       },
@@ -2481,13 +2481,11 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
-         "hitrating": 16
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8,
-         "ap": 1000
+         "agi": 8
       }
    ]
 };

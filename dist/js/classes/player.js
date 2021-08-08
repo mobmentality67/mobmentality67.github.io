@@ -107,6 +107,7 @@ class Player {
         this.addSets();
         this.addEnchants();
         this.addTempEnchants();
+        this.addGem();
         this.addBuffs();
         this.addSpells();
 
@@ -218,6 +219,17 @@ class Player {
                             this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
                         else
                             this.base[prop] += item[prop] || 0;
+                    }
+                }
+            }
+        }
+    }
+    addGem() {
+        for (let type in gem) {
+            for (let item of gem[type]) {
+                if (item.selected) {
+                    for (let prop in this.base) {
+                        this.base[prop] += item[prop] || 0;
                     }
                 }
             }
