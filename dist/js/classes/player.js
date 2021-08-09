@@ -57,7 +57,7 @@ class Player {
             skill: this.level * 5,
             haste: 1,
             hasterating: 0,
-            stammod: 1,
+            stammod: 1.25,
             armormod: 5.0,
             strmod: 1,
             agimod: 1,
@@ -429,7 +429,6 @@ class Player {
         this.stats.stammod *= 1 + this.talents.survivalofthefittest * .01;
         this.stats.stammod *= 1 + this.talents.heartofthewild * .04;
         this.stats.critdamagemod = 2 * (1 + this.stats.critbonusmod) * (1 + this.talents.predatoryinstincts * .02);
-        if (this.race == 'Tauren') this.stats.stammod += .05;
 
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
