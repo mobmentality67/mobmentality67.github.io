@@ -570,6 +570,8 @@ var gear = {
          "agi": 18,
          "res": 17,
          "ac": 216,
+         "socket0": "yellow",
+         "socketbonus_res": "2",
          "source": "PVP",
          "phase": "2",
          "id": 32810
@@ -582,6 +584,8 @@ var gear = {
          "res": 15,
          "critrating": 9,
          "ac": 174,
+         "socket0": "yellow",
+         "socketbonus_res": "2",
          "source": "PVP",
          "phase": "2",
          "id": 32814
@@ -592,6 +596,8 @@ var gear = {
          "sta": 24,
          "agi": 24,
          "ac": 177,
+         "socket0": "blue",
+         "socketbonus_ap": "4",
          "source": "TK",
          "phase": "2",
          "id": 29966
@@ -649,7 +655,7 @@ var gear = {
          "agi": 18,
          "ac": 128,
          "socket0": "red",
-         "socketbonus_didge": 2,
+         "socketbonus_dodge": 2,
          "source": "Quest",
          "phase": 1,
          "id": 28171
@@ -2476,6 +2482,14 @@ var gem = {
          "id": 25896,
          "name": "Powerful Earthstorm Diamond",
          "sta": 18,
+         "meta": true,
+      },
+      {
+         "id": 32409,
+         "name": "Relentless Earthstorm Diamond",
+         "agi": 12,
+         "critbonusmod": .03,
+         "meta": true,
       },
       {
          "id": 24033,
@@ -2486,6 +2500,324 @@ var gem = {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "neck": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "shoulder": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "chest": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "wrist": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "hands": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "waist": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "legs": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "feet": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
+      }
+   ],
+   "hands": [
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8
       }
    ]
 };

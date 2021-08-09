@@ -50,6 +50,7 @@ class Player {
             hitrating: 0,
             crit: 0,
             critrating: 0,
+            critbonusmod: 0,
             spellcrit: 0,
             exp: 0,
             skill: this.level * 5,
@@ -92,6 +93,10 @@ class Player {
                 this.base.hasterating += testItem;
             }
         }
+        else if (enchtype == 4) {
+            this.testTempEnch = testItem;
+            this.testTempEnchType = testType;
+        }
         else {
             this.testItem = testItem;
             this.testItemType = testType;
@@ -100,6 +105,7 @@ class Player {
         this.auras = {};
         this.spells = {};
         this.items = [];
+        this.itemsEquipped = [];
         this.addRace();
         this.addTalents();
         this.addGear();
@@ -121,6 +127,7 @@ class Player {
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         this.update();
     }
+
     addRace() {
         for (let race of races) {
             if (race.name == this.race) {
@@ -131,6 +138,7 @@ class Player {
             }
         }
     }
+
     addTalents() {
         this.talents = {};
         for (let tree in talents) {
@@ -139,6 +147,7 @@ class Player {
             }
         }
     }
+
     addGear() {
         for (let type in gear) {
             for (let item of gear[type]) {
@@ -163,6 +172,7 @@ class Player {
                     }
 
                     this.items.push(item.id);
+                    this.itemsEquipped[type] = item;
                 }
             }
         }
@@ -224,12 +234,62 @@ class Player {
             }
         }
     }
+
+    getSockets(item) {
+        let MAX_GEM_SLOTS = 3;
+        let base = "socket";
+        let gemSlots = [];
+        let i = 0;
+        for (let property in item) {
+            if (String(property).includes(base)) {
+                if (item[base + "" + i]) {
+                    gemSlots[i] = (item[base + "" + i]);
+                    i++;
+                }
+            }
+        }
+        return gemSlots;
+    }
+
     addGem() {
-        for (let type in gem) {
-            for (let item of gem[type]) {
-                if (item.selected) {
+        /* Iterate over each equipped item by slot */
+        for (let type in this.itemsEquipped) {
+            let gemSlots = this.getSockets(this.itemsEquipped[type]);
+            let numMetaSlots = gemSlots.includes("meta");
+            let numNormalGemSlots = gemSlots.length - numMetaSlots;
+
+            /* Get selected gems (meta, normal) */
+            let normalGem;
+            let metaGem;
+
+            for (let gemType in gem) {
+                {
+                    if (type == gemType) {
+                        for (let item of gem[gemType]) {
+                            if (item.selected) {
+                                if (item.meta) {
+                                    metaGem = item;
+                                }
+                                else {
+                                    normalGem = item;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* Add meta gem stats */
+            if (numMetaSlots == 1 && metaGem) {
+                for (let prop in this.base) {
+                    this.base[prop] += metaGem[prop] || 0;
+                }
+            }
+            /* Add normal gem stats for each normal gem slot  */
+            if (normalGem) {
+                for (let i = 0; i < numNormalGemSlots; i++) {
                     for (let prop in this.base) {
-                        this.base[prop] += item[prop] || 0;
+                        this.base[prop] += normalGem[prop] || 0;
                     }
                 }
             }
@@ -366,6 +426,7 @@ class Player {
         this.stats.strmod += this.talents.survivalofthefittest * .01;
         this.stats.agimod += this.talents.survivalofthefittest * .01;   
         this.stats.stammod += this.talents.survivalofthefittest * .01 + this.talents.heartofthewild * .04;
+        this.stats.critdamagemod = 2 * (1 + this.stats.critbonusmod) * (1 + this.talents.predatoryinstincts * .02);
         if (this.race == 'Tauren') this.stats.stammod += .05;
 
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
@@ -709,7 +770,7 @@ class Player {
             dmg = Math.max(dmg - 54, 0);
         }
         else if (result == RESULT.CRIT) {
-            dmg *= 2 + (spell ? 2 * this.talents.predatoryinstincts / 100.0 : 0);
+            dmg *= this.stats.critdamagemod;
             this.proccrit();
         }
 
@@ -785,7 +846,7 @@ class Player {
         procdmg = this.procattack(spell, this.mh, result);
 
         if (result == RESULT.CRIT) {
-            dmg *= 2 + this.talents.predatoryinstincts * .02;
+            dmg *= this.stats.critdamagemod;
             this.proccrit();
         }
 

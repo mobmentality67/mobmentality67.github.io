@@ -180,7 +180,7 @@ SIM.UI = {
         view.tcontainer.on('click', 'table.gem td:not(.ppm)', function(e) {
             var table = $(this).parents('table');
             var tr = $(this).parent();
-            var temp = tr.data('temp');
+            var meta = tr.data('meta');
             var max = table.data('max');
 
             if (table.hasClass('editmode')) {
@@ -191,12 +191,12 @@ SIM.UI = {
                 return;
             }
 
-            if (tr.hasClass('active')) {
+             if (tr.hasClass('active')) {
                 view.rowDisableGem(tr);
             }
             else {
-                var counter = table.find('tr.active').length;
-                if (counter >= max) view.rowDisableGem(table.find('tr.active').last());
+                let disable = table.find('tr.active[data-meta="' + meta + '"]').first();
+                if (disable.length) view.rowDisableGem(disable);
                 view.rowEnableGem(tr);
             }
 
@@ -446,11 +446,12 @@ SIM.UI = {
         var isench = tr.parents('table').hasClass('enchant');
         var isgem = tr.parents('table').hasClass('gem');
         var istemp = tr.data('temp') == true;
+        var ismeta = tr.data('meta') == true;
         var base = parseFloat(view.sidebar.find('#dps').text());
         var basetps = parseFloat(view.sidebar.find('#tps').text());
 
         const params = {
-            player: [item, type, istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
+            player: [item, type, ismeta ? 4 : istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
             sim: Simulation.getConfig(),
         };
         var sim = new SimulationWorker(
@@ -1150,12 +1151,13 @@ loadGems: function (type, editmode) {
                         <thead>
                             <tr>
                                 ${editmode ? '<th></th>' : ''}
-                                <th>Gem</th>
+                                <th>Gem (WIP)</th>
                                 <th>Str</th>
                                 <th>Agi</th>
                                 <th>AP</th>
                                 <th>Stamina</th>
                                 <th>Crit</th>
+                                <th>Hit</th>
                                 <th>Resilience</th>
                                 <th>TPS</th>
                             </tr>
@@ -1169,7 +1171,7 @@ loadGems: function (type, editmode) {
 
             if (item.hidden && !editmode) continue;
 
-            table += `<tr data-id="${item.id}" data-temp="${item.temp || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
+            table += `<tr data-id="${item.id}" data-meta="${item.meta || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
                         <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
                         <td>${item.str || ''}</td>
@@ -1177,6 +1179,7 @@ loadGems: function (type, editmode) {
                         <td>${item.ap || ''}</td>
                         <td>${item.sta || ''}</td>
                         <td>${item.critrating || ''}</td>
+                        <td>${item.hitrating || ''}</td>
                         <td>${item.res || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
