@@ -2079,6 +2079,21 @@ var gear = {
          "id": 21,
          "name": "+ 40 Expertise Rating",
          "exp": 40
+      },
+      {
+         "id": 22,
+         "name": "+ 4 Resilience",
+         "res": 4
+      },
+      {
+         "id": 23,
+         "name": "+ 8 Resilience Rating",
+         "res": 8
+      },
+      {
+         "id": 24,
+         "name": "+ 12 Reliesence Rating",
+         "res": 12
       }
    ]
 };
