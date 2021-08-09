@@ -1573,6 +1573,7 @@ var gear = {
       {
          "name": "Timelapse Shard",
          "sta": 27,
+         "res": 24,
          "source": "Reputation",
          "phase": "1",
          "id": 29181
@@ -1713,6 +1714,7 @@ var gear = {
       {
          "name": "Timelapse Shard",
          "sta": 27,
+         "res": 24,
          "source": "Reputation",
          "phase": "1",
          "id": 29181
