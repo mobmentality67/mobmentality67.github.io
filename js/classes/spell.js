@@ -96,7 +96,7 @@ class Swipe extends Spell {
         return ((this.player.stats.ap * 0.07) + bonusdamage) * this.player.stats.dmgmod;
     }
     canUse() {
-        return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.spells.mangle.timer > 1000) && 
+        return !this.timer && !this.player.timer && this.cost <= this.player.rage && (this.player.spells.mangle.timer > 0) && 
             (this.player.rage >= this.threshold ||
             (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd) &&
             ((!this.player.spells.lacerate || (this.player.stats.ap > this.priorityap))));
@@ -137,7 +137,7 @@ class Lacerate extends Spell {
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && 
-            (this.player.spells.mangle.timer > 1000) && (this.player.rage >= this.threshold ||
+            (this.player.spells.mangle.timer > 0) && (this.player.rage >= this.threshold ||
             (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd)) && 
             (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap) && 
                 this.player.auras.laceratedot && this.player.auras.laceratedot.stacks == 5 && (this.player.auras.laceratedot.timer - step) > 5000));
