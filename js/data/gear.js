@@ -2205,7 +2205,7 @@ var enchant = {
       {
          "id": 46502,
          "spellid": true,
-         "name": "Greater Stats",
+         "name": "Exceptional Stats",
          "agi": 6,
          "str": 6,
          "sta": 6,
