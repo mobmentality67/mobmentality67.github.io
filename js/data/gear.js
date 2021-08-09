@@ -2458,7 +2458,7 @@ var enchant = {
       {
          "id": 23122,
          "name": "Consecrated Sharpening Stone",
-         "ap": 108,
+         "ap": 100,
          "phase": 6,
          "temp": true,
       },
