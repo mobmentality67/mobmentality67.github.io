@@ -2523,7 +2523,38 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
+
    ],
    "neck": [
       {
@@ -2556,6 +2587,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "shoulder": [
@@ -2589,6 +2650,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "chest": [
@@ -2622,6 +2713,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "wrist": [
@@ -2655,6 +2776,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "hands": [
@@ -2688,6 +2839,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "waist": [
@@ -2721,6 +2902,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "legs": [
@@ -2754,6 +2965,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "feet": [
@@ -2787,6 +3028,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ],
    "hands": [
@@ -2820,6 +3091,36 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
       }
    ]
 };
