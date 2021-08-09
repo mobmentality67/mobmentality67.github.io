@@ -1044,6 +1044,17 @@ var gear = {
          "source": "Quest",
          "phase": 1,
          "id": 31544,
+      },
+      {
+         "name": "Shattrah Leggings",
+         "sta": 27,
+         "agi": 25,
+         "str": 35,
+         "ac": 243,
+         "exp": 22,
+         "source": "Quest",
+         "phase": 1,
+         "id": 30257,
       }
    ],
    "feet": [
