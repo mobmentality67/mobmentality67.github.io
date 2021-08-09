@@ -2253,28 +2253,28 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 35420,
+         "id": 27899,
          "spellid": true,
          "name": "Brawn",
          "str": 12,
          "phase": 1
       },
       {
-         "id": 27914,
+         "id": 27906,
          "spellid": true,
          "name": "Major Defense",
          "def": 12,
          "phase": 1
       },
       {
-         "id": 27906,
+         "id": 27914,
          "spellid": true,
          "name": "Fortitude",
          "sta": 12,
          "phase": 1
       },
       {
-         "id": 35426,
+         "id": 27905,
          "spellid": true,
          "name": "Stats",
          "str": 4,
