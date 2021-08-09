@@ -424,9 +424,10 @@ class Player {
         }
         this.stats.dmgmod *= 1 + this.talents.naturalistmod;
         this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
-        this.stats.strmod += this.talents.survivalofthefittest * .01;
-        this.stats.agimod += this.talents.survivalofthefittest * .01;   
-        this.stats.stammod += this.talents.survivalofthefittest * .01 + this.talents.heartofthewild * .04;
+        this.stats.strmod *= (1 + this.talents.survivalofthefittest * .01);
+        this.stats.agimod *= (1 + this.talents.survivalofthefittest * .01);   
+        this.stats.stammod *= 1 + this.talents.survivalofthefittest * .01;
+        this.stats.stammod *= 1 + this.talents.heartofthewild * .04;
         this.stats.critdamagemod = 2 * (1 + this.stats.critbonusmod) * (1 + this.talents.predatoryinstincts * .02);
         if (this.race == 'Tauren') this.stats.stammod += .05;
 
