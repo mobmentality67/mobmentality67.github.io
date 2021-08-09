@@ -838,10 +838,11 @@ class Player {
         else {
             dmg = 0.0;
             if (log) this.log("Boss swing missed");
-            return;
+            return 0;
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
         this.addDamageTakenRage(dmg);
+        return dmg;
     }
 
     cast(spell, damage_threat_arr) {

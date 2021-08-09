@@ -199,15 +199,29 @@
         }
     }
 
+    #dtps-box {
+        text-align: center;
+    }
+
+    #dtps {
+        font-size: 22px;
+        font-weight: bold;
+        color: $item-uncommon;
+        &:after {
+            content: " DTPS";
+            font-size: 14px;
+        }
+        &:empty:after {
+            display: none;
+        }
+    }
+
     #dps-box {
         text-align: center;
     }
 
-    #tps-box {
-        text-align: center;
-    }
     #dps {
-        font-size: 26px;
+        font-size: 22px;
         font-weight: bold;
         color: $item-uncommon;
         &:after {
@@ -219,8 +233,12 @@
         }
     }
 
+    #tps-box {
+        text-align: center;
+    }
+
     #tps {
-        font-size: 26px;
+        font-size: 22px;
         font-weight: bold;
         color: $item-uncommon;
         &:after {
@@ -259,7 +277,8 @@
         font-size: 14px;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         min-height: 19px;
         &:after {
             content: " s";
@@ -273,10 +292,11 @@
         font-size: 12px;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         min-height: 19px;
         &:after {
-            content: "% of iterations met pull variance";
+            content: "% pull variance success";
         }
         &:empty:after {
             display: none;
@@ -292,6 +312,14 @@
     }
 
     #tpsstats {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 14px;
+        font-weight: bold;
+        min-height: 17px;
+    }
+
+    #dtpsstats {
         text-align: center;
         font-size: 12px;
         margin-bottom: 14px;

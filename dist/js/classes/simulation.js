@@ -77,10 +77,13 @@ class SimulationWorkerParallel {
                 result.totaldmg += data.totaldmg;
                 result.totalthreat += data.totalthreat;
                 result.totalduration += data.totalduration;
+                result.totaldamagetaken += data.totaldamagetaken;
                 result.mindps = Math.min(result.mindps, data.mindps);
                 result.maxdps = Math.min(result.maxdps, data.maxdps);
                 result.mintps = Math.min(result.mintps, data.mintps);
                 result.maxtps = Math.min(result.maxtps, data.maxtps);
+                result.mindtps = Math.min(result.mindtps, data.mindtps);
+                result.maxdtps = Math.min(result.maxdtps, data.maxdtps);
                 result.sumdps += data.sumdps;
                 result.sumdps2 += data.sumdps2;
                 result.sumthreat += data.sumthreat;
@@ -137,12 +140,13 @@ class SimulationWorkerParallel {
             this.callback_finished(result);
         } else {
             let iteration = 0;
-            const data = { iterations: this.iterations, totaldmg: 0, totalduration: 0 };
+            const data = { iterations: this.iterations, totalthreat:0, totaldamagetaken:0, totaldmg: 0, totalduration: 0 };
             this.states.forEach(state => {
                 if (!state) return;
                 iteration += (state.status ? state.data.iterations : state.iteration);
                 data.totaldmg += state.data.totaldmg;
                 data.totalthreat += state.data.totalthreat;
+                data.totaldamagetaken += state.data.totaldamagetaken;
                 data.totalduration += state.data.totalduration;
             });
             this.callback_update(iteration, data);
@@ -196,11 +200,14 @@ class Simulation {
         this.ithreat = 0;
         this.totaldmg = 0;
         this.totalthreat = 0;
+        this.totaldamagetaken = 0;
         this.totalduration = 0;
         this.mindps = 99999;
         this.maxdps = 0;
         this.mintps = 99999;
         this.maxtps = 0;
+        this.mindtps = 9999999999;
+        this.maxdtps = 0;
         this.sumdps = 0;
         this.sumdps2 = 0;
         this.sumthreat = 0;
@@ -249,6 +256,7 @@ class Simulation {
         step = 0;
         this.idmg = 0;
         this.ithreat = 0;
+        this.idamagetaken = 0;
         let player = this.player;
         player.reset(this.startrage);
         this.maxsteps = rng(this.timesecsmin * 1000, this.timesecsmax * 1000);
@@ -298,7 +306,8 @@ class Simulation {
 
             // Incoming attack
             if (player.activetank && player.incswingtimer <= 0) {
-                player.takeattack();
+                let damageTaken = player.takeattack();
+                this.idamagetaken += damageTaken;
                 spellcheck = true;
             }
 
@@ -409,14 +418,18 @@ class Simulation {
         }
         this.totaldmg += this.idmg;
         this.totalthreat += this.ithreat;
+        this.totaldamagetaken += this.idamagetaken;
         this.totalduration += this.duration;
         this.ehp = this.player.getEHP();
         let dps = this.idmg / this.duration;
         let tps = this.ithreat / this.duration;
+        let dtps = this.idamagetaken / this.duration;
         if (dps < this.mindps) this.mindps = dps;
         if (dps > this.maxdps) this.maxdps = dps;
         if (tps < this.mintps) this.mintps = tps;
         if (tps > this.maxtps) this.maxtps = tps;
+        if (dtps < this.mindtps) this.mindtps = dtps;
+        if (dtps > this.maxdtps) this.maxdtps = dtps;
         this.sumdps += dps;
         this.sumdps2 += dps * dps;
         this.sumthreat += tps;
@@ -434,6 +447,7 @@ class Simulation {
                 iterations: this.iterations,
                 totaldmg: this.totaldmg,
                 totalthreat: this.totalthreat,
+                totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
                 ehp: this.player.getEHP()
             });
@@ -445,11 +459,14 @@ class Simulation {
                 iterations: this.iterations,
                 totaldmg: this.totaldmg,
                 totalthreat: this.totalthreat,
+                totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
                 mindps: this.mindps,
                 maxdps: this.maxdps,
                 mintps: this.mintps,
                 maxtps: this.maxtps,
+                mindtps: this.mindtps,
+                maxdtps: this.maxdtps,
                 sumdps: this.sumdps,
                 sumdps2: this.sumdps2,
                 sumthreat: this.sumthreat,

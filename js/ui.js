@@ -236,6 +236,8 @@ SIM.UI = {
         let error = view.sidebar.find('#dpserr');
         let stats = view.sidebar.find('#stats');
         let tpsstats = view.sidebar.find('#tpsstats');
+        let dtps = view.sidebar.find('#dtps');
+        let dtpsstats = view.sidebar.find('#dtpsstats');
         let time = view.sidebar.find('#time');
         let pullvar = view.sidebar.find('#pullvar');
         let btn = view.sidebar.find('.js-dps');
@@ -245,6 +247,7 @@ SIM.UI = {
         }
         tps.text('');
         dps.text('');
+        dtps.text('');
         error.text('');
         time.text('');
         pullvar.text('');
@@ -271,8 +274,10 @@ SIM.UI = {
                 // Technically, it is incorrect to calculate mean DPS like this, since fight duration varies...
                 const mean = report.totaldmg / report.totalduration;
                 const meantps = report.totalthreat / report.totalduration;
+                const meandtps = report.totaldamagetaken / report.totalduration;
                 tps.text(meantps.toFixed(2));
                 dps.text(mean.toFixed(2));
+                dtps.text(meandtps.toFixed(2));
 
                 const s1 = report.sumthreat, s2 = report.sumthreat2, n = report.iterations;
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
@@ -282,6 +287,7 @@ SIM.UI = {
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
                 tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
+                dtpsstats.html(report.mindtps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdtps.toFixed(2) + ' max');
                 btn.css('background', '');
                 if (rows) view.simulateRows(Array.from(rows));
                 else if (weights) view.simulateWeights(player, meantps, varmean);
@@ -297,6 +303,7 @@ SIM.UI = {
                 let perc = parseInt(iteration / report.iterations * 100);
                 tps.text((report.totalthreat / report.totalduration).toFixed(2));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
+                dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
                 btn.css('background', 'linear-gradient(to right, transparent ' + perc + '%, #444 ' + perc + '%)');
             },
             (error) => {
@@ -511,6 +518,7 @@ SIM.UI = {
                 updateFn(Math.floor((iteration / report.iterations) * 100));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
                 tps.text((report.totalthreat / report.totalduration).toFixed(2));
+                dtps.text((report.totalthreat / report.totalduration).toFixed(2));
             },
             (error) => {
                 dps.text('ERROR');
