@@ -33,6 +33,7 @@ class Player {
         this.activetank = config.activetank;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
+        this.ooc = false;
         this.base = {
             sta: 0,
             ac: 0,
@@ -750,7 +751,12 @@ class Player {
             if (this.spells.maul && this.spells.maul.cost <= this.rage) {
                 result = this.rollspell(this.spells.maul);
                 spell = this.spells.maul;
-                this.rage -= spell.cost;
+                if (this.ooc == false) {
+                    this.rage -= spell.cost;
+                }
+                else {
+                    this.ooc = false;
+                }
             }
             else {
                 result = this.rollweapon(weapon);
@@ -758,6 +764,13 @@ class Player {
         }
         else {
             result = this.rollweapon(weapon);
+        }
+
+        if (this.talents.ooc) {
+            let oocroll = rng10k();
+            if (oocroll > 1000) {
+                this.ooc = true;
+            }
         }
 
         let dmg = weapon.dmg(spell);

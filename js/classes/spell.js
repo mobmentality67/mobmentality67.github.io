@@ -13,7 +13,7 @@ class Spell {
         this.data = [0, 0, 0, 0, 0, 0, 0, 0];
         this.name = this.constructor.name;
         this.useonly = false;
-        this.maxdelay = 100;
+        this.maxdelay = 100; 
         this.weaponspell = true;
     }
     dmg() {
@@ -21,8 +21,22 @@ class Spell {
     }
     use() {
         this.player.timer = 1500;
-        this.player.rage -= this.cost;
+        
         this.timer = this.cooldown * 1000;
+
+        if (this.player.ooc == false) {
+            this.player.rage -= this.cost;
+        }
+        else {
+            this.player.ooc = false;
+        }
+
+        if (this.player.talents.ooc) {
+            let oocroll = rng10k();
+            if (oocroll > 1000) {
+                this.player.ooc = true;
+            }
+        }
     }
     step(a) {
         if (this.timer <= a) {
@@ -105,7 +119,20 @@ class Lacerate extends Spell {
     }
     use() {
         this.player.timer = 1500;
-        this.player.rage -= this.cost;
+        if (this.player.ooc == false) {
+            this.player.rage -= this.cost;
+        }
+        else {
+            this.player.ooc = false;
+        }
+
+        if (this.player.talents.ooc) {
+            let oocroll = rng10k();
+            if (oocroll > 1000) {
+                this.player.ooc = true;
+            }
+        }
+        
         this.player.auras.laceratedot.use();
     }
     canUse() {
