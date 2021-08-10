@@ -288,6 +288,8 @@ var gear = {
          "sta": 25,
          "agi": 27,
          "ac": 410,
+         "socket0" : "blue",
+         "socket1" : "blue",
          "source": "Gruuls",
          "phase": 1,
          "id": 29100,
