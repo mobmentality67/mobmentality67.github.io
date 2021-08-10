@@ -83,6 +83,13 @@ var buffs = [
       agi: 20
    },
    {
+      id: 33872,
+      name: "Spicy Hot Talbuk",
+      iconname: "inv_misc_food_84_roastclefthoof",
+      group: "food",
+      hitrating: 20
+   },
+   {
       id: 33602,
       spellid: true,
       name: "Improved Faerie Fire",
@@ -97,7 +104,5 @@ var buffs = [
       iconname: "ability_warrior_bloodfrenzy",
       group: "",
       dmgmod: 4
-   },
-   
-   
+   }   
 ];
