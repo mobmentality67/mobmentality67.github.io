@@ -345,12 +345,12 @@ SIM.UI = {
             const crit = await simulateWeight(1, 2);
             updateStat("crit", crit);
 
-            const agi = await simulateWeight(4, 10);
+            const agi = await simulateWeight(4, 25);
             updateStat("agi", {weight: agi.weight * player.stats.agimod, error: agi.error * player.stats.agimod});
 
             updateStat("hit", await simulateWeight(2, 2));
 
-            const haste = await simulateWeight(5, 10);
+            const haste = await simulateWeight(5, 30);
             updateStat("haste", {weight: haste.weight, error: haste.error});
 
         }
