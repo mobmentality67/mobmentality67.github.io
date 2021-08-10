@@ -1765,6 +1765,13 @@ var gear = {
          "phase": "1",
          "id": 23198
       }
+      {
+         "name": "Idol of the Raven Goddess",
+         "source": "Dungeon",
+         "phase": "2",
+         "id": 32387,
+         "critrating": 20
+      }
    ],
    "mainhand": [
       {
