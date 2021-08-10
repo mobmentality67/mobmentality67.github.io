@@ -2416,30 +2416,12 @@ var enchant = {
       {
          "id": 46519,
          "spellid": true,
-         "name": "Stats",
-         "agi": 2,
-         "str": 2,
-         "sta": 2,
-         "phase": 3
-      },
-      {
-         "id": 46519,
-         "spellid": true,
          "name": "Striking",
          "bonusdmg": 2,
          "phase": 1
       }
    ],
 "finger2": [
-      {
-         "id": 46519,
-         "spellid": true,
-         "name": "Stats",
-         "agi": 2,
-         "str": 2,
-         "sta": 2,
-         "phase": 3
-      },
       {
          "id": 46519,
          "spellid": true,
