@@ -768,7 +768,7 @@ class Player {
 
         if (this.talents.ooc) {
             let oocroll = rng10k();
-            if (oocroll > 1000) {
+            if (oocroll > 9000) {
                 this.ooc = true;
             }
         }
