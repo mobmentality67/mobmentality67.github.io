@@ -32,15 +32,23 @@ function getGlobalsDelta() {
             }
         });
     }
+
+    const _buffs = {};
+    let activeBuffs = 0;
+    for (let i = 0; i < buffs.length; i++) {
+        if (buffs[i].active) {
+            activeBuffs++;
+            _buffs[activeBuffs] = buffs[i].id;
+        } 
+    }
+
     return {
         talents: talents.map((tree) => {
             return {
                 t: tree.t.map((talent) => talent.c),
             };
         }),
-        buffs: buffs
-            .filter((buff) => buff.active)
-            .map((buff) => buff.id),
+        buffs: buffs,
         rotation: spells,
         gear: _gear,
         enchant: _enchant,
@@ -55,9 +63,33 @@ function updateGlobals(params) {
         }
     }
 
-    for (let i of params.buffs)
-        for (let j of buffs)
-            if (i == j.id) j.active = true;
+    for (let i of params.buffs) {
+        let buffID;
+        let buffCount;
+        let runtime;
+
+        if (i.id) {
+            buffID = i.id;
+            buffCount = i.count;
+            runtime = true;
+        }
+        else {
+            buffID = Object.keys(i)[0];
+            buffCount = i[buffID];
+            runtime = false;
+        }
+
+        for (let j of buffs) {
+            if (buffID == j.id) {
+                if (!runtime || i.active) {
+                    j.active = true;
+                    if (j.count) {
+                        j.count = parseInt(buffCount);
+                    }
+                }
+            }
+        }
+    }
 
     for (let i of params.rotation)
         for (let j of spells)

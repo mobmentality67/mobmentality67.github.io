@@ -5,7 +5,7 @@ var spells = [
     name: 'Mangle',
     classname: 'Mangle',
     iconname: 'ability_druid_mangle2',
-    reaction: 100,
+    reaction: 10,
 },
 {
     // Spells[1], Swipe
@@ -14,9 +14,9 @@ var spells = [
     classname: 'Swipe',
     iconname: 'inv_misc_monsterclaw_03',
     minrage: 40,
-    reaction: 300,
+    reaction: 10,
     maincd: 2,
-    priorityap: 2600,
+    priorityap: 10,
 },
 {
     // Spells[2], Lacerate
@@ -25,7 +25,7 @@ var spells = [
     classname: 'Lacerate',
     iconname: 'ability_druid_lacerate',
     minrage: 40,
-    reaction: 300,
+    reaction: 10,
     maincd: 2
 },
 {
@@ -35,7 +35,7 @@ var spells = [
     classname: 'Maul',
     iconname: 'ability_druid_maul',
     minrage: 50,
-    reaction: 300,
+    reaction: 50,
     maincd: 2
 },
 {
@@ -45,7 +45,7 @@ var spells = [
     classname: 'FaerieFire',
     iconname: 'spell_nature_faeriefire',
     globals: 1,
-    reaction: 300,
+    reaction: 0,
 },
 
 ];

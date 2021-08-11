@@ -761,7 +761,13 @@ SIM.UI = {
         localStorage.pullvariancemdthreat = parseFloat($('input[name="pullvariancemdthreat"]').val());
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {}, _gem = {};
-        view.buffs.find('.active').each(function () { _buffs.push($(this).attr('data-id')); });
+        view.buffs.find('.active').each(function () { 
+            var buff_count_pair = {};
+            let buffid = String($(this).attr('data-id'));
+            let count = $(this).data('count') ? $(this).data('count') : "1";
+            buff_count_pair[buffid] = String(count);
+            _buffs.push(buff_count_pair);
+        });
         view.filter.find('.sources .active').each(function () { _sources.push($(this).attr('data-id')); });
         view.filter.find('.phases .active').each(function () { _phases.push($(this).attr('data-id')); });
 
@@ -1088,7 +1094,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[9, 1]] : [[8, 0]],
+            sortList: editmode ? [[8, 1]] : [[7, 1]],
         });
     },
 

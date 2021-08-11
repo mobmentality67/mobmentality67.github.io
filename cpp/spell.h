@@ -54,7 +54,7 @@ struct Mangle : public Spell
     static struct
     {
         int active = true;
-        int reaction = 100;
+        int reaction = 10;
     } options;
 
     Mangle( Player& player_ )
@@ -81,7 +81,7 @@ struct Maul : public Spell
     {
         int active = true;
         int minrage = 50;
-        int reaction = 300;
+        int reaction = 50;
         int maincd = 2;
     } options;
 
@@ -104,7 +104,7 @@ struct Swipe : public Spell
     {
         int active = true;
         int minrage = 40;
-        int reaction = 100;
+        int reaction = 10;
         int maincd = 2;
     } options;
 
@@ -131,7 +131,7 @@ struct Lacerate : public Spell
     static struct
     {
         int minrage = 40;
-        int reaction = 100;
+        int reaction = 10;
         int active = true;
         int maincd = 2;
         int priorityap = 2600;
@@ -157,7 +157,7 @@ struct FaerieFire : public Spell
     {
         int active = true;
         int globals = 1;
-        int reaction = 300;
+        int reaction = 0;
     } options;
 
     FaerieFire( Player& player_ );
@@ -253,7 +253,7 @@ struct Bloodlust : public HasteAura
         int active = true;
         int timetoend = 41;
         int haste = 30;
-        int reaction = 300;
+        int reaction = 0;
     } options;
 
         Bloodlust( Player& player_ )

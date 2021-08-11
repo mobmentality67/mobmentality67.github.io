@@ -33,15 +33,52 @@ SIM.SETTINGS = {
         });
 
         view.buffs.on('click', '.icon', function () {
-            let obj = $(this).toggleClass('active');
-            if (obj.hasClass('active')) {
+            let obj = $(this);
+
+            /* Handle counting buff type */ 
+            console.log("Name = " + obj.data('name'));
+            console.log("Count = " + obj.data('count'));
+            console.log("Max count = " + obj.data('max_count'));
+
+            if (obj.data('max_count') && obj.data('max_count')) {
+
+                /* If buff is inactive, turn it on */
+                if (!obj.hasClass('active')) {
+                    obj.toggleClass('active');
+                        obj.data('count', obj.data('count') + 1);
+                }
+
+                /* If buff is currently = max buff count allowed, disable it */
+                else if (obj.hasClass('active') && obj.data('max_count') == (obj.data('count') + 1)) {
+                    obj.data('count', 0);
+                    obj.toggleClass('active');
+                    if (obj.data('group')) {
+                        obj.siblings().filter('[data-group="' + obj.data('group') + '"]').removeClass('active');
+                    }
+                }
+                /* Otherwise, if buff is active and not at max count, increment it */
+                else if (obj.hasClass('active')) {
+                        obj.data('count', obj.data('count') + 1);
+                }
+                /* Update the icon */
+                this.children[0].src = obj.data('base_icon_name') + "_" + obj.data('count') + ".jpg";
+            }
+
+            else if (!obj.hasClass('active')) {
+                obj.toggleClass('active');
                 if (obj.data('group'))
                     obj.siblings().filter('[data-group="' + obj.data('group') + '"]').removeClass('active');
-                if (obj.data('disable-spell'))
-                    $('.rotation [data-id="' + obj.data('disable-spell') + '"]').removeClass('active');
             }
+
+            else if (obj.hasClass('active')) {
+               obj.toggleClass('active');
+            }
+
             for (let buff of buffs) {
                 buff.active = view.buffs.find('[data-id="' + buff.id + '"]').hasClass('active');
+                if (view.buffs.find('[data-id="' + buff.id + '"]').data('count') != 'undefined') {
+                    buff.count = view.buffs.find('[data-id="' + buff.id + '"]').data('count');
+                }
             }
             SIM.UI.updateSession();
             SIM.UI.updateSidebar();
@@ -223,10 +260,16 @@ SIM.SETTINGS = {
             let active = buff.active ? 'active' : '';
             let group = buff.group ? `data-group="${buff.group}"` : '';
             let disable = buff.disableSpell ? `data-disable-spell="${buff.disableSpell}"` : '';
-            let html = `<div data-id="${buff.id}" class="icon ${active}" ${group} ${disable}>
-                            <img src="dist/img/${buff.iconname.toLowerCase()}.jpg " alt="${buff.name}">
+            let max_count = buff.max_count ? `data-max_count="${buff.max_count}"` : '';
+            let base_icon_name = `data-base_icon_name="dist/img/${buff.iconname.toLowerCase()}"`;
+            let iconname = buff.max_count ? buff.iconname.toLowerCase() + "_" + buff.count : buff.iconname.toLowerCase();
+            let count = buff.count ? `data-count="${buff.count}"` : '';
+            let html = `<div data-id="${buff.id}" data-name = "${buff.name}" ${max_count} ${count} ${base_icon_name}
+                            class="icon ${active}" ${group} ${disable}>
+                            <img src="dist/img/${iconname}.jpg " alt="${buff.name}">
                             <a href="https://tbc.wowhead.com/${wh}=${buff.id}" class="wh-tooltip"></a>
                         </div>`;
+
             view.buffs.append(html);
         }
     },

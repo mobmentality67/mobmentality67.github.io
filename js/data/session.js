@@ -1,6 +1,6 @@
 var session = {
-    buffs: '["25289",  "26990", "20217", "27140", "25359", "8075", "22831", "27664"]',
-    rotation: '[{"id": "33987","active": true,"reaction": "100"},{"id": "26997","active": true,"maincd": "2","minrage": "40","priorityap": "2600","reaction": "300"},{"id": "26996","active": true,"minrage": "50","maincd": "4","reaction": "300"},{"id": "27011","active": false,"globals": "1","reaction": "300"},{"id": "33745","active": true,"maincd": "2","minrage": "40","reaction": "300"}]',
+    buffs: '[{"25289": "1"},{"26990": "1"},{"20217": "1"},{"27140": "1"},{"25359": "1"},{"8075": "1"},{"22831": "1"},{"27664": "1"},{"33602": "1"},{"29859": "1"},{"34460": "3"},{"34503": "1"},{"2825": "1"}]',
+    rotation: '[{"id": "33987","active": true,"reaction": "10"},{"id": "26997","active": true,"maincd": "2","minrage": "40","priorityap": "2600","reaction": "10"},{"id": "26996","active": true,"minrage": "50","maincd": "4","reaction": "10"},{"id": "27011","active": false,"globals": "1","reaction": "10"},{"id": "33745","active": true,"maincd": "2","minrage": "40","reaction": "10"}]',
     sources: '["quest","crafting","dungeon","heroics","badges","reputation","gruuls","magtheridon","karazhan","ssc","tk","heroic","worldboss","pvp","other"]',
     phases: '["1", "2"]',
     talents: '[{"n":"Balance","t":[1]},{"n":"Feral Combat","t":[5, 5, 3, 3, 2, 3, 2, 3, 2, 2, 5, 3, 1, 5, 1]},{"n":"Restoration","t":[5, 3, 1]}]',

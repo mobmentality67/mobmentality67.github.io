@@ -126,6 +126,7 @@ class Player {
         if (this.items.includes(29383)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
         if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
+        if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         this.update();
     }
 
@@ -343,7 +344,17 @@ class Player {
                 this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 this.base.stammod *= (1 + buff.stammod / 100) || 1;
                 this.base.haste *= (1 + buff.haste / 100) || 1;
+            }
 
+            /* Special handling for stacks of Ferocious Inspiration */
+            if (buff.id == 34460) {
+                for (let i = 0; i < buff.count - 1; i++) {
+                    this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
+                }
+            }
+
+            if (buff.id == 2825) {
+                this.lust = buff.active;
             }
         }
     }
@@ -491,6 +502,7 @@ class Player {
 
     updateHaste() {
         this.stats.haste = this.base.haste;
+        this.stats.hasterating = this.base.haste;
 
         /* Apply additive haste */
         if (this.auras.pummeler && this.auras.pummeler.active)
@@ -505,7 +517,7 @@ class Player {
         /* Apply multiplicative haste */
         this.stats.haste += this.stats.hasterating / 15.8 / 100;
         if (this.auras.bloodlust && this.auras.bloodlust.active)
-            this.stats.haste *= this.auras.bloodlust.mult_stats.haste;
+            this.stats.haste *= 1.3;
     }
     updateBonusDmg() {
         let bonus = 0;
@@ -664,6 +676,7 @@ class Player {
         if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.step();
         if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.step();
         if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.step();
+        if (this.auras.bloodlust && this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.step();
 
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
@@ -678,6 +691,7 @@ class Player {
         if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.end();
         if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.end();
         if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.end();
+        if (this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.end();
 
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
 

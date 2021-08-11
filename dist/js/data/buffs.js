@@ -104,5 +104,29 @@ var buffs = [
       iconname: "ability_warrior_bloodfrenzy",
       group: "",
       dmgmod: 4
-   }   
+   },
+   {
+      id: 34460,
+      spellid: true,
+      name: "Ferocious Inspiration",
+      iconname: "ability_hunter_ferociousinspiration",
+      group: "ferociousinspiration",
+      dmgmod: 3,
+      max_count: 4,
+      count:1
+   },
+   {
+      id: 34503,
+      spellid: true,
+      name: "Expose Weakness",
+      iconname: "ability_rogue_findweakness",
+      ap: 225
+   },
+   {
+      id: 2825,
+      spellid: true,
+      name: "Bloodlust",
+      iconname: "spell_nature_bloodlust"
+   }
+   
 ];

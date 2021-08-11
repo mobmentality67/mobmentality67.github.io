@@ -371,6 +371,37 @@ class Spider extends Aura {
     }
 }
 
+class Bloodlust extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 40;
+        this.mult_stats = { hasterating: .3 };
+        this.cooldown = 9999999999;
+        this.name = 'Bloodlust';
+        this.active = false;
+    }
+    use() {
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateHaste();
+        if (log) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateHaste();
+            this.uptime += (step - this.starttimer);
+            if (log) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
 class Slayer extends Aura {
     constructor(player) {
         super(player);

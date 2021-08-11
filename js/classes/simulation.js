@@ -12,7 +12,7 @@ var RESULT = {
 var batching = 0;
 var step = 0;
 var log = false;
-var version = 5;
+var version = 6;
 
 const TYPE = {
     UPDATE: 0,
@@ -275,6 +275,7 @@ class Simulation {
         if (player.auras.bloodlustbrooch) { this.broochstep = 0; itemdelay += 20000; }
         if (player.auras.pummeler) { this.pummelstep = 0; itemdelay += 30000; }
         if (player.auras.abacus) { this.abacusstep = 0; itemdelay += 10000; }
+        if (player.auras.bloodlust) { this.bloodluststep = 0 }
 
         if (player.auras.swarmguard) { player.auras.swarmguard.usestep = Math.max(this.maxsteps - player.auras.swarmguard.timetoend, 0); }
 
@@ -290,7 +291,11 @@ class Simulation {
             else if (player.auras.pummeler && player.auras.pummeler.canUse()) { delayedspell = player.auras.pummeler; } 
         if (delayedspell) {
             player.cast(delayedspell, damage_threat);
-        }            
+        }  
+
+        if (player.auras.bloodlust) {
+            player.cast(player.auras.bloodlust, damage_threat);
+        }          
 
         while (step < this.maxsteps) {
 
