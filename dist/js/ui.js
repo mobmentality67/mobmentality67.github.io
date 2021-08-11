@@ -1088,7 +1088,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[8, 1]] : [[7, 1]],
+            sortList: editmode ? [[9, 1]] : [[8, 0]],
         });
     },
 
