@@ -327,16 +327,9 @@ class Player {
     addBuffs() {
         for (let buff of buffs) {
             if (buff.active) {
-                let apbonus = 0;
-                if (buff.group == "battleshout") {
-                    let shoutap = buff.ap;
-                    shoutap = ~~(shoutap * (1 + this.talents.impbattleshout));
-                    apbonus = shoutap - buff.ap;
-                }
-
                 this.base.sta += buff.sta || 0;
                 this.base.ac += buff.ac || 0;
-                this.base.ap += (buff.ap || 0) + apbonus;
+                this.base.ap += (buff.ap || 0);
                 this.base.agi += buff.agi || 0;
                 this.base.res += buff.res || 0;
                 this.base.def += buff.def || 0;
