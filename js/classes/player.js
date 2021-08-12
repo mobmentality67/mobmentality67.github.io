@@ -39,7 +39,7 @@ class Player {
             ac: 0,
             def: 0,
             res: 0,
-            ap: 0,
+            ap: 210,
             agi: 0,
             str: 0,
             bonusac: 0,
@@ -137,6 +137,8 @@ class Player {
                 this.base.ap += race.ap;
                 this.base.str += race.str;
                 this.base.agi += race.agi;
+                this.base.sta += race.sta;
+                this.base.critrating += race.critrating;
             }
         }
     }
@@ -438,7 +440,7 @@ class Player {
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
-        this.stats.ap += this.stats.str * 2;
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
         this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
         if (this.stats.apmod != 1)
@@ -461,7 +463,7 @@ class Player {
             }
         }
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
-        this.stats.ap += this.stats.str * 2;
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
 
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));

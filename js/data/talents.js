@@ -184,7 +184,7 @@ var talents = [
             y: 3,
             c: 0,
             iconname: 'ability_hunter_pet_cat',
-            aura: function (count) { return { predatorystrikesmod: count * 0.5 * 70.0  } },
+            aura: function (count) { return { predatorystrikes: count } },
          },
          {
             i: 243,
