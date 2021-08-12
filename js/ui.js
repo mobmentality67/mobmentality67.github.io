@@ -518,7 +518,7 @@ SIM.UI = {
                 updateFn(Math.floor((iteration / report.iterations) * 100));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
                 tps.text((report.totalthreat / report.totalduration).toFixed(2));
-                dtps.text((report.totalthreat / report.totalduration).toFixed(2));
+                dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
             },
             (error) => {
                 dps.text('ERROR');
