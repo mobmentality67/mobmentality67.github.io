@@ -13,8 +13,8 @@ class Weapon {
     constructor(player, item, enchant, tempenchant) {
         this.player = player;
         this.name = item.name;
-        this.mindmg = 189; // Hard coded min/max bear swing damage for now
-        this.maxdmg = 244; // Does not include modifier from Naturalist
+        this.mindmg = 130 - 27; // Hard coded min/max bear swing damage for now
+        this.maxdmg = 130 + 27; // Does not include modifier from Naturalist
         this.type = item.type;
         this.speed = item.speed;
         this.timer = 0;
