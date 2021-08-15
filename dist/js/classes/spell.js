@@ -151,7 +151,7 @@ class Maul extends Spell {
         this.threshold = parseInt(spells[3].minrage);
         this.maincd = parseInt(spells[3].maincd) * 1000;
         this.name = 'Maul';
-        this.bonus = this.player.items.includes(23198) ? 226 + 50 : 226;
+        this.bonus = this.player.items.includes(23198) ? 176 + 50 : 176;
         this.maxdelay = parseInt(spells[3].reaction);
         this.useonly = true;
     }
