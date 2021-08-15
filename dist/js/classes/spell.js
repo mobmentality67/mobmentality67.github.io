@@ -559,8 +559,6 @@ class DST extends Aura {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
             if (log) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);

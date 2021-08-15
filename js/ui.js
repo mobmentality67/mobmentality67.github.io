@@ -350,7 +350,7 @@ SIM.UI = {
 
             updateStat("hit", await simulateWeight(2, 2));
 
-            const haste = await simulateWeight(5, 80);
+            const haste = await simulateWeight(5, 157);
             updateStat("haste", {weight: haste.weight, error: haste.error});
 
         }
