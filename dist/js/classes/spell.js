@@ -458,8 +458,6 @@ class BloodlustBrooch extends Aura {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
             if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);

@@ -440,11 +440,9 @@ class Player {
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
-        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
-        if (this.stats.apmod != 1)
-            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
         this.stats.armormod *= this.talents.thickhidemod;
         this.updateArmor();
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
@@ -463,10 +461,7 @@ class Player {
             }
         }
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
-        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
-
-        if (this.stats.apmod != 1)
-            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
     }
     updateAP() {
         if (log)  
@@ -478,10 +473,7 @@ class Player {
             if (this.auras[name].active && this.auras[name].stats.ap)
                 this.stats.ap += this.auras[name].stats.ap;
         }
-        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
-
-        if (this.stats.apmod != 1)
-            this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         if (log)  
         {
             this.log(`Updating AP... after, Crit = ${this.crit}, AP = ${this.stats.ap}`);
