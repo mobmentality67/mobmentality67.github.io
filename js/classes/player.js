@@ -478,7 +478,7 @@ class Player {
             if (this.auras[name].active && this.auras[name].stats.ap)
                 this.stats.ap += this.auras[name].stats.ap;
         }
-        this.stats.ap += this.stats.str * 2;
+        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70;
 
         if (this.stats.apmod != 1)
             this.stats.ap += ~~((this.base.aprace + this.stats.str * 2) * (this.stats.apmod - 1));
