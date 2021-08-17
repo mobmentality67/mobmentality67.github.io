@@ -58,7 +58,6 @@ class Mangle extends Spell {
         super(player);
         this.cost = 20 - player.talents.ferocity;   
         this.cooldown = 6;
-        this.refund = false;
         this.maxdelay = parseInt(spells[0].reaction);
         this.name = 'Mangle';
         this.weaponspell = true;
@@ -80,7 +79,6 @@ class Swipe extends Spell {
         super(player);
         this.cost = 20 - player.talents.ferocity; 
         this.cooldown = 0;
-        this.refund = false;
         this.threshold = parseInt(spells[1].minrage);
         this.maxdelay = parseInt(spells[1].reaction);
         this.priorityap = parseInt(spells[1].priorityap);
