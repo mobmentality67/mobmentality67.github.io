@@ -69,6 +69,13 @@ var buffs = [
       critrating: 20
    },
    {
+      id: 22849,
+      name: "Ironshield Potion",
+      iconname: "inv_potion_133",
+      group: "potion",
+      bonusac: 2500
+   },
+   {
       id: 27658,
       name: "Roasted Clefthoof",
       iconname: "roasted_clefthoof",

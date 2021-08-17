@@ -339,6 +339,7 @@ class Player {
                 this.base.str += buff.str || 0;
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
+                this.base.bonusac += buff.bonusac || 0;
                 this.base.hitrating += buff.hitrating || 0;
                 this.base.spellcrit += buff.spellcrit || 0;
                 this.base.agimod *= (1 + buff.agimod / 100) || 1;
@@ -897,7 +898,7 @@ class Player {
         if (spell && (spell.name) == 'Faerie Fire') {
             return 0;
         }
-        else if (result != RESULT.MISS && result != RESULT.DODGE) {
+        else if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             dmg *= this.stats.dmgmod;
             dmg *= (1 - this.armorReduction);
             this.addRage(dmg, result, weapon, spell);
@@ -944,7 +945,7 @@ class Player {
     }
     procattack(spell, weapon, result) {
         let procdmg = 0;
-        if (result != RESULT.MISS && result != RESULT.DODGE) {
+        if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             if (this.t4rageproc && rng10k() < 1000) {
                 if (log) this.log(`T4 Bloodlust Proc, +10 rage`);
                 this.rage += 10.0;

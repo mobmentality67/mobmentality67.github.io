@@ -315,7 +315,7 @@ class Swarmguard extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.stacks = 0;
-        //if (log) this.player.log(`${this.name} applied`);
+        if (log) this.player.log(`${this.name} activated `);
     }
     canUse() {
         return this.firstuse && !this.timer && step >= this.usestep;
@@ -323,7 +323,7 @@ class Swarmguard extends Aura {
     proc() {
         this.stacks = Math.min(this.stacks + 1, 6);
         this.player.updateArmorReduction();
-        //if (log) this.player.log(`${this.name} proc`);
+         if (log) this.player.log(`${this.name} proc -- target armor at ${this.player.target.armor}`);
     }
     step() {
         if (step >= this.timer) {
@@ -332,7 +332,7 @@ class Swarmguard extends Aura {
             this.stacks = 0;
             this.firstuse = false;
             this.player.updateArmorReduction();
-            //if (log) this.player.log(`${this.name} removed`);
+            if (log) this.player.log(`${this.name} removed -- target armor at ${this.player.target.armor}`);
         }
     }
 }

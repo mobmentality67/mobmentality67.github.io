@@ -276,8 +276,7 @@ class Simulation {
         if (player.auras.pummeler) { this.pummelstep = 0; itemdelay += 30000; }
         if (player.auras.abacus) { this.abacusstep = 0; itemdelay += 10000; }
         if (player.auras.bloodlust) { this.bloodluststep = 0 }
-
-        if (player.auras.swarmguard) { player.auras.swarmguard.usestep = Math.max(this.maxsteps - player.auras.swarmguard.timetoend, 0); }
+        if (player.auras.swarmguard) { player.auras.swarmguard.usestep = 0; }
 
 
         if (log) console.log(' TIME |   RAGE | EVENT');
