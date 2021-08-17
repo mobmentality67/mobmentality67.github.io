@@ -243,8 +243,8 @@ class LacerateDOT extends Aura {
     }
     step() {
         while (step >= this.nexttick) {
-            let dmg = (155 + 5.0 * this.player.stats.ap / 100) * this.player.stats.dmgmod * this.stacks;
-            let tickdmg = dmg / 5;
+            let dmg = (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod * this.stacks;
+            let tickdmg = 1.3 * dmg; // Assume mangle is up
             if (log) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
             this.idmg += ~~tickdmg;
             this.totaldmg += ~~tickdmg;
