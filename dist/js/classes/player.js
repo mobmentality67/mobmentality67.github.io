@@ -604,14 +604,17 @@ class Player {
             }
         }
         else {
-            if (result == RESULT.DODGE) {
+            /* 100% "pity" rage gain on dodge / parry */
+            if (result == RESULT.DODGE || RESULT.PARRY) {
                 factor = 3.5;
-                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2 * 0.75;
+                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
             }
+            /* Normal rage gain formula */
             else if (result != RESULT.MISS) {
                 factor = result == RESULT.CRIT ? 7.0 : 3.5;
                 rageAdded = (dmg / 274.7 * 7.5 + weapon.swingspeed * factor) / 2;
             }
+            /* No rage gained on miss */
             else {
                 rageAdded = 0;
             }
