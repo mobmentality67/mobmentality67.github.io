@@ -801,6 +801,7 @@ var gear = {
          "source": "Crafting",
          "socket0": "red",
          "socket1": "red",
+         "socketbonus_sta": 4,
          "phase": 2,
          "id": 30042
       },

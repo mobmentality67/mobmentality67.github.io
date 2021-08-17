@@ -961,7 +961,7 @@ class Player {
                 if (this.trinketproc1.magicdmg) procdmg += this.magicproc(this.trinketproc1);
                 if (this.trinketproc1.spell && this.trinketproc1.spell.canUse()) this.trinketproc1.spell.use();
             }
-            // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
+            // If trinket 2 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
             if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc2.chance) {
                 //if (log) this.log(`Trinket 2 proc`);
                 if (this.trinketproc2.extra)
