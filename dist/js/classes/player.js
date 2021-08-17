@@ -607,7 +607,7 @@ class Player {
             /* 100% "pity" rage gain on dodge / parry */
             if (result == RESULT.DODGE || result == RESULT.PARRY) {
                 factor = 3.5;
-                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
+                rageAdded = ((weapon.avgdmg() * (1 - this.armorReduction) / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
             }
             /* Normal rage gain formula */
             else if (result != RESULT.MISS) {
