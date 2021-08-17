@@ -431,7 +431,7 @@ class Player {
             }
         }
         this.stats.dmgmod *= 1 + this.talents.naturalistmod;
-        this.stats.threatmod += 0.3 + this.talents.feralinstinctmod;
+        this.stats.threatmod *= 1 + (0.3 + this.talents.feralinstinctmod); // Dire bear form threat = 1.3x + .15 from feral instincts
         this.stats.strmod *= (1 + this.talents.survivalofthefittest * .01);
         this.stats.agimod *= (1 + this.talents.survivalofthefittest * .01);   
         this.stats.stammod *= 1 + this.talents.survivalofthefittest * .01;

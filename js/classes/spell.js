@@ -417,6 +417,8 @@ class Slayer extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateAP();
         if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
@@ -451,13 +453,17 @@ class BloodlustBrooch extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAP();
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
+            this.player.updateAP();
         if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
             if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
@@ -518,6 +524,8 @@ class Hourglass extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateAP();
         if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
