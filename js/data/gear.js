@@ -814,6 +814,7 @@ var gear = {
          "source": "SSC",
          "socket0": "red",
          "socket1": "blue",
+         "socketbonus_agi": 3,
          "phase": 2,
          "id": 30106
       },
@@ -846,6 +847,9 @@ var gear = {
          "sta": 14,
          "agi": 32,
          "ac": 227,
+         "socket0": "blue",
+         "socket1": "blue",
+         "socketbonus_agi": 3,
          "hitrating": 18,
          "source": "Crafting",
          "phase": 2,
