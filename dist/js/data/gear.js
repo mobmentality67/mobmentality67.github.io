@@ -2073,33 +2073,33 @@ var gear = {
       },
       {
          "id": 16,
-         "name": "+ 10 Haste Rating",
-         "hasterating": 10
+         "name": "+ 1% Haste (15.77 Haste Rating)",
+         "hasterating": 15.77
       },
       {
          "id": 17,
-         "name": "+ 50 Haste Rating",
-         "hasterating": 50
+         "name": "+ 2% Haste (31.54 Haste Rating)",
+         "hasterating": 31.54
       },
       {
          "id": 18,
-         "name": "+ 100 Haste Rating",
-         "hasterating": 100
+         "name": "+ 3% Haste (47.31 Haste Rating)",
+         "hasterating": 47.31
       },
       {
          "id": 19,
-         "name": "+ 5 Expertise Rating",
-         "exp": 5
+         "name": "+ 1% Expertise (15.77 Rating)",
+         "exp": 15.77
       },
       {
          "id": 20,
-         "name": "+ 20 Expertise Rating",
-         "exp": 20
+         "name": "+ 2% Expertise (31.54 Rating)",
+         "exp": 31.54
       },
       {
          "id": 21,
-         "name": "+ 40 Expertise Rating",
-         "exp": 40
+         "name": "+ 3% Expertise (47.31 Rating)",
+         "exp": 47.31
       },
       {
          "id": 22,
