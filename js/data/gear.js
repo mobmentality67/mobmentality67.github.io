@@ -1507,7 +1507,7 @@ var gear = {
          "procspell": "Tsunami"
       },
       {
-         "name": "Abacus of Violet Odds",
+         "name": "Abacus of Violent Odds",
          "source": "Dungeon",
          "phase": "1",
          "id": 28288,

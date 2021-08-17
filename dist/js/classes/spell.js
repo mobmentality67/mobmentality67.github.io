@@ -352,6 +352,8 @@ class Spider extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateHaste();
         if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
@@ -385,6 +387,8 @@ class Bloodlust extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateHaste();
         if (log) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
@@ -392,6 +396,8 @@ class Bloodlust extends Aura {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
             if (log) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
@@ -453,9 +459,9 @@ class BloodlustBrooch extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateAP();
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
+        this.player.updateAP();
         if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
@@ -489,6 +495,8 @@ class Abacus extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateHaste();
         if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
@@ -560,6 +568,8 @@ class DST extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateHaste();
         if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
@@ -567,6 +577,8 @@ class DST extends Aura {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
             if (log) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
@@ -593,6 +605,8 @@ class Tsunami extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
+        this.player.updateAuras();
+        this.player.updateIncAttackTable();
         this.player.updateAP();
         if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
