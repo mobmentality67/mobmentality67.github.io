@@ -135,7 +135,7 @@ class Lacerate extends Spell {
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && 
-            (this.player.spells.mangle.timer > 0) && (this.player.rage >= this.threshold ||
+            (!this.player.spells.mangle || this.player.spells.mangle.timer > 0) && (this.player.rage >= this.threshold ||
             (this.player.spells.mangle && this.player.spells.mangle.timer >= this.maincd)) && 
             (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap) && 
                 this.player.auras.laceratedot && this.player.auras.laceratedot.stacks == 5 && (this.player.auras.laceratedot.timer - step) > 5000));
@@ -240,6 +240,8 @@ class LacerateDOT extends Aura {
         this.totaldmg = 0;
         this.lasttick = 0;
         this.stacks = 0;
+        this.starttimer = 0;
+        this.nexttick = 0;
     }
     step() {
         while (step >= this.nexttick) {
@@ -267,6 +269,18 @@ class LacerateDOT extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         if (log) this.player.log(`${this.name} applied`);
+    }
+
+    end() {
+        if (this.active) {
+           this.uptime += (step - this.starttimer);
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+        this.nexttick = 0;
+        this.timer = 0;
+        this.starttimer = 0;
     }
 
 }

@@ -795,7 +795,7 @@ class Player {
 
         weapon.use();
         let done = this.dealdamage(dmg, result, weapon, spell);
-        let threat = this.attackmhthreat(dmg, result, weapon, spell);
+        let threat = this.attackmhthreat(done, result, weapon, spell);
         
         if (spell) {
             spell.totaldmg += done;
