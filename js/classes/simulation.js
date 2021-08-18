@@ -416,7 +416,9 @@ class Simulation {
 
         if (player.auras.laceratedot && player.spells.lacerate) {
             this.idmg += player.auras.laceratedot.idmg;
+            player.log(`Lacerate DOT total damage == ${player.auras.laceratedot.idmg}`);
             let threat = player.dealthreat(player.auras.laceratedot.idmg, RESULT.HIT, player.auras.laceratedot);
+            player.log(`Lacerate DOT totalthreat == ${threat}`);
             this.ithreat += threat;
             player.spells.lacerate.totalthreat += threat;
         }
