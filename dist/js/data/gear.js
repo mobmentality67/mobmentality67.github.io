@@ -2108,7 +2108,7 @@ var gear = {
       },
       {
          "id": 22,
-         "name": "+ 4 Resilience",
+         "name": "+ 4 Resilience Rating",
          "res": 4
       },
       {
