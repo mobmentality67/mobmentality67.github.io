@@ -39,7 +39,7 @@ class Weapon {
         if (this.player.weaponrng) dmg = rng(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.swingspeed;
         else dmg = avg(this.mindmg + this.bonusdmg, this.maxdmg + this.bonusdmg) + (this.player.stats.ap / 14) * this.swingspeed;
         if (maul) dmg += maul.bonus;
-        return dmg * this.player.stats.dmgmod;
+        return dmg;
     }
     avgdmg() {
         let dmg = ((this.mindmg + this.bonusdmg + this.maxdmg + this.bonusdmg)/2) + (this.player.stats.ap / 14) * this.swingspeed;
