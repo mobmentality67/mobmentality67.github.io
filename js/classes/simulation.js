@@ -156,6 +156,7 @@ class SimulationWorkerParallel {
     start(params) {
         params.globals = getGlobalsDelta();
         this.iterations = params.sim.iterations;
+        this.totalIterations = params.sim.iterations;
         let remain = params.sim.iterations;
         this.workers.forEach((worker, i) => {
             const current = Math.round(remain / (this.workers.length - i));
@@ -221,7 +222,7 @@ class Simulation {
         this.tpsspread = [];
         this.priorityap = parseInt(spells[1].priorityap);
 
-        if (this.iterations == 1) {
+        if (this.totalIterations == 1) {
             log = true;
             player.enableLogging = true;
         }
