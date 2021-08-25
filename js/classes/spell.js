@@ -77,6 +77,7 @@ class Swipe extends Spell {
         this.priorityap = parseInt(spells[1].priorityap);
         this.maincd = parseInt(spells[1].maincd) * 1000;
         this.weaponspell = false;
+        this.refund = false;
     }
     getPriorityAP() {
         return this.priorityap;

@@ -500,7 +500,7 @@ class Player {
 
     updateHaste() {
         this.stats.haste = this.base.haste;
-        this.stats.hasterating = this.base.haste;
+        this.stats.hasterating = this.base.hasterating;
 
         /* Apply additive haste */
         if (this.auras.pummeler && this.auras.pummeler.active)
@@ -760,7 +760,7 @@ class Player {
             /* If a weapon-based spell is blocked, it can't crit */
             tmp += 5 * 100;
             if (roll < tmp) {
-                return RESULT.HIT;
+                return RESULT.BLOCK;
             }
             /* Otherwise, if not blocked, re-roll for crit like other attacks */
             else {
@@ -800,7 +800,7 @@ class Player {
             result = this.rollweapon(weapon);
         }
 
-        this.ooc.rollOOC(step, null);
+        this.ooc.rollOOC(step, spell);
 
         let dmg = weapon.dmg(spell);
         procdmg = this.procattack(spell, weapon, result);
@@ -891,6 +891,9 @@ class Player {
         if (result == RESULT.CRIT) {
             dmg *= this.stats.critdamagemod;
             this.proccrit();
+        }
+        else if (result == RESULT.BLOCK) {
+            dmg -= 54;
         }
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
