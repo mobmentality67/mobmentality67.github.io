@@ -29,6 +29,7 @@ class Spell {
         }
         else {
             this.player.ooc = false;
+            if (log) this.log(`Omen of Clarity proc used`);
         }
 
         if (this.player.talents.ooc) {
@@ -122,6 +123,7 @@ class Lacerate extends Spell {
         }
         else {
             this.player.ooc = false;
+            if (log) this.log(`Omen of Clarity proc used`);
         }
 
         if (this.player.talents.ooc) {
@@ -635,6 +637,28 @@ class Tsunami extends Aura {
     }
     canUse() {
         return (step >= this.timer) && !this.active;
+    }
+}
+
+class OmenOfClarity extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 99999;
+        this.stats = {};
+        this.name = 'Omen of Clarity';
+        this.cooldown = 10 * 1000;
+        this.active = false;
+    }
+    use() {
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        if (log) this.player.log(`${this.name} applied`);
+    }
+    step() {}
+    canUse() {
+        return (step >= this.timer) && !this.active;``
     }
 }
 

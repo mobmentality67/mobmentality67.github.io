@@ -769,6 +769,7 @@ class Player {
                 }
                 else {
                     this.ooc = false;
+                    if (log) this.log(`Omen of Clarity proc used`);
                 }
             }
             else {
@@ -951,6 +952,7 @@ class Player {
     proccrit() {
         if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
             this.rage += 5.0;
+            if (log) this.log(`Primal Fury Proc, +5 rage`);
         } 
     }
     procattack(spell, weapon, result) {
