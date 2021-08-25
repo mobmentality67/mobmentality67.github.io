@@ -1,5 +1,3 @@
-log = true;
-
 class Spell {
     constructor(player) {
         this.timer = 0;
@@ -15,34 +13,28 @@ class Spell {
         this.useonly = false;
         this.maxdelay = 100; 
         this.weaponspell = true;
+        this.oocspell = false;
     }
     dmg() {
         return 0;
     }
-    use() {
+    use(step) {
         this.player.timer = 1500;
         
         this.timer = this.cooldown * 1000;
 
-        if (this.player.ooc == false) {
+        if (this.player.ooc.isActive() == false) {
             this.player.rage -= this.cost;
         }
         else {
-            this.player.ooc = false;
-            if (this.player.log) this.player.log(`Omen of Clarity proc used`);
+            this.player.ooc.consumeOOC(this);
         }
-
-        if (this.player.talents.ooc) {
-            let oocroll = rng10k();
-            if (oocroll > 9000) {
-                this.player.ooc = true;
-            }
-        }
+        this.player.ooc.rollOOC(step);
     }
     step(a) {
         if (this.timer <= a) {
             this.timer = 0;
-            if (log) this.player.log(`${this.name} off cooldown`);
+            if (this.player.enableLogging) this.player.log(`${this.name} off cooldown`);
         }
         else {
             this.timer -= a;
@@ -116,23 +108,16 @@ class Lacerate extends Spell {
         let bonusdmg = this.player.t5laceratebonus ? 31 + 15 : 31;
         return (bonusdmg + this.player.stats.ap / 100) * this.player.stats.dmgmod;
     }
-    use() {
+    use(step) {
         this.player.timer = 1500;
-        if (this.player.ooc == false) {
+        if (this.player.ooc.isActive() == false) {
             this.player.rage -= this.cost;
         }
         else {
-            this.player.ooc = false;
-            if (this.player.log) this.player.log(`Omen of Clarity proc used`);
+            this.player.ooc.consumeOOC(this);
         }
 
-        if (this.player.talents.ooc) {
-            let oocroll = rng10k();
-            if (oocroll > 9000) {
-                this.player.ooc = true;
-            }
-        }
-        
+        this.player.ooc.rollOOC(step);  
         this.player.auras.laceratedot.use();
     }
     canUse() {
@@ -155,7 +140,7 @@ class Maul extends Spell {
         this.maxdelay = parseInt(spells[3].reaction);
         this.useonly = true;
     }
-    use() {
+    use(step) {
         this.player.nextswinghs = true;
     }
     canUse() {
@@ -207,7 +192,7 @@ class Aura {
         this.starttimer = step;
         this.player.updateAuras();
         this.player.updateIncAttackTable();
-        if (this.player.log) this.player.log(`${this.name} applied`);
+        if (this.player.enableLogging) this.player.log(`${this.name} applied`);
         this.active = true;
     }
     step() {
@@ -217,9 +202,9 @@ class Aura {
             this.firstuse = false;
             this.player.updateAuras();
             this.player.updateIncAttackTable();
-            if (this.player.log) console.log(`Removing ${this.name}`)
+            if (this.player.enableLogging) console.log(`Removing ${this.name}`)
             this.player.updateAP();
-            if (this.player.log) this.player.log(`${this.name} removed`);
+            if (this.player.enableLogging) this.player.log(`${this.name} removed`);
             this.active = false;
         }
     }
@@ -249,7 +234,7 @@ class LacerateDOT extends Aura {
         while (step >= this.nexttick) {
             let dmg = (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod * this.stacks;
             let tickdmg = 1.3 * dmg; // Assume mangle is up
-            if (log) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
+            if (this.player.enableLogging) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
             this.idmg += ~~tickdmg;
             this.totaldmg += ~~tickdmg;
             this.nexttick += 3010;
@@ -259,7 +244,7 @@ class LacerateDOT extends Aura {
             this.uptime += (this.timer - this.starttimer);
             this.timer = 0;
             this.firstuse = false;
-            if (log) this.player.log(`Lacerate DOT fell off`);
+            if (this.player.enableLogging) this.player.log(`Lacerate DOT fell off`);
         }
     }
     use() {
@@ -270,7 +255,7 @@ class LacerateDOT extends Aura {
         }
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
-        if (log) this.player.log(`${this.name} applied`);
+        if (this.player.enableLogging) this.player.log(`${this.name} applied`);
     }
 
     end() {
@@ -300,7 +285,7 @@ class Pummeler extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.player.updateHaste();
-        //if (log) this.player.log(`${this.name} applied`);
+        if (this.player.enableLogging) this.player.log(`${this.name} applied`);
     }
     step() {
         if (step >= this.timer) {
@@ -308,7 +293,7 @@ class Pummeler extends Aura {
             this.timer = 0;
             this.firstuse = false;
             this.player.updateHaste();
-            if (log) this.player.log(`${this.name} removed`);
+            if (this.player.enableLogging) this.player.log(`${this.name} removed`);
         }
     }
     canUse() {
@@ -329,7 +314,7 @@ class Swarmguard extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.stacks = 0;
-        if (log) this.player.log(`${this.name} activated `);
+        if (this.player.enableLogging) this.player.log(`${this.name} activated `);
     }
     canUse() {
         return this.firstuse && !this.timer && step >= this.usestep;
@@ -337,7 +322,7 @@ class Swarmguard extends Aura {
     proc() {
         this.stacks = Math.min(this.stacks + 1, 6);
         this.player.updateArmorReduction();
-         if (log) this.player.log(`${this.name} proc -- target armor at ${this.player.target.armor}`);
+         if (this.player.enableLogging) this.player.log(`${this.name} proc -- target armor at ${this.player.target.armor}`);
     }
     step() {
         if (step >= this.timer) {
@@ -346,7 +331,7 @@ class Swarmguard extends Aura {
             this.stacks = 0;
             this.firstuse = false;
             this.player.updateArmorReduction();
-            if (log) this.player.log(`${this.name} removed -- target armor at ${this.player.target.armor}`);
+            if (this.player.enableLogging) this.player.log(`${this.name} removed -- target armor at ${this.player.target.armor}`);
         }
     }
 }
@@ -369,7 +354,7 @@ class Spider extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateHaste();
-        if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -379,7 +364,7 @@ class Spider extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -404,7 +389,7 @@ class Bloodlust extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateHaste();
-        if (log) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -414,7 +399,7 @@ class Bloodlust extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -440,7 +425,7 @@ class Slayer extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateAP();
-        if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -450,7 +435,7 @@ class Slayer extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
     canUse() {
@@ -476,7 +461,7 @@ class BloodlustBrooch extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateAP();
-        if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -486,7 +471,7 @@ class BloodlustBrooch extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
     canUse() {
@@ -512,7 +497,7 @@ class Abacus extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateHaste();
-        if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -522,7 +507,7 @@ class Abacus extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -549,7 +534,7 @@ class Hourglass extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateAP();
-        if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -559,7 +544,7 @@ class Hourglass extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
     canUse() {
@@ -585,7 +570,7 @@ class DST extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateHaste();
-        if (log) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -595,7 +580,7 @@ class DST extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -622,7 +607,7 @@ class Tsunami extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateAP();
-        if (log) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -632,7 +617,7 @@ class Tsunami extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateAP();
             this.uptime += (step - this.starttimer);
-            if (log) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
     canUse() {
@@ -640,25 +625,50 @@ class Tsunami extends Aura {
     }
 }
 
-class OmenOfClarity extends Aura {
-    constructor(player) {
-        super(player);
-        this.duration = 99999;
-        this.stats = {};
-        this.name = 'Omen of Clarity';
-        this.cooldown = 10 * 1000;
-        this.active = false;
-    }
-    use() {
-        this.player.timer = 0;
-        this.timer = step + this.duration * 1000;
-        this.starttimer = step;
-        this.active = true;
-        if (log) this.player.log(`${this.name} applied`);
-    }
-    step() {}
-    canUse() {
-        return (step >= this.timer) && !this.active;``
-    }
-}
+class OmenOfClarity {
 
+    constructor(player, oocTalent) {
+        this.player = player;
+        this.talented = oocTalent;
+        this.active = false;
+        this.lastProcStep = -10;
+    }
+
+    reset() {
+        this.active = false;
+        this.lastProcStep = -10;
+    }
+
+    isActive() {
+        return this.active;
+    }
+
+    rollOOC(step, spell) {
+        if (this.talented && (step - 10000 >= this.lastProcStep)) {
+            let oocroll = rng10k();
+            if (oocroll > 9000) {
+                this.active = true;
+                if (this.player.enableLogging) this.player.log(`Procced Omen of Clarity`);
+                this.lastProcStep = step;
+                if (spell) {
+                    spell.oocspell = true;
+                }
+            }
+        }
+    }
+
+    consumeOOC(spell) {
+        if (this.talented && this.active) {
+            this.active = false;
+            if (spell) {
+                spell.oocspell = true;
+            }
+            if (this.player.enableLogging) this.player.log(`Consumed Omen of Clarity`);
+        }
+    }
+
+    finishOOCUse(spell) {
+        spell.oocspell = false;
+    }
+
+}

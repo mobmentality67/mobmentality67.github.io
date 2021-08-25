@@ -48,6 +48,7 @@ class Weapon {
     }
     use() {
         this.timer = Math.round(this.swingspeed * 1000 / this.player.stats.haste);
+        
     }
     step(next) {
         this.timer -= next;

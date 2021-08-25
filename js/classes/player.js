@@ -34,6 +34,7 @@ class Player {
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
         this.ooc = false;
+        this.enableLogging = false;
         this.base = {
             sta: 0,
             ac: 0,
@@ -117,6 +118,7 @@ class Player {
         this.addGem();
         this.addBuffs();
         this.addSpells();
+        this.ooc = new OmenOfClarity(this, this.talents.ooc);
 
 
         this.auras.laceratedot = new LacerateDOT(this);
@@ -392,6 +394,7 @@ class Player {
         if (this.auras.laceratedot) {
             this.auras.laceratedot.idmg = 0;
         }
+        this.ooc.reset();
         this.update();
     }
     update() { 
@@ -597,22 +600,49 @@ class Player {
         if (spell) {
             if (result == RESULT.MISS || result == RESULT.DODGE || result == RESULT.PARRY) {
                 rageAdded = spell.refund ? spell.cost * 0.8 : 0;
-                this.rage += rageAdded;
+                if (!spell.oocspell) {
+                    this.rage += rageAdded;
+                }
+                else {
+                    rageAdded = 0;
+                    this.ooc.finishOOCUse(spell);
+                }
+                if (this.enableLogging) {
+                    let logText = (result == RESULT.MISS) ? `missed. ` : (result == RESULT.DODGE) ? `was dodged. ` : `was parried. `;
+                    logText += `Refunded ${rageAdded} rage`;
+                    this.log(`Cast ${spell.name}, attack ${logText}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
+                }
             }
             else {
                 rageAdded = 0;
+
+                let critText = "";
+                if (result == RESULT.CRIT) critText = " (crit)";
+                if (log) this.log(`Cast ${spell.name} for ${dmg}${critText}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
             }
+            this.ooc.finishOOCUse(spell);
         }
         else {
             /* 100% "pity" rage gain on dodge / parry */
             if (result == RESULT.DODGE || result == RESULT.PARRY) {
                 factor = 3.5;
-                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
+                let pityDamage = weapon.avgdmg();
+                rageAdded = ((pityDamage / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
+
+                /* Log the pity rage received if requested */
+                let logText = (result == RESULT.MISS) ? `missed. ` : (result == RESULT.DODGE) ? `was dodged` : `was parried`;
+                if (this.enableLogging) this.log(`White attack ${logText}. Pity damage: ${pityDamage}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
             }
-            /* Normal rage gain formula */
+            /* Normal white swing rage gain formula */
             else if (result != RESULT.MISS) {
+
                 factor = result == RESULT.CRIT ? 7.0 : 3.5;
                 rageAdded = (dmg / 274.7 * 7.5 + weapon.swingspeed * factor) / 2;
+
+                /* Log the white swing damage if requested */
+                let critText = "";
+                if (result == RESULT.CRIT) critText = " (crit)";
+                if (this.enableLogging) this.log(`White swung for ${dmg}${critText}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
             }
             /* No rage gained on miss */
             else {
@@ -621,21 +651,12 @@ class Player {
             this.rage += rageAdded;
         }
         if (this.rage > 100) this.rage = 100;
-        if (log)  
-        {
-            if (spell) {
-                this.log(`Cast ${spell.name} for ${dmg}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
-            }
-            else {
-                this.log(`Swung for ${dmg}, added ${rageAdded} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
-            }
-        }
     }
     addDamageTakenRage(dmg) {
         let rageAdded = dmg / 274.7 * 2.5; 
         this.rage += rageAdded;
         if (this.rage > 100) this.rage = 100;
-        if (log)  
+        if (this.enableLogging)  
         {
             this.log(`Received swing for ${dmg.toFixed(2)}, added ${rageAdded.toFixed(2)} rage. At ${parseFloat(this.rage).toFixed(2)} rage.`);
         }
@@ -654,7 +675,7 @@ class Player {
     stepitemtimer(a) {
         if (this.itemtimer <= a) {
             this.itemtimer = 0;
-            if (log) this.log('Item CD off');
+            if (this.enableLogging) this.log('Item CD off');
             return true;
         }
         else {
@@ -752,7 +773,7 @@ class Player {
         if (roll < tmp && !spell.nocrit) return RESULT.CRIT;
         return RESULT.HIT;
     }
-    attackmh(weapon, damage_threat_arr) {
+    attackmh(weapon, damage_threat_arr, step) {
         this.stepauras();
 
         let spell = null;
@@ -764,12 +785,11 @@ class Player {
             if (this.spells.maul && this.spells.maul.cost <= this.rage) {
                 result = this.rollspell(this.spells.maul);
                 spell = this.spells.maul;
-                if (this.ooc == false) {
+                if (this.ooc.isActive() == false) {
                     this.rage -= spell.cost;
                 }
                 else {
-                    this.ooc = false;
-                    if (log) this.log(`Omen of Clarity proc used`);
+                    this.ooc.consumeOOC(spell);
                 }
             }
             else {
@@ -780,12 +800,7 @@ class Player {
             result = this.rollweapon(weapon);
         }
 
-        if (this.talents.ooc) {
-            let oocroll = rng10k();
-            if (oocroll > 9000) {
-                this.ooc = true;
-            }
-        }
+        this.ooc.rollOOC(step, null);
 
         let dmg = weapon.dmg(spell);
         procdmg = this.procattack(spell, weapon, result);
@@ -839,19 +854,19 @@ class Player {
         let dmg = this.incswingdamage;
         if (result == RESULT.HIT) {
             dmg *= 1.0;
-            if (log) this.log(`Boss hit for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss hit for ${dmg}`);
         }
         else if (result == RESULT.CRIT) {
             dmg *= 2.0;
-            if (log) this.log(`Boss crit for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss crit for ${dmg}`);
         }
         else if (result == RESULT.CRUSH) {
             dmg *= 1.5;
-            if (log) this.log(`Boss crushed for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss crushed for ${dmg}`);
         }
         else {
             dmg = 0.0;
-            if (log) this.log("Boss swing missed");
+            if (this.enableLogging) this.log("Boss swing missed");
             return 0;
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
@@ -859,9 +874,9 @@ class Player {
         return dmg;
     }
 
-    cast(spell, damage_threat_arr) {
+    cast(spell, damage_threat_arr, step) {
         this.stepauras();
-        spell.use();
+        spell.use(step);
         if (spell.useonly) { 
             //if (log) this.log(`${spell.name} used`);
             damage_threat_arr[0] = 0;
@@ -916,7 +931,7 @@ class Player {
             return ~~dmg;
         }
         else {
-            this.addRage(dmg, result, weapon, spell);
+            this.addRage(null, result, weapon, spell);
             return 0;
         }
     }
@@ -952,7 +967,7 @@ class Player {
     proccrit() {
         if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
             this.rage += 5.0;
-            if (log) this.log(`Primal Fury Proc, +5 rage`);
+            if (this.enableLogging) this.log(`Primal Fury Proc, +5 rage`);
         } 
     }
     procattack(spell, weapon, result) {
@@ -1027,6 +1042,8 @@ class Player {
         };
     }
     log(msg) {
-        console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${msg}`);
+        if (this.enableLogging) {
+            console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${msg}`);
+        }
     }
 }

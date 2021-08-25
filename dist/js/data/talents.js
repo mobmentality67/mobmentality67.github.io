@@ -28,11 +28,11 @@ var talents = [
             n: 'Ferocity',
             m: 5,
             s: [
-               16938,
-               16939,
-               16940,
-               16941,
-               16942
+               16934,
+               16935,
+               16936,
+               16937,
+               16938
             ],
             d: [
                'Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by 1 Rage or Energy',

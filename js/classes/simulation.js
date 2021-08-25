@@ -221,8 +221,13 @@ class Simulation {
         this.tpsspread = [];
         this.priorityap = parseInt(spells[1].priorityap);
 
-        if (this.iterations == 1) log = true;
-        else log = false;
+        if (this.iterations == 1) {
+            log = true;
+            player.enableLogging = true;
+        }
+        else {
+            log = false;
+        }
     }
     startSync() {
         this.starttime = new Date().getTime();
@@ -300,7 +305,7 @@ class Simulation {
 
             // Attack boss
             if (player.mh.timer <= 0) {
-                damage_threat = player.attackmh(player.mh, damage_threat);
+                damage_threat = player.attackmh(player.mh, damage_threat, step);
                 damageDone = damage_threat[0];
                 threatDone = damage_threat[1];
                 this.idmg += damageDone;
@@ -352,7 +357,7 @@ class Simulation {
                 if (player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic.maxdelay)
                     player.heroicdelay = delayedheroic.maxdelay - 49;
                 if (delayedspell.canUse()) {
-                    damage_threat = player.cast(delayedspell, damage_threat);
+                    damage_threat = player.cast(delayedspell, damage_threat, step);
                     this.idmg += damage_threat[0];
                     this.ithreat += damage_threat[1];
                     player.spelldelay = 0;
