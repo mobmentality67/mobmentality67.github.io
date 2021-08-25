@@ -51,6 +51,8 @@ class SimulationWorker {
     start(params) {
         params.globals = getGlobalsDelta();
         this.worker.postMessage(params);
+        this.totalIterations = params.sim.iterations;
+
     }
 }
 
@@ -161,7 +163,7 @@ class SimulationWorkerParallel {
         this.workers.forEach((worker, i) => {
             const current = Math.round(remain / (this.workers.length - i));
             remain -= current;
-            worker.start({...params, sim: {...params.sim, iterations: current}});
+            worker.start({...params, sim: {...params.sim, iterations: current, totalIterations: params.sim.iterations}});
         });
     }
 }
@@ -222,7 +224,7 @@ class Simulation {
         this.tpsspread = [];
         this.priorityap = parseInt(spells[1].priorityap);
 
-        if (this.totalIterations == 1) {
+        if (config.totalIterations == 1) {
             log = true;
             player.enableLogging = true;
         }
