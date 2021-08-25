@@ -69,7 +69,7 @@ var talents = [
             y: 0,
             iconname: 'demoralizingroar',
             c: 0,
-            aura: function (count) { return { feralaggressionmod: count * 0.03 } },
+            aura: function (count) { return { feralaggressionmod: count * 0.08 } },
          },
          {
             i: 221,
@@ -108,7 +108,7 @@ var talents = [
             y: 1,
             c: 0,
             iconname: 'thickhide',
-            aura: function (count) { return { thickhidemod: 1 + count * 0.036666667 } },
+            aura: function (count) { return { thickhidemod: 1 + Math.ceil(count * 3.3)*0.01 } },
          },
          {
             i: 311,

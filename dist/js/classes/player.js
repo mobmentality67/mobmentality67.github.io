@@ -410,7 +410,7 @@ class Player {
         if (this.race == 'Night Elf') this.stats.incdodge += 1;
    `  `   // 4.4 base miss + miss from defense rating
         this.stats.incmiss = 4.4 + this.stats.def * .04;
-        this.stats.inccrit = Math.max(0, 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.0254);
+        this.stats.inccrit = Math.max(0, 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381);
         this.stats.inccrush = 15;
 
         // if (log) {
@@ -607,7 +607,7 @@ class Player {
             /* 100% "pity" rage gain on dodge / parry */
             if (result == RESULT.DODGE || result == RESULT.PARRY) {
                 factor = 3.5;
-                rageAdded = ((weapon.avgdmg() * (1 - this.armorReduction) / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
+                rageAdded = ((weapon.avgdmg() / 274.7) * 7.5 + weapon.swingspeed * factor) / 2;
             }
             /* Normal rage gain formula */
             else if (result != RESULT.MISS) {
@@ -718,7 +718,7 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += 15.0 * 100;
         if (roll < tmp) return RESULT.CRUSH;
-        tmp += (Math.max(5.6 - this.talents.survivalofthefittest - this.stats.res * 0.02564 - this.stats.def * 0.04, 0)) * 100;
+        tmp += this.stats.inccrit;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
@@ -736,9 +736,16 @@ class Player {
             tmp = 0;
         }
         else {
-            // If a weapon-based spell is blocked, it can't crit */
+            /* If a weapon-based spell is blocked, it can't crit */
             tmp += 5 * 100;
-            if (roll < tmp) return RESULT.HIT;
+            if (roll < tmp) {
+                return RESULT.HIT;
+            }
+            /* Otherwise, if not blocked, re-roll for crit like other attacks */
+            else {
+                roll = rng10k();
+                tmp = 0;
+            }
         }
         let crit = this.crit + this.mh.crit;
         tmp += crit * 100;
