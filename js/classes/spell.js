@@ -29,7 +29,7 @@ class Spell {
         }
         else {
             this.player.ooc = false;
-            if (log) this.log(`Omen of Clarity proc used`);
+            if (this.player.log) this.player.log(`Omen of Clarity proc used`);
         }
 
         if (this.player.talents.ooc) {
@@ -123,7 +123,7 @@ class Lacerate extends Spell {
         }
         else {
             this.player.ooc = false;
-            if (log) this.log(`Omen of Clarity proc used`);
+            if (this.player.log) this.player.log(`Omen of Clarity proc used`);
         }
 
         if (this.player.talents.ooc) {
@@ -207,7 +207,7 @@ class Aura {
         this.starttimer = step;
         this.player.updateAuras();
         this.player.updateIncAttackTable();
-        if (log) this.player.log(`${this.name} applied`);
+        if (this.player.log) this.player.log(`${this.name} applied`);
         this.active = true;
     }
     step() {
@@ -217,9 +217,9 @@ class Aura {
             this.firstuse = false;
             this.player.updateAuras();
             this.player.updateIncAttackTable();
-            if (log) console.log(`Removing ${this.name}`)
+            if (this.player.log) console.log(`Removing ${this.name}`)
             this.player.updateAP();
-            if (log) this.player.log(`${this.name} removed`);
+            if (this.player.log) this.player.log(`${this.name} removed`);
             this.active = false;
         }
     }
