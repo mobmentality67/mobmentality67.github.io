@@ -229,13 +229,6 @@ class Player {
                 if (!item.temp) continue;
                 if ((this.testTempEnchType == type && this.testTempEnch == item.id) ||
                     (this.testTempEnchType != type && item.selected)) {
-
-                    for (let prop in this.base) {
-                        if (prop == 'haste')
-                            this.base.haste *= (1 + item.haste / 100 / 15.8) || 1;
-                        else
-                            this.base[prop] += item[prop] || 0;
-                    }
                 }
             }
         }
