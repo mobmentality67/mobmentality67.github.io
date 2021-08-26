@@ -275,6 +275,9 @@ class Simulation {
         let damageDone = 0;
         let threatDone = 0;
         var damage_threat = [0, 0];
+        if (this.player.weaponrng) {
+            player.mh.timer = Math.random();
+        }
 
         // item steps
         let itemdelay = 0;
@@ -302,7 +305,12 @@ class Simulation {
 
         if (player.auras.bloodlust) {
             player.cast(player.auras.bloodlust, damage_threat);
-        }          
+        }       
+
+        // Manually check if Maul should be queued with starting rage
+        if (player.spells.maul && player.spells.maul.canUse()) {
+            player.nextswinghs = true;
+        }   
 
         while (step < this.maxsteps) {
 
