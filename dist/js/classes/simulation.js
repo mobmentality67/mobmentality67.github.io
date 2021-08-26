@@ -275,8 +275,9 @@ class Simulation {
         let damageDone = 0;
         let threatDone = 0;
         var damage_threat = [0, 0];
+        /* If weapon RNG is enabled, randomize first swing time [0, 1s) */
         if (this.player.weaponrng) {
-            player.mh.timer = Math.random();
+            player.mh.timer = (~~rng10k() / 10) | 0;
         }
 
         // item steps
