@@ -69,6 +69,13 @@ var buffs = [
       critrating: 20
    },
    {
+      id: 22854,
+      name: "Flask of Relentless Assault",
+      iconname: "inv_potion_117",
+      group: "elixir",
+      ap: 120
+   },
+   {
       id: 22849,
       name: "Ironshield Potion",
       iconname: "inv_potion_133",
@@ -95,6 +102,20 @@ var buffs = [
       iconname: "inv_misc_food_84_roastclefthoof",
       group: "food",
       hitrating: 20
+   },
+   {
+      id: 27498,
+      name: "Scroll of Agility V",
+      iconname: "spell_holy_blessingofagility",
+      group: "",
+      agi: 20
+   },
+   {
+      id: 25703,
+      name: "Scroll of Strength V",
+      iconname: "spell_nature_strength",
+      group: "",
+      str: 20
    },
    {
       id: 33602,
