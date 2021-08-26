@@ -119,7 +119,6 @@ class Lacerate extends Spell {
         }
 
         this.player.ooc.rollOOC(step);  
-        this.player.auras.laceratedot.use();
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && 

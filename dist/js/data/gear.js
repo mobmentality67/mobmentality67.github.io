@@ -1969,7 +1969,8 @@ var gear = {
          "id": 31186,
          "source": "",
          "phase": 1,
-         "type": "Other"
+         "source": "Quest",
+         "type": "Staff"
       },
       {
          "name": "Staff of Beasts",

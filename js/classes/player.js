@@ -924,6 +924,12 @@ class Player {
             dmg *= this.stats.dmgmod;
             dmg *= (1 - this.armorReduction);
             this.addRage(dmg, result, weapon, spell);
+
+            /* If landing a lacerate, also apply the bleed */
+            if (spell && spell.name == 'Lacerate') {
+                this.auras.laceratedot.use();
+            }
+
             return ~~dmg;
         }
         else {
