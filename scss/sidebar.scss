@@ -48,7 +48,7 @@
     }
 
     .character {
-        padding: 20px 0;
+        padding: 18px 0;
         
         & > p {
             text-align: center;
@@ -68,7 +68,7 @@
 
     li {
         border-bottom: 1px solid rgba(221,221,221,0.4);
-        padding: 7px 10px;
+        padding: 7px 8px;
         overflow: hidden;
         font-size: 12px;
 
@@ -84,7 +84,7 @@
         }
 
         small {
-            font-size: 10px;
+            font-size: 9px;
             color: rgba(255, 255, 255, 0.5);
         }
     }
@@ -145,11 +145,11 @@
             margin-right: 4px;
             white-space: nowrap;
 
-            font-size: 14px;
+            font-size: 11px;
             font-weight: bold;
         }
         .stat-dps {
-            font-size: 19;
+            font-size: 16;
             font-weight: bold;
             color: $item-uncommon;
             &:after {
@@ -162,7 +162,7 @@
         }
 
         .stat-ehp {
-            font-size: 19;
+            font-size: 16;
             font-weight: bold;
             color: $item-uncommon;
             &:after {
@@ -175,7 +175,7 @@
         }
 
         .stat-tps {
-            font-size: 19;
+            font-size: 16;
             font-weight: bold;
             color: $item-uncommon;
             &:after {
@@ -187,7 +187,7 @@
             }
         }
         .stat-error {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: bold;
             color: $item-uncommon;
             &:before {
@@ -204,12 +204,12 @@
     }
 
     #dtps {
-        font-size: 22px;
+        font-size: 17px;
         font-weight: bold;
         color: $item-uncommon;
         &:after {
             content: " DTPS";
-            font-size: 14px;
+            font-size: 11px;
         }
         &:empty:after {
             display: none;
@@ -221,12 +221,12 @@
     }
 
     #dps {
-        font-size: 22px;
+        font-size: 17px;
         font-weight: bold;
         color: $item-uncommon;
         &:after {
             content: " DPS";
-            font-size: 14px;
+            font-size: 11px;
         }
         &:empty:after {
             display: none;
@@ -238,19 +238,19 @@
     }
 
     #tps {
-        font-size: 22px;
+        font-size: 17px;
         font-weight: bold;
         color: $item-uncommon;
         &:after {
             content: " TPS";
-            font-size: 14px;
+            font-size: 11px;
         }
         &:empty:after {
             display: none;
         }
     }
     #dpserr {
-        font-size: 14px;
+        font-size: 11px;
         font-weight: bold;
         color: $item-uncommon;
         &:before {
@@ -262,7 +262,7 @@
     }
 
     #tpserr {
-        font-size: 14px;
+        font-size: 11px;
         font-weight: bold;
         color: $item-uncommon;
         &:before {
@@ -274,12 +274,12 @@
     }
 
     #time {
-        font-size: 14px;
+        font-size: 11px;
         font-weight: bold;
         text-align: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        min-height: 19px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        min-height: 17px;
         &:after {
             content: " s";
         }
@@ -292,9 +292,9 @@
         font-size: 12px;
         font-weight: bold;
         text-align: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        min-height: 19px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        min-height: 17px;
         &:after {
             content: "% pull variance success";
         }
@@ -305,26 +305,26 @@
 
     #stats {
         text-align: center;
-        font-size: 12px;
-        margin-bottom: 14px;
+        font-size: 11px;
+        margin-bottom: 10px;
         font-weight: bold;
-        min-height: 17px;
+        min-height: 13px;
     }
 
     #tpsstats {
         text-align: center;
         font-size: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
         font-weight: bold;
-        min-height: 17px;
+        min-height: 13px;
     }
 
     #dtpsstats {
         text-align: center;
         font-size: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
         font-weight: bold;
-        min-height: 17px;
+        min-height: 13px;
     }
 
     .author {
