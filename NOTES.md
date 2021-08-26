@@ -29,8 +29,9 @@ The "Stats" view is helpful for debugging oddities in the fight from a high leve
 This is directly ported from Guybrush's Warrior Sim, with the vast, vast majority of work on the UI itself done by Guybrush and other contributors. See https://github.com/GuybrushGit/WarriorSim for the original repository and its history. Porting this to work for TBC Feral Druid involved gutting the algorithms surrounding damage, adding damage taken, rotation, and adding tank parameters.
 
 ## References
-Lots of the work that went into the algorithm rework was built from excellent work from others. This includes, but is not limited to,
+Lots of the work that went into the algorithm rework was built from excellent work by others. This includes, but is not limited to,
 * Nerdegghead's TBC Bear Stat Weights Calculator at https://docs.google.com/spreadsheets/d/1oKzPko-lXrOD-WSm4x2XdxD96USKSLEZoq8l2r6W3tI/edit?usp=sharing. I encourage everyone to use this tool to review bear gearing decisions.
 * Magey's TBC Warrior Attack Table: https://github-wiki-see.page/m/magey/tbc-warrior/wiki/Attack-table
 * Zidnae's TBC Bear Theorycrafting Notes: https://zidnae.gitlab.io/tbc-armor-penetration-calc/tbc_bear_tc.html
 * Other discussion on the fantastic Druid Discord: https://discord.gg/B6HcVrPqk2. 
+* Special thank you to Balor-Anathema for tons of incredible work verifying and testing this project to make it sane
