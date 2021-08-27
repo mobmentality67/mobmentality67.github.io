@@ -1,9 +1,10 @@
 class Player {
 
-    HASTE_RATING_COEFFICIENT = 10*82/52;
-    HIT_RATING_COEFFICIENT = 10*82/52;
-    EXP_RATING_COEFFICIENT = 10*82/52;
-    CRIT_RATING_COEFFICIENT = 14*82/52;
+    HASTE_RATING_COEFFICIENT = 1/(10*82/52);
+    HIT_RATING_COEFFICIENT = 1/(10*82/52);
+    EXP_RATING_COEFFICIENT = 1/(10*82/52);
+    CRIT_RATING_COEFFICIENT = 1/(14*82/52);
+    DODGE_RATING_COEFFICIENT =  1/(12*82/52);
 
     static getConfig(base) {
         return {
@@ -409,7 +410,7 @@ class Player {
     updateIncAttackTable() {
         // Incoming attack table constant setup
         // Agi dodge + dodge rating + def rating
-        this.stats.incdodge = this.stats.agi / 14.7059 + this.stats.incdodgerating / 18.9231 + this.stats.def * .04; 
+        this.stats.incdodge = this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + this.stats.def * .04; 
         if (this.race == 'Night Elf') this.stats.incdodge += 1;
    `  `   // 4.4 base miss + miss from defense rating
         this.stats.incmiss = 4.4 + this.stats.def * .04;
@@ -450,7 +451,7 @@ class Player {
         this.stats.armormod *= this.talents.thickhidemod;
         this.updateArmor();
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
-        this.stats.haste = this.base.haste + this.base.hasterating / 15.8 / 100; 
+        this.stats.haste = this.base.haste + this.base.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
     }
     updateStrength() {
         this.stats.str = this.base.str;
@@ -513,7 +514,7 @@ class Player {
             this.stats.hasterating += this.auras.dst.mult_stats.rating;
 
         /* Apply multiplicative haste */
-        this.stats.haste += this.stats.hasterating / 15.8 / 100;
+        this.stats.haste += this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100;
         if (this.auras.bloodlust && this.auras.bloodlust.active)
             this.stats.haste *= 1.3;
     }
@@ -558,7 +559,7 @@ class Player {
     getMissChance(weapon) {
         let diff = this.target.defense - this.stats.skill;
         let miss = 5 + (diff > 10 ? diff * 0.2 : diff * 0.1);
-        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating / this.HIT_RATING_COEFFICIENT + 1, 0);
+        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating * this.HIT_RATING_COEFFICIENT + 1, 0);
         return missChance;
     }
 
@@ -570,7 +571,7 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp / this.EXP_RATING_COEFFICIENT, 0);
+        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp * this.EXP_RATING_COEFFICIENT, 0);
     }
 
     getParryChance(weapon) {
@@ -578,7 +579,7 @@ class Player {
             return 0;
         }
         else {
-            return Math.max(14 - this.stats.exp / this.EXP_RATING_COEFFICIENT, 0);
+            return Math.max(14 - this.stats.exp * this.EXP_RATING_COEFFICIENT, 0);
         }
     }
 
