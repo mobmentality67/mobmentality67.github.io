@@ -1,4 +1,10 @@
 class Player {
+
+    HASTE_RATING_COEFFICIENT = 10*82/52;
+    HIT_RATING_COEFFICIENT = 10*82/52;
+    EXP_RATING_COEFFICIENT = 10*82/52;
+    CRIT_RATING_COEFFICIENT = 14*82/52;
+
     static getConfig(base) {
         return {
             race: $('select[name="race"]').val(),
@@ -397,6 +403,7 @@ class Player {
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dodge = this.getDodgeChance(this.mh);
         this.mh.parry = this.getParryChance(this.mh);
+        this.mh.block = this.getBlockChance(this.mh);
         this.updateIncAttackTable();
     }
     updateIncAttackTable() {
@@ -528,7 +535,7 @@ class Player {
             this.target.armor = Math.max(this.target.armor - (this.auras.bonereaver.stacks * this.auras.bonereaver.armor), 0);
         if (this.auras.swarmguard && this.auras.swarmguard.timer)
             this.target.armor = Math.max(this.target.armor - (this.auras.swarmguard.stacks * this.auras.swarmguard.armor), 0);
-        this.armorReduction = this.getArmorReduction(this.target.armor, this.target.level);
+        this.armorReduction = this.getArmorReduction(this.target.armor, this.level);
     }
     updateDmgMod() {
         this.stats.dmgmod = this.base.dmgmod;
@@ -551,7 +558,7 @@ class Player {
     getMissChance(weapon) {
         let diff = this.target.defense - this.stats.skill;
         let miss = 5 + (diff > 10 ? diff * 0.2 : diff * 0.1);
-        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating / 15.77 + 1, 0);
+        let missChance = Math.max(miss - this.stats.hit - this.stats.hitrating / this.HIT_RATING_COEFFICIENT + 1, 0);
         return missChance;
     }
 
@@ -563,7 +570,7 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp / 15.77, 0);
+        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp / this.EXP_RATING_COEFFICIENT, 0);
     }
 
     getParryChance(weapon) {
@@ -571,7 +578,16 @@ class Player {
             return 0;
         }
         else {
-            return Math.max(14 - this.stats.exp / 15.77, 0);
+            return Math.max(14 - this.stats.exp / this.EXP_RATING_COEFFICIENT, 0);
+        }
+    }
+
+    getBlockChance(weapon) {
+        if (!this.activetank) {
+            return 0;
+        }
+        else {
+            return 5.0;
         }
     }
 
@@ -719,7 +735,9 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += weapon.glanceChance * 100;
         if (roll < tmp) return RESULT.GLANCE;
-        tmp += (this.crit + weapon.crit) * 100;
+        tmp += this.mh.block * 100;  
+        if (roll < tmp) return RESULT.BLOCK;
+        tmp += this.crit * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
@@ -737,34 +755,22 @@ class Player {
         return RESULT.HIT;
     }
     rollspell(spell) {
-        let tmp = 0;
-        let roll = rng10k();
-        tmp += Math.max(this.mh.miss, 0) * 100;
-        if (roll < tmp) return RESULT.MISS;
-        tmp += this.mh.parry * 100;
-        if (roll < tmp) return RESULT.PARRY;
-        tmp += this.mh.dodge * 100;
-        if (roll < tmp) return RESULT.DODGE;
-        if (!spell.weaponspell) {
-            roll = rng10k();
-            tmp = 0;
-        }
-        else {
-            /* If a weapon-based spell is blocked, it can't crit */
-            tmp += 5 * 100;
-            if (roll < tmp) {
-                return RESULT.BLOCK;
-            }
-            /* Otherwise, if not blocked, re-roll for crit like other attacks */
-            else {
-                roll = rng10k();
-                tmp = 0;
-            }
-        }
-        let crit = this.crit + this.mh.crit;
-        tmp += crit * 100;
-        if (roll < tmp && !spell.nocrit) return RESULT.CRIT;
-        return RESULT.HIT;
+       let roll = rng10k();
+       let tmp = Math.max(this.mh.miss, 0) * 100;
+       if (roll < tmp) return RESULT.MISS;
+       tmp += this.mh.parry * 100;
+       if (roll < tmp) return RESULT.PARRY;
+       tmp += this.mh.dodge * 100;
+       if (roll < tmp) return RESULT.DODGE;
+       tmp += this.mh.block * 100; // block
+       if (roll < tmp) {
+          if (spell.weaponspell || spell.nocrit) return RESULT.BLOCK;
+          if (rng10k() < this.crit * 100) return RESULT.BLOCKED_CRIT;
+          return RESULT.BLOCK;
+       }
+       if (spell.nocrit) return RESULT.HIT;
+       if (rng10k() < this.crit * 100) return RESULT.CRIT;
+       return RESULT.HIT;
     }
     attackmh(weapon, damage_threat_arr, step) {
         this.stepauras();
@@ -800,9 +806,6 @@ class Player {
 
         if (result == RESULT.GLANCE) {
             dmg *= this.getGlanceReduction(weapon);
-        }
-        else if (result == RESULT.BLOCK) {
-            dmg = Math.max(dmg - 54, 0);
         }
         else if (result == RESULT.CRIT) {
             dmg *= this.stats.critdamagemod;
@@ -881,16 +884,18 @@ class Player {
         let result = this.rollspell(spell);
         procdmg = this.procattack(spell, this.mh, result);
 
-        if (result == RESULT.CRIT) {
+        if (result == RESULT.CRIT || result == RESULT.BLOCKED_CRIT) {
             dmg *= this.stats.critdamagemod;
             this.proccrit();
-        }
-        else if (result == RESULT.BLOCK) {
-            dmg -= 54;
         }
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
         let threat = this.dealthreat(done, result, spell);
+
+        // Correct result to RESULT.CRIT for crit proc checks, stats
+        if (result == RESULT.BLOCKED_CRIT) {
+            result = RESULT.CRIT; 
+        }
 
         /* Manually override FF results with new roll */
         if (spell && (spell.name != 'Faerie Fire')) {
@@ -917,25 +922,29 @@ class Player {
         return damage_threat_arr;
     }
     dealdamage(dmg, result, weapon, spell) {
+        let finalDamage = 0;
+
         if (spell && (spell.name) == 'Faerie Fire') {
-            return 0;
+            return finalDamage;
         }
         else if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             dmg *= this.stats.dmgmod;
             dmg *= (1 - this.armorReduction);
-            this.addRage(dmg, result, weapon, spell);
+            if (result == RESULT.BLOCK || result == RESULT.BLOCKED_CRIT) {
+                dmg = Math.max(0, dmg - 54);
+            }
 
             /* If landing a lacerate, also apply the bleed */
             if (spell && spell.name == 'Lacerate') {
                 this.auras.laceratedot.use();
             }
-
-            return ~~dmg;
+            finalDamage = ~~dmg;
         }
         else {
-            this.addRage(null, result, weapon, spell);
-            return 0;
+            finalDamage = 0;
         }
+        this.addRage(dmg, result, weapon, spell);
+        return finalDamage;
     }
 
     dealthreat(dmg, result, spell) {
