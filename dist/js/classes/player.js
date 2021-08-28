@@ -1044,7 +1044,7 @@ class Player {
         return procdmg;
     }
     magicproc(proc) {
-        let mod = 1;
+        let mod;
         let miss = 1700;
         let dmg = proc.magicdmg;
         let dmgrange = proc.magicdmgrange;
@@ -1053,13 +1053,14 @@ class Player {
         if (rng10k() < miss) return 0; // Roll for spell miss
         
         // Roll for partial resist 
-        let magicRoll = Math.random()
+        let magicRoll = Math.random();
         let tmp = 0.0072;
-        if (magicRoll < tmp) mod = 0.25;
+        if (!mod && magicRoll < tmp) mod = 0.25;
         tmp += .0432;
-        if (magicRoll < tmp) mod = 0.5;
+        if (!mod && magicRoll < tmp) mod = 0.5;
         tmp += .1320;
-        if (magicRoll < tmp) mod = 0.75;
+        if (!mod && magicRoll < tmp) mod = 0.75;
+        if (!mod) mod = 1.00;
 
         // Roll for crit
         if (rng10k() < (this.stats.spellcrit * 100)) mod *= 1.5;
