@@ -30,6 +30,12 @@ class Spell {
             this.player.ooc.consumeOOC(this);
         }
     }
+    proc() {
+        return this.use();
+    }
+    canProc() {
+        return this.canUse();
+    }
     step(a) {
         if (this.timer <= a) {
             this.timer = 0;
@@ -183,6 +189,12 @@ class Aura {
         this.active = false;
         this.requirescrit = false;
     }
+    proc() {
+        return this.use();
+    }
+    canProc() {
+        return this.canUse();
+    }
     use() {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.timer = step + this.duration * 1000;
@@ -302,35 +314,101 @@ class Swarmguard extends Aura {
     constructor(player) {
         super(player);
         this.duration = 30;
-        this.armor = 200;
+        this.stats = { arpen: 0 };
         this.stacks = 0;
-        this.chance = 5000;
+        this.ppm = 10;
+        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
         this.timetoend = 30000;
+        this.cooldown = 180 * 1000;
+        this.active = false;
     }
     use() {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.stacks = 0;
-        if (this.player.enableLogging) this.player.log(`${this.name} activated `);
+        this.active = true;
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated `);
     }
     canUse() {
-        return this.firstuse && !this.timer && step >= this.usestep;
+        return (step >= this.timer) && !this.active;
     }
     proc() {
         this.stacks = Math.min(this.stacks + 1, 6);
+        this.stats.arpen = this.stacks * 200;
+        this.player.updateAuras();
         this.player.updateArmorReduction();
-         if (this.player.enableLogging) this.player.log(`${this.name} proc -- target armor at ${this.player.target.armor}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc -- target armor at ${this.player.target.armor}`);
+    }
+    canProc() {
+        return this.active;
     }
     step() {
-        if (step >= this.timer) {
+        if (step >= this.timer && this.active) {
             this.uptime += (this.timer - this.starttimer);
-            this.timer = 0;
+            this.stats.arpen = 0;
+            this.timer = this.starttimer + this.cooldown;
             this.stacks = 0;
             this.firstuse = false;
+            this.player.updateAuras();
             this.player.updateArmorReduction();
-            if (this.player.enableLogging) this.player.log(`${this.name} removed -- target armor at ${this.player.target.armor}`);
+            this.active = false;
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed -- target armor at ${this.player.target.armor}`);
         }
     }
+}
+
+class Icon extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.cooldown = 120 * 1000;
+        this.timetoend = 20000;
+        this.active = false;
+        this.stats = { arpen: 0 };
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.player.itemtimer = this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.stats.arpen = 600;
+        this.player.updateAuras();
+        this.player.updateArmorReduction();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated. Target armor at ${this.player.target.armor}`);
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+    step() {
+         if (step > this.timer && this.active) {
+            this.stats.arpen = 0;
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateAuras();
+            this.player.updateArmorReduction();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Target armor at ${this.player.target.armor}`);
+         }
+    }
+}
+
+class Romulos extends Aura {
+    constructor(player) {
+        super(player);
+        this.chance = 5000;
+        this.cooldown = 0;
+        this.ppm = 1;
+        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
+        this.magicdmg = 277;
+        this.magicdmgrange = 55;
+    }
+    use() {
+       if (this.player.enableLogging) this.player.log(`Trinket ${this.name} procced. `);
+    }
+    canUse() {
+        return true;
+    }
+    step() {}
 }
 
 class Spider extends Aura {
@@ -386,7 +464,7 @@ class Bloodlust extends Aura {
         this.player.updateAuras();
         this.player.updateIncAttackTable();
         this.player.updateHaste();
-        if (this.player.enableLogging) this.player.log(`${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -396,7 +474,7 @@ class Bloodlust extends Aura {
             this.player.updateIncAttackTable();
             this.player.updateHaste();
             this.uptime += (step - this.starttimer);
-            if (this.player.enableLogging) this.player.log(`${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -522,6 +600,7 @@ class Hourglass extends Aura {
         this.cooldown = 50 * 1000;
         this.active = false;
         this.requirescrit = true;
+        this.chance = .10;
     }
     use() {
         this.player.timer = 0;
@@ -558,6 +637,8 @@ class DST extends Aura {
         this.name = 'Dragonspine Trophy';
         this.cooldown = 20 * 1000;
         this.active = false;
+        this.ppm = 1;
+        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
     }
     use() {
         this.player.timer = 0;
@@ -580,6 +661,7 @@ class DST extends Aura {
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
+
     canUse() {
         return (step >= this.timer) && !this.active;
     }
@@ -595,6 +677,7 @@ class Tsunami extends Aura {
         this.cooldown = 45 * 1000;
         this.active = false;
         this.requirescrit = true;
+        this.chance = .10;
     }
     use() {
         this.player.timer = 0;

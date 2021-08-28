@@ -290,6 +290,7 @@ class Simulation {
         if (player.auras.abacus) { this.abacusstep = 0; itemdelay += 10000; }
         if (player.auras.bloodlust) { this.bloodluststep = 0 }
         if (player.auras.swarmguard) { player.auras.swarmguard.usestep = 0; }
+        if (player.auras.icon) { player.auras.icon.usestep = 0; }
 
 
         if (log) console.log(' TIME |   RAGE | EVENT');
@@ -301,6 +302,7 @@ class Simulation {
         else if (player.auras.abacus && player.auras.abacus.canUse()) { delayedspell = player.auras.abacus; }
         else if (player.auras.pummeler && player.auras.pummeler.canUse()) { delayedspell = player.auras.pummeler; } 
         else if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { delayedspell = player.auras.swarmguard; }
+        else if (player.auras.icon && player.auras.icon.canUse()) { delayedspell = player.auras.icon; }
         if (delayedspell) {
             player.cast(delayedspell, damage_threat);
         }  
@@ -342,7 +344,8 @@ class Simulation {
                 else if (player.auras.spider && player.auras.spider.canUse() && step > this.spiderstep) { player.spelldelay = 1; delayedspell = player.auras.spider; }
                 else if (player.auras.abacus && player.auras.abacus.canUse() && step > this.abacusstep) { player.spelldelay = 1; delayedspell = player.auras.abacus; }                
                 else if (player.auras.pummeler && player.auras.pummeler.canUse() && step > this.pummelstep) { player.spelldelay = 1; delayedspell = player.auras.pummeler; }                
-                else if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { player.spelldelay = 1; delayedspell = player.auras.swarmguard; }
+                else if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { player.spelldelay = 1; delayedspell = player.auras.swarmguard; }               
+                else if (player.auras.icon && player.auras.icon.canUse()) { player.spelldelay = 1; delayedspell = player.auras.icon; }
                 
                 // Normal phase
                 else if (player.spells.faeriefire && player.spells.faeriefire.canUse()) { player.spelldelay = 1; delayedspell = player.spells.faeriefire; }

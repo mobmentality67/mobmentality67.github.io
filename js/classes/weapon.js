@@ -53,4 +53,8 @@ class Weapon {
     step(next) {
         this.timer -= next;
     }
+
+    getProcChanceFromPPM(ppm) {
+        return 1/(60 / this.speed / ppm);
+    }
 }

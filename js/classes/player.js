@@ -60,7 +60,7 @@ class Player {
             crit: 0,
             critrating: 0,
             critbonusmod: 0,
-            spellcrit: 0,
+            spellcrit: 4.5,
             exp: 0,
             skill: this.level * 5,
             haste: 1,
@@ -71,7 +71,8 @@ class Player {
             agimod: 1,
             dmgmod: 1,
             threatmod: 1,
-            apmod: 1
+            apmod: 1,
+            arpen: 0
         };
         if (enchtype == 1) {
             this.testEnch = testItem;
@@ -128,12 +129,13 @@ class Player {
         this.ooc = new OmenOfClarity(this, this.talents.ooc);
 
 
+        /* Create non-proc based trinkets */
         this.auras.laceratedot = new LacerateDOT(this);
         if (this.items.includes(9449)) this.auras.pummeler = new Pummeler(this);
         if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
         if (this.items.includes(29383)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
-        if (this.items.includes(21670)) this.auras.swarmguard = new Swarmguard(this);
+        if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         this.update();
@@ -161,7 +163,25 @@ class Player {
         }
     }
 
+    setupTrinket(trinket) {
+        /* Setup trinket proc chance, PPM */
+        if (trinket.procspell) {
+            let proc = {};
+            proc.extra = trinket.procextra;
+            proc.magicdmg = trinket.magicdmg;
+            if (trinket.procspell) {
+                let newSpell = eval('new ' + trinket.procspell + '(this)');
+                this.auras[trinket.procspell.toLowerCase()] = newSpell;
+                proc.spell = newSpell;
+            }
+            this["trinketproc" + (this.trinketproc1 ? 2 : 1)] = proc;
+        }
+    }
+
     addGear() {
+        let trinket1;
+        let trinket2;
+
         for (let type in gear) {
             for (let item of gear[type]) {
                 if ((this.testItemType == type && this.testItem == item.id) ||
@@ -171,17 +191,11 @@ class Player {
 
                     if (type == "mainhand" || type == "offhand" || type == "twohand")
                         this.addWeapon(item, type);
-                   
-                    if (item.procchance && (type == "trinket1" || type == "trinket2")) {
-                        let proc = {};
-                        proc.chance = item.procchance * 100;
-                        proc.extra = item.procextra;
-                        proc.magicdmg = item.magicdmg;
-                        if (item.procspell) {
-                            this.auras[item.procspell.toLowerCase()] = eval('new ' + item.procspell + '(this)');
-                            proc.spell = this.auras[item.procspell.toLowerCase()];
-                        }
-                        this["trinketproc" + (this.trinketproc1 ? 2 : 1)] = proc;
+                    else if (type == "trinket1") {
+                        trinket1 = item;
+                    }
+                    else if (type == "trinket2") {
+                        trinket2 = item;
                     }
 
                     this.items.push(item.id);
@@ -189,6 +203,11 @@ class Player {
                 }
             }
         }
+
+        /* Setup trinket procs, if necessary. Deferred to end to avoid adding a dependency
+        on weapons being setup before trinkets (for PPM) */
+        if (trinket1) this.setupTrinket(trinket1);
+        if (trinket2) this.setupTrinket(trinket2);
     }
     addWeapon(item, type) {
 
@@ -449,9 +468,10 @@ class Player {
         this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;
-        this.updateArmor();
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
         this.stats.haste = this.base.haste + this.base.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
+        this.updateArmor();
+        this.updateIncAttackTable();
     }
     updateStrength() {
         this.stats.str = this.base.str;
@@ -534,8 +554,8 @@ class Player {
             this.target.armor = Math.max(this.target.armor - (this.auras.rivenspike.stacks * this.auras.rivenspike.armor), 0);
         if (this.auras.bonereaver && this.auras.bonereaver.timer)
             this.target.armor = Math.max(this.target.armor - (this.auras.bonereaver.stacks * this.auras.bonereaver.armor), 0);
-        if (this.auras.swarmguard && this.auras.swarmguard.timer)
-            this.target.armor = Math.max(this.target.armor - (this.auras.swarmguard.stacks * this.auras.swarmguard.armor), 0);
+
+        this.target.armor = Math.max(0, this.target.armor - this.stats.arpen);
         this.armorReduction = this.getArmorReduction(this.target.armor, this.level);
     }
     updateDmgMod() {
@@ -691,30 +711,32 @@ class Player {
 
     stepauras() {
 
-        if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.step();
-        if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.step();
-        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
-        if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.step();
-        if (this.auras.abacus && this.auras.abacus.firstuse && this.auras.abacus.timer) this.auras.abacus.step();
-        if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.step();
-        if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.step();
-        if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.step();
-        if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.step();
+        if (this.auras.slayer && this.auras.slayer.timer) this.auras.slayer.step();
+        if (this.auras.spider && this.auras.spider.timer) this.auras.spider.step();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
+        if (this.auras.pummeler && this.auras.pummeler.timer) this.auras.pummeler.step();
+        if (this.auras.abacus && this.auras.abacus.timer) this.auras.abacus.step();
+        if (this.auras.swarmguard && this.auras.swarmguard.timer) this.auras.swarmguard.step();
+        if (this.auras.icon  && this.auras.icon.timer) this.auras.icon.step();
+        if (this.auras.dst && this.auras.dst.timer) this.auras.dst.step();
+        if (this.auras.hourglass && this.auras.hourglass.timer) this.auras.hourglass.step();
+        if (this.auras.tsunami && this.auras.tsunami.timer) this.auras.tsunami.step();
         if (this.auras.bloodlust && this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.step();
 
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
     endauras() {
 
-        if (this.auras.slayer && this.auras.slayer.firstuse && this.auras.slayer.timer) this.auras.slayer.end();
-        if (this.auras.spider && this.auras.spider.firstuse && this.auras.spider.timer) this.auras.spider.end();
-        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.firstuse && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
-        if (this.auras.abacus && this.auras.abacus.firstuse && this.auras.abacus.timer) this.auras.abacus.end();
-        if (this.auras.pummeler && this.auras.pummeler.firstuse && this.auras.pummeler.timer) this.auras.pummeler.end();
-        if (this.auras.swarmguard && this.auras.swarmguard.firstuse && this.auras.swarmguard.timer) this.auras.swarmguard.end();
-        if (this.auras.dst && this.auras.dst.firstuse && this.auras.dst.timer) this.auras.dst.end();
-        if (this.auras.hourglass && this.auras.hourglass.firstuse && this.auras.hourglass.timer) this.auras.hourglass.end();
-        if (this.auras.tsunami && this.auras.tsunami.firstuse && this.auras.tsunami.timer) this.auras.tsunami.end();
+        if (this.auras.slayer && this.auras.slayer.timer) this.auras.slayer.end();
+        if (this.auras.spider && this.auras.spider.timer) this.auras.spider.end();
+        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
+        if (this.auras.abacus && this.auras.abacus.timer) this.auras.abacus.end();
+        if (this.auras.pummeler && this.auras.pummeler.timer) this.auras.pummeler.end();
+        if (this.auras.swarmguard && this.auras.swarmguard.timer) this.auras.swarmguard.end();
+        if (this.auras.icon && this.auras.icon.timer) this.auras.icon.end();
+        if (this.auras.dst && this.auras.dst.timer) this.auras.dst.end();
+        if (this.auras.hourglass && this.auras.hourglass.timer) this.auras.hourglass.end();
+        if (this.auras.tsunami && this.auras.tsunami.timer) this.auras.tsunami.end();
         if (this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.end();
 
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
@@ -808,6 +830,7 @@ class Player {
         weapon.use();
         let done = this.dealdamage(dmg, result, weapon, spell);
         let threat = this.attackmhthreat(done, result, weapon, spell);
+        let procthreat = procdmg * this.stats.threatmod;
         
         if (spell) {
             spell.totaldmg += done;
@@ -822,7 +845,7 @@ class Player {
         weapon.totalprocdmg += procdmg;
         //if (log) this.log(`${spell ? spell.name + ' for' : 'Main hand attack for'} ${done + procdmg} (${Object.keys(RESULT)[result]})`);
         damage_threat_arr[0] = done + procdmg;
-        damage_threat_arr[1] = threat;
+        damage_threat_arr[1] = threat + procthreat;
         return damage_threat_arr;
     }
 
@@ -883,6 +906,7 @@ class Player {
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
         let threat = this.dealthreat(done, result, spell);
+        let procthreat = procdmg * this.stats.threatmod;
 
         // Correct result to RESULT.CRIT for crit proc checks, stats
         if (result == RESULT.BLOCKED_CRIT) {
@@ -909,8 +933,8 @@ class Player {
         spell.totalthreat += threat;
         this.mh.totalprocdmg += procdmg;
         //if (log) this.log(`${spell.name} for ${done + procdmg} (${Object.keys(RESULT)[result]}).`);
-        damage_threat_arr[0] = done;
-        damage_threat_arr[1] = threat;
+        damage_threat_arr[0] = done + procdmg;
+        damage_threat_arr[1] = threat + procthreat;
         return damage_threat_arr;
     }
     dealdamage(dmg, result, weapon, spell) {
@@ -987,20 +1011,20 @@ class Player {
             this.ooc.rollOOC(step, spell);
 
             // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
-            if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc1.chance) {
+            if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT) && Math.random() < this.trinketproc1.spell.chance) {
                 //if (log) this.log(`Trinket 1 proc`);
                 if (this.trinketproc1.extra)
                     this.batchedextras += this.trinketproc1.extra;
-                if (this.trinketproc1.magicdmg) procdmg += this.magicproc(this.trinketproc1);
-                if (this.trinketproc1.spell && this.trinketproc1.spell.canUse()) this.trinketproc1.spell.use();
+                if (this.trinketproc1.spell.magicdmg) procdmg += this.magicproc(this.trinketproc1.spell);
+                if (this.trinketproc1.spell && this.trinketproc1.spell.canProc()) this.trinketproc1.spell.proc();
             }
             // If trinket 2 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
-            if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc2.chance) {
+            if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT) && Math.random() < this.trinketproc2.spell.chance) {
                 //if (log) this.log(`Trinket 2 proc`);
                 if (this.trinketproc2.extra)
                     this.batchedextras += this.trinketproc2.extra;
-                if (this.trinketproc2.magicdmg) procdmg += this.magicproc(this.trinketproc2);
-                if (this.trinketproc2.spell && this.trinketproc2.spell.canUse()) this.trinketproc2.spell.use();
+                if (this.trinketproc2.spell.magicdmg) procdmg += this.magicproc(this.trinketproc2.spell);
+                if (this.trinketproc2.spell && this.trinketproc2.spell.canProc()) this.trinketproc2.spell.proc();
             }
             if (this.attackproc && rng10k() < this.attackproc.chance) {
                 if (this.attackproc.magicdmg) procdmg += this.magicproc(this.attackproc);
@@ -1023,12 +1047,22 @@ class Player {
         let mod = 1;
         let miss = 1700;
         let dmg = proc.magicdmg;
+        let dmgrange = proc.magicdmgrange;
+        let finaldmg = ~~(Math.random() * dmgrange * 2 + (dmg - dmgrange));
         //if (proc.gcd && this.timer && this.timer < 1500) return 0;
-        if (proc.binaryspell) miss = this.target.binaryresist;
-        else mod *= 24;
-        if (rng10k() < miss) return 0;
+        if (rng10k() < 17) return 0; // Roll for spell miss
+        
+        // Roll for partial resist 
+        let magicRoll = Math.random()
+        let tmp = 0.0072;
+        if (magicRoll < tmp) mod = 0.25;
+        tmp += .0432;
+        if (magicRoll < tmp) mod = 0.5;
+        tmp += .1320;
+        if (magicRoll < tmp) mod = 0.75;
+
+        // Roll for crit
         if (rng10k() < (this.stats.spellcrit * 100)) mod *= 1.5;
-        if (proc.coeff) dmg += this.spelldamage * proc.coeff;
         return ~~(dmg * mod);
     }
     physproc(dmg) {

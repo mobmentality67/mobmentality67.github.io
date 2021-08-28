@@ -1480,6 +1480,21 @@ var gear = {
    ],
    "trinket1": [
       {
+         "name": "Icon of Unyielding Courage (Used first 20s / on CD)",
+         "hitrating": 30,
+         "source": "Heroic",
+         "phase": "1",
+         "id": 28121,
+      },
+      {
+         "name": "Romulo's Poison Vial (1 PPM / no ICD)",
+         "hitrating": 35,
+         "source": "Karazhan",
+         "phase": "1",
+         "id": 28579,
+         "procspell": "Romulos"
+      },
+      {
          "name": "Badge of Tenacity (Never Used)",
          "source": "Other",
          "phase": "2",
@@ -1490,7 +1505,8 @@ var gear = {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
          "source": "Other",
          "phase": "1",
-         "id": 21670
+         "id": 21670,
+         "procspell": "Swarmguard"
       },
       {
          "name": "Dragonspine Trophy",
@@ -1498,7 +1514,6 @@ var gear = {
          "phase": "1",
          "id": 28830,
          "ap": 40,
-         "procchance": 4.1667,
          "procspell": "DST"
       },
       {
@@ -1508,7 +1523,6 @@ var gear = {
          "id": 30627,
          "hitrating": 10,
          "critrating": 38,
-         "procchance": 10,
          "procspell": "Tsunami"
       },
       {
@@ -1524,7 +1538,6 @@ var gear = {
          "phase": "1",
          "id": 28034,
          "critrating": 32,
-         "procchance": 10,
          "procspell": "Hourglass"
       },
       {
@@ -1617,7 +1630,7 @@ var gear = {
          "source": "Other",
          "phase": "1",
          "id": 23206
-      },
+      }
    ],
    "trinket2": [
       {
@@ -1631,7 +1644,8 @@ var gear = {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
          "source": "Other",
          "phase": "1",
-         "id": 21670
+         "id": 21670,
+         "procspell": "Swarmguard"
       },
       {
          "name": "Dragonspine Trophy",
@@ -1639,7 +1653,7 @@ var gear = {
          "phase": "1",
          "id": 28830,
          "ap": 40,
-         "procchance": 4.1667,
+         "ppm": 1,
          "procspell": "DST"
       },
       {
@@ -1649,7 +1663,6 @@ var gear = {
          "id": 30627,
          "hitrating": 10,
          "critrating": 38,
-         "procchance": 10,
          "procspell": "Tsunami"
       },
       {
@@ -1665,7 +1678,6 @@ var gear = {
          "phase": "1",
          "id": 28034,
          "critrating": 32,
-         "procchance": 10,
          "procspell": "Hourglass"
       },
       {
