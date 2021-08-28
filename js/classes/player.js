@@ -584,12 +584,7 @@ class Player {
     }
 
     getBlockChance(weapon) {
-        if (!this.activetank) {
-            return 0;
-        }
-        else {
-            return 5.0;
-        }
+        return this.activetank ? 5 : 0;
     }
 
     getArmorReduction(armor, attackerlevel) {
@@ -803,14 +798,13 @@ class Player {
         this.ooc.rollOOC(step, spell);
 
         let dmg = weapon.dmg(spell);
-        procdmg = this.procattack(spell, weapon, result);
+        procdmg = this.procattack(spell, weapon, result, step);
 
         if (result == RESULT.GLANCE) {
             dmg *= this.getGlanceReduction(weapon);
         }
         else if (result == RESULT.CRIT) {
             dmg *= this.stats.critdamagemod;
-            this.proccrit();
         }
 
         weapon.use();
@@ -883,11 +877,10 @@ class Player {
         let procdmg = 0;
         let dmg = spell.dmg();
         let result = this.rollspell(spell);
-        procdmg = this.procattack(spell, this.mh, result);
+        procdmg = this.procattack(spell, this.mh, result, step);
 
         if (result == RESULT.CRIT || result == RESULT.BLOCKED_CRIT) {
             dmg *= this.stats.critdamagemod;
-            this.proccrit();
         }
 
         let done = this.dealdamage(dmg, result, this.mh, spell);
@@ -976,19 +969,25 @@ class Player {
         return threat;
     }
 
-    proccrit() {
-        if (this.talents.primalfury / 2.0 + 1 > rng10k() / 10000.0 + 1) {
-            this.rage += 5.0;
-            if (this.enableLogging) this.log(`Primal Fury Proc, +5 rage`);
-        } 
-    }
-    procattack(spell, weapon, result) {
+    procattack(spell, weapon, result, step) {
         let procdmg = 0;
         if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
+            const isCrit = result == RESULT.CRIT || result == RESULT.BLOCKED_CRIT;
+
+            if (this.talents.primalfury == 2 || this.talents.primalfury == 1 && Math.random() < 0.5) {
+                this.rage += 5.0;
+                if (this.enableLogging) this.log(`Primal Fury Proc, +5 rage`);
+            } 
+
+            /* Check T4 Proc */
             if (this.t4rageproc && rng10k() < 1000) {
                 if (log) this.log(`T4 Bloodlust Proc, +10 rage`);
                 this.rage += 10.0;
             }
+
+            /* Check Omen of Clarity Proc */
+            this.ooc.rollOOC(step, spell);
+
             // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
             if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT) && rng10k() < this.trinketproc1.chance) {
                 //if (log) this.log(`Trinket 1 proc`);
