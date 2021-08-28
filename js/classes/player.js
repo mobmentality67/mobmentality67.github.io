@@ -795,8 +795,6 @@ class Player {
             result = this.rollweapon(weapon);
         }
 
-        this.ooc.rollOOC(step, spell);
-
         let dmg = weapon.dmg(spell);
         procdmg = this.procattack(spell, weapon, result, step);
 
@@ -974,7 +972,7 @@ class Player {
         if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             const isCrit = result == RESULT.CRIT || result == RESULT.BLOCKED_CRIT;
 
-            if (this.talents.primalfury == 2 || this.talents.primalfury == 1 && Math.random() < 0.5) {
+            if (isCrit && (this.talents.primalfury == 2 || this.talents.primalfury == 1 && Math.random() < 0.5)) {
                 this.rage += 5.0;
                 if (this.enableLogging) this.log(`Primal Fury Proc, +5 rage`);
             } 
