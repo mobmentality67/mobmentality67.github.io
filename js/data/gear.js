@@ -1526,7 +1526,7 @@ var gear = {
          "procspell": "Tsunami"
       },
       {
-         "name": "Abacus of Violent Odds",
+         "name": "Abacus of Violent Odds (Used first 10s / on CD)",
          "source": "Dungeon",
          "phase": "1",
          "id": 28288,
@@ -1634,6 +1634,21 @@ var gear = {
    ],
    "trinket2": [
       {
+         "name": "Icon of Unyielding Courage (Used first 20s / on CD)",
+         "hitrating": 30,
+         "source": "Heroic",
+         "phase": "1",
+         "id": 28121,
+      },
+      {
+         "name": "Romulo's Poison Vial (1 PPM / no ICD)",
+         "hitrating": 35,
+         "source": "Karazhan",
+         "phase": "1",
+         "id": 28579,
+         "procspell": "Romulos"
+      },
+      {
          "name": "Badge of Tenacity (Never Used)",
          "source": "Other",
          "phase": "2",
@@ -1653,7 +1668,6 @@ var gear = {
          "phase": "1",
          "id": 28830,
          "ap": 40,
-         "ppm": 1,
          "procspell": "DST"
       },
       {
@@ -1666,8 +1680,8 @@ var gear = {
          "procspell": "Tsunami"
       },
       {
-         "name": "Abacus of Violet Odds (Used first 15 secs) / on CD",
-         "source": "Gruuls",
+         "name": "Abacus of Violent Odds (Used first 10s / on CD)",
+         "source": "Dungeon",
          "phase": "1",
          "id": 28288,
          "ap": 64,
@@ -1697,7 +1711,7 @@ var gear = {
          "id": 19406
       },
       {
-         "name": "Kiss of the Spider (Used first 15 secs)",
+         "name": "Kiss of the Spider (Used first 15 secs / on CD)",
          "critrating": 14,
          "hitrating": 10,
          "source": "Other",
@@ -1770,27 +1784,6 @@ var gear = {
          "source": "Other",
          "phase": "1",
          "id": 23206
-      },
-   ],
-   "ranged": [
-      {
-         "name": "Idol of the Wild",
-         "source": "Quest",
-         "phase": "1",
-         "id": 28064
-      },
-      {
-         "name": "Idol of Brutality",
-         "source": "Dungeon",
-         "phase": "1",
-         "id": 23198
-      },
-      {
-         "name": "Idol of the Raven Goddess",
-         "source": "Dungeon",
-         "phase": "2",
-         "id": 32387,
-         "critrating": 20
       }
    ],
    "mainhand": [
