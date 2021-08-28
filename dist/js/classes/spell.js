@@ -8,7 +8,7 @@ class Spell {
         this.canDodge = true;
         this.totaldmg = 0;
         this.totalthreat = 0;
-        this.data = [0, 0, 0, 0, 0, 0, 0, 0];
+        this.data = [0, 0, 0, 0, 0, 0, 0, 0, 0];
         this.name = this.constructor.name;
         this.useonly = false;
         this.maxdelay = 100; 
@@ -18,7 +18,7 @@ class Spell {
     dmg() {
         return 0;
     }
-    use(step) {
+    use() {
         this.player.timer = 1500;
         
         this.timer = this.cooldown * 1000;
@@ -29,7 +29,6 @@ class Spell {
         else {
             this.player.ooc.consumeOOC(this);
         }
-        this.player.ooc.rollOOC(step);
     }
     step(a) {
         if (this.timer <= a) {
@@ -109,7 +108,7 @@ class Lacerate extends Spell {
         let bonusdmg = this.player.t5laceratebonus ? 31 + 15 : 31;
         return (bonusdmg + this.player.stats.ap / 100) * this.player.stats.dmgmod;
     }
-    use(step) {
+    use() {
         this.player.timer = 1500;
         if (this.player.ooc.isActive() == false) {
             this.player.rage -= this.cost;
@@ -117,8 +116,6 @@ class Lacerate extends Spell {
         else {
             this.player.ooc.consumeOOC(this);
         }
-
-        this.player.ooc.rollOOC(step);  
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && 

@@ -27,7 +27,7 @@ class Weapon {
         this.totaldmg = 0;
         this.totalthreat = 0;
         this.totalprocdmg = 0;
-        this.data = [0,0,0,0,0,0];
+        this.data = [0,0,0,0,0,0,0,0];
         
         if (this.player.items.includes(21189))
             this.basebonusdmg += 4;

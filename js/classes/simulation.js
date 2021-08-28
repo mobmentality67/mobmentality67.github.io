@@ -6,7 +6,8 @@ var RESULT = {
     CRIT: 4,
     GLANCE: 5,
     CRUSH: 6,
-    BLOCK: 7
+    BLOCK: 7,
+    BLOCKED_CRIT: 8
 }
 
 var batching = 0;
@@ -518,6 +519,10 @@ function rng(min, max) {
 
 function rng10k() {
     return ~~(Math.random() * 10000);
+}
+
+function rng100() {
+    return ~~(Math.random() * 100);
 }
 
 function avg(min, max) {

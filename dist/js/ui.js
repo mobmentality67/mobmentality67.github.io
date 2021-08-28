@@ -351,7 +351,7 @@ SIM.UI = {
             updateStat("hit", await simulateWeight(2, 1));
 
             const haste = await simulateWeight(5, 157);
-            updateStat("haste", {weight: haste.weight * 15.77, error: haste.error * 15.77});
+            updateStat("haste", {weight: haste.weight * 10*82/52, error: haste.error * 10*82/52});
 
         }
 
@@ -703,7 +703,7 @@ SIM.UI = {
         var player = new Player();
 
         // Calculate current hit
-        let fullhit = (player.stats.hit + player.stats.hitrating / 15.77).toFixed(2);
+        let fullhit = (player.stats.hit + player.stats.hitrating / 10*82/52).toFixed(2);
 
         let space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         if (!player.mh) return;
