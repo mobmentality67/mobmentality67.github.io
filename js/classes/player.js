@@ -1050,7 +1050,7 @@ class Player {
         let dmgrange = proc.magicdmgrange;
         let finaldmg = ~~(Math.random() * dmgrange * 2 + (dmg - dmgrange));
         //if (proc.gcd && this.timer && this.timer < 1500) return 0;
-        if (rng10k() < 17) return 0; // Roll for spell miss
+        if (rng10k() < miss) return 0; // Roll for spell miss
         
         // Roll for partial resist 
         let magicRoll = Math.random()
