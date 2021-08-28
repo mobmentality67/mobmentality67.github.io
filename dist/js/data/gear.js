@@ -1786,6 +1786,27 @@ var gear = {
          "id": 23206
       }
    ],
+   "ranged": [
+      {
+         "name": "Idol of the Wild",
+         "source": "Quest",
+         "phase": "1",
+         "id": 28064
+      },
+      {
+         "name": "Idol of Brutality",
+         "source": "Dungeon",
+         "phase": "1",
+         "id": 23198
+      },
+      {
+         "name": "Idol of the Raven Goddess",
+         "source": "Dungeon",
+         "phase": "2",
+         "id": 32387,
+         "critrating": 20
+      }
+   ],
    "mainhand": [
       {
          "name": "Blessed Qiraji War Hammer",
