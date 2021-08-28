@@ -42,7 +42,7 @@ var buffs = [
       name: "Grace of Air Totem",
       iconname: "spell_nature_invisibilitytotem",
       group: "graceair",
-      agi: 77
+      agi: 88
    },
    {
       id: 8075,
@@ -50,7 +50,7 @@ var buffs = [
       name: "Strength of Earth Totem",
       iconname: "spell_nature_earthbindtotem",
       group: "strengthearth",
-      str: 86
+      str: 99
    },
    {
       id: 13452,
