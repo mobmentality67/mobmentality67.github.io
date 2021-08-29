@@ -429,7 +429,8 @@ class Player {
     updateIncAttackTable() {
         // Incoming attack table constant setup
         // Agi dodge + dodge rating + def rating
-        this.stats.incdodge = this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + this.stats.def * .04; 
+        this.stats.incdodge = -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
+            this.stats.def * .04 + this.talents.feralswiftnessmod; 
         if (this.race == 'Night Elf') this.stats.incdodge += 1;
    `  `   // 4.4 base miss + miss from defense rating
         this.stats.incmiss = 4.4 + this.stats.def * .04;

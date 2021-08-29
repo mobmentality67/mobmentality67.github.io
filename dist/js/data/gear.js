@@ -3182,7 +3182,7 @@ var sets = [
    items: [29098, 29100, 29096, 29097, 29099],
    bonus: [
       { count: 2, stats: { t4rageproc: true } },
-      { count: 4, stats: { bonusac: 1200 } },
+      { count: 4, stats: { bonusac: 1400 } },
    ]
 },
 {
