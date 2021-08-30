@@ -947,7 +947,7 @@ class Player {
             // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
             if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT)) {
                 let chance;
-                if (spell) chance = this.trinketproc1.spell.yellowchance;
+                if (spell && spell.name != "Maul") chance = this.trinketproc1.spell.yellowchance;
                 else chance = this.trinketproc1.spell.whitechance;
                 if (Math.random() < chance) {
                     //if (log) this.log(`Trinket 1 proc`);
@@ -960,7 +960,7 @@ class Player {
             // If trinket 2 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
             if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT)) {
                 let chance;
-                if (spell) chance = this.trinketproc2.spell.yellowchance;
+                if (spell && spell.name != "Maul") chance = this.trinketproc2.spell.yellowchance;
                 else chance = this.trinketproc2.spell.whitechance;
                 if (Math.random() < chance) {
                     //if (log) this.log(`Trinket 2 proc`);
