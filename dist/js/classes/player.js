@@ -643,36 +643,28 @@ class Player {
         }
     }
 
-    stepauras() {
+    stepauras(activatedSpells) {
 
-        if (this.auras.slayer && this.auras.slayer.timer) this.auras.slayer.step();
-        if (this.auras.spider && this.auras.spider.timer) this.auras.spider.step();
-        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.step();
-        if (this.auras.pummeler && this.auras.pummeler.timer) this.auras.pummeler.step();
-        if (this.auras.abacus && this.auras.abacus.timer) this.auras.abacus.step();
-        if (this.auras.swarmguard && this.auras.swarmguard.timer) this.auras.swarmguard.step();
-        if (this.auras.icon  && this.auras.icon.timer) this.auras.icon.step();
-        if (this.auras.dst && this.auras.dst.timer) this.auras.dst.step();
-        if (this.auras.hourglass && this.auras.hourglass.timer) this.auras.hourglass.step();
-        if (this.auras.tsunami && this.auras.tsunami.timer) this.auras.tsunami.step();
-        if (this.auras.bloodlust && this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.step();
+        // Step any active trinket spells
+        activatedSpells.forEach((spell) => {
+            if (spell.timer) {
+                spell.step();
+            }
+        })
 
+        // Step lacerate DOT manually if necessary
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
-    endauras() {
+    endauras(activatedSpells) {
 
-        if (this.auras.slayer && this.auras.slayer.timer) this.auras.slayer.end();
-        if (this.auras.spider && this.auras.spider.timer) this.auras.spider.end();
-        if (this.auras.bloodlustbrooch && this.auras.bloodlustbrooch.timer) this.auras.bloodlustbrooch.end();
-        if (this.auras.abacus && this.auras.abacus.timer) this.auras.abacus.end();
-        if (this.auras.pummeler && this.auras.pummeler.timer) this.auras.pummeler.end();
-        if (this.auras.swarmguard && this.auras.swarmguard.timer) this.auras.swarmguard.end();
-        if (this.auras.icon && this.auras.icon.timer) this.auras.icon.end();
-        if (this.auras.dst && this.auras.dst.timer) this.auras.dst.end();
-        if (this.auras.hourglass && this.auras.hourglass.timer) this.auras.hourglass.end();
-        if (this.auras.tsunami && this.auras.tsunami.timer) this.auras.tsunami.end();
-        if (this.auras.bloodlust && this.auras.bloodlust.timer) this.auras.bloodlust.end();
+        // Step any active trinket spells
+        activatedSpells.forEach((spell) => {
+            if (spell.timer) {
+                spell.end();
+            }
+        })
 
+        // End lacerate DOT if applicable
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
 
     }
@@ -725,7 +717,6 @@ class Player {
        return RESULT.HIT;
     }
     attackmh(weapon, damage_threat_arr, step) {
-        this.stepauras();
 
         let spell = null;
         let procdmg = 0;
@@ -821,7 +812,7 @@ class Player {
     }
 
     cast(spell, damage_threat_arr, step) {
-        this.stepauras();
+        
         spell.use(step);
         if (spell.useonly) { 
             //if (log) this.log(`${spell.name} used`);

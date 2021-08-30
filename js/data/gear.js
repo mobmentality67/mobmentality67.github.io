@@ -1484,6 +1484,7 @@ var gear = {
          "hitrating": 30,
          "source": "Heroic",
          "phase": "1",
+         "usespell": "Icon",
          "id": 28121,
       },
       {
@@ -1506,10 +1507,11 @@ var gear = {
          "source": "Other",
          "phase": "1",
          "id": 21670,
+         "usespell": "Swarmguard",
          "procspell": "Swarmguard"
       },
       {
-         "name": "Dragonspine Trophy",
+         "name": "Dragonspine Trophy (1 PPM)",
          "source": "Gruuls",
          "phase": "1",
          "id": 28830,
@@ -1529,6 +1531,7 @@ var gear = {
          "name": "Abacus of Violent Odds (Used first 10s / on CD)",
          "source": "Dungeon",
          "phase": "1",
+         "usespell": "Abacus",
          "id": 28288,
          "ap": 64,
       },
@@ -1562,6 +1565,7 @@ var gear = {
          "hitrating": 10,
          "source": "Other",
          "phase": "1",
+         "usespell": "Spider",
          "id": 22954,
       },
       {
@@ -1615,6 +1619,7 @@ var gear = {
          "ap": 72,
          "source": "Badges",
          "phase": "1",
+         "usespell": "BloodlustBrooch",
          "id": 29383,
       },
       {
@@ -1622,6 +1627,7 @@ var gear = {
          "ap": 64,
          "source": "Other",
          "phase": "1",
+         "usespell": "Slayer",
          "id": 23041,
       },
       {
@@ -1638,6 +1644,7 @@ var gear = {
          "hitrating": 30,
          "source": "Heroic",
          "phase": "1",
+         "usespell": "Icon",
          "id": 28121,
       },
       {
@@ -1660,6 +1667,7 @@ var gear = {
          "source": "Other",
          "phase": "1",
          "id": 21670,
+         "usespell": "Swarmguard",
          "procspell": "Swarmguard"
       },
       {
@@ -1683,6 +1691,7 @@ var gear = {
          "name": "Abacus of Violent Odds (Used first 10s / on CD)",
          "source": "Dungeon",
          "phase": "1",
+         "usespell": "Abacus",
          "id": 28288,
          "ap": 64,
       },
@@ -1716,6 +1725,7 @@ var gear = {
          "hitrating": 10,
          "source": "Other",
          "phase": "1",
+         "usespell": "Spider",
          "id": 22954,
       },
       {
@@ -1769,6 +1779,7 @@ var gear = {
          "ap": 72,
          "source": "Badges",
          "phase": "1",
+         "usespell": "BloodlustBrooch",
          "id": 29383,
       },
       {
@@ -1776,6 +1787,7 @@ var gear = {
          "ap": 64,
          "source": "Other",
          "phase": "1",
+         "usespell": "Slayer",
          "id": 23041,
       },
       {

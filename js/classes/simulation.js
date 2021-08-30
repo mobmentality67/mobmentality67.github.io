@@ -281,35 +281,42 @@ class Simulation {
             player.mh.timer = (~~rng10k() / 10) | 0;
         }
 
-        // item steps
-        let itemdelay = 0;
-        if (player.auras.slayer) { this.slayerstep = 0; itemdelay += 20000; }
-        if (player.auras.spider) { this.spiderstep = 0; itemdelay += 15000; }
-        if (player.auras.bloodlustbrooch) { this.broochstep = 0; itemdelay += 20000; }
-        if (player.auras.pummeler) { this.pummelstep = 0; itemdelay += 30000; }
-        if (player.auras.abacus) { this.abacusstep = 0; itemdelay += 10000; }
-        if (player.auras.bloodlust) { this.bloodluststep = 0 }
-        if (player.auras.swarmguard) { player.auras.swarmguard.usestep = 0; }
-        if (player.auras.icon) { player.auras.icon.usestep = 0; }
+        let activatedSpells = [
+            player.auras.slayer,
+            player.auras.spider,
+            player.auras.bloodlustbrooch,
+            player.auras.pummeler,
+            player.auras.abacus,
+            player.auras.swarmguard,
+            player.auras.icon,
+            player.auras.dst,
+            player.auras.hourglass,
+            player.auras.tsunami,
+            player.auras.bloodlust
+        ];
 
+        /* Remove spells/auras that don't exist in this run */
+        activatedSpells = activatedSpells.filter(aura => aura);
 
         if (log) console.log(' TIME |   RAGE | EVENT');
 
-        // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells
-        if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse()) { delayedspell = player.auras.bloodlustbrooch; }
-        else if (player.auras.slayer && player.auras.slayer.canUse()) { delayedspell = player.auras.slayer; }
-        else if (player.auras.spider && player.auras.spider.canUse()) { delayedspell = player.auras.spider; }
-        else if (player.auras.abacus && player.auras.abacus.canUse()) { delayedspell = player.auras.abacus; }
-        else if (player.auras.pummeler && player.auras.pummeler.canUse()) { delayedspell = player.auras.pummeler; } 
-        else if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { delayedspell = player.auras.swarmguard; }
-        else if (player.auras.icon && player.auras.icon.canUse()) { delayedspell = player.auras.icon; }
-        if (delayedspell) {
-            player.cast(delayedspell, damage_threat);
-        }  
 
+        /* Pop lust if active */
         if (player.auras.bloodlust) {
             player.cast(player.auras.bloodlust, damage_threat);
-        }       
+        }  
+
+        // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells
+        if (player.itemsEquipped.trinket1 && player.itemsEquipped.trinket1.usespell) {
+            let trinket1Spell = activatedSpells.filter(spell => spell.constructor.name == player.itemsEquipped.trinket1.usespell)[0];
+            player.cast(trinket1Spell, damage_threat);
+        }
+        if (player.itemsEquipped.trinket2 && player.itemsEquipped.trinket2.usespell) {
+            let trinket2Spell = activatedSpells.filter(spell => spell.constructor.name == player.itemsEquipped.trinket2.usespell)[0];
+            if (trinket2Spell.canUse()) {
+                player.cast(trinket2Spell, damage_threat);
+            }
+        }     
 
         // Manually check if Maul should be queued with starting rage
         if (player.spells.maul && player.spells.maul.canUse()) {
@@ -320,6 +327,8 @@ class Simulation {
 
             // Attack boss
             if (player.mh.timer <= 0) {
+                /* Step timers for active spells */
+                player.stepauras(activatedSpells);
                 damage_threat = player.attackmh(player.mh, damage_threat, step);
                 damageDone = damage_threat[0];
                 threatDone = damage_threat[1];
@@ -338,20 +347,22 @@ class Simulation {
             // Spells
             if (spellcheck && !player.spelldelay) {
 
-                // No GCD
-                if (player.auras.bloodlustbrooch && player.auras.bloodlustbrooch.canUse() && step > this.broochstep) { player.spelldelay = 1; delayedspell = player.auras.bloodlustbrooch; }
-                else if (player.auras.slayer && player.auras.slayer.canUse() && step > this.slayerstep) { player.spelldelay = 1; delayedspell = player.auras.slayer; }
-                else if (player.auras.spider && player.auras.spider.canUse() && step > this.spiderstep) { player.spelldelay = 1; delayedspell = player.auras.spider; }
-                else if (player.auras.abacus && player.auras.abacus.canUse() && step > this.abacusstep) { player.spelldelay = 1; delayedspell = player.auras.abacus; }                
-                else if (player.auras.pummeler && player.auras.pummeler.canUse() && step > this.pummelstep) { player.spelldelay = 1; delayedspell = player.auras.pummeler; }                
-                else if (player.auras.swarmguard && player.auras.swarmguard.canUse()) { player.spelldelay = 1; delayedspell = player.auras.swarmguard; }               
-                else if (player.auras.icon && player.auras.icon.canUse()) { player.spelldelay = 1; delayedspell = player.auras.icon; }
+                // Use a trinket if possible
+                delayedspell = null;
+                activatedSpells.forEach(spell => {
+                    if (spell.canUse() && spell.activeUse) {
+                        player.spelldelay = 1;
+                        delayedspell = spell;
+                    }
+                })
                 
-                // Normal phase
-                else if (player.spells.faeriefire && player.spells.faeriefire.canUse()) { player.spelldelay = 1; delayedspell = player.spells.faeriefire; }
-                else if (player.spells.mangle && player.spells.mangle.canUse()) { player.spelldelay = 1; delayedspell = player.spells.mangle; }
-                else if (player.spells.lacerate && player.spells.lacerate.canUse()) { player.spelldelay = 1; delayedspell = player.spells.lacerate; }
-                else if (player.spells.swipe && player.spells.swipe.canUse()) { player.spelldelay = 1; delayedspell = player.spells.swipe; }
+                // Otherwise use a spell
+                if (!delayedspell) {
+                    if (player.spells.faeriefire && player.spells.faeriefire.canUse()) { player.spelldelay = 1; delayedspell = player.spells.faeriefire; }
+                    else if (player.spells.mangle && player.spells.mangle.canUse()) { player.spelldelay = 1; delayedspell = player.spells.mangle; }
+                    else if (player.spells.lacerate && player.spells.lacerate.canUse()) { player.spelldelay = 1; delayedspell = player.spells.lacerate; }
+                    else if (player.spells.swipe && player.spells.swipe.canUse()) { player.spelldelay = 1; delayedspell = player.spells.swipe; }
+                }
 
                 if (log && player.spelldelay) player.log(`Preparing ${delayedspell.name}`);
                 if (player.heroicdelay) spellcheck = false;
@@ -373,6 +384,8 @@ class Simulation {
                 if (player.heroicdelay && delayedheroic && player.heroicdelay > delayedheroic.maxdelay)
                     player.heroicdelay = delayedheroic.maxdelay - 49;
                 if (delayedspell.canUse()) {
+                    /* Step timers for active spells */
+                    player.stepauras(activatedSpells);
                     damage_threat = player.cast(delayedspell, damage_threat, step);
                     this.idmg += damage_threat[0];
                     this.ithreat += damage_threat[1];
@@ -433,7 +446,7 @@ class Simulation {
         }
 
         // Fight done
-        player.endauras();
+        player.endauras(activatedSpells);
 
         if (player.auras.laceratedot && player.spells.lacerate) {
             this.idmg += player.auras.laceratedot.idmg;

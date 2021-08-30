@@ -283,6 +283,7 @@ class Pummeler extends Aura {
         this.duration = 30;
         this.stats = { hasterating: 500 };
         this.name = 'Manual Crowd Pummeler';
+        this.activeUse = true;
     }
     use() {
         this.player.timer = 0;
@@ -318,6 +319,8 @@ class Swarmguard extends Aura {
         this.timetoend = 30000;
         this.cooldown = 180 * 1000;
         this.active = false;
+        this.spelldelay = 0;
+        this.activeUse = true;
     }
     use() {
         this.timer = step + this.duration * 1000;
@@ -360,6 +363,8 @@ class Icon extends Aura {
         this.timetoend = 20000;
         this.active = false;
         this.stats = { arpen: 0 };
+        this.spelldelay = this.duration;
+        this.activeUse = true;
     }
     use() {
         this.timer = step + this.duration * 1000;
@@ -414,6 +419,8 @@ class Spider extends Aura {
         this.cooldown = 120 * 1000;
         this.name = 'Kiss of the Spider';
         this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
     }
     use() {
         this.player.timer = 0;
@@ -446,6 +453,7 @@ class Bloodlust extends Aura {
         this.cooldown = 9999999999;
         this.name = 'Bloodlust';
         this.active = false;
+        this.spelldelay = 0;
     }
     use() {
         let oldHaste;
@@ -481,6 +489,8 @@ class Slayer extends Aura {
         this.name = 'Slayer\'s Crest';
         this.cooldown = 120 * 1000;
         this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
     }
     use() {
         this.player.timer = 0;
@@ -513,6 +523,8 @@ class BloodlustBrooch extends Aura {
         this.name = 'Bloodlust Brooch';
         this.cooldown = 120 * 1000;
         this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
     }
     use() {
         this.player.timer = 0;
@@ -545,6 +557,8 @@ class Abacus extends Aura {
         this.name = 'Abacus of Violent Odds';
         this.cooldown = 120 * 1000;
         this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
     }
     use() {
         this.player.timer = 0;
