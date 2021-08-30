@@ -417,19 +417,17 @@ class Player {
         this.update();
     }
     update() { 
-        this.updateAuras();
-        this.updateArmorReduction();
+        this.updateStats();
         this.mh.glanceChance = this.getGlanceChance();
         this.mh.miss = this.getMissChance(this.mh);
         this.mh.dodge = this.getDodgeChance(this.mh);
         this.mh.parry = this.getParryChance(this.mh);
         this.mh.block = this.getBlockChance(this.mh);
-        this.updateIncAttackTable();
     }
     updateIncAttackTable() {
         // Incoming attack table constant setup
-        // Agi dodge + dodge rating + def rating
-        this.stats.incdodge = -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
+        // Base dodge - boss suppression + dodge from agi + dodge from dodge rating + dodge from def rating + dodge from talents
+        this.stats.incdodge = -1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
             this.stats.def * .04 + this.talents.feralswiftnessmod; 
         if (this.race == 'Night Elf') this.stats.incdodge += 1;
    `  `   // 4.4 base miss + miss from defense rating
@@ -443,7 +441,7 @@ class Player {
         // }
     }
 
-    updateAuras() {
+    updateStats() {
         for (let prop in this.base)
             this.stats[prop] = this.base[prop];
         for (let name in this.auras) {
@@ -470,43 +468,12 @@ class Player {
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
-        this.stats.haste = this.base.haste + this.base.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
-        this.updateArmor();
-        this.updateIncAttackTable();
+        this.stats.haste +=  this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
+        this.updateArmor(); // Update current armor reduction
+        this.updateIncAttackTable(); // Update defensive attack table
+        this.updateTargetArmorReduction(); // Update current target's armor reduction 
     }
-    updateStrength() {
-        this.stats.str = this.base.str;
-        this.stats.ap = this.base.ap;
-        
-        for (let name in this.auras) {
-            if (this.auras[name].timer) {
-                if (this.auras[name].stats.str)
-                    this.stats.str += this.auras[name].stats.str;
-                if (this.auras[name].stats.ap)
-                    this.stats.ap += this.auras[name].stats.ap;
-            }
-        }
-        this.stats.str = ~~(this.stats.str * this.stats.strmod);
-        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
-    }
-    updateAP() {
-        if (log)  
-        {
-            this.log(`Updating AP... before, Crit = ${this.crit}, AP = ${this.stats.ap}`);
-        }
-        this.stats.ap = this.base.ap;
-        for (let name in this.auras) {
-            if (this.auras[name].active && this.auras[name].stats.ap)
-                this.stats.ap += this.auras[name].stats.ap;
-        }
-        this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
-        if (log)  
-        {
-            this.log(`Updating AP... after, Crit = ${this.crit}, AP = ${this.stats.ap}`);
-        }
-
-    }
-
+    
     updateArmor() {
         /* Initial armor setup with multiplier */
         this.stats.ac = (this.base.ac) * (this.stats.armormod);
@@ -520,34 +487,7 @@ class Player {
         this.stats.ac += this.base.bonusac;
     }
 
-    updateHaste() {
-        this.stats.haste = this.base.haste;
-        this.stats.hasterating = this.base.hasterating;
-
-        /* Apply additive haste */
-        if (this.auras.pummeler && this.auras.pummeler.active)
-            this.stats.hasterating += this.auras.pummeler.mult_stats.rating;
-        if (this.auras.spider && this.auras.spider.active)
-            this.stats.hasterating += this.auras.spider.mult_stats.rating;
-        if (this.auras.abacus && this.auras.abacus.active)
-            this.stats.hasterating += this.auras.abacus.mult_stats.rating;
-        if (this.auras.dst && this.auras.dst.active)
-            this.stats.hasterating += this.auras.dst.mult_stats.rating;
-
-        /* Apply multiplicative haste */
-        this.stats.haste += this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100;
-        if (this.auras.bloodlust && this.auras.bloodlust.active)
-            this.stats.haste *= 1.3;
-    }
-    updateBonusDmg() {
-        let bonus = 0;
-        if (this.auras.zeal && this.auras.zeal.timer)
-            bonus += this.auras.zeal.stats.bonusdmg;
-        if (this.auras.zandalarian && this.auras.zandalarian.timer)
-            bonus += this.auras.zandalarian.stats.bonusdmg;
-        this.mh.bonusdmg = this.mh.basebonusdmg + bonus;
-    }
-    updateArmorReduction() {
+    updateTargetArmorReduction() {
         this.target.armor = this.target.basearmor;
         if (this.auras.annihilator && this.auras.annihilator.timer)
             this.target.armor = Math.max(this.target.armor - (this.auras.annihilator.stacks * this.auras.annihilator.armor), 0);
@@ -559,14 +499,7 @@ class Player {
         this.target.armor = Math.max(0, this.target.armor - this.stats.arpen);
         this.armorReduction = this.getArmorReduction(this.target.armor, this.level);
     }
-    updateDmgMod() {
-        this.stats.dmgmod = this.base.dmgmod;
-        for (let name in this.auras) {
-            if (this.auras[name].timer && this.auras[name].mult_stats.dmgmod)
-                this.stats.dmgmod *= (1 + this.auras[name].mult_stats.dmgmod / 100);
-        }
-        this.stats.dmgmod *= this.talents.naturalistmod;
-    }
+
     getGlanceReduction(weapon) {
         let diff = this.target.defense - this.stats.skill;
         let low = Math.min(1.4 - 0.05 * diff, 0.91);

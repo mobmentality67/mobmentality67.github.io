@@ -199,8 +199,7 @@ class Aura {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`${this.name} applied`);
         this.active = true;
     }
@@ -209,10 +208,7 @@ class Aura {
             this.uptime += (this.timer - this.starttimer);
             this.timer = 0;
             this.firstuse = false;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            if (this.player.enableLogging) console.log(`Removing ${this.name}`)
-            this.player.updateAP();
+            this.player.updateStats();
             if (this.player.enableLogging) this.player.log(`${this.name} removed`);
             this.active = false;
         }
@@ -285,7 +281,7 @@ class Pummeler extends Aura {
     constructor(player) {
         super(player);
         this.duration = 30;
-        this.mult_stats = { haste: 50 };
+        this.stats = { hasterating: 500 };
         this.name = 'Manual Crowd Pummeler';
     }
     use() {
@@ -293,7 +289,7 @@ class Pummeler extends Aura {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
-        this.player.updateHaste();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`${this.name} applied`);
     }
     step() {
@@ -301,7 +297,7 @@ class Pummeler extends Aura {
             this.uptime += (this.timer - this.starttimer);
             this.timer = 0;
             this.firstuse = false;
-            this.player.updateHaste();
+            this.player.updateStats();
             if (this.player.enableLogging) this.player.log(`${this.name} removed`);
         }
     }
@@ -336,8 +332,7 @@ class Swarmguard extends Aura {
     proc() {
         this.stacks = Math.min(this.stacks + 1, 6);
         this.stats.arpen = this.stacks * 200;
-        this.player.updateAuras();
-        this.player.updateArmorReduction();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc -- target armor at ${this.player.target.armor}`);
     }
     canProc() {
@@ -350,8 +345,7 @@ class Swarmguard extends Aura {
             this.timer = this.starttimer + this.cooldown;
             this.stacks = 0;
             this.firstuse = false;
-            this.player.updateAuras();
-            this.player.updateArmorReduction();
+            this.player.updateStats();
             this.active = false;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed -- target armor at ${this.player.target.armor}`);
         }
@@ -373,8 +367,7 @@ class Icon extends Aura {
         this.starttimer = step;
         this.active = true;
         this.stats.arpen = 600;
-        this.player.updateAuras();
-        this.player.updateArmorReduction();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated. Target armor at ${this.player.target.armor}`);
     }
     canUse() {
@@ -385,8 +378,7 @@ class Icon extends Aura {
             this.stats.arpen = 0;
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateArmorReduction();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Target armor at ${this.player.target.armor}`);
          }
@@ -396,7 +388,8 @@ class Icon extends Aura {
 class Romulos extends Aura {
     constructor(player) {
         super(player);
-        this.chance = 5000;
+        this.whitechance = .5;
+        this.yellowchance = .5;
         this.cooldown = 0;
         this.ppm = 1;
         this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
@@ -417,7 +410,7 @@ class Spider extends Aura {
     constructor(player) {
         super(player);
         this.duration = 15;
-        this.mult_stats = { rating: 200 };
+        this.stats = { hasterating: 200 };
         this.cooldown = 120 * 1000;
         this.name = 'Kiss of the Spider';
         this.active = false;
@@ -428,18 +421,14 @@ class Spider extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateHaste();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateHaste();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
@@ -453,30 +442,30 @@ class Bloodlust extends Aura {
     constructor(player) {
         super(player);
         this.duration = 40;
-        this.mult_stats = { hasterating: .3 };
+        this.mult_stats = { haste: 30 };
         this.cooldown = 9999999999;
         this.name = 'Bloodlust';
         this.active = false;
     }
     use() {
+        let oldHaste;
         this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateHaste();
-        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
+        if (this.player.enableLogging) oldHaste = this.player.stats.haste;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Aura ${this.name} applied. Haste raised from: ${oldHaste} to ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
+            let oldHaste;
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateHaste();
+            if (this.player.enableLogging) oldHaste = this.player.stats.haste;
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
-            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Aura ${this.name} applied. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
         }
     }
     canUse() {
@@ -499,18 +488,14 @@ class Slayer extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateAP();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateAP();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
@@ -535,18 +520,14 @@ class BloodlustBrooch extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateAP();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateAP();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
@@ -560,7 +541,7 @@ class Abacus extends Aura {
     constructor(player) {
         super(player);
         this.duration = 10;
-        this.mult_stats = { rating: 260 };
+        this.stats = { hasterating: 260 };
         this.name = 'Abacus of Violent Odds';
         this.cooldown = 120 * 1000;
         this.active = false;
@@ -571,18 +552,14 @@ class Abacus extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateHaste();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateHaste();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
@@ -602,25 +579,22 @@ class Hourglass extends Aura {
         this.cooldown = 50 * 1000;
         this.active = false;
         this.requirescrit = true;
-        this.chance = .10;
+        this.whitechance = .10;
+        this.yellowchance = .10;
     }
     use() {
         this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateAP();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateAP();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
@@ -635,7 +609,7 @@ class DST extends Aura {
     constructor(player) {
         super(player);
         this.duration = 10;
-        this.mult_stats = { rating: 325 };
+        this.stats = { hasterating: 325 };
         this.name = 'Dragonspine Trophy';
         this.cooldown = 20 * 1000;
         this.active = false;
@@ -648,18 +622,14 @@ class DST extends Aura {
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateHaste();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Haste: ${this.player.stats.haste}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateHaste();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
@@ -680,25 +650,22 @@ class Tsunami extends Aura {
         this.cooldown = 45 * 1000;
         this.active = false;
         this.requirescrit = true;
-        this.chance = .10;
+        this.whitechance = .10;
+        this.yellowchance = .10;
     }
     use() {
         this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        this.player.updateAuras();
-        this.player.updateIncAttackTable();
-        this.player.updateAP();
+        this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
     }
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
-            this.player.updateAuras();
-            this.player.updateIncAttackTable();
-            this.player.updateAP();
+            this.player.updateStats();
             this.uptime += (step - this.starttimer);
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
