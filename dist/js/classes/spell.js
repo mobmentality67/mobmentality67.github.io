@@ -317,7 +317,8 @@ class Swarmguard extends Aura {
         this.stats = { arpen: 0 };
         this.stacks = 0;
         this.ppm = 10;
-        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
+        this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
+        this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
         this.timetoend = 30000;
         this.cooldown = 180 * 1000;
         this.active = false;
@@ -398,7 +399,8 @@ class Romulos extends Aura {
         this.chance = 5000;
         this.cooldown = 0;
         this.ppm = 1;
-        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
+        this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
+        this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
         this.magicdmg = 277;
         this.magicdmgrange = 55;
     }
@@ -638,7 +640,8 @@ class DST extends Aura {
         this.cooldown = 20 * 1000;
         this.active = false;
         this.ppm = 1;
-        this.chance = this.player.mh.getProcChanceFromPPM(this.ppm);
+        this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
+        this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
     }
     use() {
         this.player.timer = 0;
