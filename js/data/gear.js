@@ -1936,7 +1936,7 @@ var gear = {
          "agi": 37,
          "mindmg": 133,
          "maxdmg": 271,
-         "speed": 2.00,
+         "speed": 3.00,
          "hitrating": 25,
          "id": 28658,
          "source": "Karazhan",
