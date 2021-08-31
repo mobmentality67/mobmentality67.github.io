@@ -292,7 +292,8 @@ class Simulation {
             player.auras.dst,
             player.auras.hourglass,
             player.auras.tsunami,
-            player.auras.bloodlust
+            player.auras.bloodlust,
+            player.auras.pummeler
         ];
 
         /* Remove spells/auras that don't exist in this run */

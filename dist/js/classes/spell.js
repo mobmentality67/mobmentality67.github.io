@@ -280,7 +280,7 @@ class LacerateDOT extends Aura {
 class Pummeler extends Aura {
     constructor(player) {
         super(player);
-        this.duration = 30;
+        this.duration = 90;
         this.stats = { hasterating: 500 };
         this.name = 'Manual Crowd Pummeler';
         this.activeUse = true;
@@ -290,15 +290,17 @@ class Pummeler extends Aura {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
+        this.active = true;
         this.player.updateStats();
         if (this.player.enableLogging) this.player.log(`${this.name} applied`);
     }
     step() {
         if (step >= this.timer) {
             this.uptime += (this.timer - this.starttimer);
-            this.timer = 0;
+            this.timer = this.starttimer + this.cooldown;
             this.firstuse = false;
             this.player.updateStats();
+            this.active = false;
             if (this.player.enableLogging) this.player.log(`${this.name} removed`);
         }
     }

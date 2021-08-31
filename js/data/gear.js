@@ -2037,7 +2037,20 @@ var gear = {
          "source": "Dungeon",
          "phase": 1,
          "type": "Staff"
-      }
+      },
+      {
+         "name": "Manual Crowd Pummeler (Used for 90 seconds / 30 second CD)",
+         "str": 16,
+         "agi": 5,
+         "mindmg": 46,
+         "maxdmg": 70,
+         "speed": 2,
+         "id": 9449,
+         "source": "Other",
+         "phase": 1,
+         "usespell": "Pummeler",
+         "type": "Mace"
+      },
    ],
    "custom" : [
       {
