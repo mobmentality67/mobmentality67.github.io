@@ -282,13 +282,10 @@ class Player {
             let numMetaSlots = gemSlots.includes("meta");
             let numNormalGemSlots = gemSlots.length - numMetaSlots;
 
-            /* Get selected gems (meta, normal) */
-            let normalGem;
-            let metaGem;
-
             for (let gemType in gem) {
                 {
-                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                    let gemsToAddForSlot = Math.min(MAX_GEMS[type], numMetaSlots + numNormalGemSlots);
+                    for (let gemIndex = 0; gemIndex < gemsToAddForSlot; gemIndex++) {
                         if (type == gemType) {
                             for (let item of Object.values(gem[gemType][gemIndex])) {
                                 if (item.selected) {
