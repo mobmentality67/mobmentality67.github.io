@@ -468,7 +468,7 @@ class Player {
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
-        this.stats.haste +=  this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
+        this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
         this.updateArmor(); // Update current armor reduction
         this.updateIncAttackTable(); // Update defensive attack table
         this.updateTargetArmorReduction(); // Update current target's armor reduction 
