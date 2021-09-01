@@ -1503,7 +1503,7 @@ var gear = {
          "id": 32658
       },
       {
-         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
+         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 10 PPM)",
          "source": "Other",
          "phase": "1",
          "id": 21670,
@@ -1663,7 +1663,7 @@ var gear = {
          "id": 32658
       },
       {
-         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 50% proc chance)",
+         "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 10 PPM)",
          "source": "Other",
          "phase": "1",
          "id": 21670,
