@@ -111,7 +111,7 @@ var buffs = [
       agi: 20
    },
    {
-      id: 25703,
+      id: 27503,
       name: "Scroll of Strength V",
       iconname: "spell_nature_strength",
       group: "",
@@ -124,6 +124,22 @@ var buffs = [
       iconname: "spell_nature_faeriefire",
       group: "",
       hit: 3
+   },
+   {
+      id: 6562,
+      spellid: true,
+      name: "Heroic Presence",
+      iconname: "inv_helmet_21",
+      group: "",
+      hit: 1
+   },
+   {
+      id: 30802,
+      spellid: true,
+      name: "Unleashed Rage",
+      iconname: "spell_nature_unleashedrage",
+      group: "",
+      apmod: 2
    },
    {
       id: 29859,

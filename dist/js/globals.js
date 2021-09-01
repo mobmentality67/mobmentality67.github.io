@@ -1,3 +1,15 @@
+var MAX_GEMS = {
+    head: 2,
+    neck: 1,
+    shoulder: 2,
+    chest: 3,
+    wrist: 1,
+    gloves: 2,
+    waist: 2,
+    legs: 3,
+    feet: 2, 
+};
+
 function getGlobalsDelta() {
     const _gear = {};
     for (const type in gear) {
@@ -23,14 +35,18 @@ function getGlobalsDelta() {
     }
     const _gem = {};
     for (const type in gem) {
-        _gem[type] = gem[type].map((item) => {
-            return {
-                id: item.id,
-                tps: item.tps,
-                selected: item.selected,
-                hidden: item.hidden,
-            }
-        });
+        _gem[type] = {};
+        for (let i = 0; i < MAX_GEMS[type]; i++) {
+
+            _gem[type][i] = Object.values(gem[type][i]).map((item) => {
+                return {
+                    id: item.id,
+                    tps: item.tps,
+                    selected: item.selected,
+                    hidden: item.hidden,
+                }
+            });
+        }
     }
 
     const _buffs = {};
@@ -115,12 +131,29 @@ function updateGlobals(params) {
                     j.selected = i.selected;
                     j.hidden = i.hidden;
                 }
+
+    /* Reorganize the gem array to avoid needing to 
+       code a copy of gems in every slot for every piece of gear */
+    let newGem = {};
+    for (let type in gem) {
+        newGem[type] = {};
+        for (let i = 0; i < MAX_GEMS[type]; i++) {
+            newGem[type][i] = {};
+            for (let gemIndex = 0; gemIndex < gem[type].length; gemIndex++) {
+                newGem[type][i][gemIndex] = JSON.parse(JSON.stringify(gem[type][gemIndex]));
+            }
+        }
+    }
+    gem = newGem;
     for (let type in params.gem)
-        for (let i of params.gem[type])
-            for (let j of gem[type])
-                if (i.id == j.id) {
-                    j.tps = i.tps;
-                    j.selected = i.selected;
-                    j.hidden = i.hidden;
-                }
+        for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+            for (let i of Object.values(params.gem[type][gemIndex])) {
+                for (let j of Object.values(gem[type][gemIndex]))
+                    if (i.id == j.id) {
+                       j.tps = i.tps;
+                       j.selected = i.selected;
+                       j.hidden = i.hidden;
+                    }
+            }
+        }
 }

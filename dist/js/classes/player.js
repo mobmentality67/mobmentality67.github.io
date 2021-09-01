@@ -261,7 +261,6 @@ class Player {
     }
 
     getSockets(item) {
-        let MAX_GEM_SLOTS = 3;
         let base = "socket";
         let gemSlots = [];
         let i = 0;
@@ -289,32 +288,16 @@ class Player {
 
             for (let gemType in gem) {
                 {
-                    if (type == gemType) {
-                        for (let item of gem[gemType]) {
-                            if (item.selected) {
-                                if (item.meta) {
-                                    metaGem = item;
-                                }
-                                else {
-                                    normalGem = item;
+                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                        if (type == gemType) {
+                            for (let item of Object.values(gem[gemType][gemIndex])) {
+                                if (item.selected) {
+                                    for (let prop in this.base) {
+                                        this.base[prop] += item[prop] || 0;
+                                    }
                                 }
                             }
                         }
-                    }
-                }
-            }
-
-            /* Add meta gem stats */
-            if (numMetaSlots == 1 && metaGem) {
-                for (let prop in this.base) {
-                    this.base[prop] += metaGem[prop] || 0;
-                }
-            }
-            /* Add normal gem stats for each normal gem slot  */
-            if (normalGem) {
-                for (let i = 0; i < numNormalGemSlots; i++) {
-                    for (let prop in this.base) {
-                        this.base[prop] += normalGem[prop] || 0;
                     }
                 }
             }
@@ -367,6 +350,7 @@ class Player {
                 this.base.strmod *= (1 + buff.strmod / 100) || 1;
                 this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 this.base.stammod *= (1 + buff.stammod / 100) || 1;
+                this.base.apmod *= (1 + buff.apmod / 100) || 1;
                 this.base.haste *= (1 + buff.haste / 100) || 1;
             }
 
@@ -464,6 +448,7 @@ class Player {
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
         this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
+        this.stats.ap = ~~(this.stats.ap * this.stats.apmod);
         this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;

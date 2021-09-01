@@ -2,6 +2,18 @@ const MAX_WORKERS = navigator.hardwareConcurrency || 8;
 
 var SIM = SIM || {}
 
+var MAX_GEMS = {
+    head: 2,
+    neck: 1,
+    shoulder: 2,
+    chest: 3,
+    wrist: 1,
+    gloves: 2,
+    waist: 2,
+    legs: 3,
+    feet: 2, 
+};
+
 SIM.UI = {
 
     init: function () {
@@ -617,20 +629,22 @@ SIM.UI = {
     rowDisableGem: function(tr) {
         var table = tr.parents('table');
         var type = table.data('type');
+        var gem_index = table.data('gem-index');
         tr.removeClass('active');
-        for(let i = 0; i < gem[type].length; i++) {
-            if (gem[type][i].id == tr.data('id'))
-                gem[type][i].selected = false;
+        for(let item of Object.values(gem[type][gem_index])) {
+            if (item.id == tr.data('id'))
+                item.selected = false;
         }
     },
 
     rowEnableGem: function(tr) {
         var table = tr.parents('table');
         var type = table.data('type');
+        var gem_index = table.data('gem-index');
         tr.addClass('active');
-        for(let i = 0; i < gem[type].length; i++) {
-            if (gem[type][i].id == tr.data('id'))
-                gem[type][i].selected = true;
+        for(let item of Object.values(gem[type][gem_index])) {
+            if (item.id == tr.data('id'))
+                item.selected = true;
         }
     },
 
@@ -662,25 +676,28 @@ SIM.UI = {
     rowHideGem: function(tr) {
         var table = tr.parents('table');
         var type = table.data('type');
+        var index = table.data('gem-index');
         tr.removeClass('active');
         tr.addClass('hidden');
         tr.find('.hide').html(eyesvghidden);
-        for(let i = 0; i < gem[type].length; i++) {
-            if (gem[type][i].id == tr.data('id')) {
-                gem[type][i].hidden = true;
-                gem[type][i].selected = false;
-            }
+        for(let item of Object.values(gem[type][index])) {
+           if (item.id == tr.data('id')) {
+               item.hidden = true;
+               item.selected = false;
+           }
         }
     },
 
     rowShowGem: function(tr) {
         var table = tr.parents('table');
         var type = table.data('type');
+        var index = table.data('gem-index');
         tr.removeClass('hidden');
         tr.find('.hide').html(eyesvg);
-        for(let i = 0; i < gem[type].length; i++) {
-            if (gem[type][i].id == tr.data('id'))
-                gem[type][i].hidden = false;
+        for(let item of Object.values(gem[type][index])) {
+           if (item.id == tr.data('id')) {
+               item.hidden = false;
+           }
         }
     },
 
@@ -804,8 +821,11 @@ SIM.UI = {
 
         for (let type in gem) {
             _gem[type] = [];
-            for (let item of gem[type]) {
-                _gem[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+            for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                _gem[type][gemIndex] =  [];
+                for (let item of Object.values(gem[type][gemIndex])) {
+                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                }
             }
         }
 
@@ -1156,58 +1176,62 @@ SIM.UI = {
     },
 
 loadGems: function (type, editmode) {
+
         var view = this;
         view.main.find('.js-gem').hide();
 
         if (!gem[type] || gem[type].length == 0) return;
 
-        let table = `<table class="gem ${editmode ? 'editmode' : ''}" data-type="${type}" data-max="1">
-                        <thead>
-                            <tr>
-                                ${editmode ? '<th></th>' : ''}
-                                <th>Gem (WIP)</th>
-                                <th>Str</th>
-                                <th>Agi</th>
-                                <th>AP</th>
-                                <th>Stamina</th>
-                                <th>Crit</th>
-                                <th>Hit</th>
-                                <th>Resilience</th>
-                                <th>TPS</th>
-                            </tr>
-                        </thead>
-                    <tbody>`;
+        for (let i = 0; i < MAX_GEMS[type]; i++) {
+            let metaStr = type == 'head' && i == 0 ? `(Meta)` : ``;
+            let table = `<table class="gem ${editmode ? 'editmode' : ''}" data-gem-index=${i} data-type="${type}" data-max="1">
+                            <thead>
+                                <tr>
+                                    ${editmode ? '<th></th>' : ''}
+                                    <th>Gem Slot ${i} ${metaStr}</th>
+                                    <th>Str</th>
+                                    <th>Agi</th>
+                                    <th>AP</th>
+                                    <th>Stamina</th>
+                                    <th>Crit</th>
+                                    <th>Hit</th>
+                                    <th>Resilience</th>
+                                    <th>TPS</th>
+                                </tr>
+                            </thead>
+                        <tbody>`;
 
-        for (let item of gem[type]) {
+            for (let item of Object.values(gem[type][i])) {
+                if (item.phase && !view.filter.find('.phases [data-id="' + item.phase + '"]').hasClass('active'))
+                    continue;
 
-            if (item.phase && !view.filter.find('.phases [data-id="' + item.phase + '"]').hasClass('active'))
-                continue;
+                if (item.hidden && !editmode) continue;
+                if (item.meta && i != 0) continue;
 
-            if (item.hidden && !editmode) continue;
+                table += `<tr data-id="${item.id}" data-meta="${item.meta || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
+                            ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
+                            <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
+                            <td>${item.str || ''}</td>
+                            <td>${item.agi || ''}</td>
+                            <td>${item.ap || ''}</td>
+                            <td>${item.sta || ''}</td>
+                            <td>${item.critrating || ''}</td>
+                            <td>${item.hitrating || ''}</td>
+                            <td>${item.res || ''}</td>
+                            <td>${item.tps || ''}</td>
+                        </tr>`;
+            }
 
-            table += `<tr data-id="${item.id}" data-meta="${item.meta || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
-                        ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
-                        <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
-                        <td>${item.str || ''}</td>
-                        <td>${item.agi || ''}</td>
-                        <td>${item.ap || ''}</td>
-                        <td>${item.sta || ''}</td>
-                        <td>${item.critrating || ''}</td>
-                        <td>${item.hitrating || ''}</td>
-                        <td>${item.res || ''}</td>
-                        <td>${item.tps || ''}</td>
-                    </tr>`;
+            table += '</tbody></table></section>';
+
+            if ($(table).find('tbody tr').length == 0) return;
+
+            view.tcontainer.append(table);
+            view.tcontainer.find('table.gem').tablesorter({
+                widthFixed: true,
+                sortList: editmode ? [[8, 1]] : [[7, 1]],
+            });
         }
-
-        table += '</tbody></table></section>';
-
-        if ($(table).find('tbody tr').length == 0) return;
-
-        view.tcontainer.append(table);
-        view.tcontainer.find('table.gem').tablesorter({
-            widthFixed: true,
-            sortList: editmode ? [[8, 1]] : [[7, 1]],
-        });
 
         view.main.find('.js-gem').show();
     },

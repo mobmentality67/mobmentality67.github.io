@@ -52,9 +52,11 @@ onmessage = (event) => {
         }
         for (let slot in params.globals.gem) {
             const slotId = itemSlots.indexOf(slot);
-            for (let item of params.globals.gem[slot]) {
-                if (item.selected) {
-                    module._enableGem(slotId, item.id, 1);
+            for (let gemSlot = 0; i < ui.MAX_GEMS[slot]; i++) {
+                for (let item of params.globals.gem[slot]) {
+                    if (item.selected) {
+                        module._enableGem(slotId, item.id, 1);
+                    }
                 }
             }
         }

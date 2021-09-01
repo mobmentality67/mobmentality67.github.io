@@ -1897,7 +1897,7 @@ var gear = {
          "name": "Earthwarden",
          "sta": 39,
          "ap": 712,
-         "ac": 461,
+         "ac": 500,
          "mindmg": 149,
          "maxdmg": 279,
          "speed": 3.2,
@@ -2194,19 +2194,7 @@ var enchant = {
          "id": 30846,
          "name": "Glyph of the Outcast",
          "str": 17,
-      },
-      {
-         "id": 11647,
-         "name": "Lesser Arcanum of Voracity (Agi)",
-         "agi": 8,
-         "phase": 1
-      },
-      {
-         "id": 11645,
-         "name": "Lesser Arcanum of Voracity (Str)",
-         "str": 8,
-         "phase": 1
-      },
+      }
    ],
    "shoulder": [
       {
@@ -2218,6 +2206,14 @@ var enchant = {
          "phase": 1
       },
       {
+         "id": 35439,
+         "spellid": true,
+         "name": "Greater Inscription of the Blade",
+         "ap": 20,
+         "critrating": 15,
+         "phase": 1
+      },
+      {
          "id": 35407,
          "spellid": true,
          "name": "Inscription of Vengeance",
@@ -2225,18 +2221,18 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 35402,
+         "id": 35438,
          "spellid": true,
-         "name": "Greater Inscription of Warding",
-         "incdodgerating": 30,
-         "critrating": 10,
+         "name": "Inscription of the Blade",
+         "critrating": 13,
          "phase": 1
       },
       {
          "id": 28882,
          "spellid": true,
-         "name": "Inscription of Warding",
-         "incdodgerating": 13,
+         "name": "Greater Inscription of Warding",
+         "incdodgerating": 30,
+         "critrating": 10,
          "phase": 1
       },
       {
@@ -2419,18 +2415,6 @@ var enchant = {
          "ap": 40,
          "critrating": 10,
          "phase": 1
-      },
-      {
-         "id": 11647,
-         "name": "Lesser Arcanum of Voracity (Agi)",
-         "agi": 8,
-         "phase": 1
-      },
-      {
-         "id": 11645,
-         "name": "Lesser Arcanum of Voracity (Str)",
-         "str": 8,
-         "phase": 1
       }
    ],
    "feet": [
@@ -2559,14 +2543,12 @@ var gem = {
          "id": 25896,
          "name": "Powerful Earthstorm Diamond",
          "sta": 18,
-         "meta": true,
       },
       {
          "id": 32409,
          "name": "Relentless Earthstorm Diamond",
          "agi": 12,
          "critbonusmod": .03,
-         "meta": true,
       },
       {
          "id": 24033,

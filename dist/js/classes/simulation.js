@@ -13,7 +13,7 @@ var RESULT = {
 var batching = 0;
 var step = 0;
 var log = false;
-var version = 6;
+var version = 7;
 
 const TYPE = {
     UPDATE: 0,
