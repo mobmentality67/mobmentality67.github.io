@@ -74,6 +74,7 @@ class Player {
             apmod: 1,
             arpen: 0
         };
+
         if (enchtype == 1) {
             this.testEnch = testItem;
             this.testEnchType = testType;
@@ -690,6 +691,24 @@ class Player {
        if (rng10k() < this.crit * 100) return RESULT.CRIT;
        return RESULT.HIT;
     }
+
+    checkParryHaste(result) {
+
+        if (result == RESULT.PARRY) {
+            /* If current boss swing timer > 60% of base timer, haste by 40% */
+            if (this.incswingtimer >= .6 * this.base.incswingtimer) {
+                this.incswingtimer *= 0.6;
+            }
+            /* Otherwise if between 20% and 60% incoming swing timer,
+             * swing timer = swing timer - (remaining time - 20% of base swing timer) */
+            else if (this.incswingtimer >= .2 * this.base.incswingtimer) {
+                this.incswingtimer -= this.incswingtimer - .2 * this.base.incswingtimer;            }
+            else {
+                // No action taken if swing is within 20% of completing
+            }
+        }
+    }
+
     attackmh(weapon, damage_threat_arr, step) {
 
         let spell = null;
@@ -731,6 +750,9 @@ class Player {
         let threat = this.attackmhthreat(done, result, weapon, spell);
         let procthreat = procdmg * this.stats.threatmod;
         
+        /* Apply boss parry haste if attack was parried */
+        this.checkParryHaste(result);
+
         if (spell) {
             spell.totaldmg += done;
             spell.totalthreat += threat;
@@ -806,6 +828,9 @@ class Player {
         let done = this.dealdamage(dmg, result, this.mh, spell);
         let threat = this.dealthreat(done, result, spell);
         let procthreat = procdmg * this.stats.threatmod;
+
+       /* Apply boss parry haste if attack was parried */
+        this.checkParryHaste(result);
 
         // Correct result to RESULT.CRIT for crit proc checks, stats
         if (result == RESULT.BLOCKED_CRIT) {
