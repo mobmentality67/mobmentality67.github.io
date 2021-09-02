@@ -42,6 +42,7 @@ class Player {
         this.incswingtimer = config.incswingtimer * 1000;
         this.ooc = false;
         this.enableLogging = false;
+        this.activemetagem = "";
         this.base = {
             sta: 0,
             ac: 0,
@@ -74,6 +75,9 @@ class Player {
             apmod: 1,
             arpen: 0
         };
+
+        this.attacksparried = 0;
+        this.runningtimereduction = 0;
 
         if (enchtype == 1) {
             this.testEnch = testItem;
@@ -276,7 +280,47 @@ class Player {
         return gemSlots;
     }
 
+    getMetaReq(gem, colors) {
+
+        var reqColors = {
+                yellow: 0,
+                red: 0,
+                blue: 0,
+            }
+
+        /* Setup required gems for meta gem */
+        if (gem && gem.name == 'Relentless Earthstorm Diamond') {
+            reqColors.yellow = 2; reqColors.red = 2; reqColors.blue = 2;
+        }
+        else if (gem && gem.name == 'Brutal Earthstorm Diamond') {
+            reqColors.blue = 3;
+        }  
+        else {
+            return false;
+        }
+
+        for (let color in reqColors) {
+            if (reqColors[color] > colors[color]) return false;
+        }
+
+        return true;
+
+    }
+
+    countGem(colors, gem) {
+        if (gem.color == 'yellow' || gem.color == 'orange' || gem.color == 'green') colors['yellow']++;
+        if (gem.color == 'red' || gem.color == 'orange' || gem.color == 'purple') colors['red']++;
+        if (gem.color == 'blue' || gem.color == 'purple' || gem.color =='green') colors['blue']++;
+    }
+
     addGem() {
+        let metaGem;
+        var gemColors = {
+            yellow: 0,
+            red: 0,
+            blue: 0,
+        }
+
         /* Iterate over each equipped item by slot */
         for (let type in this.itemsEquipped) {
             let gemSlots = this.getSockets(this.itemsEquipped[type]);
@@ -290,6 +334,10 @@ class Player {
                         if (type == gemType) {
                             for (let item of Object.values(gem[gemType][gemIndex])) {
                                 if (item.selected) {
+                                    if (item.color == "meta") {
+                                        metaGem = item; continue;
+                                    }
+                                    this.countGem(gemColors, item)
                                     for (let prop in this.base) {
                                         this.base[prop] += item[prop] || 0;
                                     }
@@ -299,6 +347,17 @@ class Player {
                     }
                 }
             }
+        }
+
+        /* If meta gem req is met, add it */
+        if (metaGem && this.getMetaReq(metaGem, gemColors)) {
+            this.activemetagem = metaGem.name;
+            for (let prop in this.base) {
+                this.base[prop] += metaGem[prop] || 0;
+            }
+        }
+        else {
+            this.activemetagem = "";
         }
     }
     addSets() {
@@ -695,6 +754,7 @@ class Player {
     checkParryHaste(result) {
 
         if (result == RESULT.PARRY) {
+            this.attacksparried++;
             /* If current boss swing timer > 60% of base timer, haste by 40% */
             if (this.incswingtimer >= .6 * this.base.incswingtimer) {
                 this.incswingtimer *= 0.6;

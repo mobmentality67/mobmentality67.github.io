@@ -2543,73 +2543,86 @@ var gem = {
          "id": 25896,
          "name": "Powerful Earthstorm Diamond",
          "sta": 18,
+         "color": "meta",
       },
       {
          "id": 32409,
          "name": "Relentless Earthstorm Diamond",
          "agi": 12,
          "critbonusmod": .03,
+         "color": "meta",
       },
       {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
 
    ],
@@ -2618,62 +2631,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "shoulder": [
@@ -2681,62 +2705,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "chest": [
@@ -2744,62 +2779,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "wrist": [
@@ -2807,62 +2853,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "hands": [
@@ -2870,62 +2927,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "waist": [
@@ -2933,62 +3001,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "legs": [
@@ -2996,62 +3075,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "feet": [
@@ -3059,62 +3149,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ],
    "hands": [
@@ -3122,62 +3223,73 @@ var gem = {
          "id": 24033,
          "name": "Solid Star of Elune",
          "sta": 12,
+         "color": "blue",
       },
       {
          "id": 24028,
          "name": "Delicate Living Ruby",
-         "agi": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "str": 8
+         "agi": 8,
+         "color": "red"
       },
       {
          "id": 24051,
          "name": "Rigid Dawnstone",
-         "hitrating": 8
+         "hitrating": 8,
+         "color": "yellow",
       },
       {
          "id": 24061,
          "name": "Glinting Noble Topaz",
          "hitrating": 4,
-         "agi": 4
+         "agi": 4,
+         "color": "orange",
       },
       {
          "id": 24053,
          "name": "Mystic Dawnstone",
-         "res": 8
+         "res": 8,
+         "color": "yellow",
       },
       {
          "id": 24055,
          "name": "Shifting Nightseye",
          "agi": 4,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 33782,
          "name": "Steady Talasite",
          "res": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 24062,
          "name": "Enduring Talasite",
          "def": 4,
          "sta": 6,
+         "color": "green",
       },
       {
          "id": 31863,
          "name": "Balanced Nightseye",
          "ap": 8,
          "sta": 6,
+         "color": "purple",
       },
       {
          "id": 24067,
          "name": "Jagged Talasite",
          "critrating": 4,
          "sta": 6,
+         "color": "green",
       }
    ]
 };

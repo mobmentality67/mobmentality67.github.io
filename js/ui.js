@@ -741,6 +741,7 @@ SIM.UI = {
         view.sidebar.find('#haste').html((player.stats.haste * 100).toFixed(2) + '%');
         view.sidebar.find('#race').text(localStorage.race);
         view.sidebar.find('#sets').empty();
+        view.sidebar.find('#metagem').empty();
 
         for (let set of sets) {
             let counter = 0;
@@ -752,6 +753,7 @@ SIM.UI = {
             if (counter >= set.bonus[0].count)
                 view.sidebar.find('#sets').append(`<a href="https://tbc.wowhead.com/item-set=${set.id}" class="q4">${set.name} (${counter})</a><br />`);
         }
+        view.sidebar.find('#metagem').append(`${player.activemetagem}<br />`);
     },
 
     updateSession: function () {
