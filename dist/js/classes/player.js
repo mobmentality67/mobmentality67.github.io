@@ -76,7 +76,9 @@ class Player {
             arpen: 0
         };
 
-        this.attacksparried = 0;
+        this.damageTakenData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.totalAttacksTaken = 0;
+
         this.runningtimereduction = 0;
 
         if (enchtype == 1) {
@@ -288,7 +290,7 @@ class Player {
                 blue: 0,
             }
 
-        /* Setup required gems for meta gem */
+        /* If it's a meta gem, hard-coded requirements for now */
         if (gem && gem.name == 'Relentless Earthstorm Diamond') {
             reqColors.yellow = 2; reqColors.red = 2; reqColors.blue = 2;
         }
@@ -296,7 +298,7 @@ class Player {
             reqColors.blue = 3;
         }  
         else {
-            return false;
+            return false; // Error case
         }
 
         for (let color in reqColors) {
@@ -307,10 +309,39 @@ class Player {
 
     }
 
+
+    isYellowGem(color) {
+        return color == 'yellow' || color == 'orange' || color == 'green';
+    }
+
+    isRedGem(color) {
+        return color == 'red' || color == 'orange' || color == 'purple'; 
+    }
+
+    isBlueGem(color) {
+        return (color == 'blue' || color == 'purple' || color =='green');
+    }
+
+    gemColorMatches(itemColors, gem, gemIndex) {
+        return (this.isYellowGem(itemColors[gemIndex]) && this.isYellowGem(gem.color)) ||
+            (this.isBlueGem(itemColors[gemIndex]) && this.isBlueGem(gem.color)) ||
+            (this.isRedGem(itemColors[gemIndex]) && this.isRedGem(gem.color));
+    }
+
     countGem(colors, gem) {
-        if (gem.color == 'yellow' || gem.color == 'orange' || gem.color == 'green') colors['yellow']++;
-        if (gem.color == 'red' || gem.color == 'orange' || gem.color == 'purple') colors['red']++;
-        if (gem.color == 'blue' || gem.color == 'purple' || gem.color =='green') colors['blue']++;
+        if (this.isYellowGem(gem.color)) colors['yellow']++;
+        if (this.isRedGem(gem.color)) colors['red']++;
+        if (this.isBlueGem(gem.color)) colors['blue']++;
+    }
+
+    getSocketBonus(item) {
+        let socketBonus;
+        for (let prop in item) {
+            if (prop.includes("socketbonus")) {
+                socketBonus = prop; break;
+            }
+        }
+        return socketBonus;
     }
 
     addGem() {
@@ -323,28 +354,43 @@ class Player {
 
         /* Iterate over each equipped item by slot */
         for (let type in this.itemsEquipped) {
-            let gemSlots = this.getSockets(this.itemsEquipped[type]);
-            let numMetaSlots = gemSlots.includes("meta");
-            let numNormalGemSlots = gemSlots.length - numMetaSlots;
+            let gemSlotColors = this.getSockets(this.itemsEquipped[type]);
+            let metaGemIndex = gemSlotColors.indexOf('meta');
+            let metaGemIndexOffset = 0;
+            let numMetaSlots = gemSlotColors.includes("meta");
+            let numNormalGemSlots = gemSlotColors.length - numMetaSlots;
+            let itemSocketsMatch = gemSlotColors.length != 0;
+            /* Remove the meta gem from the gem colors array, if applicable, for socket bonus checks */
+            gemSlotColors = gemSlotColors.filter(function(gemColor) {return gemColor != 'meta'});
+            let gemsToAddForSlot = Math.min(MAX_GEMS[type], numMetaSlots + numNormalGemSlots);
+            let gemsAdded = 0;
 
             for (let gemType in gem) {
-                {
-                    let gemsToAddForSlot = Math.min(MAX_GEMS[type], numMetaSlots + numNormalGemSlots);
-                    for (let gemIndex = 0; gemIndex < gemsToAddForSlot; gemIndex++) {
-                        if (type == gemType) {
-                            for (let item of Object.values(gem[gemType][gemIndex])) {
-                                if (item.selected) {
-                                    if (item.color == "meta") {
-                                        metaGem = item; continue;
-                                    }
-                                    this.countGem(gemColors, item)
-                                    for (let prop in this.base) {
-                                        this.base[prop] += item[prop] || 0;
-                                    }
+                for (let gemIndex = 0; gemIndex < gemsToAddForSlot; gemIndex++) {
+                    if (type == gemType) {
+                        for (let itemGem of Object.values(gem[gemType][gemIndex])) {
+                            if (itemGem.selected) {
+                                gemsAdded++;
+                                /* If it's a meta gem, defer adding stats until later to see if it's activated */
+                                if (itemGem.color == "meta") {
+                                    metaGem = itemGem; metaGemIndexOffset = metaGemIndex; continue;
+                                }
+                                this.countGem(gemColors, itemGem); // Add gem count to the total gem count array
+                                itemSocketsMatch &= this.gemColorMatches(gemSlotColors, itemGem, gemIndex - metaGemIndexOffset);
+                                for (let prop in this.base) {
+                                    this.base[prop] += itemGem[prop] || 0;
                                 }
                             }
                         }
                     }
+                }
+            }
+
+            if (itemSocketsMatch && (gemsAdded == gemsToAddForSlot)) {
+                let prop = this.getSocketBonus(this.itemsEquipped[type]);
+                if (prop) {
+                    let stat = prop.replace('socketbonus_', '');
+                    this.base[stat] += this.itemsEquipped[type][prop]; 
                 }
             }
         }
@@ -754,7 +800,6 @@ class Player {
     checkParryHaste(result) {
 
         if (result == RESULT.PARRY) {
-            this.attacksparried++;
             /* If current boss swing timer > 60% of base timer, haste by 40% */
             if (this.incswingtimer >= .6 * this.base.incswingtimer) {
                 this.incswingtimer *= 0.6;
@@ -845,6 +890,7 @@ class Player {
         this.incswingtimer = this.base.incswingtimer;
         let result = this.rollattacktaken();
         let dmg = this.incswingdamage;
+        this.totalAttacksTaken++;
         if (result == RESULT.HIT) {
             dmg *= 1.0;
             if (this.enableLogging) this.log(`Boss hit for ${dmg}`);
@@ -864,6 +910,7 @@ class Player {
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
         this.addDamageTakenRage(dmg);
+        this.damageTakenData[result]++;
         return dmg;
     }
 

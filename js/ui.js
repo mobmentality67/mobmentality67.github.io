@@ -1185,12 +1185,11 @@ loadGems: function (type, editmode) {
         if (!gem[type] || gem[type].length == 0) return;
 
         for (let i = 0; i < MAX_GEMS[type]; i++) {
-            let metaStr = type == 'head' && i == 0 ? `(Meta)` : ``;
             let table = `<table class="gem ${editmode ? 'editmode' : ''}" data-gem-index=${i} data-type="${type}" data-max="1">
                             <thead>
                                 <tr>
                                     ${editmode ? '<th></th>' : ''}
-                                    <th>Gem Slot ${i} ${metaStr}</th>
+                                    <th>Gem Slot ${i}</th>
                                     <th>Str</th>
                                     <th>Agi</th>
                                     <th>AP</th>

@@ -62,6 +62,9 @@ var gear = {
          "critrating": 22,
          "hitrating": 18,
          "ap": 56,
+         "socket0": "blue",
+         "socket1": "meta",
+         "socketbonus_ap": 8,
          "source": "Heroic",
          "phase": 1,
          "id": 28224
@@ -89,6 +92,7 @@ var gear = {
          "res": 24,
          "socket0": "meta",
          "socket1": "yellow",
+         "socketbonus_res": 4,
          "source": "PVP",
          "phase": 1,
          "id": 28127
@@ -145,11 +149,12 @@ var gear = {
          "name": "Veteran's Pendant of Triumph",
          "sta": 31,
          "critrating": 18,
+         "critrating": 18,
          "ap": 42,
          "res": 18,
          "source": "PVP",
          "socket0": "yellow",
-         "socketbonus_res": 4,
+         "socketbonus_sta": 3,
          "phase": 2,
          "id": 33066
       },
@@ -249,7 +254,7 @@ var gear = {
          "ac": 468,
          "socket0" : "yellow",
          "socket1" : "blue",
-         "socketbonus_str" : "3",
+         "socketbonus_str" : 3,
          "source": "TK",
          "phase": 2,
          "id": 30230,
@@ -263,7 +268,7 @@ var gear = {
          "res": 21,
          "socket0" : "red",
          "socket1" : "yellow",
-         "socketbonus_res" : "3",
+         "socketbonus_res" : 3,
          "source": "PVP",
          "phase": 2,
          "id": 31971,
@@ -277,7 +282,7 @@ var gear = {
          "ap": 60,
          "ac": 303,
          "socket0" : "red",
-         "socketbonus_agi" : "2",
+         "socketbonus_agi" : 2,
          "source": "SSC",
          "phase": 2,
          "id": 30055,
@@ -290,6 +295,7 @@ var gear = {
          "ac": 410,
          "socket0" : "blue",
          "socket1" : "blue",
+         "socketbonus_str" : 3,
          "source": "Gruuls",
          "phase": 1,
          "id": 29100,
@@ -315,7 +321,7 @@ var gear = {
          "ap": 58,
          "socket0": "yellow",
          "socket1": "yellow",
-         "socketbonus_hit" : 3,
+         "socketbonus_hitrating" : 3,
          "hitrating": 13,
          "critrating": 21,
          "source": "Karazhan",
@@ -348,6 +354,20 @@ var gear = {
          "source": "Dungeon",
          "phase": 1,
          "id": 27434,
+      },
+      {
+         "name": "Wastewalker Shoulderpads",
+         "sta": 13,
+         "agi": 25,
+         "ac": 219,
+         "ap": 34,
+         "hitrating": 16,
+         "socket0": "red",
+         "socket1": "blue",
+         "socketbonus_critrating" : 3,
+         "source": "Dungeon",
+         "phase": 1,
+         "id": 27797,
       },
    ],
    "back": [
@@ -386,7 +406,7 @@ var gear = {
          "name": "Phoenix-Wing Cloak",
          "ac": 108,
          "def": 22,
-         "dodgerating": 27,
+         "incdodgerating": 27,
          "sta": 37,
          "source": "SSC",
          "phase": 2,
@@ -505,7 +525,7 @@ var gear = {
          "socket0": "yellow",
          "socket1": "yellow",
          "socket2": "blue",
-         "socketbonus_dodge": 4,
+         "socketbonus_incdodgerating": 4,
          "source": "Crafting",
          "phase": 1,
          "id": 25689
@@ -519,7 +539,7 @@ var gear = {
          "socket0": "yellow",
          "socket1": "blue",
          "socket2": "red",
-         "socketbonus_hit": 4,
+         "socketbonus_hitrating": 4,
          "source": "Magtheridon",
          "phase": 1,
          "id": 29096
@@ -574,7 +594,7 @@ var gear = {
          "res": 17,
          "ac": 216,
          "socket0": "yellow",
-         "socketbonus_res": "2",
+         "socketbonus_res": 2,
          "source": "PVP",
          "phase": "2",
          "id": 32810
@@ -588,7 +608,7 @@ var gear = {
          "critrating": 9,
          "ac": 174,
          "socket0": "yellow",
-         "socketbonus_res": "2",
+         "socketbonus_res": 2,
          "source": "PVP",
          "phase": "2",
          "id": 32814
@@ -600,7 +620,7 @@ var gear = {
          "agi": 24,
          "ac": 177,
          "socket0": "blue",
-         "socketbonus_ap": "4",
+         "socketbonus_ap": 4,
          "source": "TK",
          "phase": "2",
          "id": 29966
@@ -658,7 +678,7 @@ var gear = {
          "agi": 18,
          "ac": 128,
          "socket0": "red",
-         "socketbonus_dodge": 2,
+         "socketbonus_incdodgerating": 2,
          "source": "Quest",
          "phase": 1,
          "id": 28171
@@ -773,7 +793,7 @@ var gear = {
          "ac": 183,
          "socket0": "red",
          "socket1": "yellow",
-         "socketbonus_dodge": 3,
+         "socketbonus_incdodgerating": 3,
          "source": "Dungeon",
          "phase": 1,
          "id": 27531
@@ -980,7 +1000,7 @@ var gear = {
          "socket0": "blue",
          "socket1": "yellow",
          "socket2": "blue",
-         "socketbonus_dodge": 4,
+         "socketbonus_incdodgerating": 4,
          "socketbonus_critrating": 3,
          "source": "Crafting",
          "phase": 1,
@@ -996,7 +1016,7 @@ var gear = {
          "socket0": "red",
          "socket1": "red",
          "socket2": "red",
-         "socketbonus_hit": 4,
+         "socketbonus_hitrating": 4,
          "socketbonus_critrating": 3,
          "source": "Heroic",
          "phase": 1,
@@ -1026,7 +1046,7 @@ var gear = {
          "socket0": "red",
          "socket1": "red",
          "socket2": "blue",
-         "socketbonus_dodge": 4,
+         "socketbonus_incdodgerating": 4,
          "source": "Karazhan",
          "phase": 1,
          "id": 28741,
@@ -1063,6 +1083,21 @@ var gear = {
          "source": "Quest",
          "phase": 1,
          "id": 30257,
+      },
+      {
+         "name": "Wastewalker Leggings",
+         "sta": 27,
+         "agi": 31,
+         "hitrating": 19,
+         "ap": 28,
+         "ac": 256,
+         "socket0": "red",
+         "socket1": "red",
+         "socket2": "blue",
+         "socketbonus_res": 4,
+         "source": "Dungeon",
+         "phase": 1,
+         "id": 27837,
       }
    ],
    "feet": [
@@ -1116,7 +1151,7 @@ var gear = {
          "ac": 394,
          "socket0": "yellow",
          "socket1": "blue",
-         "socketbonus_dodge": 3,
+         "socketbonus_incdodgerating": 3,
          "source": "Crafting",
          "phase": 1,
          "id": 25691
@@ -1149,7 +1184,7 @@ var gear = {
          "hitrating": 13,
          "socket0": "red",
          "socket1": "yellow",
-         "socketbonus_hit": 3,
+         "socketbonus_hitrating": 3,
          "source": "Karazhan",
          "phase": 1,
          "id": 28545
@@ -1887,7 +1922,7 @@ var gear = {
          "mindmg": 135,
          "maxdmg": 286,
          "speed": 3.0,
-         "dodgerating": 54,
+         "incdodgerating": 54,
          "id": 30021,
          "source": "SSC",
          "phase": 2,
@@ -2170,9 +2205,24 @@ var gear = {
       },
       {
          "id": 24,
-         "name": "+ 12 Reliesence Rating",
+         "name": "+ 12 Resilience Rating",
          "res": 12
-      }
+      },
+      {
+         "id": 25,
+         "name": "+ 1% Dodge",
+         "incdodgerating": 18.293
+      },     
+      {
+         "id": 26,
+         "name": "+ 5% Dodge",
+         "incdodgerating": 94.165
+      },
+      {
+         "id": 27,
+         "name": "+ 10% Dodge",
+         "incdodgerating": 180.293
+      },
    ]
 };
 
@@ -2181,7 +2231,7 @@ var enchant = {
       {
          "id": 29186,
          "name": "Glyph of the Defender",
-         "dodgerating": 17,
+         "incdodgerating": 17,
          "def": 16
       },
       {
@@ -3310,6 +3360,15 @@ var sets = [
    items: [30222, 30223, 30228, 30229, 30230],
    bonus: [
       { count: 4, stats: { t5laceratebonus: true } },
+   ]
+},
+{
+   id: 659,
+   name: 'Wastewalker Armor',
+   items: [28264, 27531, 28224, 27837, 27797],
+   bonus: [
+      { count: 2, stats: { hitrating:35 } },
+      { count: 4, stats: { } },
    ]
 }
 ];
