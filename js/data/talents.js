@@ -3,22 +3,416 @@ var talents = [
       n: 'Balance',
       t: [
          {
+            i: 111,
+            n: 'Starlight Wrath',
+            m: 5,
+            s: [
+               16814,
+               16815,
+               16816,
+               16817,
+               16818
+            ],
+            d: [
+               'Reduces the cast time of your Wrath and Starfire spells by 0.1 sec',
+               'Reduces the cast time of your Wrath and Starfire spells by 0.2 sec',
+               'Reduces the cast time of your Wrath and Starfire spells by 0.3 sec',
+               'Reduces the cast time of your Wrath and Starfire spells by 0.4 sec',
+               'Reduces the cast time of your Wrath and Starfire spells by 0.5 sec',
+            ],
+            x: 0,
+            y: 0,
+            iconname: 'spell_nature_abolishmagic',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
             i: 112,
             n: 'Nature\'s Grasp',
             m: 1,
             s: [
-               16812,
+               16812
             ],
             d: [
-               'Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by 1 Rage or Energy',
+               'While active, any time an enemy strikes the caster they have a 35% chance to become afflicted by Entangling Roots (Rank 7).  Only useable outdoors.  1 charge.  Lasts 45 sec.',
             ],
             x: 1,
             y: 0,
             iconname: 'spell_nature_natureswrath',
             c: 0,
-            aura: function (count) { return { naturesgrasp: count } },
+            aura: function (count) {},
          },
-      ],
+         {
+            i: 113,
+            n: 'Improved Nature\'s Grasp',
+            m: 4,
+            s: [
+               17245,
+               17247,
+               17248,
+               17249,
+            ],
+            d: [
+               'Increases the chance for your Nature\'s Grasp to entangle an enemy by 15%.',
+               'Increases the chance for your Nature\'s Grasp to entangle an enemy by 30%.',
+               'Increases the chance for your Nature\'s Grasp to entangle an enemy by 45%.',
+               'Increases the chance for your Nature\'s Grasp to entangle an enemy by 65%.',
+            ],
+            x: 2,
+            y: 0,
+            iconname: 'spell_nature_natureswrath',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 121,
+            n: 'Control of Nature',
+            m: 3,
+            s: [
+               16918,
+               16919,
+               16290,
+            ],
+            d: [
+               'Gives you a 40% chance to avoid interruption caused by damage while casting Entangling Roots and Cyclone.',
+               'Gives you a 70% chance to avoid interruption caused by damage while casting Entangling Roots and Cyclone.',
+               'Gives you a 100% chance to avoid interruption caused by damage while casting Entangling Roots and Cyclone.'
+            ],
+            x: 0,
+            y: 1,
+            iconname: 'spell_nature_stranglevines',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 122,
+            n: 'Focused Starlight',
+            m: 2,
+            s: [
+               35363,
+               35364
+            ],
+            d: [
+               'Increases the critical strike chance of your Wrath and Starfire spells by 2%.',
+               'Increases the critical strike chance of your Wrath and Starfire spells by 4%.'
+            ],
+            x: 1,
+            y: 1,
+            iconname: 'inv_staff_01',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 123,
+            n: 'Improved Moonfire',
+            m: 2,
+            s: [
+               16281,
+               16282
+            ],
+            d: [
+               'Increases the damage and critical strike chance of your Moonfire spell by 5%.',
+               'Increases the damage and critical strike chance of your Moonfire spell by 10%.'
+            ],
+            x: 2,
+            y: 1,
+            iconname: 'spell_nature_starfall',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 131,
+            n: 'Improved Thorns',
+            m: 3,
+            s: [
+               16238,
+               16239,
+               16840
+            ],
+            d: [
+               'Increases damage caused by your Thorns and Entangling Roots spells by 25%.',
+               'Increases damage caused by your Thorns and Entangling Roots spells by 50%.',
+               'Increases damage caused by your Thorns and Entangling Roots spells by 75%.'
+            ],
+            x: 0,
+            y: 2,
+            iconname: 'spell_nature_thorns',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 133,
+            n: 'Insect Swarm',
+            m: 1,
+            s: [
+               27013
+            ],
+            d: [
+               'The enemy target is swarmed by insects, decreasing their chance to hit by 2% and causing 792 Nature damage over 12 sec.'
+            ],
+            x: 2,
+            y: 2,
+            iconname: 'spell_nature_insectswarm',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 134,
+            n: 'Nature\'s Reach',
+            m: 2,
+            s: [
+               16819,
+               16820
+            ],
+            d: [
+               'Increases the range of your Balance spells and Faerie Fire (Feral) ability by 10%',
+               'Increases the range of your Balance spells and Faerie Fire (Feral) ability by 20%',
+            ],
+            x: 3,
+            y: 2,
+            iconname: 'spell_nature_naturetouchgrow',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 142,
+            n: 'Vengeance',
+            m: 5,
+            s: [
+               16909,
+               16910,
+               16911,
+               16912,
+               16913,
+            ],
+            d: [
+               'Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 20%',
+               'Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 40%',
+               'Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 60%',
+               'Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 80%',
+               'Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 100%',
+            ],
+            x: 1,
+            y: 3,
+            iconname: 'spell_nature_purge',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 143,
+            n: 'Celestial Focus',
+            m: 3,
+            s: [
+               16850,
+               16992,
+               16924,
+            ],
+            d: [
+               'Gives your Starfire spell a 5% chance to stun the target for 3 sec and increases the chance you\'ll resist spell interruption when casting your Wrath spell by 25%',
+               'Gives your Starfire spell a 10% chance to stun the target for 3 sec and increases the chance you\'ll resist spell interruption when casting your Wrath spell by 50%',
+               'Gives your Starfire spell a 15% chance to stun the target for 3 sec and increases the chance you\'ll resist spell interruption when casting your Wrath spell by 70%'
+            ],
+            x: 2,
+            y: 3,
+            iconname: 'spell_arcane_starfire',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 151,
+            n: 'Lunar Guidance',
+            m: 3,
+            s: [
+               33589,
+               33590,
+               33591
+            ],
+            d: [
+               'Increases your spell damage and healing by 8% of your total Intellect.',
+               'Increases your spell damage and healing by 16% of your total Intellect.',
+               'Increases your spell damage and healing by 25% of your total Intellect.'
+            ],
+            x: 0,
+            y: 4,
+            iconname: 'spell_arcane_starfire',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 152,
+            n: 'Nature\'s Grace',
+            m: 1,
+            s: [
+               16880
+            ],
+            d: [
+               'All spell criticals grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec.'
+            ],
+            x: 1,
+            y: 4,
+            iconname: 'spell_nature_naturesblessing',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 153,
+            n: 'Moonglow',
+            m: 3,
+            s: [
+               16845,
+               16846,
+               16847
+            ],
+            d: [
+               'Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by 3%',
+               'Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by 6%',
+               'Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by 9%'
+            ],
+            x: 2,
+            y: 4,
+            iconname: 'spell_nature_sentinal',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 162,
+            n: 'Moonfury',
+            m: 5,
+            s: [
+               16896,
+               16897,
+               16899,
+               16900,
+               16901
+            ],
+            d: [
+               'Increases the damage done by your Starfire, Moonfire and Wrath spells by 2%',
+               'Increases the damage done by your Starfire, Moonfire and Wrath spells by 4%',
+               'Increases the damage done by your Starfire, Moonfire and Wrath spells by 6%',
+               'Increases the damage done by your Starfire, Moonfire and Wrath spells by 8%',
+               'Increases the damage done by your Starfire, Moonfire and Wrath spells by 10%'
+            ],
+            x: 1,
+            y: 5,
+            iconname: 'spell_nature_moonglow',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 163,
+            n: 'Balance of Power',
+            m: 2,
+            s: [
+               33592,
+               33596
+            ],
+            d: [
+               'Increases your chance to hit with all spells and reduces the chance you\'ll be hit by spells by 2%',
+               'Increases your chance to hit with all spells and reduces the chance you\'ll be hit by spells by 4%'
+            ],
+            x: 2,
+            y: 5,
+            iconname: 'ability_druid_balanceofpower',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 171,
+            n: 'Dreamstate',
+            m: 3,
+            s: [
+               33597,
+               33599,
+               33956
+            ],
+            d: [
+               'Regenerate mana equal to 4% of your Intellect every 5 sec, even while casting',
+               'Regenerate mana equal to 7% of your Intellect every 5 sec, even while casting',
+               'Regenerate mana equal to 10% of your Intellect every 5 sec, even while casting'
+            ],
+            x: 0,
+            y: 6,
+            iconname: 'ability_druid_dreamstate',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 172,
+            n: 'Moonkin Form',
+            m: 1,
+            s: [
+               24858
+            ],
+            d: [
+               'Shapeshift into Moonkin Form.  While in this form the armor contribution from items is increased by 400%, attack power is increased by 150% of your level and all party members within 30 yards have their spell critical chance increased by 5%.  Melee attacks in this form have a chance on hit to regenerate mana based on attack power.  The Moonkin can only cast Balance and Remove Curse spells while shapeshifted.The act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.'
+            ],
+            x: 1,
+            y: 6,
+            iconname: 'spell_nature_forceofnature',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 173,
+            n: 'Improved Faerie Fire',
+            m: 3,
+            s: [
+               33600,
+               33601,
+               33602,
+            ],
+            d: [
+               'Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by 1%',
+               'Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by 2%',
+               'Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by 3%',
+            ],
+            x: 2,
+            y: 6,
+            iconname: 'spell_nature_faeriefire',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 182,
+            n: 'Wrath of Cenarius',
+            m: 5,
+            s: [
+               33603,
+               33604,
+               33605,
+               33606,
+               33607,
+            ],
+            d: [
+               'Your Starfire spell gains an additional 4% and your Wrath gains an additional 2% of your bonus damage effects.',
+               'Your Starfire spell gains an additional 4% and your Wrath gains an additional 4% of your bonus damage effects.',
+               'Your Starfire spell gains an additional 4% and your Wrath gains an additional 6% of your bonus damage effects.',
+               'Your Starfire spell gains an additional 4% and your Wrath gains an additional 8% of your bonus damage effects.',
+               'Your Starfire spell gains an additional 4% and your Wrath gains an additional 10% of your bonus damage effects.',
+            ],
+            x: 1,
+            y: 7,
+            iconname: 'ability_druid_twilightswrath',
+            c: 0,
+            aura: function (count) {},
+         },
+         {
+            i: 192,
+            n: 'Force of Nature',
+            m: 5,
+            s: [
+               33831
+            ],
+            d: [
+               'Summons 3 treants to attack enemy targets for 30 sec.'
+            ],
+            x: 1,
+            y: 8,
+            iconname: 'ability_druid_forceofnature',
+            c: 0,
+            aura: function (count) {},
+         },
+      ]
    },
    {
       n: 'Feral Combat',
@@ -44,7 +438,7 @@ var talents = [
             x: 1,
             y: 0,
             iconname: 'ferocity',
-            c: 0,
+            c: 112,
             aura: function (count) { return { ferocity: count } },
          },
          {
@@ -92,7 +486,25 @@ var talents = [
             aura: function (count) { return { feralinstinctmod: count * 0.05 } },
          },
          {
-            i: 231,
+            i: 222,
+            n: 'Brutal Impact',
+            m: 2,
+            s: [
+               16940,
+               16941
+            ],
+            d: [
+               'Increases the stun duration of your Bash and Pounce abilities by 0.5 sec.',
+               'Increases the stun duration of your Bash and Pounce abilities by 1 sec.',
+            ],
+            x: 1,
+            y: 1,
+            iconname: 'ability_druid_bash',
+            c: 0,
+            aura: function (count) { return { } },
+         },
+         {
+            i: 223,
             n: 'Thick Hide',
             m: 3,
             s: [
@@ -111,7 +523,7 @@ var talents = [
             aura: function (count) { return { thickhidemod: 1 + Math.ceil(count * 3.3)*0.01 } },
          },
          {
-            i: 311,
+            i: 231,
             n: 'Feral Swiftness',
             m: 2,
             s: [
@@ -127,6 +539,22 @@ var talents = [
             c: 0,
             iconname: 'spell_nature_spiritwolf',
             aura: function (count) { return { feralswiftnessmod: 2 * count} },
+         },         
+         {
+            i: 311,
+            n: 'Feral Charge',
+            m: 2,
+            s: [
+               16979
+            ],
+            d: [
+               'Causes you to charge an enemy, immobilizing and interrupting any spell being cast for 4 sec'
+            ],
+            x: 1,
+            y: 2,
+            c: 0,
+            iconname: 'ability_hunter_pet_bear',
+            aura: function (count) { return { } },
          },
          {
             i: 233,
@@ -227,6 +655,38 @@ var talents = [
             aura: function (count) { return { savagefurymod: 1.0 + 0.1*count } },
          },
          {
+            i: 253,
+            n: 'Faerie Fire (Feral)',
+            m: 1,
+            s: [
+               27011
+            ],
+            d: [
+               'Decrease the armor of the target by 610 for 40 sec.  While affected, the target cannot stealth or turn invisible'
+            ],
+            x: 2,
+            y: 4,
+            c: 0,
+            iconname: 'spell_nature_faeriefire',
+            aura: function (count) { return {  } },
+         },
+         {
+            i: 254,
+            n: 'Nurturing Instinct',
+            m: 1,
+            s: [
+               33873
+            ],
+            d: [
+               'Increases your healing spells by up to 100% of your Agility, and increases healing done to you by 20% while in Cat form.'
+            ],
+            x: 3,
+            y: 4,
+            c: 0,
+            iconname: 'ability_druid_healinginstincts',
+            aura: function (count) { return {  } },
+         },
+         {
             i: 261,
             n: 'Heart of the Wild',
             m: 5,
@@ -271,6 +731,26 @@ var talents = [
             aura: function (count) { return { survivalofthefittest: count } },
          },
          {
+            i: 271,
+            n: 'Primal Tenacity',
+            m: 3,
+            s: [
+               33851,
+               33852,
+               33957
+            ],
+            d: [
+                'Increases your chance to resist Stun and Fear mechanics by 5%.',
+                'Increases your chance to resist Stun and Fear mechanics by 10%.',
+                'Increases your chance to resist Stun and Fear mechanics by 15%.'
+            ],
+            x: 0,
+            y: 6,
+            c: 0,
+            iconname: 'ability_druid_primaltenacity',
+            aura: function (count) { return {  } },
+         },
+         {
             i: 272,
             n: 'Leader of the Pack',
             m: 1,
@@ -285,6 +765,24 @@ var talents = [
             c: 0,
             iconname: 'spell_nature_unyeildingstamina',
             aura: function (count) { return { abilitiescrit: count * 5 } },
+         },
+         {
+            i: 273,
+            n: 'Improved Leader of the Pack',
+            m: 1,
+            s: [
+               34297,
+               34300
+            ],
+            d: [
+               'Your Leader of the Pack ability also causes affected targets to have a 50% chance to heal themselves for 2% of their total health when they critically hit with a melee or ranged attack.  The healing effect cannot occur more than once every 6 sec.',
+               'Your Leader of the Pack ability also causes affected targets to have a 100% chance to heal themselves for 4% of their total health when they critically hit with a melee or ranged attack.  The healing effect cannot occur more than once every 6 sec.'
+            ],
+            x: 2,
+            y: 6,
+            c: 0,
+            iconname: 'spell_nature_unyeildingstamina',
+            aura: function (count) { return {  } },
          },
          {
             i: 281,
