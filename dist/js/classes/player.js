@@ -77,7 +77,6 @@ class Player {
         };
 
         this.damageTakenData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-        this.totalAttacksTaken = 0;
 
         this.runningtimereduction = 0;
 
@@ -768,11 +767,11 @@ class Player {
     rollattacktaken() {
         let tmp = 0;
         let roll = rng10k();
-        tmp += (4.4 + this.stats.def * 0.04) * 100;
+        tmp += this.stats.incmiss * 100;
         if (roll < tmp) return RESULT.MISS;
-        tmp += (3.19 + this.stats.incdodge) * 100
+        tmp += this.stats.incdodge * 100
         if (roll < tmp) return RESULT.DODGE;
-        tmp += 15.0 * 100;
+        tmp += this.stats.inccrush * 100;
         if (roll < tmp) return RESULT.CRUSH;
         tmp += this.stats.inccrit;
         if (roll < tmp) return RESULT.CRIT;
@@ -802,12 +801,13 @@ class Player {
         if (result == RESULT.PARRY) {
             /* If current boss swing timer > 60% of base timer, haste by 40% */
             if (this.incswingtimer >= .6 * this.base.incswingtimer) {
-                this.incswingtimer *= 0.6;
+                this.incswingtimer = ~~(this.incswingtimer * 0.6);
             }
             /* Otherwise if between 20% and 60% incoming swing timer,
              * swing timer = swing timer - (remaining time - 20% of base swing timer) */
             else if (this.incswingtimer >= .2 * this.base.incswingtimer) {
-                this.incswingtimer -= this.incswingtimer - .2 * this.base.incswingtimer;            }
+                this.incswingtimer -= ~~(this.incswingtimer - .2 * this.base.incswingtimer);           
+            }
             else {
                 // No action taken if swing is within 20% of completing
             }
@@ -890,7 +890,7 @@ class Player {
         this.incswingtimer = this.base.incswingtimer;
         let result = this.rollattacktaken();
         let dmg = this.incswingdamage;
-        this.totalAttacksTaken++;
+        this.damageTakenData[result]++;
         if (result == RESULT.HIT) {
             dmg *= 1.0;
             if (this.enableLogging) this.log(`Boss hit for ${dmg}`);
@@ -910,7 +910,6 @@ class Player {
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
         this.addDamageTakenRage(dmg);
-        this.damageTakenData[result]++;
         return dmg;
     }
 
@@ -1124,6 +1123,7 @@ class Player {
             auras: this.auras,
             spells: this.spells,
             mh: this.mh,
+            damageTakenData: this.damageTakenData,
         };
     }
     log(msg) {

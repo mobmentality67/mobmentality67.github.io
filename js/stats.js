@@ -232,7 +232,7 @@ SIM.STATS = {
     buildTable: function (sim) {
         var view = this;
         view.table.empty();
-        let html = '<table><thead><tr><th>Action</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Parry %</th><th>Dodge %</th><th>Glance %</th><th>Uses</th><th>TPS</th></tr></thead><tbody>';
+        let html = '<table><thead><tr><th>Player Action</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Parry %</th><th>Dodge %</th><th>Glance %</th><th>Uses</th><th>TPS</th></tr></thead><tbody>';
 
 
         // Manually add white damage
@@ -250,6 +250,26 @@ SIM.STATS = {
             let tps = (sim.player.spells[name].totalthreat / sim.totalduration).toFixed(2);
             html += `<tr><td>${n}</td><td>${((data[0] + data[7]) / total * 100).toFixed(2)}</td><td>${(data[4] / total * 100).toFixed(2)}</td><td>${(data[2] / total * 100).toFixed(2)}</td><td>${(data[1] / total * 100).toFixed(2)}</td><td>${(data[3] / total * 100).toFixed(2)}</td><td>${(data[5] / total * 100).toFixed(2)}</td><td>${(total / i).toFixed(2)}</td><td>${tps}</td></tr>`;
         }
+
+        html += '</tbody></table>';
+
+        view.table.append(html);
+        view.table.find('table').tablesorter({
+            widthFixed: true,
+        });
+
+
+        // Add incoming damage taken table
+        html = '<table><thead><tr><th>Player Damage Taken</th><th>Hit %</th><th>Crit %</th><th>Miss %</th><th>Dodge %</th><th>Crush %</th><th>DTPS</th></tr></thead><tbody>';
+
+        // Manually add white damage
+        i = sim.iterations;
+        data = sim.player.damageTakenData;
+        //console.log(`hits = ${data[0]}, crits = ${data[4]}, crushes = ${data[6]}, dodges = ${data[3]}, miss = ${data[2]} `);
+        let totalAttacksTaken = data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7];
+        //console.log(`total= ${totalAttacksTaken}`);
+        let dtps = (sim.totaldamagetaken / sim.totalduration).toFixed(2);
+        html += `<tr><td>White Damage</td><td>${(data[0] / totalAttacksTaken * 100).toFixed(2)}</td><td>${(data[4] / totalAttacksTaken * 100).toFixed(2)}</td><td>${(data[2] / totalAttacksTaken * 100).toFixed(2)}</td><td>${(data[3] / totalAttacksTaken * 100).toFixed(2)}</td><td>${(data[6] / totalAttacksTaken * 100).toFixed(2)}</td><td>${dtps}</td></tr>`;
 
         html += '</tbody></table>';
 
