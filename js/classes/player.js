@@ -144,6 +144,7 @@ class Player {
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
+        if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         this.update();
     }
 
@@ -462,9 +463,11 @@ class Player {
                     this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 }
             }
-
-            if (buff.id == 2825) {
+            else if (buff.id == 2825) {
                 this.lust = buff.active;
+            }
+            else if (buff.id == 22838) {
+                this.hastepot = buff.active;
             }
         }
     }

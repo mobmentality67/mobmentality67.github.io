@@ -293,6 +293,7 @@ class Simulation {
             player.auras.hourglass,
             player.auras.tsunami,
             player.auras.bloodlust,
+            player.auras.hastepot,
             player.auras.pummeler
         ];
 
@@ -305,6 +306,11 @@ class Simulation {
         /* Pop lust if active */
         if (player.auras.bloodlust) {
             player.cast(player.auras.bloodlust, damage_threat);
+        }  
+
+        /* Pop haste pot if active */
+        if (player.auras.hastepot) {
+            player.cast(player.auras.hastepot, damage_threat);
         }  
 
         // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells

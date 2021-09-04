@@ -171,6 +171,13 @@ var buffs = [
       spellid: true,
       name: "Bloodlust",
       iconname: "spell_nature_bloodlust"
+   },
+   {
+      id: 28507,
+      spellid: true,
+      name: "Haste Potion",
+      group: "potion",
+      iconname: "inv_potion_108"
    }
    
 ];

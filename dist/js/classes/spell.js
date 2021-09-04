@@ -475,7 +475,43 @@ class Bloodlust extends Aura {
             if (this.player.enableLogging) oldHaste = this.player.stats.haste;
             this.player.updateStats();
             this.uptime += (step - this.starttimer);
-            if (this.player.enableLogging) this.player.log(`Aura ${this.name} applied. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
+            if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
+class HastePotion extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 15;
+        this.stats = { hasterating: 400 };
+        this.cooldown = 9999999999;
+        this.name = 'Haste Potion';
+        this.active = false;
+        this.spelldelay = 0;
+    }
+    use() {
+        let oldHaste;
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        if (this.player.enableLogging) oldHaste = this.player.stats.haste;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Aura ${this.name} applied. Haste raised from: ${oldHaste} to ${this.player.stats.haste}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            let oldHaste;
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            if (this.player.enableLogging) oldHaste = this.player.stats.haste;
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
         }
     }
     canUse() {
