@@ -773,7 +773,7 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += this.stats.inccrush * 100;
         if (roll < tmp) return RESULT.CRUSH;
-        tmp += this.stats.inccrit;
+        tmp += this.stats.inccrit * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
