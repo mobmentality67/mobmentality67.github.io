@@ -673,11 +673,13 @@ var talents = [
          {
             i: 254,
             n: 'Nurturing Instinct',
-            m: 1,
+            m: 2,
             s: [
+               33872,
                33873
             ],
             d: [
+               'Increases your healing spells by up to 50% of your Agility, and increases healing done to you by 10% while in Cat form.',
                'Increases your healing spells by up to 100% of your Agility, and increases healing done to you by 20% while in Cat form.'
             ],
             x: 3,
@@ -769,7 +771,7 @@ var talents = [
          {
             i: 273,
             n: 'Improved Leader of the Pack',
-            m: 1,
+            m: 2,
             s: [
                34297,
                34300
@@ -830,6 +832,54 @@ var talents = [
    {
       n: 'Restoration',
       t: [
+           {
+            i: 312,
+            n: 'Improved Mark of the Wild',
+            m: 5,
+            s: [
+               17050,
+               17051,
+               17053,
+               17054,
+               17055
+            ],
+            d: [
+               'Increases the effects of your Mark of the Wild and Gift of the Wild spells by 7%.',
+               'Increases the effects of your Mark of the Wild and Gift of the Wild spells by 14%.',
+               'Increases the effects of your Mark of the Wild and Gift of the Wild spells by 21%.',
+               'Increases the effects of your Mark of the Wild and Gift of the Wild spells by 28%.',
+               'Increases the effects of your Mark of the Wild and Gift of the Wild spells by 35%.'
+            ],
+            x: 1,
+            y: 0,
+            c: 0,
+            iconname: 'spell_nature_regeneration',
+            aura: function (count) { return {  } },
+         },
+         {
+            i: 313,
+            n: 'Furor',
+            m: 5,
+            s: [
+               17056,
+               17058,
+               17059,
+               17060,
+               17061
+            ],
+            d: [
+               'Gives you 20% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form.',
+               'Gives you 40% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form..',
+               'Gives you 60% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form..',
+               'Gives you 80% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form..',
+               'Gives you 100% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form..'
+            ],
+            x: 2,
+            y: 0,
+            c: 0,
+            iconname: 'spell_holy_blessingofstamina',
+            aura: function (count) { return {  } },
+         },
          {
             i: 321,
             n: 'Naturalist',
@@ -855,6 +905,50 @@ var talents = [
             aura: function (count) { return { naturalistmod: .02*count } },
          },
          {
+            i: 322,
+            n: 'Nature\'s Focus,',
+            m: 5,
+            s: [
+               17063,
+               17065,
+               17066,
+               17067,
+               17068
+            ],
+            d: [
+               'Gives you a 14% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.',
+               'Gives you a 28% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.',
+               'Gives you a 42% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.',
+               'Gives you a 56% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.',
+               'Gives you a 70% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.'
+            ],
+            x: 1,
+            y: 1,
+            c: 0,
+            iconname: 'spell_nature_healingwavegreater',
+            aura: function (count) { return {  } },
+         },
+         {
+            i: 323,
+            n: 'Natural Shapeshifter',
+            m: 3,
+            s: [
+               16833,
+               16834,
+               16835
+            ],
+            d: [
+               'Reduces the mana cost of all shapeshifting by 10%.',
+               'Reduces the mana cost of all shapeshifting by 20%.',
+               'Reduces the mana cost of all shapeshifting by 30%.'
+            ],
+            x: 2,
+            y: 1,
+            c: 0,
+            iconname: 'spell_nature_wispsplode',
+            aura: function (count) { return {  } },
+         },
+         {
             i: 331,
             n: 'Intensity',
             m: 3,
@@ -875,6 +969,30 @@ var talents = [
             aura: function (count) { return { intensity: count } }
          },
          {
+            i: 332,
+            n: 'Subtlety',
+            m: 5,
+            s: [
+               17118,
+               17119,
+               17120,
+               17121,
+               17122,
+            ],
+            d: [
+               'Reduces the threat generated by your spells by 4% and reduces the chance your spells will be dispelled by 4%',
+               'Reduces the threat generated by your spells by 8% and reduces the chance your spells will be dispelled by 8%',
+               'Reduces the threat generated by your spells by 12% and reduces the chance your spells will be dispelled by 12%',
+               'Reduces the threat generated by your spells by 16% and reduces the chance your spells will be dispelled by 16%',
+               'Reduces the threat generated by your spells by 20% and reduces the chance your spells will be dispelled by 20%',
+            ],
+            x: 1,
+            y: 2,
+            c: 0,
+            iconname: 'ability_eyeoftheowl',
+            aura: function (count) { return { } }
+         },
+         {
             i: 333,
             n: 'Omen of Clarity',
             m: 1,
@@ -890,6 +1008,246 @@ var talents = [
             iconname: 'spell_nature_crystalball',
             aura: function (count) { return { ooc: count } },
          },
+         {
+            i: 342,
+            n: 'Tranquil Spirit',
+            m: 5,
+            s: [
+               24968,
+               24969,
+               24970,
+               24971,
+               24972,
+            ],
+            d: [
+               'Reduces the mana cost of your Healing Touch and Tranquility spells by 2%',
+               'Reduces the mana cost of your Healing Touch and Tranquility spells by 4%',
+               'Reduces the mana cost of your Healing Touch and Tranquility spells by 6%',
+               'Reduces the mana cost of your Healing Touch and Tranquility spells by 8%',
+               'Reduces the mana cost of your Healing Touch and Tranquility spells by 10%',
+            ],
+            x: 1,
+            y: 3,
+            c: 0,
+            iconname: 'spell_holy_elunesgrace',
+            aura: function (count) { return {  } },
+         },
+         {
+            i: 343,
+            n: 'Improved Rejuvenation',
+            m: 3,
+            s: [
+               17113,
+               17112,
+               17113
+            ],
+            d: [
+               'Increases the effect of your Rejuvenation spell by 5%',
+               'Increases the effect of your Rejuvenation spell by 5%',
+               'Increases the effect of your Rejuvenation spell by 5%',
+            ],
+            x: 2,
+            y: 3,
+            c: 0,
+            iconname: 'spell_nature_rejuvenation',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 351,
+            n: 'Nature\'s Swiftness',
+            m: 1,
+            s: [
+               17116
+            ],
+            d: [
+               'When activated, your next Nature spell becomes an instant cast spell.'
+            ],
+            x: 0,
+            y: 4,
+            c: 0,
+            iconname: 'spell_nature_ravenform',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 352,
+            n: 'Gift of Nature',
+            m: 5,
+            s: [
+               17104,
+               24943,
+               24944,
+               24945,
+               24946,
+            ],
+            d: [
+               'Increases the effect of all healing spells by 2%.',
+               'Increases the effect of all healing spells by 4%.',
+               'Increases the effect of all healing spells by 6%.',
+               'Increases the effect of all healing spells by 8%.',
+               'Increases the effect of all healing spells by 10%.',
+            ],
+            x: 1,
+            y: 4,
+            c: 0,
+            iconname: 'spell_nature_protectionformnature',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 354,
+            n: 'Improved Tranquility',
+            m: 2,
+            s: [
+               17123,
+               17124
+            ],
+            d: [
+               'Reduces threat caused by Tranquility by 50%.',
+               'Reduces threat caused by Tranquility by 100%.'
+            ],
+            x: 3,
+            y: 4,
+            c: 0,
+            iconname: 'spell_nature_tranquility',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 361,
+            n: 'Empowered Touch',
+            m: 2,
+            s: [
+               33879,
+               33880
+            ],
+            d: [
+               'Your Healing Touch spell gains an additional 10% of your bonus healing effects.',
+               'Your Healing Touch spell gains an additional 20% of your bonus healing effects.'
+            ],
+            x: 0,
+            y: 5,
+            c: 0,
+            iconname: 'ability_druid_empoweredtouch',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 363,
+            n: 'Improved Regrowth',
+            m: 5,
+            s: [
+               17074,
+               17075,
+               17076,
+               17077,
+               17078,
+            ],
+            d: [
+               'Increases the critical effect chance of your Regrowth spell by 10%.',
+               'Increases the critical effect chance of your Regrowth spell by 20%.',
+               'Increases the critical effect chance of your Regrowth spell by 30%.',
+               'Increases the critical effect chance of your Regrowth spell by 40%.',
+               'Increases the critical effect chance of your Regrowth spell by 50%.'
+            ],
+            x: 2,
+            y: 5,
+            c: 0,
+            iconname: 'spell_nature_resistnature',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 371,
+            n: 'Living Spirit',
+            m: 3,
+            s: [
+               34151,
+               34152,
+               34153,
+            ],
+            d: [
+               'Increases your total Spirit by 5%.',
+               'Increases your total Spirit by 19%.',
+               'Increases your total Spirit by 15%.',
+            ],
+            x: 0,
+            y: 6,
+            c: 0,
+            iconname: 'spell_nature_giftofthewaterspirit',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 372,
+            n: 'Swiftmend',
+            m: 1,
+            s: [
+               18562
+            ],
+            d: [
+               'Consumes a Rejuvenation or Regrowth effect on a friendly target to instantly heal them an amount equal to 12 sec. of Rejuvenation or 18 sec. of Regrowth.'
+            ],
+            x: 1,
+            y: 6,
+            c: 0,
+            iconname: 'inv_relics_idolofrejuvenation',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 373,
+            n: 'Natural Perfection',
+            m: 3,
+            s: [
+               33881,
+               33882,
+               33883,
+            ],
+            d: [
+               'Your critical strike chance with all spells is increased by 1% and critical strikes against you give you the Natural Perfection effect reducing all damage taken by 2%.  Stacks up to 3 times.  Lasts 8 sec.',
+               'Your critical strike chance with all spells is increased by 2% and critical strikes against you give you the Natural Perfection effect reducing all damage taken by 3%.  Stacks up to 3 times.  Lasts 8 sec.',
+               'Your critical strike chance with all spells is increased by 3% and critical strikes against you give you the Natural Perfection effect reducing all damage taken by 4%.  Stacks up to 3 times.  Lasts 8 sec.'
+            ],
+            x: 2,
+            y: 6,
+            c: 0,
+            iconname: 'ability_druid_naturalperfection',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 382,
+            n: 'Empowered Rejuvenation',
+            m: 5,
+            s: [
+               33886,
+               33887,
+               33888,
+               33889,
+               33890,
+            ],
+            d: [
+               'The bonus healing effects of your healing over time spells is increased by 4%.',
+               'The bonus healing effects of your healing over time spells is increased by 8%.',
+               'The bonus healing effects of your healing over time spells is increased by 12%.',
+               'The bonus healing effects of your healing over time spells is increased by 16%.',
+               'The bonus healing effects of your healing over time spells is increased by 20%.'
+            ],
+            x: 1,
+            y: 7,
+            c: 0,
+            iconname: 'ability_druid_empoweredrejuvination',
+            aura: function (count) { return { } },
+         },
+         {
+            i: 392,
+            n: 'Tree of Life',
+            m: 1,
+            s: [
+               33891
+            ],
+            d: [
+               'Shapeshift into the Tree of Life.  While in this form you increase healing received by 25% of your total Spirit for all party members within 45 yards, your movement speed is reduced by 20%, and you can only cast Swiftmend, Innervate, Nature\'s Swiftness, Rebirth, Barkskin, poison removing and healing over time spells, but the mana cost of these spells is reduced by 20%.The act of shapeshifting frees the caster of Polymorph and Movement Impairing effects.'
+            ],
+            x: 1,
+            y: 8,
+            c: 0,
+            iconname: 'ability_druid_treeoflife',
+            aura: function (count) { return { } },
+         }
       ]
    }
 ];
