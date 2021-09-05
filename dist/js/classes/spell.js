@@ -65,7 +65,7 @@ class Mangle extends Spell {
         let bonusdmg = this.player.items.includes(28064) ? 155 + 52 : 155;
         if (this.player.weaponrng) dmg = rng(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
         else dmg = avg(this.player.mh.mindmg + this.player.mh.bonusdmg, this.player.mh.maxdmg + this.player.mh.bonusdmg);
-        return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + bonusdmg) * this.player.stats.dmgmod;
+        return ((dmg + (this.player.stats.ap / 14) * 2.5) * 1.15 + bonusdmg);
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage;
@@ -90,7 +90,7 @@ class Swipe extends Spell {
 
     dmg() {
         let bonusdamage = this.player.items.includes(23198) ? 84 + 10 : 84;
-        return ((this.player.stats.ap * 0.07) + bonusdamage) * this.player.stats.dmgmod;
+        return ((this.player.stats.ap * 0.07) + bonusdamage);
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && (!this.player.spells.mangle || this.player.spells.mangle.timer > 1000) && 
@@ -112,7 +112,7 @@ class Lacerate extends Spell {
     }
     dmg() {
         let bonusdmg = this.player.t5laceratebonus ? 31 + 15 : 31;
-        return (bonusdmg + this.player.stats.ap / 100) * this.player.stats.dmgmod;
+        return (bonusdmg + this.player.stats.ap / 100);
     }
     use() {
         this.player.timer = 1500;
@@ -237,7 +237,7 @@ class LacerateDOT extends Aura {
     }
     step() {
         while (step >= this.nexttick) {
-            let dmg = (31 + this.player.stats.ap / 100) * this.player.stats.dmgmod * this.stacks;
+            let dmg = (31 + this.player.stats.ap / 100) * this.stacks;
             let tickdmg = 1.3 * dmg; // Assume mangle is up
             if (this.player.enableLogging) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
             this.idmg += ~~tickdmg;

@@ -917,7 +917,6 @@ class Player {
     }
 
     cast(spell, damage_threat_arr, step) {
-
         spell.use(step);
         if (spell.useonly) { 
             //if (log) this.log(`${spell.name} used`);
