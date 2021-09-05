@@ -466,7 +466,7 @@ class Player {
             else if (buff.id == 2825) {
                 this.lust = buff.active;
             }
-            else if (buff.id == 22838) {
+            else if (buff.id == 28507) {
                 this.hastepot = buff.active;
             }
         }
