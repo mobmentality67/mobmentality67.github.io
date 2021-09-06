@@ -579,6 +579,8 @@ SIM.UI = {
             for(let i = 0; i < enchant.twohand.length; i++)
                 enchant.twohand[i].selected = false;
         }
+
+        //view.loadGems(type, table.hasClass('editmode'), activeItem);
     },
 
     rowHideItem: function(tr) {
@@ -1007,6 +1009,8 @@ SIM.UI = {
                         </thead>
                     <tbody>`;
 
+        let activeGear = [];
+
         for (let item of gear[type]) {
 
             let source = item.source.toLowerCase(), phase = item.phase;
@@ -1029,6 +1033,7 @@ SIM.UI = {
             if (tooltip == 145541) tooltip = 14554;
             if (tooltip == 198981) tooltip = 19898;
             if (item.rand) rand = '?rand=' + item.rand;
+            if (item.selected) activeGear.push(item);
 
             table += `<tr data-id="${item.id}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
@@ -1071,7 +1076,7 @@ SIM.UI = {
         });
 
         view.loadEnchants(type, editmode);
-        view.loadGems(type, editmode);
+        view.loadGems(type, editmode, activeGear);
         view.updateSession();
         view.updateSidebar();
     },
@@ -1177,7 +1182,7 @@ SIM.UI = {
         view.main.find('.js-enchant').show();
     },
 
-loadGems: function (type, editmode) {
+loadGems: function (type, editmode, activeGear) {
 
         var view = this;
         view.main.find('.js-gem').hide();
@@ -1185,9 +1190,17 @@ loadGems: function (type, editmode) {
         if (!gem[type] || gem[type].length == 0) return;
 
         for (let i = 0; i < MAX_GEMS[type]; i++) {
+
+            //let socketStr = `socket${i}`;
+            //let gemColorHtml = '';
+            //if (activeGear[0]  && activeGear[0][socketStr]) {
+            //    let gemSocketColor = activeGear[0][socketStr];
+            //    if (gemSocketColor != 'meta') gemColorHtml = `style=color:${gemSocketColor}`
+            //}
+
             let table = `<table class="gem ${editmode ? 'editmode' : ''}" data-gem-index=${i} data-type="${type}" data-max="1">
                             <thead>
-                                <tr>
+                                <tr > 
                                     ${editmode ? '<th></th>' : ''}
                                     <th>Gem Slot ${i}</th>
                                     <th>Str</th>
@@ -1209,10 +1222,13 @@ loadGems: function (type, editmode) {
                 if (item.hidden && !editmode) continue;
                 if (item.meta && i != 0) continue;
 
-                table += `<tr data-id="${item.id}" data-meta="${item.meta || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
+                 let gemColorHtml = '';
+                 if (item.color != 'meta') gemColorHtml = `style=color:${item.color}`
+
+                 table += `<tr ${gemColorHtml} data-id="${item.id}" data-meta="${item.meta || false}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                             ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
                             <td><a href="https://tbc.wowhead.com/${item.spellid ? 'spell' : 'item'}=${item.id}"></a>${item.name}</td>
-                            <td>${item.str || ''}</td>
+                            <td>${item.str || ''} </td>
                             <td>${item.agi || ''}</td>
                             <td>${item.ap || ''}</td>
                             <td>${item.sta || ''}</td>
