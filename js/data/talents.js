@@ -543,7 +543,7 @@ var talents = [
          {
             i: 311,
             n: 'Feral Charge',
-            m: 2,
+            m: 1,
             s: [
                16979
             ],
