@@ -134,7 +134,7 @@ var buffs = [
       hit: 1
    },
    {
-      id: 30802,
+      id: 30811,
       spellid: true,
       name: "Unleashed Rage",
       iconname: "spell_nature_unleashedrage",
