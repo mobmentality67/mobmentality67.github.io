@@ -139,7 +139,7 @@ var buffs = [
       name: "Unleashed Rage",
       iconname: "spell_nature_unleashedrage",
       group: "",
-      apmod: 2
+      apmod: 10
    },
    {
       id: 29859,
