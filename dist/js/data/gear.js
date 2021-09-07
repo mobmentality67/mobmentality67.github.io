@@ -1303,7 +1303,7 @@ var gear = {
          "agi": 20,
          "ap": 40,
          "hitrating": 18,
-         "source": "Reputation",
+         "source": "Karazhan",
          "phase": "1",
          "id": 28649
       },
@@ -1453,7 +1453,7 @@ var gear = {
          "agi": 20,
          "ap": 40,
          "hitrating": 18,
-         "source": "Reputation",
+         "source": "Karazhan",
          "phase": "1",
          "id": 28649
       },
