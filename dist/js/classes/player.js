@@ -521,13 +521,15 @@ class Player {
         if (this.race == 'Night Elf') this.stats.incdodge += 1;
    `  `   // 4.4 base miss + miss from defense rating
         this.stats.incmiss = 4.4 + this.stats.def * .04;
-        this.stats.inccrit = Math.max(0, 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381);
+        this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
         this.stats.inccrush = 15;
 
-        // if (log) {
-        //     this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
-        //         +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
-        // }
+        /*
+        if (log) {
+            this.log(`\nUpdated incoming attack table: \nDodge = ${this.stats.incdodge}\nMiss = ${this.stats.incmiss}\nCrit`
+                +` =  ${this.stats.inccrit} \nCrush = ${this.stats.inccrush}`);
+        }
+        */
     }
 
     updateStats() {
@@ -631,7 +633,7 @@ class Player {
     getEHP() {
         // EHP = HP / (armor * weighted attack table)
         let ehp = (this.stats.sta * 10) / (1 - this.getArmorReduction(this.stats.ac, 73)) 
-            / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100 + this.stats.inccrush * 1.5 / 100 + this.stats.inccrit * 2 / 100);
+            / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100 + this.stats.inccrush * 1.5 / 100 + Math.max(0, this.stats.inccrit) * 2 / 100);
         return ehp;
     }
 
@@ -776,7 +778,7 @@ class Player {
         if (roll < tmp) return RESULT.DODGE;
         tmp += this.stats.inccrush * 100;
         if (roll < tmp) return RESULT.CRUSH;
-        tmp += this.stats.inccrit * 100;
+        tmp += Math.max(0, this.stats.inccrit) * 100;
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
