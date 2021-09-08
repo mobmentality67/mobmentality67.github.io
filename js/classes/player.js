@@ -52,6 +52,7 @@ class Player {
             agi: 0,
             str: 0,
             bonusac: 0,
+            bonusdmg: 0,
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
@@ -263,6 +264,9 @@ class Player {
                 if (!item.temp) continue;
                 if ((this.testTempEnchType == type && this.testTempEnch == item.id) ||
                     (this.testTempEnchType != type && item.selected)) {
+                    for (let prop in this.base) {
+                        this.base[prop] += item[prop] || 0;
+                    }
                 }
             }
         }
@@ -562,6 +566,7 @@ class Player {
         this.stats.armormod *= this.talents.thickhidemod;
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
         this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
+        this.mh.bonusdmg = this.stats.bonusdmg;
         this.updateArmor(); // Update current armor reduction
         this.updateIncAttackTable(); // Update defensive attack table
         this.updateTargetArmorReduction(); // Update current target's armor reduction 
