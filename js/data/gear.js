@@ -593,7 +593,7 @@ var gear = {
          "agi": 18,
          "res": 17,
          "ac": 216,
-         "socket0": "yellow",
+         "socket0": "red",
          "socketbonus_res": 2,
          "source": "PVP",
          "phase": "2",
