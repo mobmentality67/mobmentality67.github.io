@@ -553,6 +553,76 @@ class Slayer extends Aura {
     }
 }
 
+class Madness extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.name = 'Madness of the Betrayer';
+        this.duration = 10;
+        this.stats = { arpen: 300 };
+        this.ppm = 1;
+        this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
+        this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
+        this.cooldown = 0;
+        this.active = false;
+        this.spelldelay = 0;
+    }
+    use() {
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc -- target armor at ${this.player.target.armor}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc removed -- target armor at ${this.player.target.armor}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active;
+    }
+}
+
+class Berserkers extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { ap: 360 };
+        this.name = 'Berserker\'s Call';
+        this.cooldown = 120 * 1000;
+        this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
+    }
+    use() {
+        this.player.timer = 0;
+        this.player.itemtimer = this.duration * 1000;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
 class BloodlustBrooch extends Aura {
     constructor(player) {
         super(player);

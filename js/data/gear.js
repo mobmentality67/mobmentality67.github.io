@@ -1515,6 +1515,23 @@ var gear = {
    ],
    "trinket1": [
       {
+         "name": "Berserker's Call",
+         "ap": 90,
+         "source": "ZA",
+         "phase": "4",
+         "usespell": "Berserkers",
+         "id": 33831,
+      },
+      {
+         "name": "Madness of the Betrayer (1 PPM, no ICD)",
+         "hitrating": 20,
+         "ap": 84,
+         "source": "BT",
+         "phase": "3",
+         "procspell": "Madness",
+         "id": 32505,
+      },
+      {
          "name": "Icon of Unyielding Courage (Used first 20s / on CD)",
          "hitrating": 30,
          "source": "Heroic",
@@ -1674,6 +1691,23 @@ var gear = {
       }
    ],
    "trinket2": [
+      {
+         "name": "Berserker's Call",
+         "ap": 90,
+         "source": "ZA",
+         "phase": "4",
+         "usespell": "Berserkers",
+         "id": 33831,
+      },
+      {
+         "name": "Madness of the Betrayer (1 PPM, no ICD)",
+         "hitrating": 20,
+         "ap": 84,
+         "source": "BT",
+         "phase": "3",
+         "procspell": "Madness",
+         "id": 32505,
+      },
       {
          "name": "Icon of Unyielding Courage (Used first 20s / on CD)",
          "hitrating": 30,

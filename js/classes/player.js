@@ -141,6 +141,7 @@ class Player {
         if (this.items.includes(23041)) this.auras.slayer = new Slayer(this);
         if (this.items.includes(22954)) this.auras.spider = new Spider(this);
         if (this.items.includes(29383)) this.auras.bloodlustbrooch = new BloodlustBrooch(this);
+        if (this.items.includes(33831)) this.auras.berserkers = new Berserkers(this);
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
@@ -658,7 +659,6 @@ class Player {
             }
             else {
                 rageAdded = 0;
-
                 let critText = "";
                 if (result == RESULT.CRIT) critText = " (crit)";
                 if (log) this.log(`Cast ${spell.name} for ${dmg}${critText}. At ${parseFloat(this.rage).toFixed(2)} rage.`);
