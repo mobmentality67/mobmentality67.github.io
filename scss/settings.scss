@@ -5,7 +5,7 @@
     background: #272727;
     transition: all 0.3s ease-in-out;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: auto;
     position: absolute;
     left: 20%;
     top: 0;
@@ -274,7 +274,7 @@
         display: inline-block;
         padding: 20px 30px;
         width: 245px;
-        height: 450px;
+        height: 560px;
         margin-top: 10px;
 
         .sources {
