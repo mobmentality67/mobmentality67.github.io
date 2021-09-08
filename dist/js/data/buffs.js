@@ -118,6 +118,13 @@ var buffs = [
       str: 20
    },
    {
+      id: 27500,
+      name: "Scroll of Protection V",
+      iconname: "ability_warrior_defensivestance",
+      group: "",
+      bonusac: 300
+   },
+   {
       id: 33602,
       spellid: true,
       name: "Improved Faerie Fire",
