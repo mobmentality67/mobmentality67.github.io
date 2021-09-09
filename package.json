@@ -15,7 +15,8 @@
   },
   "scripts": {
     "dist": "gulp sass && gulp js",
-    "dev": "gulp --inspect"
+    "dev": "gulp --inspect",
+    "gulp": "gulp"
   },
   "author": "",
   "license": "ISC",
