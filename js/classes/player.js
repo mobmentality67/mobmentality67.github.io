@@ -615,7 +615,7 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - this.stats.exp * this.EXP_RATING_COEFFICIENT, 0);
+        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
     }
 
     getParryChance(weapon) {
@@ -623,7 +623,7 @@ class Player {
             return 0;
         }
         else {
-            return Math.max(14 - this.stats.exp * this.EXP_RATING_COEFFICIENT, 0);
+            return Math.max(14 - Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
         }
     }
 
