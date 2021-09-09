@@ -598,7 +598,7 @@ class Player {
         else return avg(low, high);
     }
     getGlanceChance() {
-        return 25;
+        return 24;
     }
     getMissChance(weapon) {
         let diff = this.target.defense - this.stats.skill;
