@@ -2282,62 +2282,61 @@ var enchant = {
    ],
    "shoulder": [
       {
-         "id": 35417,
-         "spellid": true,
+         "id": 28888,
          "name": "Greater Inscription of Vengeance",
          "ap": 30,
          "critrating": 10,
          "phase": 1
       },
       {
-         "id": 35439,
-         "spellid": true,
+         "id": 28910,
          "name": "Greater Inscription of the Blade",
          "ap": 20,
          "critrating": 15,
          "phase": 1
       },
       {
-         "id": 35407,
-         "spellid": true,
+         "id": 28885,
          "name": "Inscription of Vengeance",
          "ap": 26,
          "phase": 1
       },
       {
-         "id": 35438,
-         "spellid": true,
+         "id": 28907,
          "name": "Inscription of the Blade",
          "critrating": 13,
          "phase": 1
       },
       {
-         "id": 28882,
-         "spellid": true,
+         "id": 28889,
          "name": "Greater Inscription of Warding",
-         "incdodgerating": 30,
-         "critrating": 10,
+         "incdodgerating": 15,
+         "def": 10,
          "phase": 1
       },
       {
-         "id": 29483,
-         "spellid": true,
+         "id": 28911,
+         "name": "Greater Inscription of the Knight",
+         "incdodgerating": 10,
+         "def": 15,
+         "phase": 1
+      },
+      {
+         "id": 23548,
          "name": "Might of the Scourge",
          "ap": 26,
-         "crit": 1,
+         "critrating": 14,
          "phase": 1
       },
       {
-         "id": 29480,
-         "spellid": true,
+         "id": 23549,
          "name": "Fortitude of the Scourge",
          "bonusac": 100,
          "sta": 16,
          "phase": 1
       },
       {
-         "id": 24422,
-         "spellid": true,
+         "id": 20077,
          "name": "Zandalar Signet of Might",
          "ap": 30,
          "phase": 1
