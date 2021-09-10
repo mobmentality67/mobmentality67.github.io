@@ -285,6 +285,7 @@ class Simulation {
             player.auras.slayer,
             player.auras.spider,
             player.auras.bloodlustbrooch,
+            player.auras.tablet,
             player.auras.madness,
             player.auras.berserkers,
             player.auras.pummeler,

@@ -1555,6 +1555,14 @@ var gear = {
          "id": 32658
       },
       {
+         "name": "Terrokar Tablet of Precision",
+         "source": "Quest",
+         "phase": "1",
+         "hitrating": 22,
+         "usespell": "Tablet",
+         "id": 25937
+      },
+      {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 10 PPM)",
          "source": "Other",
          "phase": "1",
