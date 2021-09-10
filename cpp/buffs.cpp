@@ -12,7 +12,7 @@ Buff buff_list[] =
   {  13452, {   0,  25,   0, 0, 28, 0,  0,  0,  0,  0,  0, 0 } }, // Elixir of the Mongoose
   {  22831, {   0,  35,   0, 0, 20, 0,  0,  0,  0,  0,  0, 0 } }, // Elixir of Major Agility
   {  27664, {   0,  20,   0, 0, 0, 0,  0,  0,  0,  0,  0, 0 } },  // Grilled Mudfish
-  {  27658, {   0,   0,   0, 0, 0, 0,  0,  0,  0,  0,  0, 0 } },  // Roasted Clefthoof
+  {  27658, {   20,   0,   0, 0, 0, 0,  0,  0,  0,  0,  0, 0 } },  // Roasted Clefthoof
 };
 
 static_vector<Buff> Buffs = buff_list;
