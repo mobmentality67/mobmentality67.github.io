@@ -2,7 +2,7 @@ class Player {
 
     HASTE_RATING_COEFFICIENT = 1/(10*82/52);
     HIT_RATING_COEFFICIENT = 1/(10*82/52);
-    EXP_RATING_COEFFICIENT = 1/(10*82/52);
+    EXP_RATING_COEFFICIENT = 1 / 3.9423;
     CRIT_RATING_COEFFICIENT = 1/(14*82/52);
     DODGE_RATING_COEFFICIENT =  1/(12*82/52);
 
@@ -615,7 +615,7 @@ class Player {
         return Math.max(crit, 0);
     }
     getDodgeChance(weapon) {
-        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
+        return Math.max((5 + (this.target.defense - this.stats.skill) * 0.1) - 0.25 * Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
     }
 
     getParryChance(weapon) {
@@ -623,7 +623,7 @@ class Player {
             return 0;
         }
         else {
-            return Math.max(14 - Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
+            return Math.max(14 - 0.25 * Math.floor(this.stats.exp * this.EXP_RATING_COEFFICIENT), 0);
         }
     }
 
