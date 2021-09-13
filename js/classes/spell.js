@@ -234,11 +234,11 @@ class LacerateDOT extends Aura {
         this.stacks = 0;
         this.starttimer = 0;
         this.nexttick = 0;
+        this.dmg = 0;
     }
     step() {
         while (step >= this.nexttick) {
-            let dmg = (31 + this.player.stats.ap / 100) * this.stacks;
-            let tickdmg = 1.3 * dmg; // Assume mangle is up
+            let tickdmg = 1.3 * this.dmg; // Assume mangle is up
             if (this.player.enableLogging) this.player.log(`Lacerate tick at ${this.stacks} stacks, ${tickdmg} damage`);
             this.idmg += ~~tickdmg;
             this.totaldmg += ~~tickdmg;
@@ -255,6 +255,7 @@ class LacerateDOT extends Aura {
     use() {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.stacks = Math.min(this.stacks + 1, 5);
+        this.dmg = (31 + this.player.stats.ap / 100) * this.stacks;
         if (!this.nexttick || this.nextTick == 0) {
             this.nexttick = step + 3000;
         }
