@@ -1960,7 +1960,7 @@ var gear = {
          "name": "Wildfury Greatstaff",
          "sta": 75,
          "ap": 992,
-         "ac": 500,
+         "ac": 445,
          "mindmg": 135,
          "maxdmg": 286,
          "speed": 3.0,

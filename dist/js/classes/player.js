@@ -160,6 +160,7 @@ class Player {
                 this.base.agi += race.agi;
                 this.base.sta += race.sta;
                 this.base.critrating += race.critrating;
+                this.base.crit += race.crit;
             }
         }
     }
@@ -454,6 +455,7 @@ class Player {
                 this.base.hit += buff.hit || 0;
                 this.base.bonusac += buff.bonusac || 0;
                 this.base.hitrating += buff.hitrating || 0;
+                this.base.critrating += buff.critrating || 0;
                 this.base.spellcrit += buff.spellcrit || 0;
                 this.base.agimod *= (1 + buff.agimod / 100) || 1;
                 this.base.strmod *= (1 + buff.strmod / 100) || 1;
@@ -609,7 +611,7 @@ class Player {
     }
 
     getCritChance() {
-        let crit = this.stats.crit + (this.stats.critrating / 22.1) + (this.talents.sharpenedclawsmod || 0) + 
+        let crit = this.stats.crit + (this.stats.critrating * this.CRIT_RATING_COEFFICIENT) + (this.talents.sharpenedclawsmod || 0) + 
         this.talents.abilitiescrit + // LOTP
         (this.level - this.target.level) * 1 + // Level-based crit suppression
         (this.level - this.target.level) * 0.6; // Boss-based crit suppression
