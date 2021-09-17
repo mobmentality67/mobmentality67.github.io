@@ -729,6 +729,17 @@ var gear = {
          "id": 29947
       },
       {
+         "name": "Flesh Handler's Gauntlets",
+         "str": 18,
+         "sta": 27,
+         "agi": 17,
+         "ac": 165,
+         "exp": 18,
+         "source": "Quest",
+         "phase": 1,
+         "id": 30341
+      },
+      {
          "name": "Verdant Gloves",
          "str": 26,
          "sta": 27,
@@ -1215,6 +1226,16 @@ var gear = {
    ],
    "finger1": [
       {
+         "name": "Veteran's Band of Triumph",
+         "sta": 30,
+         "critrating": 22,
+         "res": 22,
+         "ap": 42,
+         "source": "PVP",
+         "phase": "2",
+         "id": 33057
+      },
+      {
          "name": "The Seal of Danzalar",
          "sta": 33,
          "ac": 295,
@@ -1364,6 +1385,16 @@ var gear = {
       },
    ],
    "finger2": [
+      {
+         "name": "Veteran's Band of Triumph",
+         "sta": 30,
+         "critrating": 22,
+         "res": 22,
+         "ap": 42,
+         "source": "PVP",
+         "phase": "2",
+         "id": 33057
+      },
       {
          "name": "The Seal of Danzalar",
          "sta": 33,
