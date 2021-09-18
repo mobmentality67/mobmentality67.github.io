@@ -87,7 +87,7 @@ var buffs = [
       id: 32068,
       name: "Elixir of Ironskin",
       iconname: "inv_potion_159",
-      group: "elixir",
+      group: "guardian",
       res: 30
    },
    {
