@@ -84,6 +84,13 @@ var buffs = [
       bonusac: 2500
    },
    {
+      id: 39628,
+      name: "Elixir of Ironskin",
+      iconname: "inv_potion_159",
+      group: "elixir",
+      res: 30
+   },
+   {
       id: 27658,
       name: "Roasted Clefthoof",
       iconname: "roasted_clefthoof",
