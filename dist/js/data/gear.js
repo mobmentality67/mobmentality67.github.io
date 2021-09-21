@@ -1780,6 +1780,15 @@ var gear = {
          "id": 32658
       },
       {
+         "name": "Badge of Tenacity (Used first 20s / on CD)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 326580000, // Fake Badge of Tenacity ID to avoid layering IDs with non-active for trinket selection UI code
+         "idoverride": 32658,
+         "usespell": "Tenacity"
+      },
+      {
          "name": "Badge of the Swarmguard (Used first 30 secs / on CD / 10 PPM)",
          "source": "Other",
          "phase": "1",
