@@ -1029,7 +1029,7 @@ SIM.UI = {
 
             if (item.hidden && !editmode) continue;
 
-            let tooltip = item.id == 0 ? item.idoverride : item.id; 
+            let tooltip = item.idoverride ? item.idoverride : item.id; 
             let rand = '';
             if (tooltip == 145541) tooltip = 14554;
             if (tooltip == 198981) tooltip = 19898;
