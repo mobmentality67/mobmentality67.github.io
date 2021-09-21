@@ -8,14 +8,13 @@ Threat values are very sensitive to the fight parameters. This primarily means f
 
 For example, a short fight length will heavily favor on-use trinkets -- so will a fight length that allows for exactly 2 trinket uses (i.e. Bloodlust Brooch in a 140 second fight). It's recommended that you sim with a reasonable time range in fight duration to avoid the effects of a single additional swing skewing the results and that a longer fight length is chosen to reflect TBC boss tuning (4 minutes+). Note that longer fights will affect simulation length.
 
+Trinket 1 is always activated before Trinket 2, if applicable. Double-on use (chain use or concurrent use where applicable) is supported.
+
 ## Gem support
-Gem support is still in early development:
-* Socket bonus and meta gem socket bonus checks are not enabled
-* Meta gems will always be activated. Socket bonuses will never be activated
-* Full implementation planned
+JC gems are not implemented. Most applicable blue gems are in -- some gems are hidden by default. Click "Show/hide rows" below gems to see all implemented gems.
 
 ## Custom Parameters
-Custom values in the "Custom" tab can be used to offset gem bonuses and test stat weights if necessary
+Custom values in the "Custom" tab can be used to offset gem bonuses and test stat weights if necessary.
 
 ## Bug Reports
 This is an alpha-stage project and bugs are expected. This includes, but is not restricted to individual item values and/or links to Wowhead. This data is manually entered and read over, but errors are expected. Errors may also appear in the algorithms themselves for simulating the fight. 

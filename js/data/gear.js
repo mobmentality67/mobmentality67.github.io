@@ -1586,6 +1586,15 @@ var gear = {
          "id": 32658
       },
       {
+         "name": "Badge of Tenacity (Used first 20s / on CD)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 326580000, // Fake Badge of Tenacity ID to avoid layering IDs with non-active for trinket selection UI code
+         "idoverride": 32658,
+         "usespell": "Tenacity"
+      },
+      {
          "name": "Terrokar Tablet of Precision",
          "source": "Quest",
          "phase": "1",

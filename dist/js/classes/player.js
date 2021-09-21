@@ -146,6 +146,7 @@ class Player {
         if (this.items.includes(33831)) this.auras.berserkers = new Berserkers(this);
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
+        if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         this.update();
@@ -526,8 +527,7 @@ class Player {
         // Base dodge - boss suppression + dodge from agi + dodge from dodge rating + dodge from def rating + dodge from talents
         this.stats.incdodge = -1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
             this.stats.def * .04 + this.talents.feralswiftnessmod; 
-        if (this.race == 'Night Elf') this.stats.incdodge += 1;
-   `  `   // 4.4 base miss + miss from defense rating
+        if (this.race == 'Night Elf') this.stats.incdodge += 1; // 4.4 base miss + miss from defense rating
         this.stats.incmiss = 4.4 + this.stats.def * .04;
         this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
         this.stats.inccrush = 15;

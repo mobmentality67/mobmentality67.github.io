@@ -1029,11 +1029,11 @@ SIM.UI = {
 
             if (item.hidden && !editmode) continue;
 
-            let tooltip = item.id, rand = '';
+            let tooltip = item.id == 0 ? item.idoverride : item.id; 
+            let rand = '';
             if (tooltip == 145541) tooltip = 14554;
             if (tooltip == 198981) tooltip = 19898;
             if (item.rand) rand = '?rand=' + item.rand;
-            if (item.selected) activeGear.push(item);
 
             table += `<tr data-id="${item.id}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
