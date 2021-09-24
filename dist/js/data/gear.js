@@ -667,7 +667,7 @@ var gear = {
          "sta": 25,
          "ac": 159,
          "ap": 50,
-         "critrating": 50,
+         "critrating": 22,
          "source": "Karazhan",
          "phase": "1",
          "id": 28514
