@@ -21,7 +21,7 @@ var races = [
       int: 115,
       ap: 0,
       crit: 0.97,
-      critrating: 15,
+      critrating: 0,
       skill_0: 0,
       skill_1: 0,
       skill_2: 0,
