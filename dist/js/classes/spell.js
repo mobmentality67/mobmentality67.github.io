@@ -586,7 +586,7 @@ class Madness extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer);
     }
 }
 
