@@ -658,6 +658,40 @@ class BloodlustBrooch extends Aura {
     }
 }
 
+class Direbrew extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { ap: 278 };
+        this.name = 'Dire Drunkard';
+        this.cooldown = 120 * 1000;
+        this.active = false;
+        this.spelldelay = this.duration;
+        this.activeUse = true;
+    }
+    use() {
+        this.player.timer = 0;
+        this.player.itemtimer = this.duration * 1000;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
 class Tablet extends Aura {
     constructor(player) {
         super(player);

@@ -1723,6 +1723,14 @@ var gear = {
          "id": 29383,
       },
       {
+         "name": "Empty Mug of Direbrew (Used first 20 secs / on CD)",
+         "ap": 72,
+         "source": "Other",
+         "phase": "2",
+         "usespell": "Direbrew",
+         "id": 38287,
+      },
+      {
          "name": "Slayer's Crest (Used first 20 secs / on CD)",
          "ap": 64,
          "source": "Other",
@@ -1907,6 +1915,14 @@ var gear = {
          "phase": "1",
          "usespell": "BloodlustBrooch",
          "id": 29383,
+      },
+      {
+         "name": "Empty Mug of Direbrew (Used first 20 secs / on CD)",
+         "ap": 72,
+         "source": "Badges",
+         "phase": "2",
+         "usespell": "Direbrew",
+         "id": 38287,
       },
       {
          "name": "Slayer's Crest (Used first 20 secs / on CD)",
@@ -2699,6 +2715,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -2707,7 +2729,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -2727,6 +2755,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -2774,6 +2808,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -2782,7 +2822,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -2802,6 +2848,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -2848,6 +2900,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -2856,7 +2914,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -2876,6 +2940,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -2922,6 +2992,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -2930,7 +3006,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -2950,6 +3032,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -2996,6 +3084,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3004,7 +3098,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3024,6 +3124,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -3070,6 +3176,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3078,7 +3190,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3098,6 +3216,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -3144,6 +3268,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3152,7 +3282,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3172,6 +3308,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -3218,6 +3360,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3226,7 +3374,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3246,6 +3400,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -3292,6 +3452,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3300,7 +3466,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3320,6 +3492,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
@@ -3366,6 +3544,12 @@ var gem = {
          "color": "blue",
       },
       {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
          "id": 24028,
          "name": "Delicate Living Ruby",
          "agi": 8,
@@ -3374,7 +3558,13 @@ var gem = {
       {
          "id": 24027,
          "name": "Bold Living Ruby",
-         "agi": 8,
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
          "color": "red"
       },
       {
@@ -3394,6 +3584,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
          "color": "yellow",
       },
       {
