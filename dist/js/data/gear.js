@@ -1338,6 +1338,15 @@ var gear = {
          "id": 29298
       },
       {
+         "name": "Ancestral Ring of Conquest",
+         "sta": 30,
+         "agi": 21,
+         "str": 32,
+         "source": "SSC",
+         "phase": "2",
+         "id": 30061
+      },
+      {
          "name": "Ring of the Recalcitrant",
          "sta": 27,
          "agi": 24,
@@ -1505,6 +1514,15 @@ var gear = {
          "source": "Hyjal",
          "phase": "2",
          "id": 29298
+      },
+      {
+         "name": "Ancestral Ring of Conquest",
+         "sta": 30,
+         "agi": 21,
+         "str": 32,
+         "source": "SSC",
+         "phase": "2",
+         "id": 30061
       },
       {
          "name": "Ring of the Recalcitrant",
