@@ -1329,6 +1329,15 @@ var gear = {
          "id": 28649
       },
       {
+         "name": "Band of Eternity",
+         "sta": 37,
+         "agi": 25,
+         "ap": 50,
+         "source": "Hyjal",
+         "phase": "2",
+         "id": 29298
+      },
+      {
          "name": "Ring of the Recalcitrant",
          "sta": 27,
          "agi": 24,
@@ -1487,6 +1496,15 @@ var gear = {
          "source": "Karazhan",
          "phase": "1",
          "id": 28649
+      },
+      {
+         "name": "Band of Eternity",
+         "sta": 37,
+         "agi": 25,
+         "ap": 50,
+         "source": "Hyjal",
+         "phase": "2",
+         "id": 29298
       },
       {
          "name": "Ring of the Recalcitrant",
