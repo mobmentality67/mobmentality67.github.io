@@ -471,6 +471,7 @@ var gear = {
       {
          "name": "Royal Cloak of Arathi Kings",
          "sta": 31,
+         "str": 26,
          "ac": 97,
          "hitrating": 16,
          "source": "Karazhan",
