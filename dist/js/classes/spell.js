@@ -111,7 +111,7 @@ class Lacerate extends Spell {
         this.weaponspell = false;
     }
     dmg() {
-        let bonusdmg = this.player.t5laceratebonus ? 31 + 15 : 31;
+        let bonusdmg = 31;
         return (bonusdmg + this.player.stats.ap / 100);
     }
     use() {
@@ -255,7 +255,7 @@ class LacerateDOT extends Aura {
     use() {
         if (this.timer) this.uptime += (step - this.starttimer);
         this.stacks = Math.min(this.stacks + 1, 5);
-        this.dmg = (31 + this.player.stats.ap / 100) * this.stacks;
+        this.dmg = ((31 + this.player.stats.ap / 100) + (this.player.t5laceratebonus * 3)) * this.stacks;
         if (!this.nexttick || this.nextTick == 0) {
             this.nexttick = step + 3000;
         }
