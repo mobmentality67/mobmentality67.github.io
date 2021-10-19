@@ -239,6 +239,10 @@ SIM.SETTINGS = {
                 div.find('.options li:first-of-type').append(' or');
             }
 
+            if (spell.id == 33745) {
+                div.find('.options').append(`<li>Refresh lacerate when<input style="width:35px" type="text" name="laceraterefreshtime" value="${spell.laceraterefreshtime}" data-numberonly="true" /> ms remaining</li>`);
+            }
+
             /* When to queue maul qualifier */
             if (spell.id == 26996) {
                 div.find('.options').empty();

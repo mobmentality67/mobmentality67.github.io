@@ -109,6 +109,7 @@ class Lacerate extends Spell {
         this.maincd = parseInt(spells[2].maincd) * 1000;
         this.maxdelay = parseInt(spells[2].reaction);
         this.weaponspell = false;
+        this.laceraterefreshtime = parseInt(spells[2].laceraterefreshtime);
     }
     dmg() {
         let bonusdmg = 31;
@@ -128,7 +129,7 @@ class Lacerate extends Spell {
             (!this.player.spells.mangle || this.player.spells.mangle.timer > 0) && (this.player.rage >= this.threshold ||
             (!this.player.spells.mangle || this.player.spells.mangle.timer >= this.maincd)) && 
             (!(this.player.spells.swipe && (this.player.stats.ap > spells[1].priorityap) && 
-                this.player.auras.laceratedot && this.player.auras.laceratedot.stacks == 5 && (this.player.auras.laceratedot.timer - step) > 5000));
+                this.player.auras.laceratedot && this.player.auras.laceratedot.stacks == 5 && (this.player.auras.laceratedot.timer - step) > this.laceraterefreshtime));
     }
 }
 

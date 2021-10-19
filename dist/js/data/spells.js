@@ -26,7 +26,8 @@ var spells = [
     iconname: 'ability_druid_lacerate',
     minrage: 40,
     reaction: 10,
-    maincd: 2
+    maincd: 2,
+    laceraterefreshtime: 5000
 },
 {
     // Spells[3], Maul 
