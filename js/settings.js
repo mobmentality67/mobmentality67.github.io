@@ -213,7 +213,7 @@ SIM.SETTINGS = {
             </div><ul class="options"></ul></div>`);
 
             if (spell.globals !== undefined)
-                div.find('.options').append(`<li>Use on first <input type="text" name="globals" value="${spell.globals}" data-numberonly="true" /> globals</li>`);
+                div.find('.options').append(`<li>Use on first global</li>`);
             if (spell.maincd !== undefined)
                 div.find('.options').append(`<li>Mangle cooldown >= <input type="text" name="maincd" value="${spell.maincd}" data-numberonly="true" /> secs</li>`);
             if (spell.crusaders !== undefined)

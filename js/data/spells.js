@@ -45,7 +45,6 @@ var spells = [
     name: 'FaerieFire',
     classname: 'FaerieFire',
     iconname: 'spell_nature_faeriefire',
-    globals: 1,
     reaction: 0,
 },
 

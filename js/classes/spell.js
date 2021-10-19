@@ -157,7 +157,7 @@ class FaerieFire extends Spell {
     constructor(player) {
         super(player);
         this.cost = 0;
-        this.globals = parseInt(spells[4].globals);
+        this.globals = 1;
         this.maxdelay = parseInt(spells[4].reaction);
         this.stacks = 0;
         this.nocrit = true;
