@@ -27,7 +27,7 @@ var spells = [
     minrage: 40,
     reaction: 10,
     maincd: 2,
-    laceraterefreshtime: 5000
+    laceraterefreshtime: 4000
 },
 {
     // Spells[3], Maul 
