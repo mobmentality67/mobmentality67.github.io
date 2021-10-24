@@ -796,6 +796,41 @@ class Hourglass extends Aura {
     }
 }
 
+class Band extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.stats = { ap: 160 };
+        this.name = 'Band of the Eternal Champion';
+        this.cooldown = 60 * 1000;
+        this.active = false;
+        this.requirescrit = false;
+        this.whitechance = .10;
+        this.yellowchance = .10;
+    }
+    use() {
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Aura ${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active;
+    }
+}
+
 class DST extends Aura {
 
     constructor(player) {

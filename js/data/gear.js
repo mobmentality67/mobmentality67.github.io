@@ -1,6 +1,50 @@
 var gear = {
    "head": [
       {
+         "name": "Vengeful Gladiator's Helm",
+         "ac": 429,
+         "agi": 31,
+         "sta": 58,
+         "str": 32,
+         "res": 25,
+         "arpen": 84,
+         "hitrating": 12,
+         "socket0": "meta",
+         "socket1": "yellow",
+         "socketbonus_res": 4,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33672
+      },
+      {
+         "name": "Cursed Vision of Sargeras",
+         "ac": 385,
+         "agi": 39,
+         "sta": 46,
+         "hitrating": 21,
+         "critrating": 38,
+         "ap": 108,
+         "socket0": "meta",
+         "socket1": "yellow",
+         "socketbonus_sta": 6,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32235
+      },
+      {
+         "name": "Thunderheart Cover",
+         "ac": 611,
+         "agi": 39,
+         "sta": 49,
+         "str": 53,
+         "socket0": "blue",
+         "socket1": "meta",
+         "socketbonus_str": 4,
+         "source": "Hyjal",
+         "phase": 3,
+         "id": 31039
+      },
+      {
          "name": "Nordrassil Headdress",
          "ac": 565,
          "agi": 33,
@@ -145,10 +189,21 @@ var gear = {
       }
    ],
    "neck": [
+         {
+         "name": "Vindicator's Pendant of Triumph",
+         "sta": 35,
+         "critrating": 22,
+         "ap": 50,
+         "res": 18,
+         "source": "PVP",
+         "socket0": "yellow",
+         "socketbonus_sta": 3,
+         "phase": 3,
+         "id": 33923
+      },
       {
          "name": "Veteran's Pendant of Triumph",
          "sta": 31,
-         "critrating": 18,
          "critrating": 18,
          "ap": 42,
          "res": 18,
@@ -157,6 +212,27 @@ var gear = {
          "socketbonus_sta": 3,
          "phase": 2,
          "id": 33066
+      },
+      {
+         "name": "Pendant of Titans",
+         "sta": 43,
+         "def": 21,
+         "hitrating": 20,
+         "incdodgerating": 25,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32362
+      },
+      {
+         "name": "Necklace of the Deep",
+         "sta": 20,
+         "agi": 21,
+         "socket0": "red",
+         "socket1": "red",
+         "socketbonus_hitrating": 3,
+         "source": "Crafting",
+         "phase": 3,
+         "id": 32508
       },
       {
          "name": "Telonicus' Pendant of Mayhem",
@@ -246,6 +322,34 @@ var gear = {
       }
    ],
    "shoulder": [
+      {
+         "name": "Thunderheart Pauldrons",
+         "str": 39,
+         "sta": 34,
+         "agi": 36,
+         "ac": 484,
+         "socket0" : "yellow",
+         "socket1" : "blue",
+         "socketbonus_str" : 3,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 31048,
+      },      
+      {
+         "name": "Vengeful Gladiator's Dragonhide Spaulders",
+         "str": 30,
+         "sta": 43,
+         "agi": 30,
+         "ac": 400,
+         "critrating": 17,
+         "res": 21,
+         "socket0" : "red",
+         "socket1" : "yellow",
+         "socketbonus_res" : 3,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33674,
+      },
       {
          "name": "Nordrassil Feral-Mantle",
          "str": 35,
@@ -372,6 +476,16 @@ var gear = {
    ],
    "back": [
       {
+         "name": "Pepe's Shroud of Pacification",
+         "ac": 118,
+         "dodgerating": 30,
+         "hitrating": 25,
+         "sta": 45,
+         "source": "Hyjal",
+         "phase": 3,
+         "id": 34010
+      },
+      {
          "name": "Thalassian Wildercloak",
          "ac": 116,
          "ap": 68,
@@ -491,6 +605,38 @@ var gear = {
    ],
    "chest": [
       {
+         "name": "Thunderheart Chestguard",
+         "sta": 51,
+         "agi": 36,
+         "str": 53,
+         "ac": 781,
+         "socket0": "blue",
+         "socket1": "yellow",
+         "socket2": "red",
+         "socketbonus_str": 4,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 31042
+      },
+      {
+         "name": "Vengeful Gladiator's Dragonhide Tunic",
+         "sta": 54,
+         "agi": 31,
+         "str": 30,
+         "res": 26,
+         "ac": 529,
+         "critrating": 19,
+         "hitrating": 12,
+         "arpen": 84,
+         "socket0": "red",
+         "socket1": "red",
+         "socket2": "yellow",
+         "socketbonus_critrating": 4,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33675
+      },
+      {
          "name": "Nordrassil Chestplate",
          "sta": 43,
          "agi": 30,
@@ -505,7 +651,37 @@ var gear = {
          "id": 30222
       },
       {
-         "name": "Merciless Gladiator's Tunic",
+         "name": "Nether Shadow Tunic",
+         "sta": 52,
+         "agi": 36,
+         "ap": 86,
+         "hitrating": 35,
+         "ac": 444,
+         "socket0": "red",
+         "socket1": "yellow",
+         "socket2": "blue",
+         "socketbonus_ap": 8,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32252
+      },
+      {
+         "name": "Midnight Chestguard",
+         "sta": 64,
+         "ap": 106,
+         "hitrating": 29,
+         "critrating": 46,
+         "ac": 474,
+         "socket0": "blue",
+         "socket1": "red",
+         "socket2": "yellow",
+         "socketbonus_ap": 8,
+         "source": "Hyjal",
+         "phase": 3,
+         "id": 30905
+      },
+      {
+         "name": "Merciless Gladiator's Dragonhide Tunic",
          "sta": 48,
          "agi": 22,
          "str": 37,
@@ -588,7 +764,7 @@ var gear = {
    ],
    "wrist": [
       {
-         "name": "Veteran's Dragonhide Bracers",
+         "name": "Vindicator's Dragonhide Bracers",
          "str": 19,
          "sta": 25,
          "agi": 18,
@@ -599,6 +775,58 @@ var gear = {
          "source": "PVP",
          "phase": "2",
          "id": 32810
+      },
+      {
+         "name": "Veteran's Dragonhide Bracers",
+         "str": 22,
+         "sta": 29,
+         "agi": 22,
+         "critrating": 21,
+         "res": 17,
+         "ac": 236,
+         "socket0": "red",
+         "socketbonus_res": 2,
+         "source": "PVP",
+         "phase": "3",
+         "id": 33881
+      },
+      {
+         "name": "Insidious Bands",
+         "ap": 58,
+         "sta": 28,
+         "agi": 28,
+         "ac": 194,
+         "hitrating": 12,
+         "socket0": "yellow",
+         "socketbonus_agi": 2,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32324
+      },
+      {
+         "name": "Swiftstrike Bracers",
+         "ap": 50,
+         "sta": 34,
+         "agi": 20,
+         "ac": 194,
+         "hasterating": 27,
+         "source": "Hyjal",
+         "phase": "3",
+         "id": 32580
+      },
+      {
+         "name": "Vindicator's Leather Bracers",
+         "ap": 26,
+         "sta": 33,
+         "agi": 25,
+         "res": 15,
+         "critrating": 12,
+         "ac": 194,
+         "socket0": "yellow",
+         "socketbonus_res": 2,
+         "source": "PVP",
+         "phase": "3",
+         "id": 33893
       },
       {
          "name": "Veteran's Leather Bracers",
@@ -697,6 +925,30 @@ var gear = {
       }
    ],
    "hands": [
+      {
+         "name": "Thunderheart Gauntlets",
+         "str": 39,
+         "sta": 34,
+         "agi": 32,
+         "ac": 539,
+         "socket0": "blue",
+         "socketbonus_str": 2,
+         "source": "Hyjal",
+         "phase": 3,
+         "id": 31034
+      },      
+      {
+         "name": "Grips of Damnation",
+         "ap": 76,
+         "sta": 38,
+         "agi": 27,
+         "ac": 277,
+         "hasterating": 37,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32347
+      },
+
       {
          "name": "Nordrassil Handgrips",
          "str": 35,
@@ -823,6 +1075,54 @@ var gear = {
       }
    ],
    "waist": [
+      {
+         "name": "Shadow-walker's Cord",
+         "ap": 76,
+         "sta": 38,
+         "agi": 27,
+         "hasterating": 37,
+         "ac": 249,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32265
+      },
+      {
+         "name": "Don Alejandro's Money Belt",
+         "ap": 76,
+         "sta": 37,
+         "agi": 29,
+         "critrating": 19,
+         "ac": 249,
+         "source": "Hyjal",
+         "socket0": "red",
+         "socket1": "yellow",
+         "socketbonus_sta": 4,
+         "phase": 3,
+         "id": 30879
+      },
+      {
+         "name": "Vindicator's Leather Belt",
+         "ap": 40,
+         "sta": 49,
+         "agi": 33,
+         "ac": 258,
+         "res": 30,
+         "critrating": 19,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33891
+      },
+      {
+         "name": "Vindicator's Dragonhide Belt",
+         "str": 30,
+         "sta": 42,
+         "agi": 29,
+         "ac": 300,
+         "res": 26,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33879
+      },
       {
          "name": "Belt of Natural Power",
          "str": 29,
@@ -971,6 +1271,44 @@ var gear = {
    ],
    "legs": [
       {
+         "name": "Thunderheart Leggings",
+         "sta": 49,
+         "ac": 737,
+         "agi": 41,
+         "str": 53,
+         "hitrating": 27,
+         "socket0": "blue",
+         "socketbonus_str": 2,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 31044,
+      },
+      {
+         "name": "Shady Dealer's Pantaloons",
+         "sta": 61,
+         "ac": 388,
+         "agi": 50,
+         "ap": 102,
+         "arpen": 175,
+         "source": "Hyjal",
+         "phase": 3,
+         "id": 30898,
+      },
+      {
+         "name": "Vengeful Gladiator's Dragonhide Legguards",
+         "sta": 55,
+         "ac": 443,
+         "agi": 37,
+         "str": 36,
+         "res": 29,
+         "critrating": 13,
+         "hitrating": 12,
+         "arpen": 84,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33673,
+      },
+      {
          "name": "Nordrassil Feral-Kilt",
          "sta": 42,
          "ac": 703,
@@ -1114,6 +1452,54 @@ var gear = {
    ],
    "feet": [
       {
+         "name": "Treads of the Den Mother",
+         "str": 38,
+         "agi": 32,
+         "sta": 47,
+         "ac": 516,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32593
+      },
+      {
+         "name": "Shadowmaster's Boots",
+         "sta": 38,
+         "agi": 30,
+         "critrating": 17,
+         "ap": 76,
+         "ac": 305,
+         "socket0": "red",
+         "socket1": "yellow",
+         "socketbonus_critrating": 3,
+         "source": "Black Temple",
+         "phase": 3,
+         "id": 32366
+      },
+      {
+         "name": "Vindicator's Leather Boots",
+         "res": 30,
+         "sta": 49,
+         "agi": 33,
+         "ap": 40,
+         "ac": 315,
+         "critrating": 19,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33892
+      },
+      {
+         "name": "Vindicator's Dragonhide Boots",
+         "res": 26,
+         "sta": 49,
+         "agi": 33,
+         "ap": 40,
+         "ac": 315,
+         "critrating": 19,
+         "source": "PVP",
+         "phase": 3,
+         "id": 33892
+      },
+      {
          "name": "Boots of Natural Grace",
          "sta": 37,
          "agi": 26,
@@ -1133,7 +1519,7 @@ var gear = {
          "ac": 294,
          "critrating": 16,
          "source": "PVP",
-         "phase": 1,
+         "phase": 2,
          "id": 32790
       },
       {
@@ -1226,6 +1612,46 @@ var gear = {
       }
    ],
    "finger1": [
+      {
+         "name": "Band of the Eternal Champion",
+         "sta": 43,
+         "agi": 29,
+         "ap": 60,
+         "source": "Hyjal",
+         "phase": "3",
+         "id": 29301,
+         "procspell": "Band",
+      },
+      {
+         "name": "Band of Deceitful Intent",
+         "sta": 42,
+         "agi": 21,
+         "ap": 58,
+         "hitrating": 19,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32266,
+      },
+      {
+         "name": "Band of Devestation",
+         "sta": 44,
+         "hasterating": 31,
+         "ap": 66,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32526,
+      },
+      {
+         "name": "Vindicator's's Band of Triumph",
+         "sta": 34,
+         "critrating": 26,
+         "res": 22,
+         "ap": 44,
+         "arpen": 56,
+         "source": "PVP",
+         "phase": "3",
+         "id": 33919
+      },
       {
          "name": "Veteran's Band of Triumph",
          "sta": 30,
@@ -1404,6 +1830,46 @@ var gear = {
       },
    ],
    "finger2": [
+      {
+         "name": "Band of the Eternal Champion",
+         "sta": 43,
+         "agi": 29,
+         "ap": 60,
+         "source": "Hyjal",
+         "phase": "3",
+         "id": 29031,
+         "procspell": "Band",
+      },
+      {
+         "name": "Band of Deceitful Intent",
+         "sta": 42,
+         "agi": 21,
+         "ap": 58,
+         "hitrating": 19,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32266,
+      },
+      {
+         "name": "Band of Devestation",
+         "sta": 44,
+         "hasterating": 31,
+         "ap": 66,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32526,
+      },
+      {
+         "name": "Vindicator's's Band of Triumph",
+         "sta": 34,
+         "critrating": 26,
+         "res": 22,
+         "ap": 44,
+         "arpen": 56,
+         "source": "PVP",
+         "phase": "3",
+         "id": 33919
+      },
       {
          "name": "Veteran's Band of Triumph",
          "sta": 30,
@@ -1589,6 +2055,21 @@ var gear = {
          "phase": "4",
          "usespell": "Berserkers",
          "id": 33831,
+      },
+      {
+         "name": "Shadowmoon Insignia",
+         "def": 36,
+         "dodgerating": 32,
+         "source": "Black Temple",
+         "phase": "3",
+         "id": 32501,
+      },
+      {
+         "name": "Battlemaster's Determination",
+         "ap": 80,
+         "source": "PVP",
+         "phase": "3",
+         "id": 34578,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
@@ -2058,6 +2539,36 @@ var gear = {
       }
    ],
    "twohand": [
+      {
+         "name": "Pillar of Ferocity",
+         "sta": 96,
+         "str": 47,
+         "ap": 1059,
+         "ac": 550,
+         "mindmg": 136,
+         "maxdmg": 293,
+         "speed": 3.0,
+         "id": 30883,
+         "source": "Hyjal",
+         "phase": 3,
+         "type": "Staff"
+      },
+      {
+         "name": "Vengeful Gladiator's Staff",
+         "sta": 62,
+         "ap": 1110,
+         "str": 46,
+         "mindmg": 90,
+         "maxdmg": 192,
+         "speed": 2.00,
+         "critrating": 42,
+         "hitrating": 22,
+         "res": 33,
+         "id": 33716,
+         "source": "PVP",
+         "phase": 3,
+         "type": "Staff",
+      },
       {
          "name": "Wildfury Greatstaff",
          "sta": 75,

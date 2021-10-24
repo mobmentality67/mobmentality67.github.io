@@ -191,9 +191,27 @@ class Player {
         }
     }
 
+    setupRing(ring) {
+        /* Setup trinket proc chance, PPM */
+        if (ring.procspell) {
+            let proc = {};
+            proc.extra = ring.procextra;
+            proc.magicdmg = ring.magicdmg;
+            if (ring.procspell) {
+                let newSpell = eval('new ' + ring.procspell + '(this)');
+                this.auras[ring.procspell.toLowerCase()] = newSpell;
+                proc.spell = newSpell;
+            }
+            // This should be cleaned up to not only say trinket, but leaving it for now
+            this["trinketproc" + (this.trinketproc1 ? 2 : 1)] = proc;
+        }
+    }
+
     addGear() {
         let trinket1;
         let trinket2;
+        let ring1;
+        let ring2;
 
         for (let type in gear) {
             for (let item of gear[type]) {
@@ -210,6 +228,12 @@ class Player {
                     else if (type == "trinket2") {
                         trinket2 = item;
                     }
+                    else if (type == "finger1") {
+                        ring1 = item;
+                    }
+                    else if (type == "finger2") {
+                        ring2 = item;
+                    }
 
                     this.items.push(item.id);
                     this.itemsEquipped[type] = item;
@@ -221,6 +245,8 @@ class Player {
         on weapons being setup before trinkets (for PPM) */
         if (trinket1) this.setupTrinket(trinket1);
         if (trinket2) this.setupTrinket(trinket2);
+        if (ring1) this.setupRing(ring1);
+        if (ring2) this.setupRing(ring2);
     }
     addWeapon(item, type) {
 
