@@ -1589,7 +1589,7 @@ var gear = {
          "id": 28545
       },
       {
-         "name": "Marshal's Leather Boots",could not inf
+         "name": "Marshal's Leather Boots",
          "res": 26,
          "sta": 39,
          "agi": 27,
