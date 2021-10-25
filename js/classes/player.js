@@ -462,9 +462,9 @@ class Player {
                     if (bonus.stats.t4rageproc) {
                         this.t4rageproc = true;
                     }
-                   if (bonus.stats.t5laceratebonus) {
-                        this.t5laceratebonus = true;
-                    }
+                   // if (bonus.stats.t5laceratebonus) {
+                   //      this.t5laceratebonus = true;
+                   //  }
                 }
             }
         }
