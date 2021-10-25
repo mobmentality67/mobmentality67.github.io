@@ -147,13 +147,15 @@ function updateGlobals(params) {
     gem = newGem;
     for (let type in params.gem)
         for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
-            for (let i of Object.values(params.gem[type][gemIndex])) {
-                for (let j of Object.values(gem[type][gemIndex]))
-                    if (i.id == j.id) {
-                       j.tps = i.tps;
-                       j.selected = i.selected;
-                       j.hidden = i.hidden;
-                    }
+            if ((params.gem[type][gemIndex])) {
+                for (let i of Object.values(params.gem[type][gemIndex])) {
+                    for (let j of Object.values(gem[type][gemIndex]))
+                        if (i.id == j.id) {
+                           j.tps = i.tps;
+                           j.selected = i.selected;
+                           j.hidden = i.hidden;
+                        }
+                }
             }
         }
 }
