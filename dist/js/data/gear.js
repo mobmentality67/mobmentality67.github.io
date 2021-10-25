@@ -9,6 +9,7 @@ var gear = {
          "res": 25,
          "arpen": 84,
          "hitrating": 12,
+         "critrating": 27,
          "socket0": "meta",
          "socket1": "yellow",
          "socketbonus_res": 4,
@@ -1588,7 +1589,7 @@ var gear = {
          "id": 28545
       },
       {
-         "name": "Marshal's Leather Boots",
+         "name": "Marshal's Leather Boots",could not inf
          "res": 26,
          "sta": 39,
          "agi": 27,
