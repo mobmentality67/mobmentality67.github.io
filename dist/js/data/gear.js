@@ -187,6 +187,13 @@ var gear = {
          "source": "Crafting",
          "phase": 1,
          "id": 29502
+      },
+      {
+         "name": "Wolfshead Helm",
+         "ac": 109,
+         "source": "Crafting",
+         "phase": 1,
+         "id": 8345
       }
    ],
    "neck": [
