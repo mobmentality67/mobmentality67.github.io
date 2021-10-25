@@ -43,6 +43,8 @@ class Player {
         this.ooc = false;
         this.enableLogging = false;
         this.activemetagem = "";
+        this.t4rageproc = false;
+        this.t5laceratebonus = false;
         this.base = {
             sta: 0,
             ac: 0,
@@ -462,9 +464,10 @@ class Player {
                     if (bonus.stats.t4rageproc) {
                         this.t4rageproc = true;
                     }
-                   // if (bonus.stats.t5laceratebonus) {
-                   //      this.t5laceratebonus = true;
-                   //  }
+                    if (bonus.stats.t5laceratebonus) {
+                        this.t5laceratebonus = true;
+                    }
+
                 }
             }
         }

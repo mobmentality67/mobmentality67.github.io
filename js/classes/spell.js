@@ -806,8 +806,9 @@ class Band extends Aura {
         this.cooldown = 60 * 1000;
         this.active = false;
         this.requirescrit = false;
-        this.whitechance = .10;
-        this.yellowchance = .10;
+        this.ppm = 1;
+        this.whitechance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.swingspeed);
+        this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
     }
     use() {
         this.player.timer = 0;

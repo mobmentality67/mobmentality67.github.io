@@ -4,7 +4,7 @@ var SIM = SIM || {}
 
 var MAX_GEMS = {
     head: 2,
-    neck: 1,
+    neck: 2,
     shoulder: 2,
     chest: 3,
     wrist: 1,
