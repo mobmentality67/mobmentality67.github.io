@@ -410,7 +410,7 @@ class Player {
                                 gemsAdded++;
                                 /* If it's a meta gem, defer adding stats until later to see if it's activated */
                                 if (itemGem.color == "meta") {
-                                    metaGem = itemGem; metaGemIndexOffset = metaGemIndex; continue;
+                                    metaGem = itemGem; metaGemIndexOffset = metaGemIndex + 1; continue;
                                 }
                                 this.countGem(gemColors, itemGem); // Add gem count to the total gem count array
                                 itemSocketsMatch &= this.gemColorMatches(gemSlotColors, itemGem, gemIndex - metaGemIndexOffset);
