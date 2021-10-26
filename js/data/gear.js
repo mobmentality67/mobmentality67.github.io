@@ -314,7 +314,7 @@ var gear = {
          "res": 17,
          "ap": 36,
          "socket0" : "yellow",
-         "socketbonus_res" : 4,
+         "socketbonus_hitrating" : 2,
          "source": "PVP",
          "phase": 1,
          "id": 28244
@@ -739,7 +739,7 @@ var gear = {
          "socket0": "red",
          "socket1": "red",
          "socket2": "yellow",
-         "socketbonus_crit": 4,
+         "socketbonus_critrating": 4,
          "source": "PVP",
          "phase": 1,
          "id": 28130
@@ -772,7 +772,7 @@ var gear = {
    ],
    "wrist": [
       {
-         "name": "Vindicator's Dragonhide Bracers",
+         "name": "Veteran's Dragonhide Bracers",
          "str": 19,
          "sta": 25,
          "agi": 18,
@@ -785,7 +785,7 @@ var gear = {
          "id": 32810
       },
       {
-         "name": "Veteran's Dragonhide Bracers",
+         "name": "Vindicator's Dragonhide Bracers",
          "str": 22,
          "sta": 29,
          "agi": 22,
@@ -1039,7 +1039,7 @@ var gear = {
          "ap": 42,
          "socket0": "red",
          "socket1": "blue",
-         "socketbonus_crit": 3,
+         "socketbonus_critrating": 3,
          "source": "Karazhan",
          "phase": 1,
          "id": 28506
@@ -1052,7 +1052,7 @@ var gear = {
          "ac": 247,
          "socket0": "blue",
          "socket1": "blue",
-         "socketbonus_crit": 3,
+         "socketbonus_critrating": 3,
          "source": "Magtheridon",
          "phase": 1,
          "id": 28776
@@ -1845,7 +1845,7 @@ var gear = {
          "ap": 60,
          "source": "Hyjal",
          "phase": "3",
-         "id": 29031,
+         "id": 29301,
          "procspell": "Band",
       },
       {
