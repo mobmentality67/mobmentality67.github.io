@@ -799,6 +799,18 @@ var gear = {
          "id": 33881
       },
       {
+         "name": "Shard-Bound Bracers",
+         "ap": 42,
+         "sta": 18,
+         "agi": 20,
+         "ac": 146,
+         "socket0": "blue",
+         "socketbonus_ap": 4,
+         "source": "Reputation",
+         "phase": "3",
+         "id": 32647
+      },
+      {
          "name": "Insidious Bands",
          "ap": 58,
          "sta": 28,
@@ -1505,7 +1517,7 @@ var gear = {
          "critrating": 19,
          "source": "PVP",
          "phase": 3,
-         "id": 33892
+         "id": 33880
       },
       {
          "name": "Boots of Natural Grace",
