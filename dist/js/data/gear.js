@@ -4224,5 +4224,13 @@ var sets = [
       { count: 2, stats: { hitrating:35 } },
       { count: 4, stats: { } },
    ]
+},
+{
+   id: 711,
+   name: 'Merciless Gladiator\'s Sanctuary',
+   items: [31967, 31968, 31969, 31970, 31971],
+   bonus: [
+      { count: 2, stats: { res: 35 } },
+   ]
 }
 ];
