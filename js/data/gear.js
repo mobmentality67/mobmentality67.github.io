@@ -1229,7 +1229,7 @@ var gear = {
          "id": 29264
       },
       {
-         "name": "Girdle of Treachary",
+         "name": "Girdle of Treachery",
          "sta": 37,
          "agi": 18,
          "ac": 205,
