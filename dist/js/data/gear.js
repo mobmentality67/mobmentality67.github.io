@@ -927,6 +927,7 @@ var gear = {
          "sta": 15,
          "agi": 18,
          "ac": 128,
+         "hitrating": 15,
          "socket0": "red",
          "socketbonus_incdodgerating": 2,
          "source": "Quest",

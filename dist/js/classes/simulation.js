@@ -294,6 +294,7 @@ class Simulation {
             player.auras.swarmguard,
             player.auras.icon,
             player.auras.dst,
+            player.auras.band,
             player.auras.hourglass,
             player.auras.tsunami,
             player.auras.bloodlust,
