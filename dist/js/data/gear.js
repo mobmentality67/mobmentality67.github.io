@@ -327,6 +327,15 @@ var gear = {
          "source": "Badges",
          "phase": 1,
          "id": 29386
+      },
+      {
+         "name": "Braided Eternium Chain (Active)",
+         "bonusdmg": 5,
+         "hitrating": 21,
+         "critrating": 28,
+         "source": "Badges",
+         "phase": 1,
+         "id": 24114
       }
    ],
    "shoulder": [
