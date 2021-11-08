@@ -333,7 +333,7 @@ var gear = {
          "bonusdmg": 5,
          "hitrating": 21,
          "critrating": 28,
-         "source": "Badges",
+         "source": "Active",
          "phase": 1,
          "id": 24114
       }
