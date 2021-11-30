@@ -4230,6 +4230,15 @@ var sets = [
    ]
 },
 {
+   id: 678,
+   name: 'Thunderheart Harness',
+   items: [31041, 31034, 31039, 31044, 31048, 34556, 34444, 34573],
+   bonus: [
+      { count: 2, stats: { t6manglebonus: true } },
+      { count: 4, stats: { t6swipebonus: true } },
+   ]
+},
+{
    id: 659,
    name: 'Wastewalker Armor',
    items: [28264, 27531, 28224, 27837, 27797],

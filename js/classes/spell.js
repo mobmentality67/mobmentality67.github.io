@@ -90,7 +90,11 @@ class Swipe extends Spell {
 
     dmg() {
         let bonusdamage = this.player.items.includes(23198) ? 84 + 10 : 84;
-        return ((this.player.stats.ap * 0.07) + bonusdamage);
+        let dmg = ((this.player.stats.ap * 0.07) + bonusdamage);
+        if (this.player.t6swipebonus) {
+            dmg *= 1.15;
+        }
+        return dmg;
     }
     canUse() {
         return !this.timer && !this.player.timer && this.cost <= this.player.rage && (!this.player.spells.mangle || this.player.spells.mangle.timer > 1000) && 

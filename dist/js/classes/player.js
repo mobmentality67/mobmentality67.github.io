@@ -469,6 +469,12 @@ class Player {
                     if (bonus.stats.t5laceratebonus) {
                         this.t5laceratebonus = true;
                     }
+                    if (bonus.stats.t6swipebonus) {
+                        this.t6swipebonus = true;
+                    }
+                    if (bonus.stats.t6manglebonus) {
+                        this.t6manglebonus = true;
+                    }
 
                 }
             }
@@ -1046,6 +1052,9 @@ class Player {
         else if (result != RESULT.MISS && result != RESULT.DODGE && result != RESULT.PARRY) {
             if (spell.name == 'Mangle') {
                 threat = dmg * this.stats.threatmod * 1.3;
+                if (this.t6manglebonus) {
+                    threat *= 1.15;
+                }
             }
             else if (spell.name == 'Swipe') {
                 threat = dmg * this.stats.threatmod;
