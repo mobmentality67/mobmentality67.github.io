@@ -19,6 +19,7 @@ class Player {
                 binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
             },
             activetank: $('select[name="activetank"]').val() == "Yes",
+            bossdw: $('select[name="bossdw"]').val() == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
         };
@@ -38,6 +39,7 @@ class Player {
         this.spelldamage = config.spelldamage;
         this.target = config.target;
         this.activetank = config.activetank;
+        this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
         this.ooc = false;
@@ -58,7 +60,7 @@ class Player {
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
-            incmiss: 0,
+            incmiss: 4.4,
             hit: 0,
             hitrating: 0,
             crit: 0,
@@ -484,6 +486,7 @@ class Player {
                 this.base.str += buff.str || 0;
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
+                this.base.incmiss += buff.incmiss || 0;
                 this.base.bonusac += buff.bonusac || 0;
                 this.base.hitrating += buff.hitrating || 0;
                 this.base.critrating += buff.critrating || 0;
@@ -558,7 +561,7 @@ class Player {
         this.stats.incdodge = -1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
             this.stats.def * .04 + this.talents.feralswiftnessmod; 
         if (this.race == 'Night Elf') this.stats.incdodge += 1; // 4.4 base miss + miss from defense rating
-        this.stats.incmiss = 4.4 + this.stats.def * .04;
+        this.stats.incmiss = this.base.incmiss + this.stats.def * .04 + 19.0 * this.bossdw;
         this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
         this.stats.inccrush = 15;
 

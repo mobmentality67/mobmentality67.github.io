@@ -8,7 +8,6 @@ var MAX_GEMS = {
     shoulder: 2,
     chest: 3,
     wrist: 1,
-    hands: 2,
     gloves: 2,
     waist: 2,
     legs: 3,
@@ -58,6 +57,23 @@ SIM.UI = {
             view.sidebar.find('.js-stats').removeClass('active');
             $('section.stats').removeClass('active');
         });
+
+        // view.sidebar.find('.js-saveconfig').ready(function (e) {
+        //     e.preventDefault();
+        //     $('.js-saveconfig')
+        //     .mouseenter(function() {
+        //       $('.popup').show();
+        //     })
+        // });
+
+        // view.sidebar.find('.js-loadconfig').click(function (e) {
+        //     e.preventDefault();
+        //     var input = $(document.createElement("input"));
+        //     input.attr("type", "file");
+        //     // add onchange handler if you wish to get the file :)
+        //     input.trigger("click"); // opening dialog
+        //     return false; // avoiding navigation
+        // });
 
         view.sidebar.find('.js-dps').click(function (e) {
             e.preventDefault();
@@ -733,11 +749,14 @@ SIM.UI = {
         view.sidebar.find('#res').html((player.stats.res || 0));
         view.sidebar.find('#ehp').html((player.getEHP().toFixed(2) || 0));
         view.sidebar.find('#inccrit').html((player.stats.inccrit.toFixed(2) || 0));
+        view.sidebar.find('#incmiss').html((player.stats.incmiss.toFixed(2) || 0));
+        view.sidebar.find('#incdodge').html((player.stats.incdodge.toFixed(2) || 0));
         view.sidebar.find('#ap').text(player.stats.ap);
         view.sidebar.find('#agi').text(player.stats.agi);
         view.sidebar.find('#hit').html((fullhit || 0) + '%');
         let mhcrit = player.crit + player.mh.crit;
         view.sidebar.find('#crit').html(mhcrit.toFixed(2));
+        view.sidebar.find('#expertise').text(player.stats.exp);
         let mhcap = 100 - player.mh.dodge - player.mh.glanceChance;
         let dmgmod = player.stats.dmgmod * 100;
         view.sidebar.find('#dmgmod').html(dmgmod.toFixed(2));
@@ -776,6 +795,7 @@ SIM.UI = {
         localStorage.weaponrng = view.fight.find('select[name="weaponrng"]').val();
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
         localStorage.activetank = view.fight.find('select[name="activetank"]').val();
+        localStorage.bossdw = view.fight.find('select[name="bossdw"]').val();
         localStorage.incswingtimer = view.fight.find('input[name="incswingtimer"]').val();
         localStorage.incswingdamage = view.fight.find('input[name="incswingdamage"]').val();
         localStorage.pullvariancethreshold = parseFloat($('input[name="pullvariancethreshold"]').val());

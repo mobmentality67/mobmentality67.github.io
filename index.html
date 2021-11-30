@@ -63,66 +63,85 @@ profiles
     <div class="character">
       <p><span id="race">Night Elf</span> Druid</p>
       <p>Level 70</p>
-
+      <div class="stattab">
+        <button class="statlinks" onclick="openStat(event, 'Defensive Stats')">Defensive Stats</button>
+        <button class="statlinks" onclick="openStat(event, 'Threat Stats')" id="defaultOpen">Threat Stats</button>
+      </div>
       <ul>
-        <li>
-          <label>Stamina</label>
-          <span id="sta"></span>
-        </li>
-        <li>
-          <label>Defense</label>
-          <span id="def"></span>
-        </li>
-        <li>
-          <label>Resilience</label>
-          <span id="res"></span>
-        </li>
-        <li>
-          <label>Armor</label>
-          <span id="armor"></span>
-        </li>
-        <li>
-          <label>EHP</label>
-          <span id="ehp"></span>
-        </li>
-        <li>
-          <label>Incoming Crit Chance</label>
-          <span id="inccrit"></span>
-        </li>
-        <li>
-          <label>Attack Power</label>
-          <span id="ap"></span>
-        </li>
-        <li>
-          <label>Agility</label>
-          <span id="agi"></span>
-        </li>
-        <li>
-          <label>Hit</label>
-          <span id="hit"></span>
-        </li>
-        <li>
-          <label>Crit</label>
-          <span id="crit"></span>
-        </li>
-        <li>
-          <label>Dmg Mod %</label>
-          <span id="dmgmod"></span>
-        </li>
-        <li>
-          <label>Haste</label>
-          <span id="haste"></span>
-        </li>
-        <li>
-          <label>Sets</label>
-          <span id="sets"></span>
-        </li>
-        <li>
-          <label>Meta Gem</label>
-          <span id="metagem"></span>
-        </li>
-      </ul>
-    </div>
+      <div id="Defensive Stats" class="tabcontent">
+          <li>
+            <label>Stamina</label>
+            <span id="sta"></span>
+          </li>
+          <li>
+            <label>Defense</label>
+            <span id="def"></span>
+          </li>
+          <li>
+            <label>Resilience</label>
+            <span id="res"></span>
+          </li>
+          <li>
+            <label>Armor</label>
+            <span id="armor"></span>
+          </li>
+          <li>
+            <label>EHP</label>
+            <span id="ehp"></span>
+          </li>
+          <li>
+            <label>Incoming Crit Chance</label>
+            <span id="inccrit"></span>
+          </li>
+          <li>
+            <label>Incoming Dodge Chance</label>
+            <span id="incdodge"></span>
+          </li>
+          <li>
+            <label>Incoming Miss Chance</label>
+            <span id="incmiss"></span>
+          </li>
+      </div>
+      <div id="Threat Stats" class="tabcontent">
+          <li>
+            <label>Attack Power</label>
+            <span id="ap"></span>
+          </li>
+          <li>
+            <label>Agility</label>
+            <span id="agi"></span>
+          </li>
+          <li>
+            <label>Hit</label>
+            <span id="hit"></span>
+          </li>
+          <li>
+            <label>Crit</label>
+            <span id="crit"></span>
+          </li>
+          <li>
+            <label>Expertise</label>
+            <span id="expertise"></span>
+          </li>
+          <li>
+            <label>Dmg Mod %</label>
+            <span id="dmgmod"></span>
+          </li>
+          <li>
+            <label>Haste</label>
+            <span id="haste"></span>
+          </li>
+       </div>
+    <li>
+        <label>Sets</label>
+        <span id="sets"></span>
+    </li>
+    <li>
+        <label>Meta Gem</label>
+        <span id="metagem"></span>
+   </li>
+ </ul>
+  
     <div class="bottom">
       <div id="weights-div">
         <div id="weight-str"><span class="stat-name">Strength:</span><span class="stat-dps">12345</span><span class="stat-error">123</span></div>
@@ -145,6 +164,14 @@ profiles
       <a href="#" class="btn js-table">SHEET TPS</a>
       <a href="#" class="btn js-stats disabled">STATS</a>
       <a href="#" class="btn js-settings">SETTINGS</a>
+      <!-- <a href="#" class="btn js-saveconfig">SAVE / LOAD CONFIG</a> -->
+      <div class="popup">
+      <ul>
+      <li>SAVE CONFIG</li>
+      <li>LOAD CONFIG</li>
+      <li><input class="exit" value="close" type=btn /></li>
+      </ul>
+      </div>
     </div>
     <div class="author">made by Mobmentality-Westfall from Guybrush's Fury Sim</div>
     <div class="manual"><a href="https://github.com/mobmentality67/mobmentality67.github.io/blob/master/NOTES.md" target="_blank">WIP notes, bug reports, contributing</a></div>
@@ -225,6 +252,13 @@ profiles
           <li>
             <label>Boss Swing Timer (If Active Tank)</label>
               <input type="text" name="incswingtimer" value="2.0" data-numberonly="true">
+          </li>
+          <li>
+            <label>Boss Dual Wield</label>
+            <select dir="rtl" name="bossdw" >
+              <option value="Yes">Yes</option>
+              <option value="No" selected>No</option>
+            </select>
           </li>
           <li>
             <label>Pull variance check at least </label>
@@ -350,12 +384,35 @@ profiles
     <progress value="0" max="100"></progress>
   </section>
 
+  <script>
+    function openStat(evt, statName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="statlinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("statlinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(statName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+  </script>
 
   <script>
     $(document).ready(function () {
       SIM.UI.init();
       SIM.SETTINGS.init();
       SIM.STATS.init();
+      document.getElementById("defaultOpen").click();
     });
   </script>
 

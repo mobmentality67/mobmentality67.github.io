@@ -107,6 +107,51 @@
         transform: translateX(-50%);
     }
 
+    /* Style the tab */
+    .stattab {
+      overflow: hidden;
+      background-color: inherited;
+      text-align: center;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .stattab button {
+        border: 1px solid #ddd;
+        background: none;
+        color: #ddd;
+        height: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s ease-in, color 0.2s ease-in;
+        float: none;
+        text-align: center;
+        font-size: 11px;
+        width: 150px;
+        margin-top: 5px;
+        margin-left: 20px;
+        display: inline;
+        text-decoration: none;
+        border-radius: 4px;
+        position: relative;
+    }
+
+    /* Change background color of buttons on hover */
+    .stattab button:hover {
+        background: #ddd !important;
+        color: #123;
+    }
+
+    /* Create an active/current tablink class */
+    .stattab .active {
+      background-color: #E9E7E7;
+      color: #123;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+      text-align: left;
+    }
+
     #weights-div {
         position: relative;
         left: 50%;

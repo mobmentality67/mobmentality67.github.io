@@ -38,6 +38,53 @@
     }
 }
 
+.popup {
+  display: none;
+}
+.featured {
+  cursor: pointer;
+}
+
+.btn_saveload {
+    border: 1px solid #ddd;
+    background: none;
+    height: 25px;
+    color: #ddd;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in, color 0.2s ease-in;
+    float: none;
+    text-align: center;
+    font-size: 11px;
+    width: 210px;
+    margin-bottom: 6px;
+    display: block;
+    line-height: 25px;
+    text-decoration: none;
+    border-radius: 4px;
+    position: relative;
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &:hover,
+    &.active {
+        background: #ddd !important;
+        color: #123;
+    }
+
+    &.loading {
+        font-size: 0;
+        pointer-events: none;
+        &:hover {
+            background: none !important;
+            color: #ddd;
+        }
+    }
+}
+
 .icon {
     width: 40px;
     height: 40px;

@@ -138,7 +138,8 @@ var buffs = [
       name: "Improved Faerie Fire",
       iconname: "spell_nature_faeriefire",
       group: "",
-      hit: 3
+      hit: 3,
+      debuff: true
    },
    {
       id: 6562,
@@ -162,7 +163,17 @@ var buffs = [
       name: "Blood Frenzy",
       iconname: "ability_warrior_bloodfrenzy",
       group: "",
-      dmgmod: 4
+      dmgmod: 4,
+      debuff: true
+   },
+   {
+      id: 3043,
+      spellid: true,
+      name: "Scorpid Sting",
+      group: "",
+      iconname: "ability_hunter_criticalshot",
+      incmiss: 5.0,
+      debuff: true
    },
    {
       id: 34460,
@@ -179,7 +190,8 @@ var buffs = [
       spellid: true,
       name: "Expose Weakness",
       iconname: "ability_rogue_findweakness",
-      ap: 225
+      ap: 225,
+      debuff: true
    },
    {
       id: 2825,

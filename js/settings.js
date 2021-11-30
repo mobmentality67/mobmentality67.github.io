@@ -15,6 +15,7 @@ SIM.SETTINGS = {
         var view = this;
         view.body = $('body');
         view.buffs = view.body.find('article.buffs');
+        view.debuffs = view.body.find('article.debuffs');
         view.fight = view.body.find('article.fight');
         view.rotation = view.body.find('article.rotation');
         view.talents = view.body.find('article.talents');
@@ -192,6 +193,11 @@ SIM.SETTINGS = {
             SIM.UI.updateSidebar();
         });
 
+        view.fight.on('change', 'select[name="bossdw"]', function (e) {
+            SIM.UI.updateSession();
+            SIM.UI.updateSidebar();
+        });
+
         view.fight.on('change', 'select[name="incswingdamage"]', function (e) {
             SIM.UI.updateSession();
             SIM.UI.updateSidebar();
@@ -303,6 +309,27 @@ SIM.SETTINGS = {
         for (let talent of talents[tree - 1].t)
             if (talent.x == x && talent.y == y)
                 return talent;
+    },
+
+    openStat: function(evt, cityName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
+
+      // Get all elements with class="tabcontent" and hide them
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+
+      // Get all elements with class="tablinks" and remove the class "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Show the current tab, and add an "active" class to the button that opened the tab
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
     }
 
 
