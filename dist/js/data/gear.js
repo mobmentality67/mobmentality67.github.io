@@ -1522,11 +1522,11 @@ var gear = {
       {
          "name": "Vindicator's Dragonhide Boots",
          "res": 26,
-         "sta": 49,
-         "agi": 33,
-         "ap": 40,
+         "sta": 42,
+         "agi": 29,
+         "str": 30,
          "ac": 315,
-         "critrating": 19,
+         "critrating": 21,
          "source": "PVP",
          "phase": 3,
          "id": 33880
