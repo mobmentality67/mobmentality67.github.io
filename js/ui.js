@@ -8,7 +8,7 @@ var MAX_GEMS = {
     shoulder: 2,
     chest: 3,
     wrist: 1,
-    gloves: 2,
+    hands: 2,
     waist: 2,
     legs: 3,
     feet: 2, 
