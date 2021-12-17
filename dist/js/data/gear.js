@@ -3274,6 +3274,15 @@ var enchant = {
          "name": "Striking",
          "bonusdmg": 2,
          "phase": 1
+      },
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Stats",
+         "agi": 4,
+         "sta": 4,
+         "str": 4,
+         "phase": 3
       }
    ],
    "mainhand": [
