@@ -516,9 +516,6 @@ class Player {
             /* Special handling for stacks of Squawk */
             if (buff.id == 23060 && buff.active) {
                 this.squawks = buff.count;
-                for (let i = 0; i < buff.count - 1; i++) {
-                    this.base.haste *= (1 + buff.haste / 100) || 1;
-                }
             }
             else if (buff.id == 2825) {
                 this.lust = buff.active;

@@ -191,7 +191,6 @@ var buffs = [
       name: "Battle Squawk",
       iconname: "inv_misc_birdbeck",
       group: "squawk",
-      haste: 5,
       max_count: 6,
       count:1
    },
