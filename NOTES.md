@@ -36,4 +36,4 @@ Lots of the work that went into the algorithm rework was built from excellent wo
 * Special thank you to Balor-Anathema for tons of incredible work verifying and testing this project to make it sane
 
 ## Contributions
-I'm happy to work on this without any contributions -- I think it's an interesting collaborative discussion and effort and I like to have the tool available for the community. But if you want to buy me coffee, here's my PayPal anyways: paypal.me/mobmentality67. Thank you!
+I'm happy to work on this without any contributions -- I think it's an interesting collaborative discussion and effort and I like to have the tool available for the community. But if you want to buy me coffee, here's my PayPal: https://paypal.me/mobmentality67. Thank you!

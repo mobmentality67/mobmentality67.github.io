@@ -525,6 +525,44 @@ class HastePotion extends Aura {
     }
 }
 
+class Squawks extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 225; // Assume only 15 seconds of squawk have fallen off on pull (generous)
+        this.stats = {  }; // Stats are applied statically at init so that the side panel is updated live. Buff is for de-activation
+        this.cooldown = 9999999999;
+        this.name = 'Battle Squawk';
+        this.active = false;
+        this.spelldelay = 0;
+        this.squawks = player.squawks;
+    }
+    use() {
+        let oldHaste;
+        this.player.timer = 0;
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        if (this.player.enableLogging) this.player.log(`Chicken usage recorded -- ${this.squawks} squawks. Base haste: ${this.player.base.haste}` );
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            let oldHaste;
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            if (this.player.enableLogging) oldHaste = this.player.stats.haste;
+            for (let i = 0; i < this.squawks; i++) {
+                this.player.base.haste = this.player.base.haste * (1 / 1.05);
+            }
+            this.player.updateStats();
+            this.uptime += (step - this.starttimer);
+            if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
 class Slayer extends Aura {
     constructor(player) {
         super(player);

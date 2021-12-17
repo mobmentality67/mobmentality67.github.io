@@ -47,6 +47,7 @@ class Player {
         this.activemetagem = "";
         this.t4rageproc = false;
         this.t5laceratebonus = false;
+        this.squawks = 0;
         this.base = {
             sta: 0,
             ac: 0,
@@ -154,6 +155,7 @@ class Player {
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
+        if (this.squawks) this.auras.squawks = new Squawks(this);
         this.update();
     }
 
@@ -511,6 +513,13 @@ class Player {
                     this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 }
             }
+            /* Special handling for stacks of Squawk */
+            if (buff.id == 23060 && buff.active) {
+                this.squawks = buff.count;
+                for (let i = 0; i < buff.count - 1; i++) {
+                    this.base.haste *= (1 + buff.haste / 100) || 1;
+                }
+            }
             else if (buff.id == 2825) {
                 this.lust = buff.active;
             }
@@ -607,7 +616,7 @@ class Player {
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;
         this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
-        this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; 
+        this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; // Add haste from rating
         this.mh.bonusdmg = this.stats.bonusdmg;
         this.updateArmor(); // Update current armor reduction
         this.updateIncAttackTable(); // Update defensive attack table

@@ -302,7 +302,8 @@ class Simulation {
             player.auras.bloodlust,
             player.auras.hastepot,
             player.auras.pummeler,
-            player.auras.tenacity
+            player.auras.tenacity,
+            player.auras.squawks
         ];
 
         /* Remove spells/auras that don't exist in this run */
@@ -320,6 +321,11 @@ class Simulation {
         if (player.auras.hastepot) {
             player.cast(player.auras.hastepot, damage_threat);
         }  
+
+        /* Pop haste pot if active */
+        if (player.auras.squawks) {
+            player.cast(player.auras.squawks, damage_threat);
+        } 
 
         // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells
         if (player.itemsEquipped.trinket1 && player.itemsEquipped.trinket1.usespell) {

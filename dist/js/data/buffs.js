@@ -186,6 +186,16 @@ var buffs = [
       count:1
    },
    {
+      id: 23060,
+      spellid: true,
+      name: "Battle Squawk",
+      iconname: "inv_misc_birdbeck",
+      group: "squawk",
+      haste: 5,
+      max_count: 6,
+      count:1
+   },
+   {
       id: 34503,
       spellid: true,
       name: "Expose Weakness",
