@@ -654,6 +654,21 @@ var gear = {
          "id": 33675
       },
       {
+         "name": "Bloodsea Brigand's Vest",
+         "sta": 24,
+         "ap": 92,
+         "critrating": 36,
+         "hitrating": 27,
+         "ac": 404,
+         "socket0": "yellow",
+         "socket1": "yellow",
+         "socket2": "blue",
+         "socketbonus_ap": 8,
+         "source": "SSC",
+         "phase": 2,
+         "id": 30101
+      },
+      {
          "name": "Nordrassil Chestplate",
          "sta": 43,
          "agi": 30,
@@ -2092,7 +2107,7 @@ var gear = {
       {
          "name": "Shadowmoon Insignia",
          "def": 36,
-         "dodgerating": 32,
+         "incdodgerating": 32,
          "source": "BT",
          "phase": "3",
          "id": 32501,
@@ -2103,6 +2118,13 @@ var gear = {
          "source": "PVP",
          "phase": "3",
          "id": 34578,
+      },
+      {
+         "name": "Battlemaster's Cruelty",
+         "critrating": 40,
+         "source": "PVP",
+         "phase": "3",
+         "id": 34163,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
@@ -2200,6 +2222,13 @@ var gear = {
          "source": "Quest",
          "phase": "1",
          "id": 13965
+      },
+      {
+         "name": "Moroes' Lucky Pocket Watch (Never Used)",
+         "incdodgerating": 38,
+         "source": "Karazhan",
+         "phase": "1",
+         "id": 28528
       },
       {
          "name": "Drake Fang Talisman",
@@ -2307,6 +2336,28 @@ var gear = {
          "id": 33831,
       },
       {
+         "name": "Shadowmoon Insignia ",
+         "def": 36,
+         "incdodgerating": 32,
+         "source": "BT",
+         "phase": "3",
+         "id": 32501,
+      },
+      {
+         "name": "Battlemaster's Determination",
+         "ap": 80,
+         "source": "PVP",
+         "phase": "3",
+         "id": 34578,
+      },
+      {
+         "name": "Battlemaster's Cruelty",
+         "critrating": 40,
+         "source": "PVP",
+         "phase": "3",
+         "id": 34163,
+      },
+      {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
          "hitrating": 20,
          "ap": 84,
@@ -2356,7 +2407,7 @@ var gear = {
          "procspell": "Swarmguard"
       },
       {
-         "name": "Dragonspine Trophy",
+         "name": "Dragonspine Trophy (1 PPM)",
          "source": "Gruuls",
          "phase": "1",
          "id": 28830,
@@ -2394,6 +2445,13 @@ var gear = {
          "source": "Quest",
          "phase": "1",
          "id": 13965
+      },
+      {
+         "name": "Moroes' Lucky Pocket Watch (Never Used)",
+         "incdodgerating": 38,
+         "source": "Karazhan",
+         "phase": "1",
+         "id": 28528
       },
       {
          "name": "Drake Fang Talisman",
@@ -3193,11 +3251,20 @@ var enchant = {
    ],
 "finger1": [
       {
-         "id": 46519,
+         "id": 27920,
          "spellid": true,
          "name": "Striking",
          "bonusdmg": 2,
          "phase": 1
+      },
+      {
+         "id": 46519,
+         "spellid": true,
+         "name": "Stats",
+         "agi": 4,
+         "sta": 4,
+         "str": 4,
+         "phase": 3
       }
    ],
 "finger2": [
