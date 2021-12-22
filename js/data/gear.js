@@ -982,7 +982,19 @@ var gear = {
          "source": "Hyjal",
          "phase": 3,
          "id": 31034
-      },      
+      },   
+      {
+         "name": "Vengeful Gladiator's Dragonhide Gloves",
+         "hitrating": 9,
+         "str": 31,
+         "sta": 44,
+         "agi": 32,
+         "res": 22,
+         "ac": 343,
+         "source": "PVP",
+         "phase": 2,
+         "id": 33671 
+      },
       {
          "name": "Grips of Damnation",
          "ap": 76,
@@ -4327,6 +4339,15 @@ var sets = [
    id: 711,
    name: 'Merciless Gladiator\'s Sanctuary',
    items: [31967, 31968, 31969, 31970, 31971],
+   bonus: [
+      { count: 2, stats: { res: 35 } },
+   ]
+},
+{
+
+   id: 721,
+   name: 'Vengeful Gladiator\'s Sanctuary',
+   items: [33671, 33672, 33673, 33674, 33675],
    bonus: [
       { count: 2, stats: { res: 35 } },
    ]
