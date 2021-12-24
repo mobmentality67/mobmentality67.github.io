@@ -197,17 +197,14 @@ var gear = {
       }
    ],
    "neck": [
-         {
-         "name": "Vindicator's Pendant of Triumph",
-         "sta": 35,
-         "critrating": 22,
-         "ap": 50,
-         "res": 18,
-         "source": "PVP",
-         "socket0": "yellow",
-         "socketbonus_sta": 3,
+      {
+         "name": "Choker of Serrated Blades",
+         "sta": 37,
+         "ap": 70,
+         "arpen": 175,
+         "source": "BT",
          "phase": 3,
-         "id": 33923
+         "id": 32591
       },
       {
          "name": "Veteran's Pendant of Triumph",
@@ -1673,6 +1670,16 @@ var gear = {
    ],
    "finger1": [
       {
+         "name": "Stormrage Signet Ring",
+         "sta": 33,
+         "arpen": 126,
+         "ap": 66,
+         "hitrating": 30,
+         "source": "BT",
+         "phase": "3",
+         "id": 32497,
+      },
+      {
          "name": "Band of the Eternal Champion",
          "sta": 43,
          "agi": 29,
@@ -1890,6 +1897,16 @@ var gear = {
       },
    ],
    "finger2": [
+      {
+         "name": "Stormrage Signet Ring",
+         "sta": 33,
+         "arp": 126,
+         "ap": 66,
+         "hitrating": 30,
+         "source": "BT",
+         "phase": "3",
+         "id": 32497,
+      },
       {
          "name": "Band of the Eternal Champion",
          "sta": 43,
@@ -2980,6 +2997,51 @@ var gear = {
          "id": 27,
          "name": "+ 10% Dodge",
          "incdodgerating": 180.293
+      },
+      {
+         "id": 28,
+         "name": "+ 100 ARP",
+         "arpen": 100
+      },
+      {
+         "id": 29,
+         "name": "+ 300 ARP",
+         "arpen": 300
+      },
+      {
+         "id": 30,
+         "name": "+ 500 ARP",
+         "arpen": 500
+      },
+      {
+         "id": 31,
+         "name": "+ 10 Defense",
+         "def": 10
+      },
+      {
+         "id": 32,
+         "name": "+ 30 Defense",
+         "def": 30
+      },
+      {
+         "id": 33,
+         "name": "+ 50 Defense",
+         "def": 50
+      },
+      {
+         "id": 34,
+         "name": "+ 500 Armor",
+         "armor": 500,
+      },
+      {
+         "id": 35,
+         "name": "+ 1000 Armor",
+         "armor": 100,
+      },
+      {
+         "id": 36,
+         "name": "+ 2000 Armor",
+         "armor": 2000,
       },
    ]
 };
