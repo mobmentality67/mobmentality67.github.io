@@ -198,6 +198,18 @@ var gear = {
    ],
    "neck": [
       {
+         "name": "Vindicator's Pendant of Triumph",
+         "sta": 35,
+         "critrating": 22,
+         "ap": 50,
+         "res": 18,
+         "source": "PVP",
+         "socket0": "yellow",
+         "socketbonus_sta": 3,
+         "phase": 3,
+         "id": 33923
+      },
+      {
          "name": "Choker of Serrated Blades",
          "sta": 37,
          "ap": 70,
