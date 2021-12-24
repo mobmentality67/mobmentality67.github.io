@@ -3031,17 +3031,17 @@ var gear = {
       {
          "id": 34,
          "name": "+ 500 Armor",
-         "armor": 500,
+         "bonusac": 500,
       },
       {
          "id": 35,
          "name": "+ 1000 Armor",
-         "armor": 100,
+         "bonusac": 100,
       },
       {
          "id": 36,
          "name": "+ 2000 Armor",
-         "armor": 2000,
+         "bonusac": 2000,
       },
    ]
 };
