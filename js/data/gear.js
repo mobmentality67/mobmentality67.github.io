@@ -4375,7 +4375,7 @@ var gem = {
 
 var sets = [
 {
-   id: 638,
+   id: 640,
    name: 'Malorne Harness',
    items: [29098, 29100, 29096, 29097, 29099],
    bonus: [
@@ -4384,7 +4384,7 @@ var sets = [
    ]
 },
 {
-   id: 642,
+   id: 641,
    name: 'Nordrassil Rainment',
    items: [30222, 30223, 30228, 30229, 30230],
    bonus: [
@@ -4392,7 +4392,7 @@ var sets = [
    ]
 },
 {
-   id: 678,
+   id: 676,
    name: 'Thunderheart Harness',
    items: [31042, 31034, 31039, 31044, 31048, 34556, 34444, 34573],
    bonus: [
