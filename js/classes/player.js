@@ -19,6 +19,7 @@ class Player {
                 binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
             },
             activetank: $('select[name="activetank"]').val() == "Yes",
+            bosscrush: $('select[name="bosscrush"]').val() == "Yes",
             bossdw: $('select[name="bossdw"]').val() == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
@@ -39,6 +40,7 @@ class Player {
         this.spelldamage = config.spelldamage;
         this.target = config.target;
         this.activetank = config.activetank;
+        this.bosscrush = config.bosscrush;
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
@@ -575,7 +577,7 @@ class Player {
         if (this.race == 'Night Elf') this.stats.incdodge += 1; // 4.4 base miss + miss from defense rating
         this.stats.incmiss = this.base.incmiss + this.stats.def * .04 + 19.0 * this.bossdw;
         this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
-        this.stats.inccrush = 15;
+        this.stats.inccrush = this.bosscrush ? 15 : 0;
 
         /*
         if (log) {
@@ -689,6 +691,11 @@ class Player {
         let ehp = (this.stats.sta * 10) / (1 - this.getArmorReduction(this.stats.ac, 73)) 
             / (1 - this.stats.incdodge / 100 - this.stats.incmiss / 100 + this.stats.inccrush * 1.5 / 100 + Math.max(0, this.stats.inccrit) * 2 / 100);
         return ehp;
+    }
+
+    getHP() {
+        // Hard-coded improved fortitude
+        return (this.stats.sta * 10) + 102.7;
     }
 
     addRage(dmg, result, weapon, spell) {

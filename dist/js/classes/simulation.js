@@ -178,6 +178,7 @@ class Simulation {
             startrage: parseInt($('input[name="startrage"]').val()),
             iterations: parseInt($('input[name="simulations"]').val()),
             activetank: ($('input[name="activetank"]').val()) == "Yes",
+            bosscrush: ($('input[name="bosscrush"]').val()) == "Yes",
             bossdw: ($('input[name="bossdw"]').val()) == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="simulations"]').val()),
@@ -196,6 +197,7 @@ class Simulation {
         this.startrage = config.startrage;
         this.iterations = config.iterations;
         this.activetank = config.activetank;
+        this.bosscrush = config.bosscrush;
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.pullvariancethreshold = config.pullvariancethreshold;

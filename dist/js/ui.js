@@ -795,6 +795,7 @@ SIM.UI = {
         localStorage.weaponrng = view.fight.find('select[name="weaponrng"]').val();
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
         localStorage.activetank = view.fight.find('select[name="activetank"]').val();
+        localStorage.bosscrush = view.fight.find('select[name="bosscrush"]').val();
         localStorage.bossdw = view.fight.find('select[name="bossdw"]').val();
         localStorage.incswingtimer = view.fight.find('input[name="incswingtimer"]').val();
         localStorage.incswingdamage = view.fight.find('input[name="incswingdamage"]').val();

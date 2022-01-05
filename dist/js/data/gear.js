@@ -1702,7 +1702,7 @@ var gear = {
          "procspell": "Band",
       },
       {
-         "name": "Band of Deceitful Intent",
+         "name": "Ring of Deceitful Intent",
          "sta": 42,
          "agi": 21,
          "ap": 58,
@@ -1930,7 +1930,7 @@ var gear = {
          "procspell": "Band",
       },
       {
-         "name": "Band of Deceitful Intent",
+         "name": "Ring of Deceitful Intent",
          "sta": 42,
          "agi": 21,
          "ap": 58,
@@ -2877,18 +2877,18 @@ var gear = {
    "custom" : [
       {
          "id": 1,
-         "name": "+ 10 Attack Power",
-         "ap": 10,
+         "name": "+ 30 Attack Power",
+         "ap": 30,
       },
       {
          "id": 2,
-         "name": "+ 20 Attack Power",
-         "ap": 20
+         "name": "+ 50 Attack Power",
+         "ap": 50
       },
       {
          "id": 3,
-         "name": "+ 50 Attack Power",
-         "ap": 50
+         "name": "+ 100 Attack Power",
+         "ap": 100
       },
       {
          "id": 4,
@@ -2922,33 +2922,33 @@ var gear = {
       },
       {
          "id": 10,
-         "name": "+ 5 Strength",
-         "str": 5
+         "name": "+ 15 Strength",
+         "str": 15
       },
       {
          "id": 11,
-         "name": "+ 10 Strength",
-         "str": 10
+         "name": "+ 25 Strength",
+         "str": 25
       },
       {
          "id": 12,
-         "name": "+ 20 Strength",
-         "str": 20
+         "name": "+ 50 Strength",
+         "str": 50
       },
       {
          "id": 13,
-         "name": "+ 5 Agility",
-         "agi": 5
+         "name": "+ 15 Agility",
+         "agi": 15
       },
       {
          "id": 14,
-         "name": "+ 10 Agility",
-         "agi": 10
+         "name": "+ 25 Agility",
+         "agi": 25
       },
       {
          "id": 15,
-         "name": "+ 20 Agility",
-         "agi": 20
+         "name": "+ 50 Agility",
+         "agi": 50
       },
       {
          "id": 16,

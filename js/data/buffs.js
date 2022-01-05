@@ -133,6 +133,14 @@ var buffs = [
       bonusac: 300
    },
    {
+      id: 25389,
+      spellid: true,
+      name: "Power Word: Fortitude",
+      iconname: "spell_holy_wordfortitude",
+      group: "",
+      sta: 102
+   },
+   {
       id: 33602,
       spellid: true,
       name: "Improved Faerie Fire",
