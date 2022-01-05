@@ -1702,7 +1702,7 @@ var gear = {
          "procspell": "Band",
       },
       {
-         "name": "Band of Deceitful Intent",
+         "name": "Ring of Deceitful Intent",
          "sta": 42,
          "agi": 21,
          "ap": 58,
@@ -1930,7 +1930,7 @@ var gear = {
          "procspell": "Band",
       },
       {
-         "name": "Band of Deceitful Intent",
+         "name": "Ring of Deceitful Intent",
          "sta": 42,
          "agi": 21,
          "ap": 58,
