@@ -502,6 +502,17 @@ var gear = {
    ],
    "back": [
       {
+         "name": "Shadowmoon Destroyer's Drape",
+         "ac": 118,
+         "ap": 72,
+         "critrating": 24,
+         "hitrating": 17,
+         "sta": 24,
+         "source": "BT",
+         "phase": 3,
+         "id": 32323
+      },
+      {
          "name": "Pepe's Shroud of Pacification",
          "ac": 118,
          "dodgerating": 30,
