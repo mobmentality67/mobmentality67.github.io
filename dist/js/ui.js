@@ -846,7 +846,7 @@ SIM.UI = {
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
             }
         }
 
@@ -855,7 +855,7 @@ SIM.UI = {
             for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                 _gem[type][gemIndex] =  [];
                 for (let item of Object.values(gem[type][gemIndex])) {
-                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
                 }
             }
         }
