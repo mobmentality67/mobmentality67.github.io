@@ -107,6 +107,16 @@ SIM.UI = {
             view.simulateDPS(rows);
         });
 
+        view.body.on('click', '.js-table-all', function(e) {
+            e.preventDefault();
+            view.disableEditMode();
+            const rows = view.tcontainer.find('table.gear tbody tr');
+            rows.addClass('waiting');
+            view.tcontainer.find('table.gear tbody tr td:last-of-type').html('');
+            view.startLoading();
+            view.simulateDPS(rows, true);
+        });
+
         view.main.on('click', '.js-enchant', function(e) {
             e.preventDefault();
             view.disableEditMode();
@@ -258,7 +268,7 @@ SIM.UI = {
             view.loadGear(type, false);
     },
 
-    simulateDPS: function(rows) {
+    simulateDPS: function(rows, all) {
         let view = this;
         let tps = view.sidebar.find('#tps');
         let dps = view.sidebar.find('#dps');
@@ -318,7 +328,8 @@ SIM.UI = {
                 tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
                 dtpsstats.html(report.mindtps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdtps.toFixed(2) + ' max');
                 btn.css('background', '');
-                if (rows) view.simulateRows(Array.from(rows));
+                if (rows && all) view.simulateAllRows(Array.from(rows));
+                else if (rows) view.simulateRows(Array.from(rows));
                 else if (weights) view.simulateWeights(player, meantps, varmean);
                 else view.endLoading();
 
@@ -472,6 +483,191 @@ SIM.UI = {
         }
     },
 
+    simulateAllRows: function(rows) {
+        var view = this;
+        var btn = view.sidebar.find('.js-table-all');
+        console.log(rows)
+        var tabType = $(rows[0]).parents('table').data('type');
+
+        var simulations = rows.map((row) => {
+            const simulation = { perc: 0 };
+            simulation.run = () => {
+                // Remove from pending simulations
+                pending.delete(simulation);
+
+                // Start simulation
+                this.simulateRow($(row), (perc) => {
+                    // Update row percentage
+                    simulation.perc = perc;
+
+                    // Update total percentage
+                    const total = Math.floor(
+                        Array.from(simulations.values())
+                            .map((sim) => sim.perc)
+                            .reduce((a, b) => a + b, 0) / simulations.length
+                    );
+                    if (total == 100) {
+                        btn.css('background', '');
+                        view.endLoading();
+                        view.updateSession();
+                    } else {
+                        btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                    }
+
+                    // If simulation complete, run another pending simulation (if any)
+                    if (simulation.perc == 100) {
+                        const next = pending.values().next().value;
+                        if (next) {
+                            next.run();
+                        }
+                    }
+                });
+            };
+            return simulation;
+        });
+
+        for (let type in gear) {
+            if(type != tabType){
+                simulations = simulations.concat(gear[type].map((item) => {
+                    const simulation = { perc: 0 };
+                    simulation.run = () => {
+                        // Remove from pending simulations
+                        pending.delete(simulation);
+        
+                        // Start simulation
+                        console.log(item)
+                        this.simulateItem(type, item.id, false, false, false, false, (perc) => {
+                            // Update row percentage
+                            simulation.perc = perc;
+                            
+                            // Update total percentage
+                            const total = Math.floor(
+                                Array.from(simulations.values())
+                                    .map((sim) => sim.perc)
+                                    .reduce((a, b) => a + b, 0) / simulations.length
+                            );
+                            if (total == 100) {
+                                console.log(total)
+                                btn.css('background', '');
+                                view.endLoading();
+                                view.updateSession();
+                            } else {
+                                console.log(total)
+                                btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                            }
+        
+                            // If simulation complete, run another pending simulation (if any)
+                            if (simulation.perc == 100) {
+                                const next = pending.values().next().value;
+                                if (next) {
+                                    next.run();
+                                }
+                            }
+                        });
+                    };
+                    return simulation;
+                }));
+            }
+        }
+
+        for (let type in enchant) {
+            if(type != tabType){
+                simulations = simulations.concat(enchant[type].map((item) => {
+                    const simulation = { perc: 0 };
+                    simulation.run = () => {
+                        // Remove from pending simulations
+                        pending.delete(simulation);
+        
+                        // Start simulation
+                        console.log(item)
+                        this.simulateItem(type, item.id, true, false, false, false, (perc) => {
+                            // Update row percentage
+                            simulation.perc = perc;
+                            
+                            // Update total percentage
+                            const total = Math.floor(
+                                Array.from(simulations.values())
+                                    .map((sim) => sim.perc)
+                                    .reduce((a, b) => a + b, 0) / simulations.length
+                            );
+                            if (total == 100) {
+                                console.log(total)
+                                btn.css('background', '');
+                                view.endLoading();
+                                view.updateSession();
+                            } else {
+                                console.log(total)
+                                btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                            }
+        
+                            // If simulation complete, run another pending simulation (if any)
+                            if (simulation.perc == 100) {
+                                const next = pending.values().next().value;
+                                if (next) {
+                                    next.run();
+                                }
+                            }
+                        });
+                    };
+                    return simulation;
+                }));
+            }
+        }
+
+        for (let type in gem) {
+            if(type != tabType){
+                for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                    simulations = simulations.concat(Object.values(gem[type][gemIndex]).map((item) => {
+                        const simulation = { perc: 0 };
+                        simulation.run = () => {
+                            // Remove from pending simulations
+                            pending.delete(simulation);
+            
+                            // Start simulation
+                            console.log(item)
+                            this.simulateItem(type, item.id, false, true, false, false, (perc) => {
+                                // Update row percentage
+                                simulation.perc = perc;
+                                
+                                // Update total percentage
+                                const total = Math.floor(
+                                    Array.from(simulations.values())
+                                        .map((sim) => sim.perc)
+                                        .reduce((a, b) => a + b, 0) / simulations.length
+                                );
+                                if (total == 100) {
+                                    console.log(total)
+                                    btn.css('background', '');
+                                    view.endLoading();
+                                    view.updateSession();
+                                } else {
+                                    console.log(total)
+                                    btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                                }
+            
+                                // If simulation complete, run another pending simulation (if any)
+                                if (simulation.perc == 100) {
+                                    const next = pending.values().next().value;
+                                    if (next) {
+                                        next.run();
+                                    }
+                                }
+                            });
+                        };
+                        return simulation;
+                    }));
+                }
+            }
+        }
+
+        
+        const pending = new Set(simulations);
+
+        for (const simulation of simulations.slice(0, MAX_WORKERS)) {
+            simulation.run();
+        }
+    },
+
     simulateRow: function(tr, updateFn) {
         var view = this;
         var dps = tr.find('td:last-of-type');
@@ -529,11 +725,14 @@ SIM.UI = {
                 }
 
                 if (isgem) {
-                    for(let i of gem[type])
-                        if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
-                            i.ehp = report.ehp.toFixed(2) || 0;
+                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                        for(let i of Object.values(gem[type][gemIndex])){
+                            if (i.id == item) {
+                                i.tps = calctps.toFixed(2);
+                                i.ehp = report.ehp.toFixed(2) || 0;
+                            }
                         }
+                    }
                 }
 
 
@@ -553,6 +752,91 @@ SIM.UI = {
                 if(dtps && typeof dtps.text == "function"){
                 dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
                 }
+            },
+            (error) => {
+                dps.text('ERROR');
+                tps.text('ERROR');
+                console.error(error);
+            },
+        );
+        sim.start(params);
+    },
+
+    simulateItem: function(type, item, isench, isgem, istemp, ismeta, updateFn) {
+        var view = this;
+        var base = parseFloat(view.sidebar.find('#dps').text());
+        var basetps = parseFloat(view.sidebar.find('#tps').text());
+
+        const params = {
+            player: [item, type, ismeta ? 4 : istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
+            sim: Simulation.getConfig(),
+        };
+        console.log(params)
+        if(params.sim.iterations > 1000 || true){
+            params.sim.iterations = parseInt($('input[name="simulationsall"]').val());
+        }
+        var sim = new SimulationWorker(
+            (report) => {
+                // Finished
+                //let span = $('<span></span>');
+                //let spantps = $('<span></span>');
+                let calc = report.totaldmg / report.totalduration;
+                let calctps = report.totalthreat / report.totalduration;
+                let diff = calc - base;
+                let difftps = calctps - basetps;
+                //span.text(difftps.toFixed(2));
+                //spantps.text(difftps.toFixed(2));
+                //if (diff >= 0) span.addClass('p');
+                //else span.addClass('n');
+                //if (difftps >= 0) spantps.addClass('p');
+                //else spantps.addClass('n');
+                //dps.text(calc.toFixed(2)).append(span);
+                //tps.text(calctps.toFixed(2)).append(spantps);
+                //ehp.text(report.ehp.toFixed(2) || 0);
+
+                //view.tcontainer.find('table').each(function() {
+                //    if (type == "custom") return;
+                //    $(this).trigger('update');
+                //    let sortList = [[$(this).find('th').length - 1, 1]];
+                //    $(this).trigger("sorton", [sortList]);
+                //});
+                
+                //tr.removeClass('waiting');
+                updateFn(100);
+                sim = null;
+
+                if (isench) {
+                    for(let i of enchant[type])
+                        if (i.id == item) {
+                            i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
+                        }
+                }
+
+                if (isgem) {
+                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                        for(let i of Object.values(gem[type][gemIndex])){
+                            if (i.id == item) {
+                                i.tps = calctps.toFixed(2);
+                                i.ehp = report.ehp.toFixed(2) || 0;
+                            }
+                        }
+                    }
+                }
+
+
+                else {
+                    console.log(type)
+                    for(let i of gear[type])
+                        if (i.id == item) {
+                            i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
+                        }
+                }
+            },
+            (iteration, report) => {
+                // Update
+                updateFn(Math.floor((iteration / report.iterations) * 100));
             },
             (error) => {
                 dps.text('ERROR');
@@ -726,14 +1010,14 @@ SIM.UI = {
     },
 
     startLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-table-all, .js-enchant, js-gem');
         btns.addClass('loading');
         btns.append('<span class="spinner"><span class="bounce1"></span><span class="bounce2"></span><span class="bounce3"></span></span>');
         $('section.main nav').addClass('loading');
     },
 
     endLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-table-all, .js-enchant, js-gem');
         btns.removeClass('loading');
         btns.find('.spinner').remove();
         $('section.main nav').removeClass('loading');
@@ -789,6 +1073,7 @@ SIM.UI = {
         localStorage.level = view.fight.find('input[name="level"]').val();
         localStorage.race = view.fight.find('select[name="race"]').val();
         localStorage.simulations = view.fight.find('input[name="simulations"]').val();
+        localStorage.simulationsall = view.fight.find('input[name="simulationsall"]').val();
         localStorage.timesecsmin = view.fight.find('input[name="timesecsmin"]').val();
         localStorage.timesecsmax = view.fight.find('input[name="timesecsmax"]').val();
         localStorage.startrage = view.fight.find('input[name="startrage"]').val();
@@ -1237,6 +1522,7 @@ loadGems: function (type, editmode, activeGear) {
                                     <th>Crit</th>
                                     <th>Hit</th>
                                     <th>Resilience</th>
+                                    <th>EHP</th>
                                     <th>TPS</th>
                                 </tr>
                             </thead>
@@ -1262,6 +1548,7 @@ loadGems: function (type, editmode, activeGear) {
                             <td>${item.critrating || ''}</td>
                             <td>${item.hitrating || ''}</td>
                             <td>${item.res || ''}</td>
+                            <td>${item.ehp || ''}</td>
                             <td>${item.tps || ''}</td>
                         </tr>`;
             }
