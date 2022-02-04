@@ -524,6 +524,7 @@ SIM.UI = {
                     for(let i of enchant[type])
                         if (i.id == item) {
                             i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
                         }
                 }
 
@@ -531,6 +532,7 @@ SIM.UI = {
                     for(let i of gem[type])
                         if (i.id == item) {
                             i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
                         }
                 }
 
@@ -539,6 +541,7 @@ SIM.UI = {
                     for(let i of gear[type])
                         if (i.id == item) {
                             i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
                         }
                 }
             },
@@ -547,7 +550,9 @@ SIM.UI = {
                 updateFn(Math.floor((iteration / report.iterations) * 100));
                 dps.text((report.totaldmg / report.totalduration).toFixed(2));
                 tps.text((report.totalthreat / report.totalduration).toFixed(2));
+                if(dtps && typeof dtps.text == "function"){
                 dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
+                }
             },
             (error) => {
                 dps.text('ERROR');
@@ -834,14 +839,14 @@ SIM.UI = {
         for (let type in gear) {
             _gear[type] = [];
             for (let item of gear[type]) {
-                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
             }
         }
 
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
             }
         }
 
@@ -850,7 +855,7 @@ SIM.UI = {
             for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                 _gem[type][gemIndex] =  [];
                 for (let item of Object.values(gem[type][gemIndex])) {
-                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden});
+                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
                 }
             }
         }

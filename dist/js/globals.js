@@ -17,6 +17,7 @@ function getGlobalsDelta() {
             return {
                 id: item.id,
                 tps: item.tps,
+                ehp: item.ehp,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -28,6 +29,7 @@ function getGlobalsDelta() {
             return {
                 id: item.id,
                 tps: item.tps,
+                ehp: item.ehp,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -42,6 +44,7 @@ function getGlobalsDelta() {
                 return {
                     id: item.id,
                     tps: item.tps,
+                    ehp: item.ehp,
                     selected: item.selected,
                     hidden: item.hidden,
                 }
@@ -119,6 +122,7 @@ function updateGlobals(params) {
                 for (let j of gear[type])
                     if (i.id == j.id) {
                         j.tps = i.tps;
+                        j.ehp = i.ehp;
                         j.selected = i.selected;
                         j.hidden = i.hidden;
                     }
@@ -128,6 +132,7 @@ function updateGlobals(params) {
             for (let j of enchant[type])
                 if (i.id == j.id) {
                     j.tps = i.tps;
+                    j.ehp = i.ehp;
                     j.selected = i.selected;
                     j.hidden = i.hidden;
                 }
@@ -152,6 +157,7 @@ function updateGlobals(params) {
                     for (let j of Object.values(gem[type][gemIndex]))
                         if (i.id == j.id) {
                            j.tps = i.tps;
+                           j.ehp = i.ehp;
                            j.selected = i.selected;
                            j.hidden = i.hidden;
                         }
