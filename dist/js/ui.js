@@ -271,6 +271,9 @@ SIM.UI = {
                     })
                 }
             }
+            if(result.err){
+                msgString += `<br> ${result.err.toString()}`
+            }
             view.import.find('.importmsg').html(msgString);
 
         });
@@ -370,7 +373,6 @@ SIM.UI = {
         try{
             gearToImport = JSON.parse(string);
         }catch(err){
-            console.error(err);
             return {err:err};
         }
         return {importsFailed: this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows)};
