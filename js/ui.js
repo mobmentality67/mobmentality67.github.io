@@ -341,35 +341,42 @@ SIM.UI = {
                             itemType = "offhand";
                         }
                     }
-                    var found = false;
+                    let itemFound = false;
                     for(let lGear of gear[itemType]){
                         lGear.selected = lGear.id == item.id;
                         if(lGear.selected){
-                            found = true;
+                            itemFound = true;
                         }
                     }
-                    if(!found){
+                    if(!itemFound){
                         gearNotFound.items.push(item);
                     }
-                    found = false;
-                    if(item.enchant){
+                    if(item.enchant){                    
+                        let enchantFound = false;
                         for(let lEnchant of enchant[itemType]){
                             let enchantId = item.enchant.spellId || item.enchant.itemId || item.enchant.id;
                             lEnchant.selected = lEnchant.id == enchantId;
                             if(lEnchant.selected){
-                                found = true;
+                                enchantFound = true;
                             }
                         }
-                        if(!found){
+                        if(!enchantFound){
                             gearNotFound.enchants.push(item.enchant);
                         }
                     }
                     if(item.gems){
                         for(let i in gem[itemType]){  
+                            let gemFound = false
                             for(let j in gem[itemType][i]){
                                 if(item.gems[i]){
                                     gem[itemType][i][j].selected = gem[itemType][i][j].id == item.gems[i].id;
+                                    if(gem[itemType][i][j].selected){
+                                        gemFound = true
+                                    }
                                 }
+                            }
+                            if(!gemFound && item.gems[i]){
+                                gearNotFound.gems.push(item.gems[i]);   
                             }
                         }
                     }

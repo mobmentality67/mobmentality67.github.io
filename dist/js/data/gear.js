@@ -3149,7 +3149,7 @@ var enchant = {
          "bonusac" : 120
       },
       {
-         "id": 46505,
+         "id": 34004,
          "spellid": true,
          "name": "Greater Agility",
          "agi": 12,
@@ -3158,7 +3158,7 @@ var enchant = {
    ],
    "chest": [
       {
-         "id": 46502,
+         "id": 27960,
          "spellid": true,
          "name": "Exceptional Stats",
          "agi": 6,
@@ -3266,8 +3266,7 @@ var enchant = {
    ],
    "legs": [
       {
-         "id": 35495,
-         "spellid": true,
+         "id": 29535,
          "name": "Nethercleft Leg Armor",
          "sta": 40,
          "agi": 12,
@@ -3307,7 +3306,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46471,
+         "id": 34007,
          "spellid": true,
          "agi": 6,
          "name": "Cat's Swiftness",
@@ -3344,7 +3343,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46519,
+         "id": 27927,
          "spellid": true,
          "name": "Stats",
          "agi": 4,
@@ -3355,14 +3354,14 @@ var enchant = {
    ],
 "finger2": [
       {
-         "id": 46519,
+         "id": 27920,
          "spellid": true,
          "name": "Striking",
          "bonusdmg": 2,
          "phase": 1
       },
       {
-         "id": 46519,
+         "id": 27927,
          "spellid": true,
          "name": "Stats",
          "agi": 4,
