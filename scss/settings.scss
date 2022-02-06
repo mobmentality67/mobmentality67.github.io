@@ -68,6 +68,18 @@
             width: 60px;
         }
 
+        textarea {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: inherit;
+            outline: none;
+            margin: 0;
+            float: right;
+            color: $item-uncommon;
+            width: 300px;
+            height: 300px;
+        }
+
         select {
             float: right;
             background: none;
@@ -86,7 +98,7 @@
 
     .fight {
         width: 330px;
-        height: 500px;
+        height: 525px;
 
         li {
             border-bottom: 1px solid rgba(221,221,221,0.4);
@@ -110,12 +122,12 @@
     .buffs {
         font-size: 0;
         width: 330px;
-        height: 500px;
+        height: 525px;
     }
 
     .rotation {
         width: calc(100% - 670px);
-        height: 500px;
+        height: 525px;
         font-size: 0;
 
         .spell {
@@ -340,6 +352,24 @@
         }
     }
 
+    .import{
+        button {
+            display: block;
+            border: 1px solid #ddd;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 5px;
+            transition: all 0.2s ease-in;
+            cursor: pointer;
+            &.active {
+                background: #ddd;
+                color: #123;
+                font-weight: bold;
+            }
+        }
+    }
+
     @media (min-width: 0px) and (max-width: 1600px) {
         left: 320px;
         .rotation {
@@ -347,7 +377,7 @@
         }
         .fight, .buffs {
             width: calc(50% - 2px);
-            height: 320px;
+            height: 525px;
         }
     }
 

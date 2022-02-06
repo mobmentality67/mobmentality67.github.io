@@ -38,6 +38,7 @@ SIM.UI = {
         view.rotation = view.body.find('article.rotation');
         view.talents = view.body.find('article.talents');
         view.filter = view.body.find('article.filter');
+        view.import = view.body.find('article.import');
         view.main = view.body.find('section.main');
         view.sidebar = view.body.find('section.sidebar');
         view.tcontainer = view.main.find('.table-container');
@@ -95,6 +96,19 @@ SIM.UI = {
             $('section.stats').toggleClass('active');
             view.sidebar.find('.js-settings').removeClass('active');
             $('section.settings').removeClass('active');
+        });
+
+        view.import.find('.js-import').click(function (e) {
+            console.log(view.import.find('.importstring').val());
+            console.log(view.import);
+            const gearRows = view.tcontainer.find('table.gear tbody tr'); 
+            const enchantRows = view.tcontainer.find('table.enchant tbody tr'); 
+            const gemRows = view.tcontainer.find('table.gem tbody tr'); 
+            const msg = view.importGearFromString(view.import.find('.importstring').val(), "70up", gearRows, enchantRows, gemRows)
+            console.log(msg);
+            if(msg != null){
+                view.import.find('.importmsg').text(msg);
+            }
         });
 
         view.body.on('click', '.js-table', function(e) {
@@ -267,6 +281,98 @@ SIM.UI = {
         else
             view.loadGear(type, false);
     },
+
+    importGearFromString: function(string, sourceType, rows, enchantRows, gemRows) {
+        try{
+            gearToImport = JSON.parse(string);
+            this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows);
+            return "SUCCESS"
+        }catch(err){
+            console.error(err);
+            return err.toString();
+        }
+    },
+
+    importGear: function(gearToImport, sourceType, rows, enchantRows, gemRows){
+
+        var gearNotFound = {
+            items: [],
+            enchants:[],
+            gems:[]
+        }
+
+        switch(sourceType){
+            case "70up":
+                for(let item of gearToImport.items){
+                    var itemType = item.slot.toLowerCase().replaceAll("_", "");
+                    switch(itemType){
+                        case "legs":
+                        case "hands":
+                            break
+                        default:
+                            if(itemType.charAt( itemType.length-1 ) == "s") {
+                                itemType = itemType.slice(0, -1)
+                            }
+                            break
+                    }
+                    if(itemType == "mainhand"){
+                        if(gear["twohand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                            itemType = "twohand";
+                        }
+                        if(gear["offhand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                            itemType = "offhand";
+                        }
+                    }
+                    var found = false;
+                    for(let lGear of gear[itemType]){
+                        lGear.selected = lGear.id == item.id;
+                        if(lGear.selected){
+                            found = true;
+                        }
+                    }
+                    if(!found){
+                        gearNotFound.items.push(item);
+                    }
+                    found = false;
+                    if(item.enchant){
+                        for(let lEnchant of enchant[itemType]){
+                            let enchantId = item.enchant.spellId || item.enchant.itemId || item.enchant.id;
+                            lEnchant.selected = lEnchant.id == enchantId;
+                            if(lEnchant.selected){
+                                found = true;
+                            }
+                        }
+                    }
+                    if(!found){
+                        gearNotFound.enchants.push(item.enchant);
+                    }
+                    if(item.gems){
+                        for(let i in gem[itemType]){  
+                            for(let j in gem[itemType][i]){
+                                if(item.gems[i]){
+                                    gem[itemType][i][j].selected = gem[itemType][i][j].id == item.gems[i].id;
+                                }
+                            }
+                        }
+                    }
+                }
+                break
+        }
+        this.updateSession();
+        this.updateSidebar();
+        
+        var activeType = "twohand"
+        if (rows) {
+            activeType = rows.parents('table').data('type');
+        }
+        
+        if (activeType == "mainhand" || activeType == "offhand" || activeType == "twohand") 
+            this.loadWeapons(activeType);
+        else if (activeType == "custom") 
+            this.loadCustom();
+        else
+            this.loadGear(activeType);
+        },
 
     simulateDPS: function(rows, all) {
         let view = this;
