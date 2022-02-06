@@ -99,16 +99,34 @@ SIM.UI = {
         });
 
         view.import.find('.js-import').click(function (e) {
-            console.log(view.import.find('.importstring').val());
-            console.log(view.import);
+            view.import.find('.importmsg').html("");
             const gearRows = view.tcontainer.find('table.gear tbody tr'); 
             const enchantRows = view.tcontainer.find('table.enchant tbody tr'); 
             const gemRows = view.tcontainer.find('table.gem tbody tr'); 
-            const msg = view.importGearFromString(view.import.find('.importstring').val(), "70up", gearRows, enchantRows, gemRows)
-            console.log(msg);
-            if(msg != null){
-                view.import.find('.importmsg').text(msg);
+            const result = view.importGearFromString(view.import.find('.importstring').val(), "70up", gearRows, enchantRows, gemRows)
+            let msgString = result.err != null ? '<span class="error">Failed</span>' : '<span class="success">Success</span>'
+            if(result.importsFailed){
+                if(result.importsFailed.items.length > 0){
+                    msgString += "<br>Items not importet:" 
+                    result.importsFailed.items.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
+                if(result.importsFailed.enchants.length > 0){
+                    msgString += "<br>Enchants not importet:" 
+                    result.importsFailed.enchants.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
+                if(result.importsFailed.gems.length > 0){
+                    msgString += "<br>Gems not importet:" 
+                    result.importsFailed.gems.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
             }
+            view.import.find('.importmsg').html(msgString);
+
         });
 
         view.body.on('click', '.js-table', function(e) {
@@ -283,14 +301,14 @@ SIM.UI = {
     },
 
     importGearFromString: function(string, sourceType, rows, enchantRows, gemRows) {
+        var gearToImport
         try{
             gearToImport = JSON.parse(string);
-            this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows);
-            return "SUCCESS"
         }catch(err){
             console.error(err);
-            return err.toString();
+            return {err:err};
         }
+        return {importsFailed: this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows)};
     },
 
     importGear: function(gearToImport, sourceType, rows, enchantRows, gemRows){
@@ -342,9 +360,9 @@ SIM.UI = {
                                 found = true;
                             }
                         }
-                    }
-                    if(!found){
-                        gearNotFound.enchants.push(item.enchant);
+                        if(!found){
+                            gearNotFound.enchants.push(item.enchant);
+                        }
                     }
                     if(item.gems){
                         for(let i in gem[itemType]){  
@@ -372,6 +390,7 @@ SIM.UI = {
             this.loadCustom();
         else
             this.loadGear(activeType);
+        return gearNotFound
         },
 
     simulateDPS: function(rows, all) {
@@ -592,7 +611,6 @@ SIM.UI = {
     simulateAllRows: function(rows) {
         var view = this;
         var btn = view.sidebar.find('.js-table-all');
-        console.log(rows)
         var tabType = $(rows[0]).parents('table').data('type');
 
         var simulations = rows.map((row) => {
@@ -641,7 +659,6 @@ SIM.UI = {
                         pending.delete(simulation);
         
                         // Start simulation
-                        console.log(item)
                         this.simulateItem(type, item.id, false, false, false, false, (perc) => {
                             // Update row percentage
                             simulation.perc = perc;
@@ -653,12 +670,10 @@ SIM.UI = {
                                     .reduce((a, b) => a + b, 0) / simulations.length
                             );
                             if (total == 100) {
-                                console.log(total)
                                 btn.css('background', '');
                                 view.endLoading();
                                 view.updateSession();
                             } else {
-                                console.log(total)
                                 btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
                             }
         
@@ -685,7 +700,6 @@ SIM.UI = {
                         pending.delete(simulation);
         
                         // Start simulation
-                        console.log(item)
                         this.simulateItem(type, item.id, true, false, false, false, (perc) => {
                             // Update row percentage
                             simulation.perc = perc;
@@ -697,12 +711,10 @@ SIM.UI = {
                                     .reduce((a, b) => a + b, 0) / simulations.length
                             );
                             if (total == 100) {
-                                console.log(total)
                                 btn.css('background', '');
                                 view.endLoading();
                                 view.updateSession();
                             } else {
-                                console.log(total)
                                 btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
                             }
         
@@ -730,7 +742,6 @@ SIM.UI = {
                             pending.delete(simulation);
             
                             // Start simulation
-                            console.log(item)
                             this.simulateItem(type, item.id, false, true, false, false, (perc) => {
                                 // Update row percentage
                                 simulation.perc = perc;
@@ -742,12 +753,10 @@ SIM.UI = {
                                         .reduce((a, b) => a + b, 0) / simulations.length
                                 );
                                 if (total == 100) {
-                                    console.log(total)
                                     btn.css('background', '');
                                     view.endLoading();
                                     view.updateSession();
                                 } else {
-                                    console.log(total)
                                     btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
                                 }
             
@@ -877,7 +886,6 @@ SIM.UI = {
             player: [item, type, ismeta ? 4 : istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
             sim: Simulation.getConfig(),
         };
-        console.log(params)
         if(params.sim.iterations > 1000 || true){
             params.sim.iterations = parseInt($('input[name="simulationsall"]').val());
         }
@@ -932,7 +940,6 @@ SIM.UI = {
 
 
                 else {
-                    console.log(type)
                     for(let i of gear[type])
                         if (i.id == item) {
                             i.tps = calctps.toFixed(2);
