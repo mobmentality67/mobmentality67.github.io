@@ -329,9 +329,17 @@ profiles
         <label>Import</label>
         <ul>
           <li>
-            <label>70up import</label>
-            <textarea name="importstring" class="importstring" value="">
-            </textarea>
+            <div class="container" >
+              <input type="file" name="file" id="file">
+              
+              <!-- Drag and Drop container-->
+              <div class="upload-area"  id="uploadfile">
+                <h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>
+              </div>
+          </div>
+          
+          <textarea name="importstring" class="importstring" value=""></textarea>
+  
             <button type="button" class="js-import" name="import">
               Import
             </button>

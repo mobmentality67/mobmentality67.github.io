@@ -98,6 +98,72 @@ SIM.UI = {
             $('section.settings').removeClass('active');
         });
 
+
+        $("html").on("dragover", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    
+        $("html").on("drop", function(e) { e.preventDefault(); e.stopPropagation(); });
+    
+        // Drag enter
+        view.import.find('.upload-area').on('dragenter', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html("<h1>Drop</h1>");
+        });
+    
+        // Drag over
+        view.import.find('.upload-area').on('dragover', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html("<h1>Drop</h1>");
+        });
+        view.import.find('.upload-area').on('dragleave', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+        });
+    
+        // Open file selector on div click
+        view.import.find("#uploadfile").click(function(){
+            $("#file").click();
+        });
+
+        // Drop
+        view.import.find('.upload-area').on('drop', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var file = e.originalEvent.dataTransfer.files[0];
+            if(file){
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+                view.import.find('.importstring').val(data)
+                view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+                };
+                fileReader.readAsText(file);
+            }
+    
+            //uploadData(fd);
+        });
+    
+        // file selected
+        view.import.find("#file").change(function(){   
+            var file = view.import.find('#file')[0].files[0];
+            //uploadData(fd);
+            if(file){
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+                    view.import.find('.importstring').val(data)
+                    view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+                    view.import.find('#file')[0].value = "";
+                };
+                fileReader.readAsText(file);
+            }
+        });
+
         view.import.find('.js-import').click(function (e) {
             view.import.find('.importmsg').html("");
             const gearRows = view.tcontainer.find('table.gear tbody tr'); 
