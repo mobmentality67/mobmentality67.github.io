@@ -3153,7 +3153,7 @@ var enchant = {
    ],
    "back": [
       {
-         "id": 46510,
+         "id": 27961,
          "spellid": true,
          "name": "Major Armor",
          "phase" : 1,
@@ -3178,7 +3178,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46501,
+         "id": 27957,
          "spellid": true,
          "name": "Exceptional Health",
          "phase": 1
@@ -3261,7 +3261,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46511,
+         "id": 33996,
          "spellid": true,
          "name": "Assault",
          "ap": 26,
@@ -3277,31 +3277,28 @@ var enchant = {
    ],
    "legs": [
       {
-         "id": 29535,
+         "id": 29536,
          "name": "Nethercleft Leg Armor",
          "sta": 40,
          "agi": 12,
          "phase": 1
       },
       {
-         "id": 35490,
-         "spellid": true,
+         "id": 29535,
          "name": "Nethercobra Leg Armor",
          "ap": 50,
          "critrating": 12,
          "phase": 1
       },
       {
-         "id": 35489,
-         "spellid": true,
+         "id": 29534,
          "name": "Clefthide Leg Armor",
          "sta": 30,
          "agi": 10,
          "phase": 1
       },
       {
-         "id": 35488,
-         "spellid": true,
+         "id": 29533,
          "name": "Cobrahide Leg Armor",
          "ap": 40,
          "critrating": 10,
@@ -3310,7 +3307,7 @@ var enchant = {
    ],
    "feet": [
       {
-         "id": 46472,
+         "id": 27951,
          "spellid": true,
          "name": "Dexterity",
          "agi": 12,
@@ -3324,21 +3321,21 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46490,
+         "id": 27950,
          "spellid": true,
          "sta": 12,
          "name": "Fortitude",
          "phase": 1
       },
       {
-         "id": 46470,
+         "id": 34008,
          "spellid": true,
          "sta": 9,
          "name": "Boar's Speed",
          "phase": 1
       },
       {
-         "id": 46491,
+         "id": 27954,
          "spellid": true,
          "hitrating": 10,
          "name": "Surefooted",
@@ -3422,7 +3419,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46462,
+         "id": 27971,
          "spellid": true,
          "name": "Savagery",
          "ap": 70,
