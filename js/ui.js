@@ -369,13 +369,13 @@ SIM.UI = {
     },
 
     importGearFromString: function(string, sourceType, rows, enchantRows, gemRows) {
-        var gearToImport
         try{
-            gearToImport = JSON.parse(string);
+            var gearToImport = JSON.parse(string);
+            return {importsFailed: this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows)}
         }catch(err){
             return {err:err};
         }
-        return {importsFailed: this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows)};
+        ;
     },
 
     importGear: function(gearToImport, sourceType, rows, enchantRows, gemRows){
@@ -388,6 +388,9 @@ SIM.UI = {
 
         switch(sourceType){
             case "70up":
+                if(!gearToImport.items){
+                    throw "invalid JSON format"
+                }
                 for(let item of gearToImport.items){
                     var itemType = item.slot.toLowerCase().replaceAll("_", "");
                     switch(itemType){
