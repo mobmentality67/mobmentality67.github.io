@@ -10,11 +10,11 @@ For example, a short fight length will heavily favor on-use trinkets -- so will 
 
 Trinket 1 is always activated before Trinket 2, if applicable. Double-on use (chain use or concurrent use where applicable) is supported.
 
-## Gem support
-JC gems are not implemented. Most applicable blue gems are in -- some gems are hidden by default. Click "Show/hide rows" below gems to see all implemented gems.
-
 ## Custom Parameters
 Custom values in the "Custom" tab can be used to offset gem bonuses and test stat weights if necessary.
+
+## 70U Import
+Sets can be exported from 70U into the sim by going to your 70U character screen, clicking the "..." elipses to the right of auto-fill, and copy-pasting the text in the box into the Import 70U section at the bottom of the Settings tab on the bottom-left corner of the sim.
 
 ## Bug Reports
 This is an alpha-stage project and bugs are expected. This includes, but is not restricted to individual item values and/or links to Wowhead. This data is manually entered and read over, but errors are expected. Errors may also appear in the algorithms themselves for simulating the fight. 
@@ -34,6 +34,7 @@ Lots of the work that went into the algorithm rework was built from excellent wo
 * Zidnae's TBC Bear Theorycrafting Notes: https://zidnae.gitlab.io/tbc-armor-penetration-calc/tbc_bear_tc.html
 * Other discussion on the fantastic Druid Discord: https://discord.gg/B6HcVrPqk2. 
 * Special thank you to Balor-Anathema for tons of incredible work verifying and testing this project to make it sane
+* Another special thanks to Mojomane/Kuhalitaet-Venoxis for his contribution to getting 70U gear import into the sim to work
 
 ## Contributions
 I'm happy to work on this without any contributions -- I think it's an interesting collaborative discussion and effort and I like to have the tool available for the community. But if you want to buy me coffee, here's my PayPal: https://paypal.me/mobmentality67. Thank you!
