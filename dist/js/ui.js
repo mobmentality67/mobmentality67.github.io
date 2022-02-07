@@ -38,6 +38,7 @@ SIM.UI = {
         view.rotation = view.body.find('article.rotation');
         view.talents = view.body.find('article.talents');
         view.filter = view.body.find('article.filter');
+        view.import = view.body.find('article.import');
         view.main = view.body.find('section.main');
         view.sidebar = view.body.find('section.sidebar');
         view.tcontainer = view.main.find('.table-container');
@@ -105,6 +106,16 @@ SIM.UI = {
             view.tcontainer.find('table.gear tbody tr td:last-of-type').html('');
             view.startLoading();
             view.simulateDPS(rows);
+        });
+
+        view.body.on('click', '.js-table-all', function(e) {
+            e.preventDefault();
+            view.disableEditMode();
+            const rows = view.tcontainer.find('table.gear tbody tr');
+            rows.addClass('waiting');
+            view.tcontainer.find('table.gear tbody tr td:last-of-type').html('');
+            view.startLoading();
+            view.simulateDPS(rows, true);
         });
 
         view.main.on('click', '.js-enchant', function(e) {
@@ -233,6 +244,105 @@ SIM.UI = {
             view.updateSidebar();
         });
 
+        view.import.find('.js-import').click(function (e) {
+            view.import.find('.importmsg').html("");
+            const gearRows = view.tcontainer.find('table.gear tbody tr'); 
+            const enchantRows = view.tcontainer.find('table.enchant tbody tr'); 
+            const gemRows = view.tcontainer.find('table.gem tbody tr'); 
+            const result = view.importGearFromString(view.import.find('.importstring').val(), "70up", gearRows, enchantRows, gemRows)
+            let msgString = result.err != null ? '<span class="error">Failed</span>' : '<span class="success">Success</span>'
+            if(result.importsFailed){
+                if(result.importsFailed.items.length > 0){
+                    msgString += "<br>Items not importet:" 
+                    result.importsFailed.items.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
+                if(result.importsFailed.enchants.length > 0){
+                    msgString += "<br>Enchants not importet:" 
+                    result.importsFailed.enchants.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
+                if(result.importsFailed.gems.length > 0){
+                    msgString += "<br>Gems not importet:" 
+                    result.importsFailed.gems.forEach(item => {
+                        msgString += `<br> ${item.name}`
+                    })
+                }
+            }
+            if(result.err){
+                msgString += `<br> ${result.err.toString()}`
+            }
+            view.import.find('.importmsg').html(msgString);
+
+        });
+
+
+        $("html").on("dragover", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    
+        $("html").on("drop", function(e) { e.preventDefault(); e.stopPropagation(); });
+    
+        // Drag enter
+        view.import.find('.upload-area').on('dragenter', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html("<h1>Drop</h1>");
+        });
+    
+        // Drag over
+        view.import.find('.upload-area').on('dragover', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html("<h1>Drop</h1>");
+        });
+        view.import.find('.upload-area').on('dragleave', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+        });
+    
+        // Open file selector on div click
+        view.import.find("#uploadfile").click(function(){
+            $("#file").click();
+        });
+
+        // Drop
+        view.import.find('.upload-area').on('drop', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var file = e.originalEvent.dataTransfer.files[0];
+            if(file){
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+                view.import.find('.importstring').val(data)
+                view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+                };
+                fileReader.readAsText(file);
+            }
+    
+            //uploadData(fd);
+        });
+    
+        // file selected
+        view.import.find("#file").change(function(){   
+            var file = view.import.find('#file')[0].files[0];
+            //uploadData(fd);
+            if(file){
+                var fileReader = new FileReader();
+                fileReader.onload = function () {
+                    var data = fileReader.result;  // data <-- in this var you have the file data in Base64 format
+                    view.import.find('.importstring').val(data)
+                    view.import.find(".upload-area h1").html('<h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>');
+                    view.import.find('#file')[0].value = "";
+                };
+                fileReader.readAsText(file);
+            }
+        });
     },
 
     enableEditMode: function() {
@@ -258,7 +368,109 @@ SIM.UI = {
             view.loadGear(type, false);
     },
 
-    simulateDPS: function(rows) {
+    importGearFromString: function(string, sourceType, rows, enchantRows, gemRows) {
+        try{
+            var gearToImport = JSON.parse(string);
+            return {importsFailed: this.importGear(gearToImport, sourceType, rows, enchantRows, gemRows)}
+        }catch(err){
+            return {err:err};
+        }
+        ;
+    },
+
+    importGear: function(gearToImport, sourceType, rows, enchantRows, gemRows){
+
+        var gearNotFound = {
+            items: [],
+            enchants:[],
+            gems:[]
+        }
+
+        switch(sourceType){
+            case "70up":
+                if(!gearToImport.items){
+                    throw "invalid JSON format"
+                }
+                for(let item of gearToImport.items){
+                    var itemType = item.slot.toLowerCase().replaceAll("_", "");
+                    switch(itemType){
+                        case "legs":
+                        case "hands":
+                            break
+                        default:
+                            if(itemType.charAt( itemType.length-1 ) == "s") {
+                                itemType = itemType.slice(0, -1)
+                            }
+                            break
+                    }
+                    if(itemType == "mainhand"){
+                        if(gear["twohand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                            itemType = "twohand";
+                        }
+                        if(gear["offhand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                            itemType = "offhand";
+                        }
+                    }
+                    let itemFound = false;
+                    for(let lGear of gear[itemType]){
+                        lGear.selected = lGear.id == item.id;
+                        if(lGear.selected){
+                            itemFound = true;
+                        }
+                    }
+                    if(!itemFound){
+                        gearNotFound.items.push(item);
+                    }
+                    if(item.enchant){                    
+                        let enchantFound = false;
+                        for(let lEnchant of enchant[itemType]){
+                            let enchantId = item.enchant.spellId || item.enchant.itemId || item.enchant.id;
+                            lEnchant.selected = lEnchant.id == enchantId;
+                            if(lEnchant.selected){
+                                enchantFound = true;
+                            }
+                        }
+                        if(!enchantFound){
+                            gearNotFound.enchants.push(item.enchant);
+                        }
+                    }
+                    if(item.gems){
+                        for(let i in gem[itemType]){  
+                            let gemFound = false
+                            for(let j in gem[itemType][i]){
+                                if(item.gems[i]){
+                                    gem[itemType][i][j].selected = gem[itemType][i][j].id == item.gems[i].id;
+                                    if(gem[itemType][i][j].selected){
+                                        gemFound = true
+                                    }
+                                }
+                            }
+                            if(!gemFound && item.gems[i]){
+                                gearNotFound.gems.push(item.gems[i]);   
+                            }
+                        }
+                    }
+                }
+                break
+        }
+        this.updateSession();
+        this.updateSidebar();
+        
+        var activeType = "twohand"
+        if (rows) {
+            activeType = rows.parents('table').data('type');
+        }
+        
+        if (activeType == "mainhand" || activeType == "offhand" || activeType == "twohand") 
+            this.loadWeapons(activeType);
+        else if (activeType == "custom") 
+            this.loadCustom();
+        else
+            this.loadGear(activeType);
+        return gearNotFound
+        },
+
+    simulateDPS: function(rows, all) {
         let view = this;
         let tps = view.sidebar.find('#tps');
         let dps = view.sidebar.find('#dps');
@@ -318,7 +530,8 @@ SIM.UI = {
                 tpsstats.html(report.mintps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxtps.toFixed(2) + ' max');
                 dtpsstats.html(report.mindtps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdtps.toFixed(2) + ' max');
                 btn.css('background', '');
-                if (rows) view.simulateRows(Array.from(rows));
+                if (rows && all) view.simulateAllRows(Array.from(rows));
+                else if (rows) view.simulateRows(Array.from(rows));
                 else if (weights) view.simulateWeights(player, meantps, varmean);
                 else view.endLoading();
 
@@ -472,6 +685,181 @@ SIM.UI = {
         }
     },
 
+    simulateAllRows: function(rows) {
+        var view = this;
+        var btn = view.sidebar.find('.js-table-all');
+        var tabType = $(rows[0]).parents('table').data('type');
+
+        var simulations = rows.map((row) => {
+            const simulation = { perc: 0 };
+            simulation.run = () => {
+                // Remove from pending simulations
+                pending.delete(simulation);
+
+                // Start simulation
+                this.simulateRow($(row), (perc) => {
+                    // Update row percentage
+                    simulation.perc = perc;
+
+                    // Update total percentage
+                    const total = Math.floor(
+                        Array.from(simulations.values())
+                            .map((sim) => sim.perc)
+                            .reduce((a, b) => a + b, 0) / simulations.length
+                    );
+                    if (total == 100) {
+                        btn.css('background', '');
+                        view.endLoading();
+                        view.updateSession();
+                    } else {
+                        btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                    }
+
+                    // If simulation complete, run another pending simulation (if any)
+                    if (simulation.perc == 100) {
+                        const next = pending.values().next().value;
+                        if (next) {
+                            next.run();
+                        }
+                    }
+                });
+            };
+            return simulation;
+        });
+
+        for (let type in gear) {
+            if(type != tabType){
+                simulations = simulations.concat(gear[type].map((item) => {
+                    const simulation = { perc: 0 };
+                    simulation.run = () => {
+                        // Remove from pending simulations
+                        pending.delete(simulation);
+        
+                        // Start simulation
+                        this.simulateItem(type, item.id, false, false, false, false, (perc) => {
+                            // Update row percentage
+                            simulation.perc = perc;
+                            
+                            // Update total percentage
+                            const total = Math.floor(
+                                Array.from(simulations.values())
+                                    .map((sim) => sim.perc)
+                                    .reduce((a, b) => a + b, 0) / simulations.length
+                            );
+                            if (total == 100) {
+                                btn.css('background', '');
+                                view.endLoading();
+                                view.updateSession();
+                            } else {
+                                btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                            }
+        
+                            // If simulation complete, run another pending simulation (if any)
+                            if (simulation.perc == 100) {
+                                const next = pending.values().next().value;
+                                if (next) {
+                                    next.run();
+                                }
+                            }
+                        });
+                    };
+                    return simulation;
+                }));
+            }
+        }
+
+        for (let type in enchant) {
+            if(type != tabType){
+                simulations = simulations.concat(enchant[type].map((item) => {
+                    const simulation = { perc: 0 };
+                    simulation.run = () => {
+                        // Remove from pending simulations
+                        pending.delete(simulation);
+        
+                        // Start simulation
+                        this.simulateItem(type, item.id, true, false, false, false, (perc) => {
+                            // Update row percentage
+                            simulation.perc = perc;
+                            
+                            // Update total percentage
+                            const total = Math.floor(
+                                Array.from(simulations.values())
+                                    .map((sim) => sim.perc)
+                                    .reduce((a, b) => a + b, 0) / simulations.length
+                            );
+                            if (total == 100) {
+                                btn.css('background', '');
+                                view.endLoading();
+                                view.updateSession();
+                            } else {
+                                btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                            }
+        
+                            // If simulation complete, run another pending simulation (if any)
+                            if (simulation.perc == 100) {
+                                const next = pending.values().next().value;
+                                if (next) {
+                                    next.run();
+                                }
+                            }
+                        });
+                    };
+                    return simulation;
+                }));
+            }
+        }
+
+        for (let type in gem) {
+            if(type != tabType){
+                for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                    simulations = simulations.concat(Object.values(gem[type][gemIndex]).map((item) => {
+                        const simulation = { perc: 0 };
+                        simulation.run = () => {
+                            // Remove from pending simulations
+                            pending.delete(simulation);
+            
+                            // Start simulation
+                            this.simulateItem(type, item.id, false, true, false, false, (perc) => {
+                                // Update row percentage
+                                simulation.perc = perc;
+                                
+                                // Update total percentage
+                                const total = Math.floor(
+                                    Array.from(simulations.values())
+                                        .map((sim) => sim.perc)
+                                        .reduce((a, b) => a + b, 0) / simulations.length
+                                );
+                                if (total == 100) {
+                                    btn.css('background', '');
+                                    view.endLoading();
+                                    view.updateSession();
+                                } else {
+                                    btn.css('background', 'linear-gradient(to right, transparent ' + total + '%, #444 ' + total + '%)');
+                                }
+            
+                                // If simulation complete, run another pending simulation (if any)
+                                if (simulation.perc == 100) {
+                                    const next = pending.values().next().value;
+                                    if (next) {
+                                        next.run();
+                                    }
+                                }
+                            });
+                        };
+                        return simulation;
+                    }));
+                }
+            }
+        }
+
+        
+        const pending = new Set(simulations);
+
+        for (const simulation of simulations.slice(0, MAX_WORKERS)) {
+            simulation.run();
+        }
+    },
+
     simulateRow: function(tr, updateFn) {
         var view = this;
         var dps = tr.find('td:last-of-type');
@@ -529,11 +917,14 @@ SIM.UI = {
                 }
 
                 if (isgem) {
-                    for(let i of gem[type])
-                        if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
-                            i.ehp = report.ehp.toFixed(2) || 0;
+                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                        for(let i of Object.values(gem[type][gemIndex])){
+                            if (i.id == item) {
+                                i.tps = calctps.toFixed(2);
+                                i.ehp = report.ehp.toFixed(2) || 0;
+                            }
                         }
+                    }
                 }
 
 
@@ -553,6 +944,89 @@ SIM.UI = {
                 if(dtps && typeof dtps.text == "function"){
                 dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
                 }
+            },
+            (error) => {
+                dps.text('ERROR');
+                tps.text('ERROR');
+                console.error(error);
+            },
+        );
+        sim.start(params);
+    },
+
+    simulateItem: function(type, item, isench, isgem, istemp, ismeta, updateFn) {
+        var view = this;
+        var base = parseFloat(view.sidebar.find('#dps').text());
+        var basetps = parseFloat(view.sidebar.find('#tps').text());
+
+        const params = {
+            player: [item, type, ismeta ? 4 : istemp ? 2 : isench ? 1 : 0, Player.getConfig()],
+            sim: Simulation.getConfig(),
+        };
+        if(params.sim.iterations > 1000 || true){
+            params.sim.iterations = parseInt($('input[name="simulationsall"]').val());
+        }
+        var sim = new SimulationWorker(
+            (report) => {
+                // Finished
+                //let span = $('<span></span>');
+                //let spantps = $('<span></span>');
+                let calc = report.totaldmg / report.totalduration;
+                let calctps = report.totalthreat / report.totalduration;
+                let diff = calc - base;
+                let difftps = calctps - basetps;
+                //span.text(difftps.toFixed(2));
+                //spantps.text(difftps.toFixed(2));
+                //if (diff >= 0) span.addClass('p');
+                //else span.addClass('n');
+                //if (difftps >= 0) spantps.addClass('p');
+                //else spantps.addClass('n');
+                //dps.text(calc.toFixed(2)).append(span);
+                //tps.text(calctps.toFixed(2)).append(spantps);
+                //ehp.text(report.ehp.toFixed(2) || 0);
+
+                //view.tcontainer.find('table').each(function() {
+                //    if (type == "custom") return;
+                //    $(this).trigger('update');
+                //    let sortList = [[$(this).find('th').length - 1, 1]];
+                //    $(this).trigger("sorton", [sortList]);
+                //});
+                
+                //tr.removeClass('waiting');
+                updateFn(100);
+                sim = null;
+
+                if (isench) {
+                    for(let i of enchant[type])
+                        if (i.id == item) {
+                            i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
+                        }
+                }
+
+                if (isgem) {
+                    for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
+                        for(let i of Object.values(gem[type][gemIndex])){
+                            if (i.id == item) {
+                                i.tps = calctps.toFixed(2);
+                                i.ehp = report.ehp.toFixed(2) || 0;
+                            }
+                        }
+                    }
+                }
+
+
+                else {
+                    for(let i of gear[type])
+                        if (i.id == item) {
+                            i.tps = calctps.toFixed(2);
+                            i.ehp = report.ehp.toFixed(2) || 0;
+                        }
+                }
+            },
+            (iteration, report) => {
+                // Update
+                updateFn(Math.floor((iteration / report.iterations) * 100));
             },
             (error) => {
                 dps.text('ERROR');
@@ -726,14 +1200,14 @@ SIM.UI = {
     },
 
     startLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-table-all, .js-enchant, js-gem');
         btns.addClass('loading');
         btns.append('<span class="spinner"><span class="bounce1"></span><span class="bounce2"></span><span class="bounce3"></span></span>');
         $('section.main nav').addClass('loading');
     },
 
     endLoading: function() {
-        let btns = $('.js-dps, .js-weights, .js-table, .js-enchant, js-gem');
+        let btns = $('.js-dps, .js-weights, .js-table, .js-table-all, .js-enchant, js-gem');
         btns.removeClass('loading');
         btns.find('.spinner').remove();
         $('section.main nav').removeClass('loading');
@@ -789,6 +1263,7 @@ SIM.UI = {
         localStorage.level = view.fight.find('input[name="level"]').val();
         localStorage.race = view.fight.find('select[name="race"]').val();
         localStorage.simulations = view.fight.find('input[name="simulations"]').val();
+        localStorage.simulationsall = view.fight.find('input[name="simulationsall"]').val();
         localStorage.timesecsmin = view.fight.find('input[name="timesecsmin"]').val();
         localStorage.timesecsmax = view.fight.find('input[name="timesecsmax"]').val();
         localStorage.startrage = view.fight.find('input[name="startrage"]').val();
@@ -1237,6 +1712,7 @@ loadGems: function (type, editmode, activeGear) {
                                     <th>Crit</th>
                                     <th>Hit</th>
                                     <th>Resilience</th>
+                                    <th>EHP</th>
                                     <th>TPS</th>
                                 </tr>
                             </thead>
@@ -1262,6 +1738,7 @@ loadGems: function (type, editmode, activeGear) {
                             <td>${item.critrating || ''}</td>
                             <td>${item.hitrating || ''}</td>
                             <td>${item.res || ''}</td>
+                            <td>${item.ehp || ''}</td>
                             <td>${item.tps || ''}</td>
                         </tr>`;
             }

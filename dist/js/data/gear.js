@@ -2176,7 +2176,7 @@ var gear = {
          "critrating": 40,
          "source": "PVP",
          "phase": "3",
-         "id": 34163,
+         "id": 34576,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
@@ -2407,7 +2407,7 @@ var gear = {
          "critrating": 40,
          "source": "PVP",
          "phase": "3",
-         "id": 34163,
+         "id": 34576,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
@@ -3153,14 +3153,14 @@ var enchant = {
    ],
    "back": [
       {
-         "id": 46510,
+         "id": 27961,
          "spellid": true,
          "name": "Major Armor",
          "phase" : 1,
          "bonusac" : 120
       },
       {
-         "id": 46505,
+         "id": 34004,
          "spellid": true,
          "name": "Greater Agility",
          "agi": 12,
@@ -3169,7 +3169,7 @@ var enchant = {
    ],
    "chest": [
       {
-         "id": 46502,
+         "id": 27960,
          "spellid": true,
          "name": "Exceptional Stats",
          "agi": 6,
@@ -3178,7 +3178,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46501,
+         "id": 27957,
          "spellid": true,
          "name": "Exceptional Health",
          "phase": 1
@@ -3261,7 +3261,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46511,
+         "id": 33996,
          "spellid": true,
          "name": "Assault",
          "ap": 26,
@@ -3277,32 +3277,28 @@ var enchant = {
    ],
    "legs": [
       {
-         "id": 35495,
-         "spellid": true,
+         "id": 29536,
          "name": "Nethercleft Leg Armor",
          "sta": 40,
          "agi": 12,
          "phase": 1
       },
       {
-         "id": 35490,
-         "spellid": true,
+         "id": 29535,
          "name": "Nethercobra Leg Armor",
          "ap": 50,
          "critrating": 12,
          "phase": 1
       },
       {
-         "id": 35489,
-         "spellid": true,
+         "id": 29534,
          "name": "Clefthide Leg Armor",
          "sta": 30,
          "agi": 10,
          "phase": 1
       },
       {
-         "id": 35488,
-         "spellid": true,
+         "id": 29533,
          "name": "Cobrahide Leg Armor",
          "ap": 40,
          "critrating": 10,
@@ -3311,35 +3307,35 @@ var enchant = {
    ],
    "feet": [
       {
-         "id": 46472,
+         "id": 27951,
          "spellid": true,
          "name": "Dexterity",
          "agi": 12,
          "phase": 1
       },
       {
-         "id": 46471,
+         "id": 34007,
          "spellid": true,
          "agi": 6,
          "name": "Cat's Swiftness",
          "phase": 1
       },
       {
-         "id": 46490,
+         "id": 27950,
          "spellid": true,
          "sta": 12,
          "name": "Fortitude",
          "phase": 1
       },
       {
-         "id": 46470,
+         "id": 34008,
          "spellid": true,
          "sta": 9,
          "name": "Boar's Speed",
          "phase": 1
       },
       {
-         "id": 46491,
+         "id": 27954,
          "spellid": true,
          "hitrating": 10,
          "name": "Surefooted",
@@ -3355,7 +3351,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46519,
+         "id": 27927,
          "spellid": true,
          "name": "Stats",
          "agi": 4,
@@ -3366,14 +3362,14 @@ var enchant = {
    ],
 "finger2": [
       {
-         "id": 46519,
+         "id": 27920,
          "spellid": true,
          "name": "Striking",
          "bonusdmg": 2,
          "phase": 1
       },
       {
-         "id": 46519,
+         "id": 27927,
          "spellid": true,
          "name": "Stats",
          "agi": 4,
@@ -3423,7 +3419,7 @@ var enchant = {
          "phase": 1
       },
       {
-         "id": 46462,
+         "id": 27971,
          "spellid": true,
          "name": "Savagery",
          "ap": 70,

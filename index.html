@@ -162,6 +162,7 @@ profiles
       <a href="#" class="btn js-dps">TPS</a>
       <a href="#" class="btn js-weights">STAT WEIGHTS</a>
       <a href="#" class="btn js-table">SHEET TPS</a>
+      <a href="#" class="btn js-table-all">ALL SHEET TPS</a>
       <a href="#" class="btn js-stats disabled">STATS</a>
       <a href="#" class="btn js-settings">SETTINGS</a>
       <!-- <a href="#" class="btn js-saveconfig">SAVE / LOAD CONFIG</a> -->
@@ -198,6 +199,10 @@ profiles
           <li>
             <label>Simulations</label>
             <input type="text" name="simulations" value="50000" data-numberonly="true">
+          </li>
+          <li>
+            <label>Simulations (All)</label>
+            <input type="text" name="simulationsall" value="10" data-numberonly="true">
           </li>
           <li>
             <label>Fight Duration (min)</label>
@@ -316,6 +321,31 @@ profiles
           <li data-id="2" data-sources="ssc, tk">P2</li>
           <li data-id="3" data-sources="hyjal, bt">P3</li>
           <li data-id="4" data-sources="za">P4</li>
+        </ul>
+      </article>
+
+      
+      <article class="import">
+        <label>70Up Import</label>
+        <ul>
+          <li>
+            <div class="container" >
+              <input type="file" name="file" id="file">
+              
+              <!-- Drag and Drop container-->
+              <div class="upload-area"  id="uploadfile">
+                <h1>Drag and Drop file here<br/>Or<br/>Click to select file</h1>
+              </div>
+          </div>
+          
+          <textarea name="importstring" class="importstring" value=""></textarea>
+  
+            <button type="button" class="js-import" name="import">
+              Import
+            </button>
+            <span class="importmsg">
+            </span>
+          </li>
         </ul>
       </article>
 

@@ -181,7 +181,7 @@ class Simulation {
             bosscrush: ($('input[name="bosscrush"]').val()) == "Yes",
             bossdw: ($('input[name="bossdw"]').val()) == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
-            incswingtimer: parseFloat($('input[name="simulations"]').val()),
+            incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
             priorityap: parseInt(spells[1].priorityap),
             pullvariancethreshold: parseFloat($('input[name="pullvariancethreshold"]').val()),
             pullvariancetime: parseFloat($('input[name="pullvariancetime"]').val()),
