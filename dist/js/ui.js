@@ -253,19 +253,19 @@ SIM.UI = {
             let msgString = result.err != null ? '<span class="error">Failed</span>' : '<span class="success">Success</span>'
             if(result.importsFailed){
                 if(result.importsFailed.items.length > 0){
-                    msgString += "<br>Items not importet:" 
+                    msgString += "<br>Items not imported:" 
                     result.importsFailed.items.forEach(item => {
                         msgString += `<br> ${item.name}`
                     })
                 }
                 if(result.importsFailed.enchants.length > 0){
-                    msgString += "<br>Enchants not importet:" 
+                    msgString += "<br>Enchants not imported:" 
                     result.importsFailed.enchants.forEach(item => {
                         msgString += `<br> ${item.name}`
                     })
                 }
                 if(result.importsFailed.gems.length > 0){
-                    msgString += "<br>Gems not importet:" 
+                    msgString += "<br>Gems not imported:" 
                     result.importsFailed.gems.forEach(item => {
                         msgString += `<br> ${item.name}`
                     })
@@ -394,6 +394,10 @@ SIM.UI = {
                 for(let item of gearToImport.items){
                     var itemType = item.slot.toLowerCase().replaceAll("_", "");
                     switch(itemType){
+                        case "shirt":
+                        case "tabard":
+                            continue
+
                         case "legs":
                         case "hands":
                             break

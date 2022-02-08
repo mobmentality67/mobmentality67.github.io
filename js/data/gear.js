@@ -3572,6 +3572,12 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
          "id": 33143,
          "name": "Stone of Blades",
          "critrating": 12,
@@ -3726,6 +3732,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
          "color": "yellow",
       },
       {
@@ -3885,6 +3897,12 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
          "id": 33143,
          "name": "Stone of Blades",
          "critrating": 12,
@@ -4038,6 +4056,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
          "color": "yellow",
       },
       {
@@ -4197,6 +4221,12 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
          "id": 33143,
          "name": "Stone of Blades",
          "critrating": 12,
@@ -4350,6 +4380,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
          "color": "yellow",
       },
       {
@@ -4509,6 +4545,12 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
          "id": 33143,
          "name": "Stone of Blades",
          "critrating": 12,
@@ -4662,6 +4704,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
          "color": "yellow",
       },
       {
@@ -4821,6 +4869,12 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
          "id": 33143,
          "name": "Stone of Blades",
          "critrating": 12,
@@ -4974,6 +5028,12 @@ var gem = {
          "id": 24053,
          "name": "Mystic Dawnstone",
          "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
          "color": "yellow",
       },
       {
