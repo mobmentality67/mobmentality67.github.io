@@ -201,7 +201,7 @@ class Aura {
         return this.canUse();
     }
     use() {
-        if (this.timer) this.uptime += (step - this.starttimer);
+        if (this.timer) this.uptime += step - this.starttimer;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.player.updateStats();
@@ -220,7 +220,7 @@ class Aura {
     }
     end() {
         if (this.active) {
-           this.uptime += (step - this.starttimer);
+           this.uptime += step - this.starttimer;
         }
         this.timer = 0;
         this.stacks = 0;
@@ -258,7 +258,7 @@ class LacerateDOT extends Aura {
         }
     }
     use() {
-        if (this.timer) this.uptime += (step - this.starttimer);
+        if (this.timer) this.uptime += step - this.starttimer;
         this.stacks = Math.min(this.stacks + 1, 5);
         this.dmg = ((31 + this.player.stats.ap / 100) + (this.player.t5laceratebonus * 3)) * this.stacks;
         if (!this.nexttick || this.nextTick == 0) {
@@ -271,7 +271,7 @@ class LacerateDOT extends Aura {
 
     end() {
         if (this.active) {
-           this.uptime += (step - this.starttimer);
+           this.uptime += step - this.starttimer;
         }
         this.timer = 0;
         this.stacks = 0;
@@ -293,7 +293,7 @@ class Pummeler extends Aura {
     }
     use() {
         this.player.timer = 0;
-        if (this.timer) this.uptime += (step - this.starttimer);
+        if (this.timer) this.uptime += step - this.starttimer;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -392,7 +392,7 @@ class Icon extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Target armor at ${this.player.target.armor}`);
          }
     }
@@ -444,7 +444,7 @@ class Spider extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
@@ -480,7 +480,7 @@ class Bloodlust extends Aura {
             this.timer = this.starttimer + this.cooldown;
             if (this.player.enableLogging) oldHaste = this.player.stats.haste;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
         }
     }
@@ -516,7 +516,7 @@ class HastePotion extends Aura {
             this.timer = this.starttimer + this.cooldown;
             if (this.player.enableLogging) oldHaste = this.player.stats.haste;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
         }
     }
@@ -553,7 +553,7 @@ class Squawks extends Aura {
             this.timer = this.starttimer + this.cooldown;
             if (this.player.enableLogging) oldHaste = this.player.stats.haste;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             this.player.log(`Aura ${this.name} removed. Haste dropped from: ${oldHaste} to ${this.player.stats.haste}`);
         }
     }
@@ -587,7 +587,7 @@ class Slayer extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -612,6 +612,7 @@ class Madness extends Aura {
     }
     use() {
         this.player.timer = 0;
+        if (this.active) this.uptime += step - this.starttimer;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -623,7 +624,7 @@ class Madness extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc removed -- target armor at ${this.player.target.armor}`);
         }
     }
@@ -657,7 +658,7 @@ class Berserkers extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -691,7 +692,7 @@ class BloodlustBrooch extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -725,7 +726,7 @@ class Direbrew extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -759,7 +760,7 @@ class Tablet extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -793,7 +794,7 @@ class Abacus extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
@@ -828,7 +829,7 @@ class Hourglass extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -864,7 +865,7 @@ class Band extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Aura ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -899,7 +900,7 @@ class DST extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Haste: ${this.player.stats.haste}`);
         }
     }
@@ -935,7 +936,7 @@ class Tsunami extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
         }
     }
@@ -970,8 +971,42 @@ class Tenacity extends Aura {
             this.active = false;
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
-            this.uptime += (step - this.starttimer);
+            this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Agility: ${this.player.stats.agi}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+    }
+}
+
+class MangleAPBuff extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { ap: 94 };
+        this.name = 'Mangle AP Buff';
+        this.cooldown = 0;
+        this.active = false;
+    }
+    use() {
+        this.player.timer = 0;
+        this.player.itemtimer = 0;
+        this.timer = step + this.duration * 1000;
+        if (this.active) this.uptime += step - this.starttimer;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Idol Of the White Stag applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Idol Of the White Stag removed. AP: ${this.player.stats.ap}`);
         }
     }
     canUse() {

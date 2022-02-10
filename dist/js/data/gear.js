@@ -2620,6 +2620,12 @@ var gear = {
          "phase": "2",
          "id": 32387,
          "critrating": 20
+      },
+      {
+         "name": "Idol of the White Stag",
+         "source": "BT",
+         "phase": "3",
+         "id": 32257
       }
    ],
    "mainhand": [
@@ -3478,6 +3484,13 @@ var gem = {
          "color": "orange",
       },
       {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
          "id": 32200,
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
@@ -3638,6 +3651,13 @@ var gem = {
          "name": "Glinting Pyrestone",
          "agi": 5,
          "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
          "color": "orange",
       },
       {
@@ -3803,6 +3823,13 @@ var gem = {
          "color": "orange",
       },
       {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
          "id": 32200,
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
@@ -3962,6 +3989,13 @@ var gem = {
          "name": "Glinting Pyrestone",
          "agi": 5,
          "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
          "color": "orange",
       },
       {
@@ -4127,6 +4161,13 @@ var gem = {
          "color": "orange",
       },
       {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
          "id": 32200,
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
@@ -4286,6 +4327,13 @@ var gem = {
          "name": "Glinting Pyrestone",
          "agi": 5,
          "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
          "color": "orange",
       },
       {
@@ -4451,6 +4499,13 @@ var gem = {
          "color": "orange",
       },
       {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
          "id": 32200,
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
@@ -4610,6 +4665,13 @@ var gem = {
          "name": "Glinting Pyrestone",
          "agi": 5,
          "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
          "color": "orange",
       },
       {
@@ -4775,6 +4837,13 @@ var gem = {
          "color": "orange",
       },
       {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
          "id": 32200,
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
@@ -4934,6 +5003,13 @@ var gem = {
          "name": "Glinting Pyrestone",
          "agi": 5,
          "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
          "color": "orange",
       },
       {

@@ -154,6 +154,7 @@ class Player {
         if (this.items.includes(33831)) this.auras.berserkers = new Berserkers(this);
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
+        if (this.items.includes(32257)) this.auras.idolofthewhitestag = new MangleAPBuff(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
@@ -1133,16 +1134,25 @@ class Player {
                     if (this.trinketproc2.spell && this.trinketproc2.spell.canProc()) this.trinketproc2.spell.proc();
                 }
             }
+
+            /* Check for Idol of the White Stag Proc */
+            if (this.auras.idolofthewhitestag && spell && spell.name == "Mangle") {
+                this.auras.idolofthewhitestag.proc();
+            }
+
+
+            /* Check for magical damage proc (i.e. poison vial) */
             if (this.attackproc && rng10k() < this.attackproc.chance) {
                 if (this.attackproc.magicdmg) procdmg += this.magicproc(this.attackproc);
                 if (this.attackproc.spell) this.attackproc.spell.use();
-                //if (log) this.log(`Misc proc`);
             }
 
+            /* Check for badge of the swarmguard proc */
             if (this.auras.swarmguard && this.auras.swarmguard.timer && rng10k() < this.auras.swarmguard.chance) {
                 this.auras.swarmguard.proc();
             }
 
+            /* Check for dragonbreath chili proc */
             if (this.dragonbreath && rng10k() < 400) {
                 procdmg += this.magicproc({ magicdmg: 60, coeff: 1 });
             }
