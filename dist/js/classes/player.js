@@ -211,8 +211,7 @@ class Player {
                 this.auras[ring.procspell.toLowerCase()] = newSpell;
                 proc.spell = newSpell;
             }
-            // This should be cleaned up to not only say trinket, but leaving it for now
-            this["trinketproc" + (this.trinketproc1 ? 2 : 1)] = proc;
+            this["ringproc" + (this.ringproc1 ? 2 : 1)] = proc;
         }
     }
 
@@ -1108,30 +1107,21 @@ class Player {
             /* Check Omen of Clarity Proc */
             this.ooc.rollOOC(step, spell);
 
-            // If trinket 1 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
-            if (this.trinketproc1 && (!this.trinketproc1.spell.requirescrit || result == RESULT.CRIT)) {
-                let chance;
-                if (spell && spell.name != "Maul") chance = this.trinketproc1.spell.yellowchance;
-                else chance = this.trinketproc1.spell.whitechance;
-                if (Math.random() < chance) {
-                    //if (log) this.log(`Trinket 1 proc`);
-                    if (this.trinketproc1.extra)
-                        this.batchedextras += this.trinketproc1.extra;
-                    if (this.trinketproc1.spell.magicdmg) procdmg += this.magicproc(this.trinketproc1.spell);
-                    if (this.trinketproc1.spell && this.trinketproc1.spell.canProc()) this.trinketproc1.spell.proc();
-                }
-            }
-            // If trinket 2 has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
-            if (this.trinketproc2 && (!this.trinketproc2.spell.requirescrit || result == RESULT.CRIT)) {
-                let chance;
-                if (spell && spell.name != "Maul") chance = this.trinketproc2.spell.yellowchance;
-                else chance = this.trinketproc2.spell.whitechance;
-                if (Math.random() < chance) {
-                    //if (log) this.log(`Trinket 2 proc`);
-                    if (this.trinketproc2.extra)
-                        this.batchedextras += this.trinketproc2.extra;
-                    if (this.trinketproc2.spell.magicdmg) procdmg += this.magicproc(this.trinketproc2.spell);
-                    if (this.trinketproc2.spell && this.trinketproc2.spell.canProc()) this.trinketproc2.spell.proc();
+            const procSlots = [this.trinketproc1, this.trinketproc2, this.ringproc1, this.ringproc2];
+
+            for (const procSlot of procSlots) {
+                // If item has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
+                if (this.procSlot && (!this.procSlot.spell.requirescrit || result == RESULT.CRIT)) {
+                    let chance;
+                    if (spell && spell.name != "Maul") chance = this.procSlot.spell.yellowchance;
+                    else chance = this.procSlot.spell.whitechance;
+                    if (Math.random() < chance) {
+                        //if (log) this.log("${spell.name} proc");
+                        if (this.procSlot.extra)
+                            this.batchedextras += this.trinketproc1.extra;
+                        if (this.procSlot.spell.magicdmg) procdmg += this.magicproc(this.procSlot.spell);
+                        if (this.procSlot.spell && this.procSlot.spell.canProc()) this.procSlot.spell.proc();
+                    }
                 }
             }
 
