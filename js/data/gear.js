@@ -2620,12 +2620,6 @@ var gear = {
          "phase": "2",
          "id": 32387,
          "critrating": 20
-      },
-      {
-         "name": "Idol of the White Stag",
-         "source": "BT",
-         "phase": "3",
-         "id": 32257
       }
    ],
    "mainhand": [
