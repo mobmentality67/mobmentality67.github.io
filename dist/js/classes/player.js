@@ -1111,16 +1111,16 @@ class Player {
 
             for (const procSlot of procSlots) {
                 // If item has a proc and the proc doesn't require a crit or the result is a crit, roll for a proc
-                if (this.procSlot && (!this.procSlot.spell.requirescrit || result == RESULT.CRIT)) {
+                if (procSlot && (!procSlot.spell.requirescrit || result == RESULT.CRIT)) {
                     let chance;
-                    if (spell && spell.name != "Maul") chance = this.procSlot.spell.yellowchance;
-                    else chance = this.procSlot.spell.whitechance;
+                    if (spell && spell.name != "Maul") chance = procSlot.spell.yellowchance;
+                    else chance = procSlot.spell.whitechance;
                     if (Math.random() < chance) {
                         //if (log) this.log("${spell.name} proc");
-                        if (this.procSlot.extra)
-                            this.batchedextras += this.trinketproc1.extra;
-                        if (this.procSlot.spell.magicdmg) procdmg += this.magicproc(this.procSlot.spell);
-                        if (this.procSlot.spell && this.procSlot.spell.canProc()) this.procSlot.spell.proc();
+                        if (procSlot.extra)
+                            this.batchedextras += procSlot.extra;
+                        if (procSlot.spell.magicdmg) procdmg += this.magicproc(procSlot.spell);
+                        if (procSlot.spell && procSlot.spell.canProc()) procSlot.spell.proc();
                     }
                 }
             }
