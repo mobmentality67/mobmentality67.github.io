@@ -292,7 +292,6 @@ class Pummeler extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         if (this.timer) this.uptime += step - this.starttimer;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -431,7 +430,6 @@ class Spider extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -465,7 +463,6 @@ class Bloodlust extends Aura {
     }
     use() {
         let oldHaste;
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -501,7 +498,6 @@ class HastePotion extends Aura {
     }
     use() {
         let oldHaste;
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -538,7 +534,6 @@ class Squawks extends Aura {
     }
     use() {
         let oldHaste;
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -574,7 +569,6 @@ class Slayer extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -611,7 +605,6 @@ class Madness extends Aura {
         this.spelldelay = 0;
     }
     use() {
-        this.player.timer = 0;
         if (this.active) this.uptime += step - this.starttimer;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -645,7 +638,6 @@ class Berserkers extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -679,7 +671,6 @@ class BloodlustBrooch extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -713,7 +704,6 @@ class Direbrew extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -747,7 +737,6 @@ class Tablet extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -781,7 +770,6 @@ class Abacus extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -817,7 +805,6 @@ class Hourglass extends Aura {
         this.yellowchance = .10;
     }
     use() {
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -853,7 +840,6 @@ class Band extends Aura {
         this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
     }
     use() {
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -888,7 +874,6 @@ class DST extends Aura {
         this.yellowchance = this.player.mh.getProcChanceFromPPM(this.ppm, this.player.mh.speed);
     }
     use() {
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -924,7 +909,6 @@ class Tsunami extends Aura {
         this.yellowchance = .10;
     }
     use() {
-        this.player.timer = 0;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -958,7 +942,6 @@ class Tenacity extends Aura {
         this.activeUse = true;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
@@ -991,7 +974,6 @@ class MangleAPBuff extends Aura {
         this.active = false;
     }
     use() {
-        this.player.timer = 0;
         this.player.itemtimer = 0;
         this.timer = step + this.duration * 1000;
         if (this.active) this.uptime += step - this.starttimer;
@@ -1010,7 +992,15 @@ class MangleAPBuff extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer);
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
     }
 }
 

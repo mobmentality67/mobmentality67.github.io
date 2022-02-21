@@ -306,7 +306,7 @@ class Simulation {
             player.auras.pummeler,
             player.auras.tenacity,
             player.auras.squawks,
-            player.auras.idolofthewhitestag
+            player.auras.mangleapbuff
         ];
 
         /* Remove spells/auras that don't exist in this run */

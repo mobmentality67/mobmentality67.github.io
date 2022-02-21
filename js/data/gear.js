@@ -2620,65 +2620,13 @@ var gear = {
          "phase": "2",
          "id": 32387,
          "critrating": 20
-      }
-   ],
-   "mainhand": [
-      {
-         "name": "Blessed Qiraji War Hammer",
-         "str": 10,
-         "sta": 12,
-         "def": 12,
-         "ac": 70,
-         "ap": 337,
-         "mindmg": 89,
-         "maxdmg": 166,
-         "speed": 2.1,
-         "type": "Mace",
-         "source": "Other",
-         "phase": 1,
-         "id": 21268
       },
       {
-         "name": "The End of Dreams",
-         "sta": 13,
-         "ap": 423,
-         "mindmg": 45,
-         "maxdmg": 121,
-         "speed": 1.9,
-         "type": "Mace",
-         "source": "Other",
-         "phase": 1,
-         "id": 22988
-      }
-   ],
-   "offhand": [
-      {
-         "name": "Gladiator's Endgame",
-         "sta": 21,
-         "res": 15,
-         "type": "Offhand",
-         "source": "PVP",
-         "phase": 1,
-         "id": 28346
-      },
-      {
-         "name": "Gladiator's Reprieve",
-         "sta": 21,
-         "res": 15,
-         "type": "Offhand",
-         "source": "PVP",
-         "phase": 1,
-         "id": 32452
-      },
-      {
-         "name": "Tome of Knowledge",
-         "sta": 8,
-         "str": 8,
-         "agi": 8,
-         "type": "Offhand",
-         "source": "Other",
-         "phase": 1,
-         "id": 13385
+         "name": "Idol of the White Stag",
+         "source": "BT",
+         "phase": "3",
+         "id": 32257,
+         "procspell": "MangleAPBuff"
       }
    ],
    "twohand": [

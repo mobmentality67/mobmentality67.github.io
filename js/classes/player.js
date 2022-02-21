@@ -154,7 +154,7 @@ class Player {
         if (this.items.includes(33831)) this.auras.berserkers = new Berserkers(this);
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
-        if (this.items.includes(32257)) this.auras.idolofthewhitestag = new MangleAPBuff(this);
+        if (this.items.includes(32257)) this.auras.mangleapbuff = new MangleAPBuff(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
@@ -215,11 +215,25 @@ class Player {
         }
     }
 
+    setupIdol(idol) {
+        /* Setup trinket proc chance, PPM */
+        if (idol.procspell) {
+            let proc = {};
+            if (idol.procspell) {
+                let newSpell = eval('new ' + idol.procspell + '(this)');
+                this.auras[idol.procspell.toLowerCase()] = newSpell;
+                proc.spell = newSpell;
+            }
+            this["idolproc"] = proc;
+        }
+    }
+
     addGear() {
         let trinket1;
         let trinket2;
         let ring1;
         let ring2;
+        let idol;
 
         for (let type in gear) {
             for (let item of gear[type]) {
@@ -242,6 +256,9 @@ class Player {
                     else if (type == "finger2") {
                         ring2 = item;
                     }
+                    else if (type == "ranged") {
+                        idol = item;
+                    }
 
                     this.items.push(item.id);
                     this.itemsEquipped[type] = item;
@@ -255,6 +272,7 @@ class Player {
         if (trinket2) this.setupTrinket(trinket2);
         if (ring1) this.setupRing(ring1);
         if (ring2) this.setupRing(ring2);
+        if (idol) this.setupIdol(idol);
     }
     addWeapon(item, type) {
 
@@ -1126,8 +1144,8 @@ class Player {
             }
 
             /* Check for Idol of the White Stag Proc */
-            if (this.auras.idolofthewhitestag && spell && spell.name == "Mangle") {
-                this.auras.idolofthewhitestag.proc();
+            if (this.items.includes(32257) && spell && spell.name == "Mangle") {
+                this.auras.mangleapbuff.proc();
             }
 
 
