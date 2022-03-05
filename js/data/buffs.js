@@ -227,7 +227,8 @@ var buffs = [
       id: 14169,
       spellid: true,
       name: "Improved Expose Armor",
-      iconname: "ability_warrior_riposte"
+      iconname: "ability_warrior_riposte",
+      debuff: true
    }
    
 ];

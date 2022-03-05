@@ -119,10 +119,11 @@
     }
 
     .buffs {
-        font-size: 0;
+        font-size: 40;
         width: 330px;
         height: 525px;
     }
+
 
     .rotation {
         width: calc(100% - 670px);
@@ -399,7 +400,7 @@
         .rotation {
             width: 100%;
         }
-        .fight, .buffs {
+        .fight,  {
             width: calc(50% - 2px);
             height: 525px;
         }
