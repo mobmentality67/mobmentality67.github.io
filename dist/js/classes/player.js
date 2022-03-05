@@ -12,10 +12,10 @@ class Player {
             weaponrng: $('select[name="weaponrng"]').val() == "Yes",
             spelldamage: parseInt($('input[name="spelldamage"]').val()),
             target: {
-                level: parseInt($('input[name="targetlevel"]').val()),
-                basearmor: parseInt($('input[name="targetarmor"]').val()),
-                armor: parseInt($('input[name="targetarmor"]').val()),
-                defense: parseInt($('input[name="targetlevel"]').val()) * 5,
+                level: 73,
+                basearmor: parseInt($('input[name="targetbasearmor"]').val()),
+                armor: parseInt($('input[name="targetbasearmor"]').val()),
+                defense: 73 * 5,
                 binaryresist: parseInt(10000 - (8300 * (1 - (parseInt($('input[name="targetresistance"]').val()) * 0.15 / 60)))),
             },
             activetank: $('select[name="activetank"]').val() == "Yes",
@@ -50,6 +50,7 @@ class Player {
         this.t4rageproc = false;
         this.t5laceratebonus = false;
         this.squawks = 0;
+        this.currenthp = 0;
         this.base = {
             sta: 0,
             ac: 0,
@@ -83,6 +84,17 @@ class Player {
             apmod: 1,
             arpen: 0
         };
+
+        this.updateTimes = [
+            [610,  1000], // FF at 1s
+            [800,  1000], // CoR at 1s
+            [520,  1000], // First sunder at 1.0s
+            [520,  2500], // Second sunder at 2.5s
+            [520,  4000], // Third sunder at 4.0s
+            [520,  5500], // Fourth sunder at 5.5s
+            [520,  7000], // Fifth sunder at 7.0s
+        ];
+        this.debuffarmor = 0;
 
         this.damageTakenData = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -543,6 +555,10 @@ class Player {
             else if (buff.id == 28507) {
                 this.hastepot = buff.active;
             }
+
+            if (buff.id == 14169 && buff.active) {
+                this.updateTimes.push([475, 18000]); // IEA at 5s (armor diff of IEA - 5 sunders)
+            }
         }
     }
     addSpells() {
@@ -654,8 +670,18 @@ class Player {
     }
 
     updateTargetArmorReduction() {
-        this.target.armor = Math.max(0, this.target.basearmor - this.stats.arpen);
+        this.target.armor = Math.max(0, this.target.basearmor - this.stats.arpen - this.debuffarmor);
         this.armorReduction = this.getArmorReduction(this.target.armor, this.level);
+    }
+
+    updateTargetArmorForTime(tick) {
+        this.updateTimes.forEach((timepair, index)  => {
+            if (tick >= timepair[1]) {
+                this.debuffarmor += timepair[0];
+                this.updateTimes = this.updateTimes.filter(item => item !== timepair);
+                this.updateTargetArmorReduction();
+            }
+        });
     }
 
     getGlanceReduction(weapon) {
@@ -712,8 +738,7 @@ class Player {
     }
 
     getHP() {
-        // Hard-coded improved fortitude
-        return (this.stats.sta * 10) + 102.7;
+        return (this.stats.sta * 10);
     }
 
     addRage(dmg, result, weapon, spell) {

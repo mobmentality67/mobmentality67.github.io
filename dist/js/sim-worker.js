@@ -89,7 +89,6 @@ onmessage = (event) => {
         module.HEAP32[cfg + 3] = races.indexOf(params.player[3].race);
         module.HEAP32[cfg + 4] = params.player[3].weaponrng ? 1 : 0;
         module.HEAP32[cfg + 5] = params.player[3].spelldamage;
-        module.HEAP32[cfg + 6] = params.player[3].target.level;
         module.HEAP32[cfg + 7] = params.player[3].target.basearmor;
         module.HEAP32[cfg + 8] = params.player[3].target.armor;
         module.HEAP32[cfg + 9] = params.player[3].target.defense;
@@ -105,6 +104,7 @@ onmessage = (event) => {
         module.HEAP32[cfg + 19] = params.sim.pullvariancethreshold;
         module.HEAP32[cfg + 20] = params.sim.pullvariancetime;
         module.HEAP32[cfg + 21] = params.sim.pullvariancemdthreat;
+        module.HEAP32[cfg + 22] = params.sim.tpspercentile;
 
         const talentsPtr = module._allocTalents();
         for (let tree of talents) {

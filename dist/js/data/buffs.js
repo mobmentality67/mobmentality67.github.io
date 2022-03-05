@@ -222,6 +222,12 @@ var buffs = [
       name: "Haste Potion",
       group: "potion",
       iconname: "inv_potion_108"
+   },
+   {
+      id: 14169,
+      spellid: true,
+      name: "Improved Expose Armor",
+      iconname: "ability_warrior_riposte"
    }
    
 ];

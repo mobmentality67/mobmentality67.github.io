@@ -512,6 +512,7 @@ SIM.UI = {
             view.endLoading();
             return;
         }
+
         var sim = new SimulationWorkerParallel(
             MAX_WORKERS,
             (report) => {
@@ -1264,18 +1265,16 @@ SIM.UI = {
     updateSession: function () {
         var view = this;
 
-        localStorage.level = view.fight.find('input[name="level"]').val();
+        localStorage.level = 70;
         localStorage.race = view.fight.find('select[name="race"]').val();
         localStorage.simulations = view.fight.find('input[name="simulations"]').val();
         localStorage.simulationsall = view.fight.find('input[name="simulationsall"]').val();
         localStorage.timesecsmin = view.fight.find('input[name="timesecsmin"]').val();
         localStorage.timesecsmax = view.fight.find('input[name="timesecsmax"]').val();
         localStorage.startrage = view.fight.find('input[name="startrage"]').val();
-        localStorage.targetlevel = view.fight.find('input[name="targetlevel"]').val();
-        localStorage.targetarmor = view.fight.find('input[name="targetarmor"]').val();
+        localStorage.targetlevel = 73
+        localStorage.targetbasearmor = view.fight.find('input[name="targetbasearmor"]').val();
         localStorage.targetresistance = view.fight.find('input[name="targetresistance"]').val();
-        localStorage.adjacent = view.fight.find('input[name="adjacent"]').val();
-        localStorage.adjacentlevel = view.fight.find('input[name="adjacentlevel"]').val();
         localStorage.weaponrng = view.fight.find('select[name="weaponrng"]').val();
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
         localStorage.activetank = view.fight.find('select[name="activetank"]').val();

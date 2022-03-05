@@ -349,6 +349,9 @@ class Simulation {
 
         while (step < this.maxsteps) {
 
+            // Check debuffs
+            player.updateTargetArmorForTime(step);
+
             // Attack boss
             if (player.mh.timer <= 0) {
                 /* Step timers for active spells */
