@@ -408,10 +408,10 @@ SIM.UI = {
                             break
                     }
                     if(itemType == "mainhand"){
-                        if(gear["twohand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                        if(gear["twohand"] && gear["twohand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
                             itemType = "twohand";
                         }
-                        if(gear["offhand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
+                        if(gear["offhand"] && gear["offhand"].findIndex(tmpItem => tmpItem.id == item.id) > -1){
                             itemType = "offhand";
                         }
                     }
