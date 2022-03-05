@@ -557,7 +557,7 @@ class Player {
             }
 
             if (buff.id == 14169 && buff.active) {
-                this.updateTimes.push([475, 18000]); // IEA at 5s (armor diff of IEA - 5 sunders)
+                this.updateTimes.push([475, 18000]); // IEA at 18s (armor diff of IEA - 5 sunders)
             }
         }
     }
