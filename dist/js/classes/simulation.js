@@ -301,6 +301,8 @@ class Simulation {
             player.auras.band,
             player.auras.hourglass,
             player.auras.tsunami,
+            player.auras.shard,
+            player.auras.sliver,
             player.auras.bloodlust,
             player.auras.hastepot,
             player.auras.pummeler,

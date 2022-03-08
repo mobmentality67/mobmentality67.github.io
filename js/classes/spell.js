@@ -362,6 +362,58 @@ class Swarmguard extends Aura {
     }
 }
 
+class Sliver extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { ap: 0 };
+        this.stacks = 0;
+        this.whitechance = .10;
+        this.yellowchance = .10;
+        this.timetoend = 20000;
+        this.cooldown = 45 * 1000;
+        this.active = false;
+        this.spelldelay = 0;
+    }
+    canUse() {
+        return (step >= this.timer || this.active);
+    }
+    proc() {
+        /* If activation proc, set up the stacks and duration */
+        if (this.active == false) {
+            this.timer = step + this.duration * 1000;
+            this.starttimer = step;
+            this.stacks = 0;
+            this.active = true;
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated `);
+            /* Proc rate for AP is 100% after activating */
+            this.whitechance = 1;
+            this.yellowchance = 1;
+        }
+
+        this.stacks = Math.min(this.stacks + 1, 10);
+        this.stats.ap = this.stacks * 44;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} proc -- AP at ${this.player.stats.ap}`);
+    }
+
+    step() {
+        if (step >= this.timer && this.active) {
+            this.uptime += (this.timer - this.starttimer);
+            this.stats.ap = 0;
+            this.timer = this.starttimer + this.cooldown;
+            this.stacks = 0;
+            this.firstuse = false;
+            this.player.updateStats();
+            this.active = false;
+            /* Drop proc rate back to 10% for re-activation */
+            this.whitechance = .1;
+            this.yellowchance = .1;
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed -- AP at ${this.player.stats.ap}`);
+        }
+    }
+}
+
 class Icon extends Aura {
     constructor(player) {
         super(player);
@@ -902,6 +954,40 @@ class Tsunami extends Aura {
         this.duration = 10;
         this.stats = { ap: 340 };
         this.name = 'Tsunami Talisman';
+        this.cooldown = 45 * 1000;
+        this.active = false;
+        this.requirescrit = true;
+        this.whitechance = .10;
+        this.yellowchance = .10;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. AP: ${this.player.stats.ap}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. AP: ${this.player.stats.ap}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active;
+    }
+}
+
+class Shard extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { ap: 230 };
+        this.name = 'Shard of Contempt';
         this.cooldown = 45 * 1000;
         this.active = false;
         this.requirescrit = true;
