@@ -51,6 +51,7 @@ class Player {
         this.t5laceratebonus = false;
         this.squawks = 0;
         this.currenthp = 0;
+        this.lasthptick = 0;
         this.base = {
             sta: 0,
             ac: 0,
@@ -64,6 +65,7 @@ class Player {
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
+            inchps: config.inchps,
             incmiss: 4.4,
             hit: 0,
             hitrating: 0,
@@ -994,7 +996,17 @@ class Player {
         return threat;
     }
 
-    takeattack() {
+    takeheal(tick) {
+        let timeDiff = Math.floor(tick / 1000) - this.lasthptick;
+        if (timeDiff >= 1.0) {
+            this.currenthp += timeDiff * this.inchps;
+            this.lasthptick = tick / 1000;
+        }
+
+    }
+
+    takeattack(tick) {
+        this.takeheal(tick);
         this.incswingtimer = this.base.incswingtimer;
         let result = this.rollattacktaken();
         let dmg = this.incswingdamage;
@@ -1018,6 +1030,9 @@ class Player {
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
         this.addDamageTakenRage(dmg);
+        /* Update current HP. Return -1 damage if dead */
+        this.currenthp = this.currenthp - dmg;
+        if (this.currenthp <= 0) dmg = -1;
         return dmg;
     }
 

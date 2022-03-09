@@ -104,7 +104,7 @@ onmessage = (event) => {
         module.HEAP32[cfg + 19] = params.sim.pullvariancethreshold;
         module.HEAP32[cfg + 20] = params.sim.pullvariancetime;
         module.HEAP32[cfg + 21] = params.sim.pullvariancemdthreat;
-        module.HEAP32[cfg + 22] = params.sim.tpspercentile;
+        module.HEAP32[cfg + 22] = params.sim.inchps;
 
         const talentsPtr = module._allocTalents();
         for (let tree of talents) {

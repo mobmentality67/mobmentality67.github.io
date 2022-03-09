@@ -1285,6 +1285,7 @@ SIM.UI = {
         localStorage.pullvariancethreshold = parseFloat($('input[name="pullvariancethreshold"]').val());
         localStorage.pullvariancetime = parseFloat($('input[name="pullvariancetime"]').val());
         localStorage.pullvariancemdthreat = parseFloat($('input[name="pullvariancemdthreat"]').val());
+        localStorage.inchps = parseFloat($('input[name="inchps"]').val());
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {}, _gem = {};
         view.buffs.find('.active').each(function () { 

@@ -186,6 +186,7 @@ class Simulation {
             pullvariancethreshold: parseFloat($('input[name="pullvariancethreshold"]').val()),
             pullvariancetime: parseFloat($('input[name="pullvariancetime"]').val()),
             pullvariancemdthreat: parseFloat($('input[name="pullvariancemdthreat"]').val()),
+            inchps: parseFloat($('input[name="inchps"]').val()),
         };
     }
     constructor(player, callback_finished, callback_update, config) {
@@ -368,7 +369,10 @@ class Simulation {
 
             // Incoming attack
             if (player.activetank && player.incswingtimer <= 0) {
-                let damageTaken = player.takeattack();
+                let damageTaken = player.takeattack(step);
+                if (damageTaken == -1) {
+                    step = this.maxsteps; continue;
+                }
                 this.idamagetaken += damageTaken;
                 spellcheck = true;
             }
