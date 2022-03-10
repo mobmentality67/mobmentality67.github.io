@@ -8,6 +8,14 @@ var buffs = [
       ap: 382,
    },
    {
+      id: 469,
+      spellid: true,
+      name: "Commanding Shout",
+      iconname: "ability_warrior_rallyingcry",
+      group: "commshout",
+      bonushp: 1350,
+   },
+   {
       id: 26990,
       spellid: true,
       name: "Mark of the Wild",
@@ -110,6 +118,13 @@ var buffs = [
       iconname: "inv_misc_food_84_roastclefthoof",
       group: "food",
       hitrating: 20
+   },
+   {
+      id: 33052,
+      name: "Fisherman's Feast",
+      iconname: "inv_misc_food_88_ravagernuggets",
+      group: "food",
+      sta: 30
    },
    {
       id: 27498,

@@ -23,6 +23,7 @@ class Player {
             bossdw: $('select[name="bossdw"]').val() == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
+            inchps: parseFloat($('input[name="inchps"]').val()),
         };
     }
     constructor(testItem, testType, enchtype, config) {
@@ -44,6 +45,7 @@ class Player {
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
+        this.inchps = config.inchps;
         this.ooc = false;
         this.enableLogging = false;
         this.activemetagem = "";
@@ -62,6 +64,7 @@ class Player {
             str: 0,
             bonusac: 0,
             bonusdmg: 0,
+            bonushp: 0,
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
@@ -174,11 +177,12 @@ class Player {
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         if (this.squawks) this.auras.squawks = new Squawks(this);
         this.update();
+        this.currenthp = this.stats.sta * 10 + this.stats.bonushp;
     }
 
     addRace() {
         for (let race of races) {
-            if (race.name == this.race) {
+        if (race.name == this.race) {
                 this.base.aprace = race.ap;
                 this.base.ap += race.ap;
                 this.base.str += race.str;
@@ -530,6 +534,7 @@ class Player {
                 this.base.hit += buff.hit || 0;
                 this.base.incmiss += buff.incmiss || 0;
                 this.base.bonusac += buff.bonusac || 0;
+                this.base.bonushp += buff.bonushp || 0;
                 this.base.hitrating += buff.hitrating || 0;
                 this.base.critrating += buff.critrating || 0;
                 this.base.spellcrit += buff.spellcrit || 0;
@@ -999,7 +1004,7 @@ class Player {
     takeheal(tick) {
         let timeDiff = Math.floor(tick / 1000) - this.lasthptick;
         if (timeDiff >= 1.0) {
-            this.currenthp += timeDiff * this.inchps;
+            this.currenthp = Math.min(this.currenthp + timeDiff * this.inchps, this.stats.stam * 10);
             this.lasthptick = tick / 1000;
         }
 
