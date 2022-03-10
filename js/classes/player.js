@@ -177,7 +177,7 @@ class Player {
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         if (this.squawks) this.auras.squawks = new Squawks(this);
         this.update();
-        this.currenthp = this.stats.sta * 10 + this.stats.bonushp;
+        this.currenthp = this.stats.maxhp;
     }
 
     addRace() {
@@ -587,6 +587,7 @@ class Player {
         this.batchedextras = 0;
         this.nextswinghs = false;
         this.nextswingcl = false;
+        this.lasthptick = 0;
         for (let s in this.spells) {
             this.spells[s].timer = 0;
             this.spells[s].stacks = 0;
@@ -650,6 +651,7 @@ class Player {
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
+        this.stats.maxhp = this.stats.sta * 10 + this.stats.bonushp;
         this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         this.stats.ap = ~~(this.stats.ap * this.stats.apmod);
         this.stats.crit += this.stats.agi / 25;
@@ -1004,8 +1006,8 @@ class Player {
     takeheal(tick) {
         let timeDiff = Math.floor(tick / 1000) - this.lasthptick;
         if (timeDiff >= 1.0) {
-            this.currenthp = Math.min(this.currenthp + timeDiff * this.inchps, this.stats.stam * 10);
-            this.lasthptick = tick / 1000;
+            this.currenthp = Math.min(this.currenthp + timeDiff * this.inchps, this.stats.maxhp);
+            this.lasthptick = Math.floor(tick / 1000);
         }
 
     }
@@ -1037,7 +1039,9 @@ class Player {
         this.addDamageTakenRage(dmg);
         /* Update current HP. Return -1 damage if dead */
         this.currenthp = this.currenthp - dmg;
-        if (this.currenthp <= 0) dmg = -1;
+        if (this.currenthp <= 0) {
+            dmg = -1;
+        }
         return dmg;
     }
 

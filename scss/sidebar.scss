@@ -333,6 +333,21 @@
         }
     }
 
+     #deaths {
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        min-height: 17px;
+        &:after {
+            content: "ended in death";
+        }
+        &:empty:after {
+            display: none;
+        }
+    }
+
     #pullvar {
         font-size: 12px;
         font-weight: bold;

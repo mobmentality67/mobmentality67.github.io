@@ -81,6 +81,7 @@ class SimulationWorkerParallel {
                 result.totalthreat += data.totalthreat;
                 result.totalduration += data.totalduration;
                 result.totaldamagetaken += data.totaldamagetaken;
+                result.totaldeaths += data.totaldeaths;
                 result.mindps = Math.min(result.mindps, data.mindps);
                 result.maxdps = Math.min(result.maxdps, data.maxdps);
                 result.mintps = Math.min(result.mintps, data.mintps);
@@ -143,7 +144,7 @@ class SimulationWorkerParallel {
             this.callback_finished(result);
         } else {
             let iteration = 0;
-            const data = { iterations: this.iterations, totalthreat:0, totaldamagetaken:0, totaldmg: 0, totalduration: 0 };
+            const data = { iterations: this.iterations, totalthreat:0, totaldamagetaken:0, totaldmg: 0, totalduration: 0, totaldeaths: 0};
             this.states.forEach(state => {
                 if (!state) return;
                 iteration += (state.status ? state.data.iterations : state.iteration);
@@ -151,6 +152,7 @@ class SimulationWorkerParallel {
                 data.totalthreat += state.data.totalthreat;
                 data.totaldamagetaken += state.data.totaldamagetaken;
                 data.totalduration += state.data.totalduration;
+                data.totaldeaths += state.data.totaldeaths;
             });
             this.callback_update(iteration, data);
         }
@@ -211,6 +213,7 @@ class Simulation {
         this.totalthreat = 0;
         this.totaldamagetaken = 0;
         this.totalduration = 0;
+        this.totaldeaths = 0;
         this.mindps = 99999;
         this.maxdps = 0;
         this.mintps = 99999;
@@ -280,6 +283,7 @@ class Simulation {
         let next = 0;
         let damageDone = 0;
         let threatDone = 0;
+        let died = false;
         var damage_threat = [0, 0];
         /* If weapon RNG is enabled, randomize first swing time [0, 1s) */
         if (this.player.weaponrng) {
@@ -371,7 +375,7 @@ class Simulation {
             if (player.activetank && player.incswingtimer <= 0) {
                 let damageTaken = player.takeattack(step);
                 if (damageTaken == -1) {
-                    step = this.maxsteps; continue;
+                    step = this.maxsteps; died = true; break;
                 }
                 this.idamagetaken += damageTaken;
                 spellcheck = true;
@@ -480,6 +484,7 @@ class Simulation {
 
         // Fight done
         player.endauras(activatedSpells);
+        player.currenthp = player.stats.maxhp;
 
         if (player.auras.laceratedot && player.spells.lacerate) {
             this.idmg += player.auras.laceratedot.idmg;
@@ -491,6 +496,7 @@ class Simulation {
         this.totalthreat += this.ithreat;
         this.totaldamagetaken += this.idamagetaken;
         this.totalduration += this.duration;
+        if (died) this.totaldeaths++;
         this.ehp = this.player.getEHP();
         let dps = this.idmg / this.duration;
         let tps = this.ithreat / this.duration;
@@ -520,7 +526,8 @@ class Simulation {
                 totalthreat: this.totalthreat,
                 totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
-                ehp: this.player.getEHP()
+                totaldeaths: this.totaldeaths,
+                ehp: this.player.getEHP(),
             });
         }
     }
@@ -532,6 +539,7 @@ class Simulation {
                 totalthreat: this.totalthreat,
                 totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
+                totaldeaths: this.totaldeaths,
                 mindps: this.mindps,
                 maxdps: this.maxdps,
                 mintps: this.mintps,
