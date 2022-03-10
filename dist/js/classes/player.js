@@ -651,7 +651,7 @@ class Player {
         this.stats.str = ~~(this.stats.str * this.stats.strmod);
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
-        this.stats.maxhp = this.stats.sta * 10 + this.stats.bonushp;
+        this.stats.maxhp = this.stats.sta * 10 + this.stats.bonushp + 3439; // 3439 assumed as base hp constant
         this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         this.stats.ap = ~~(this.stats.ap * this.stats.apmod);
         this.stats.crit += this.stats.agi / 25;

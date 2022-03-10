@@ -3987,6 +3987,7 @@ var enchant = {
          "name": "Greater Stats",
          "agi": 4,
          "str": 4,
+         "sta": 4,
          "phase": 1
       },
    ],

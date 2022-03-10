@@ -1230,7 +1230,7 @@ SIM.UI = {
 
         let space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         if (!player.mh) return;
-        view.sidebar.find('#sta').text(player.stats.sta);
+        view.sidebar.find('#maxhp').text(player.stats.maxhp);
         view.sidebar.find('#armor').html((player.stats.ac.toFixed(2) || 0));
         view.sidebar.find('#def').html(((player.level * 5 + player.stats.def) || 0).toFixed(2));
         view.sidebar.find('#res').html((player.stats.res || 0));
