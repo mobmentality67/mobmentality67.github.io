@@ -533,6 +533,7 @@ class Player {
                 this.base.crit += buff.crit || 0;
                 this.base.hit += buff.hit || 0;
                 this.base.incmiss += buff.incmiss || 0;
+                this.base.incdodgerating += buff.incdodgerating || 0;
                 this.base.bonusac += buff.bonusac || 0;
                 this.base.bonushp += buff.bonushp || 0;
                 this.base.hitrating += buff.hitrating || 0;

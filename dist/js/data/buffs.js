@@ -244,6 +244,16 @@ var buffs = [
       name: "Improved Expose Armor",
       iconname: "ability_warrior_riposte",
       debuff: true
+   },
+   {
+      id: 45769,
+      spellid: true,
+      name: "Sunwell Radiance",
+      iconname: "spell_holy_circleofrenewal",
+      debuff: true,
+      incmiss: -5.0,
+      incdodgerating: -378.46
    }
+   
    
 ];
