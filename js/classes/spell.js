@@ -1090,6 +1090,46 @@ class MangleAPBuff extends Aura {
     }
 }
 
+class PrimalInstinct extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.stats = { agi: 65 };
+        this.name = 'Primal Instinct';
+        this.cooldown = 10;
+        this.active = false;
+        this.yellowchance = .50;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Idol of Terror applied. Agility: ${this.player.stats.agi}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = step;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Idol of Terror removed. Agility: ${this.player.stats.agi}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer);
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+    }
+}
+
 class OmenOfClarity {
 
     constructor(player, oocTalent) {

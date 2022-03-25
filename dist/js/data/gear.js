@@ -3411,6 +3411,13 @@ var gear = {
          "phase": "3",
          "id": 32257,
          "procspell": "MangleAPBuff"
+      },
+      {
+         "name": "Idol of Terror (50% proc rate)",
+         "source": "Badges",
+         "phase": "4",
+         "id": 33509,
+         "procspell": "PrimalInstinct"
       }
    ],
    "twohand": [

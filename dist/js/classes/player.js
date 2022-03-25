@@ -172,6 +172,7 @@ class Player {
         if (this.items.includes(28121)) this.auras.icon = new Icon(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.items.includes(32257)) this.auras.mangleapbuff = new MangleAPBuff(this);
+        if (this.items.includes(33509)) this.auras.primalinstinct = new PrimalInstinct(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
@@ -1198,6 +1199,12 @@ class Player {
                 this.auras.mangleapbuff.proc();
             }
 
+            /* Check for Idol of Terror proc */
+            if (this.items.includes(33509) && spell && spell.name == "Mangle") {
+                if (rng10k() < (this.auras.primalinstinct.yellowchance * 10000) && this.auras.primalinstinct.canUse()) {
+                    this.auras.primalinstinct.proc();
+                }
+            }
 
             /* Check for magical damage proc (i.e. poison vial) */
             if (this.attackproc && rng10k() < this.attackproc.chance) {
