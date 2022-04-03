@@ -1106,7 +1106,7 @@ class PrimalInstinct extends Aura {
         this.starttimer = step;
         this.active = true;
         this.player.updateStats();
-        if (this.player.enableLogging) this.player.log(`Idol of Terror applied. Agility: ${this.player.stats.agi}`);
+        if (this.player.enableLogging) this.player.log(`Idol of Terror (Mangle) applied via. Agility: ${this.player.stats.agi}`);
     }
     step() {
         if (step > this.timer && this.active) {
@@ -1114,7 +1114,7 @@ class PrimalInstinct extends Aura {
             this.timer = step;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
-            if (this.player.enableLogging) this.player.log(`Idol of Terror removed. Agility: ${this.player.stats.agi}`);
+            if (this.player.enableLogging) this.player.log(`Idol of Terror (Mangle) removed. Agility: ${this.player.stats.agi}`);
         }
     }
     canUse() {

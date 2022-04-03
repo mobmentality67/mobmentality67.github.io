@@ -850,6 +850,22 @@ var gear = {
    ],
    "chest": [
       {
+         "name": "Bladed Chaos Tunic",
+         "sta": 45,
+         "agi": 42,
+         "ap": 120,
+         "ac": 499,
+         "arpen": 210,
+         "critrating": 38,
+         "socket0": "blue",
+         "socket1": "yellow",
+         "socket2": "red",
+         "socketbonus_ap": 8,
+         "source": "Sunwell",
+         "phase": 5,
+         "id": 34397
+      },
+      {
          "name": "Harness of Carnal Instinct",
          "sta": 64,
          "agi": 44,
@@ -3889,6 +3905,13 @@ var enchant = {
    ],
    "shoulder": [
       {
+         "id": 29193,
+         "name": "Glyph of the Gladiator",
+         "sta": 18,
+         "res": 20,
+         "phase": 5
+      },
+      {
          "id": 28888,
          "name": "Greater Inscription of Vengeance",
          "ap": 30,
@@ -4257,11 +4280,18 @@ var gem = {
          "critbonusmod": .03,
          "color": "meta",
       },
-            {
+      {
          "id": 32206,
          "name": "Rigid Lionseye",
          "hitrating": 10,
          "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
       },
       {
          "id": 32193,
@@ -4434,6 +4464,13 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
          "id": 32193,
          "name": "Bold Crimson Spinel",
          "str": 10,
@@ -4601,6 +4638,13 @@ var gem = {
          "name": "Rigid Lionseye",
          "hitrating": 10,
          "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
       },
       {
          "id": 32193,
@@ -4772,6 +4816,13 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
          "id": 32193,
          "name": "Bold Crimson Spinel",
          "str": 10,
@@ -4941,6 +4992,13 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
          "id": 32193,
          "name": "Bold Crimson Spinel",
          "str": 10,
@@ -5108,6 +5166,13 @@ var gem = {
          "name": "Rigid Lionseye",
          "hitrating": 10,
          "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
       },
       {
          "id": 32193,
@@ -5279,6 +5344,13 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
          "id": 32193,
          "name": "Bold Crimson Spinel",
          "str": 10,
@@ -5446,6 +5518,13 @@ var gem = {
          "name": "Rigid Lionseye",
          "hitrating": 10,
          "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
       },
       {
          "id": 32193,
@@ -5617,6 +5696,13 @@ var gem = {
          "color": "yellow",
       },
       {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
          "id": 32193,
          "name": "Bold Crimson Spinel",
          "str": 10,
@@ -5784,6 +5870,13 @@ var gem = {
          "name": "Rigid Lionseye",
          "hitrating": 10,
          "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
       },
       {
          "id": 32193,
