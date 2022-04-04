@@ -3901,16 +3901,16 @@ var enchant = {
          "id": 30846,
          "name": "Glyph of the Outcast",
          "str": 17,
-      }
-   ],
-   "shoulder": [
+      },
       {
          "id": 29193,
          "name": "Glyph of the Gladiator",
          "sta": 18,
          "res": 20,
          "phase": 5
-      },
+      }
+   ],
+   "shoulder": [
       {
          "id": 28888,
          "name": "Greater Inscription of Vengeance",
