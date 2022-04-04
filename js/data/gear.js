@@ -1629,6 +1629,18 @@ var gear = {
          "id": 32265
       },
       {
+         "name": "Bladeangel's Money Belt",
+         "sta": 27,
+         "agi": 25,
+         "critrating": 21,
+         "ap": 58,
+         "arpen": 77,
+         "ac": 227,
+         "source": "ZA",
+         "phase": 4,
+         "id": 33211
+      },
+      {
          "name": "Waistguard of the Great Beast",
          "str": 29,
          "sta": 30,
