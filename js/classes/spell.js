@@ -1145,7 +1145,6 @@ class ProtectorsVigor extends Aura {
         this.defensive = true;
     }
     use() {
-        this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -1163,7 +1162,7 @@ class ProtectorsVigor extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.timer && !this.active;
     }
     end() {
         if (this.active) {
@@ -1206,7 +1205,7 @@ class TremendousFortitude extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.timer && !this.active;
     }
     end() {
         if (this.active) {
