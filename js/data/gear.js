@@ -1636,6 +1636,8 @@ var gear = {
          "ap": 58,
          "arpen": 77,
          "ac": 227,
+         "socket0": "blue",
+         "socketbonus_ap": 4,
          "source": "ZA",
          "phase": 4,
          "id": 33211
