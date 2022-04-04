@@ -1136,7 +1136,7 @@ class ProtectorsVigor extends Aura {
 
     constructor(player) {
         super(player);
-        this.duration = 10;
+        this.duration = 20;
         this.name = 'Protector\'s Vigor';
         this.cooldown = 180 * 1000;
         this.active = false;
@@ -1145,6 +1145,7 @@ class ProtectorsVigor extends Aura {
         this.defensive = true;
     }
     use() {
+        this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -1155,14 +1156,14 @@ class ProtectorsVigor extends Aura {
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
-            this.timer = step;
+            this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Protector's Vigor removed. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
         }
     }
     canUse() {
-        return (step >= this.timer);
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
     }
     end() {
         if (this.active) {
@@ -1178,7 +1179,7 @@ class TremendousFortitude extends Aura {
 
     constructor(player) {
         super(player);
-        this.duration = 10;
+        this.duration = 15;
         this.name = 'Tremendous Fortitude';
         this.cooldown = 180 * 1000;
         this.active = false;
@@ -1187,6 +1188,7 @@ class TremendousFortitude extends Aura {
         this.defensive = true;
     }
     use() {
+        this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -1197,20 +1199,21 @@ class TremendousFortitude extends Aura {
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
-            this.timer = step;
+            this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Tremendous Fortitude removed. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
         }
     }
     canUse() {
-        return (step >= this.timer);
+        return (step >= this.timer) && !this.player.itemtimer && !this.active;
     }
     end() {
         if (this.active) {
            this.uptime += step - this.starttimer;
         }
         this.timer = 0;
+        this.itemtimer = 0;
         this.stacks = 0;
         this.active = false;
     }

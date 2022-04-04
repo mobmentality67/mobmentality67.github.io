@@ -595,6 +595,8 @@ class Player {
         this.nextswinghs = false;
         this.nextswingcl = false;
         this.lasthptick = 0;
+        this.died = false;
+        this.defensivesave = false;
         for (let s in this.spells) {
             this.spells[s].timer = 0;
             this.spells[s].stacks = 0;
@@ -1047,7 +1049,7 @@ class Player {
     }
 
     updatehealth(damage, activatedSpells) {
-        /* Update current HP. Return -1 damage if dead */
+        /* Update current HP */
         this.currenthp = this.currenthp - damage;
         let died = false;
         if (this.currenthp <= 0) {
