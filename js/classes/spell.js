@@ -1162,7 +1162,7 @@ class ProtectorsVigor extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.timer && !this.active;
+        return (step >= this.timer) && !this.active;
     }
     end() {
         if (this.active) {
@@ -1205,7 +1205,7 @@ class TremendousFortitude extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.timer && !this.active;
+        return (step >= this.timer) && !this.active;
     }
     end() {
         if (this.active) {
