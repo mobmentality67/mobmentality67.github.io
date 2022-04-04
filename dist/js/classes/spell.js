@@ -193,6 +193,7 @@ class Aura {
         this.useonly = true;
         this.active = false;
         this.requirescrit = false;
+        this.defensive = false;
     }
     proc() {
         return this.use();
@@ -1026,6 +1027,7 @@ class Tenacity extends Aura {
         this.active = false;
         this.spelldelay = this.duration;
         this.activeUse = true;
+        this.defensive = true;
     }
     use() {
         this.player.itemtimer = this.duration * 1000;
@@ -1097,7 +1099,7 @@ class PrimalInstinct extends Aura {
         this.duration = 10;
         this.stats = { agi: 65 };
         this.name = 'Primal Instinct';
-        this.cooldown = 10;
+        this.cooldown = 10 * 1000;
         this.active = false;
         this.yellowchance = .50;
     }
@@ -1115,6 +1117,90 @@ class PrimalInstinct extends Aura {
             this.player.updateStats();
             this.uptime += step - this.starttimer;
             if (this.player.enableLogging) this.player.log(`Idol of Terror (Mangle) removed. Agility: ${this.player.stats.agi}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer);
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+    }
+}
+
+class ProtectorsVigor extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Protector\'s Vigor';
+        this.cooldown = 180 * 1000;
+        this.active = false;
+        this.stats = { bonushp: 1750 };
+        this.activeuse = true;
+        this.defensive = true;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        this.player.currenthp += 1750;
+        if (this.player.enableLogging) this.player.log(`Protector's Vigor applied. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = step;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Protector's Vigor removed. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer);
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+    }
+}
+
+class TremendousFortitude extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Tremendous Fortitude';
+        this.cooldown = 180 * 1000;
+        this.active = false;
+        this.stats = { bonushp: 1750 };
+        this.activeuse = true;
+        this.defensive = true;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        this.player.currenthp += 1750;
+        if (this.player.enableLogging) this.player.log(`Tremendous Fortitude applied. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = step;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Tremendous Fortitude removed. Current HP: ${this.player.currenthp} / ${this.player.stats.maxhp}`);
         }
     }
     canUse() {

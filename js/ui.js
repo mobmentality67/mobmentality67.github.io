@@ -531,7 +531,8 @@ SIM.UI = {
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
                 error.text((1.96 * Math.sqrt(varmean)).toFixed(2));
 
-                deaths.text(report.totaldeaths + ' iterations (' + (report.totaldeaths / report.iterations * 100).toFixed(2) + '%) ');
+                deaths.text(report.totaldeaths + ' iterations (' + (report.totaldeaths / report.iterations * 100).toFixed(2) + '%) \
+                    ended in death (' + report.totaldefensivesaves + ' defensive saved lives)');
                 pullvar.text((report.pullvariancemet / report.iterations * 100).toFixed(2));
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
@@ -1248,6 +1249,7 @@ SIM.UI = {
         let dmgmod = player.stats.dmgmod * 100;
         view.sidebar.find('#dmgmod').html(dmgmod.toFixed(2));
         view.sidebar.find('#haste').html((player.stats.haste * 100).toFixed(2) + '%');
+        view.sidebar.find('#arpen').html(player.stats.arpen);
         view.sidebar.find('#race').text(localStorage.race);
         view.sidebar.find('#sets').empty();
         view.sidebar.find('#metagem').empty();

@@ -54,6 +54,8 @@ class Player {
         this.squawks = 0;
         this.currenthp = 0;
         this.lasthptick = 0;
+        this.defensivehpthreshold = 5000;
+        this.defensivesave = false;
         this.base = {
             sta: 0,
             ac: 0,
@@ -173,6 +175,9 @@ class Player {
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.items.includes(32257)) this.auras.mangleapbuff = new MangleAPBuff(this);
         if (this.items.includes(33509)) this.auras.primalinstinct = new PrimalInstinct(this);
+        if (this.items.includes(32501)) this.auras.protectorsvigor = new ProtectorsVigor(this);
+        if (this.items.includes(34163)) this.auras.tremendousfortitude = new TremendousFortitude(this);
+        if (this.items.includes(33832)) this.auras.tremendousfortitude = new TremendousFortitude(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
@@ -864,7 +869,6 @@ class Player {
 
         // End lacerate DOT if applicable
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.end();
-
     }
     rollweapon(weapon) {
         let tmp = 0;
@@ -1039,12 +1043,38 @@ class Player {
         }
         dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
         this.addDamageTakenRage(dmg);
-        /* Update current HP. Return -1 damage if dead */
-        this.currenthp = this.currenthp - dmg;
-        if (this.currenthp <= 0) {
-            dmg = -1;
-        }
         return dmg;
+    }
+
+    updatehealth(damage, activatedSpells) {
+        /* Update current HP. Return -1 damage if dead */
+        this.currenthp = this.currenthp - damage;
+        let died = false;
+        if (this.currenthp <= 0) {
+            died = true;
+            this.defensivesave = false; // Rule out previously saved life
+        }
+        /* If below defensive HP threshold, pop all defensives available */
+        else if (this.currenthp <= this.defensivehpthreshold) {
+            activatedSpells.forEach(spell => {
+                if (spell.canUse() && spell.defensive) {
+                    spell.use();
+                }
+            })
+        }
+        let bonusdefensivehp = 0;
+        activatedSpells.forEach(spell => {
+                if (spell.defensive && spell.active) {
+                    bonusdefensivehp += spell.stats.bonushp;
+                }
+            })
+
+        /* If current hp is less than added HP from defensives, count a save */
+        if (this.currenthp < bonusdefensivehp && !died) {
+            this.defensivesave = true;
+        }
+
+        return died;
     }
 
     cast(spell, damage_threat_arr, step) {

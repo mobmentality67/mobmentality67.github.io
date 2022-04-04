@@ -214,6 +214,7 @@ class Simulation {
         this.totaldamagetaken = 0;
         this.totalduration = 0;
         this.totaldeaths = 0;
+        this.totaldefensivesaves = 0;
         this.mindps = 99999;
         this.maxdps = 0;
         this.mintps = 99999;
@@ -314,7 +315,9 @@ class Simulation {
             player.auras.tenacity,
             player.auras.squawks,
             player.auras.mangleapbuff,
-            player.auras.primalinstinct
+            player.auras.primalinstinct,
+            player.auras.protectorsvigor,
+            player.auras.tremendousfortitude
         ];
 
         /* Remove spells/auras that don't exist in this run */
@@ -375,10 +378,10 @@ class Simulation {
             // Incoming attack
             if (player.activetank && player.incswingtimer <= 0) {
                 let damageTaken = player.takeattack(step);
-                if (damageTaken == -1) {
-                    step = this.maxsteps; died = true; break;
-                }
                 this.idamagetaken += damageTaken;
+                if (!died) {
+                   died = player.updatehealth(damageTaken, activatedSpells); 
+                }
                 spellcheck = true;
             }
 
@@ -388,7 +391,7 @@ class Simulation {
                 // Use a trinket if possible
                 delayedspell = null;
                 activatedSpells.forEach(spell => {
-                    if (spell.canUse() && spell.activeUse) {
+                    if (spell.canUse() && spell.activeUse && !spell.defensive) {
                         player.spelldelay = 1;
                         delayedspell = spell;
                     }
@@ -497,7 +500,14 @@ class Simulation {
         this.totalthreat += this.ithreat;
         this.totaldamagetaken += this.idamagetaken;
         this.totalduration += this.duration;
-        if (died) this.totaldeaths++;
+        if (died) {
+            this.totaldeaths++;
+            died = false;
+        }
+        else {
+            this.totaldefensivesaves += player.defensivesave;
+        }
+        
         this.ehp = this.player.getEHP();
         let dps = this.idmg / this.duration;
         let tps = this.ithreat / this.duration;
@@ -518,6 +528,8 @@ class Simulation {
         else this.spread[dps]++;
         if (!this.tpsspread[tps]) this.tpsspread[tps] = 1;
         else this.tpsspread[tps]++;
+
+        //player.defensivesave = false;
     }
     update(iteration) {
         if (this.cb_update) {
@@ -528,6 +540,7 @@ class Simulation {
                 totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
                 totaldeaths: this.totaldeaths,
+                totaldefensivesaves: this.totaldefensivesaves,
                 ehp: this.player.getEHP(),
             });
         }
@@ -541,6 +554,7 @@ class Simulation {
                 totaldamagetaken: this.totaldamagetaken,
                 totalduration: this.totalduration,
                 totaldeaths: this.totaldeaths,
+                totaldefensivesaves: this.totaldefensivesaves,
                 mindps: this.mindps,
                 maxdps: this.maxdps,
                 mintps: this.mintps,
