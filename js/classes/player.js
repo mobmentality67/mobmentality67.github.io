@@ -1059,7 +1059,7 @@ class Player {
         /* If below defensive HP threshold, pop all defensives available */
         else if (this.currenthp <= this.defensivehpthreshold) {
             activatedSpells.forEach(spell => {
-                if (spell.canUse() && spell.defensive) {
+                if (spell.defensive && spell.canUse()) {
                     spell.use();
                 }
             })

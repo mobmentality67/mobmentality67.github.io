@@ -82,6 +82,7 @@ class SimulationWorkerParallel {
                 result.totalduration += data.totalduration;
                 result.totaldamagetaken += data.totaldamagetaken;
                 result.totaldeaths += data.totaldeaths;
+                result.totaldefensivesaves += data.totaldefensivesaves;
                 result.mindps = Math.min(result.mindps, data.mindps);
                 result.maxdps = Math.min(result.maxdps, data.maxdps);
                 result.mintps = Math.min(result.mintps, data.mintps);
@@ -144,7 +145,7 @@ class SimulationWorkerParallel {
             this.callback_finished(result);
         } else {
             let iteration = 0;
-            const data = { iterations: this.iterations, totalthreat:0, totaldamagetaken:0, totaldmg: 0, totalduration: 0, totaldeaths: 0};
+            const data = { iterations: this.iterations, totalthreat:0, totaldamagetaken:0, totaldmg: 0, totalduration: 0, totaldeaths: 0, totaldefensivesaves: 0};
             this.states.forEach(state => {
                 if (!state) return;
                 iteration += (state.status ? state.data.iterations : state.iteration);
@@ -153,6 +154,7 @@ class SimulationWorkerParallel {
                 data.totaldamagetaken += state.data.totaldamagetaken;
                 data.totalduration += state.data.totalduration;
                 data.totaldeaths += state.data.totaldeaths;
+                data.totaldefensivesaves += state.data.totaldefensivesaves;
             });
             this.callback_update(iteration, data);
         }

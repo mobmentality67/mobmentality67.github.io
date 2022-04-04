@@ -1062,7 +1062,6 @@ class MangleAPBuff extends Aura {
         this.active = false;
     }
     use() {
-        this.player.itemtimer = 0;
         this.timer = step + this.duration * 1000;
         if (this.active) this.uptime += step - this.starttimer;
         this.starttimer = step;
@@ -1187,7 +1186,6 @@ class TremendousFortitude extends Aura {
         this.defensive = true;
     }
     use() {
-        this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -1212,7 +1210,6 @@ class TremendousFortitude extends Aura {
            this.uptime += step - this.starttimer;
         }
         this.timer = 0;
-        this.itemtimer = 0;
         this.stacks = 0;
         this.active = false;
     }
