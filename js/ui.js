@@ -485,6 +485,7 @@ SIM.UI = {
         let dtpsstats = view.sidebar.find('#dtpsstats');
         let time = view.sidebar.find('#time');
         let deaths = view.sidebar.find('#deaths');
+        let saves = view.sidebar.find('#saves');
         let pullvar = view.sidebar.find('#pullvar');
         let btn = view.sidebar.find('.js-dps');
         let weights = (rows === "stats");
@@ -497,6 +498,7 @@ SIM.UI = {
         error.text('');
         time.text('');
         deaths.text('');
+        saves.text('');
         pullvar.text('');
         const params = {
             player: [undefined, undefined, undefined, Player.getConfig()],
@@ -532,7 +534,8 @@ SIM.UI = {
                 error.text((1.96 * Math.sqrt(varmean)).toFixed(2));
 
                 deaths.text(report.totaldeaths + ' iterations (' + (report.totaldeaths / report.iterations * 100).toFixed(2) + '%) \
-                    ended in death (' + report.totaldefensivesaves + ' defensive saved lives)');
+                    ended in death');
+                saves.text(report.totaldefensivesaves + ' (' + (report.totaldefensivesaves / report.iterations * 100).toFixed(2) + '%) last stand saves');
                 pullvar.text((report.pullvariancemet / report.iterations * 100).toFixed(2));
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
