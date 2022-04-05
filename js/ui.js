@@ -535,7 +535,9 @@ SIM.UI = {
 
                 deaths.text(report.totaldeaths + ' iterations (' + (report.totaldeaths / report.iterations * 100).toFixed(2) + '%) \
                     ended in death');
-                saves.text(report.totaldefensivesaves + ' (' + (report.totaldefensivesaves / report.iterations * 100).toFixed(2) + '%) last stand saves');
+                if (report.totaldefensivesaves > 0) {
+                    saves.text(report.totaldefensivesaves + ' (' + (report.totaldefensivesaves / report.iterations * 100).toFixed(2) + '%) last stand saves');
+                }
                 pullvar.text((report.pullvariancemet / report.iterations * 100).toFixed(2));
                 time.text((report.endtime - report.starttime) / 1000);
                 stats.html(report.mindps.toFixed(2) + ' min&nbsp;&nbsp;&nbsp;&nbsp;' + report.maxdps.toFixed(2) + ' max');
@@ -1287,6 +1289,7 @@ SIM.UI = {
         localStorage.spelldamage = view.fight.find('input[name="spelldamage"]').val();
         localStorage.activetank = view.fight.find('select[name="activetank"]').val();
         localStorage.bosscrush = view.fight.find('select[name="bosscrush"]').val();
+        localStorage.bossparryhaste = view.fight.find('select[name="bossparryhaste"]').val();
         localStorage.bossdw = view.fight.find('select[name="bossdw"]').val();
         localStorage.incswingtimer = view.fight.find('input[name="incswingtimer"]').val();
         localStorage.incswingdamage = view.fight.find('input[name="incswingdamage"]').val();
@@ -1294,6 +1297,8 @@ SIM.UI = {
         localStorage.pullvariancetime = parseFloat($('input[name="pullvariancetime"]').val());
         localStorage.pullvariancemdthreat = parseFloat($('input[name="pullvariancemdthreat"]').val());
         localStorage.inchps = parseFloat($('input[name="inchps"]').val());
+        localStorage.incheal = parseFloat($('input[name="incheal"]').val());
+        localStorage.defensivethreshold = parseFloat($('input[name="defensivethreshold"]').val());
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {}, _gem = {};
         view.buffs.find('.active').each(function () { 

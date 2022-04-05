@@ -96,8 +96,8 @@
     }
 
     .fight {
-        width: 330px;
-        height: 525px;
+        width: 430px;
+        height: 545px;
 
         li {
             border-bottom: 1px solid rgba(221,221,221,0.4);
@@ -120,14 +120,14 @@
 
     .buffs {
         font-size: 40;
-        width: 330px;
-        height: 525px;
+        width: 430px;
+        height: 545px;
     }
 
 
     .rotation {
-        width: calc(100% - 670px);
-        height: 525px;
+        width: calc(100% - 870px);
+        height: 545px;
         font-size: 0;
 
         .spell {

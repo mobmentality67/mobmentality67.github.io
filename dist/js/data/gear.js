@@ -470,6 +470,9 @@ var gear = {
          "ac": 430,
          "res": 21,
          "critrating": 21,
+         "socket0" : "red",
+         "socket1" : "yellow",
+         "socketbonus_res" : 3,
          "source": "Sunwell",
          "phase": 5,
          "id": 35001,
@@ -2949,6 +2952,15 @@ var gear = {
          "id": 32501,
       },
       {
+         "name": "Shadowmoon Insignia (Never Used)",
+         "def": 36,
+         "incdodgerating": 32,
+         "source": "BT",
+         "phase": "3",
+         "id": 32501000000,
+         "idoverride": 32501,
+      },
+      {
          "name": "Battlemaster's Determination",
          "ap": 80,
          "source": "PVP",
@@ -2988,11 +3000,19 @@ var gear = {
          "procspell": "Romulos"
       },
       {
-         "name": "Badge of Tenacity (Never Used)",
+         "name": "Badge of Tenacity (Used Defensively)",
          "source": "Other",
          "phase": "2",
          "ac": 308,
          "id": 32658
+      },
+      {
+         "name": "Badge of Tenacity (Never Used)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 326580001, // Fake Badge of Tenacity ID to avoid layering IDs with actives for trinket selection UI code
+         "idoverride": 32658,
       },
       {
          "name": "Badge of Tenacity (Used first 20s / on CD)",
@@ -3001,7 +3021,6 @@ var gear = {
          "ac": 308,
          "id": 326580000, // Fake Badge of Tenacity ID to avoid layering IDs with non-active for trinket selection UI code
          "idoverride": 32658,
-         "usespell": "Tenacity"
       },
       {
          "name": "Terrokar Tablet of Precision",
@@ -3210,6 +3229,15 @@ var gear = {
          "id": 32501,
       },
       {
+         "name": "Shadowmoon Insignia (Never Used)",
+         "def": 36,
+         "incdodgerating": 32,
+         "source": "BT",
+         "phase": "3",
+         "id": 32501000000,
+         "idoverride": 32501,
+      },
+      {
          "name": "Battlemaster's Determination",
          "ap": 80,
          "source": "PVP",
@@ -3249,18 +3277,26 @@ var gear = {
          "procspell": "Romulos"
       },
       {
-         "name": "Badge of Tenacity (Never Used)",
+         "name": "Badge of Tenacity (Used Defensively)",
          "source": "Other",
          "phase": "2",
          "ac": 308,
          "id": 32658
       },
       {
+         "name": "Badge of Tenacity (Never Used)",
+         "source": "Other",
+         "phase": "2",
+         "ac": 308,
+         "id": 326580001, // Fake Badge of Tenacity ID to avoid layering IDs with actives for trinket selection UI code
+         "idoverride": 32658,
+      },
+      {
          "name": "Badge of Tenacity (Used first 20s / on CD)",
          "source": "Other",
          "phase": "2",
          "ac": 308,
-         "id": 326580000, // Fake Badge of Tenacity ID to avoid layering IDs with non-active for trinket selection UI code
+         "id": 326580000, // Fake Badge of Tenacity ID to avoid layering IDs with defensive/passive for trinket selection UI code
          "idoverride": 32658,
          "usespell": "Tenacity"
       },

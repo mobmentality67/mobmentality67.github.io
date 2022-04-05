@@ -183,6 +183,7 @@ class Simulation {
             iterations: parseInt($('input[name="simulations"]').val()),
             activetank: ($('input[name="activetank"]').val()) == "Yes",
             bosscrush: ($('input[name="bosscrush"]').val()) == "Yes",
+            bossparryhaste: ($('input[name="bossparryhaste"]').val()) == "Yes",
             bossdw: ($('input[name="bossdw"]').val()) == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
@@ -203,6 +204,7 @@ class Simulation {
         this.iterations = config.iterations;
         this.activetank = config.activetank;
         this.bosscrush = config.bosscrush;
+        this.bossparryhaste = config.bossparryhaste;
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.pullvariancethreshold = config.pullvariancethreshold;
@@ -319,7 +321,8 @@ class Simulation {
             player.auras.mangleapbuff,
             player.auras.primalinstinct,
             player.auras.protectorsvigor,
-            player.auras.tremendousfortitude
+            player.auras.tremendousfortitude,
+            player.auras.tenacitydefensive
         ];
 
         /* Remove spells/auras that don't exist in this run */

@@ -236,6 +236,13 @@ profiles
             </select>
           </li>
           <li>
+            <label>Boss Parry Haste</label>
+            <select dir="rtl" name="bossparryhaste" >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </li>
+          <li>
             <label>Active Tank </label>
             <select dir="rtl" name="activetank" >
               <option value="Yes">Yes</option>
@@ -259,19 +266,21 @@ profiles
           </li>
           <li>
             <label>Pull variance check at least </label>
-              <input type="text" name="pullvariancethreshold" value="25000" data-numberonly="true">
-          </li>
-          <li>
-            <label>Threat after seconds </label>
-              <input type="text" name="pullvariancetime" value="20" data-numberonly="true">
-          </li>
-          <li>
+              <input type="text" name="pullvariancethreshold" value="25000" data-numberonly="true"> <br>
+            <label>threat after seconds </label>
+              <input type="text" name="pullvariancetime" value="20" data-numberonly="true"> <br>
             <label>Including misdirect threat for check </label>
               <input type="text" name="pullvariancemdthreat" value="1300" data-numberonly="true">
           </li>
           <li>
             <label>Incoming HPS (lifebloom model) </label>
-              <input type="text" name="inchps" value="3000" data-numberonly="true">
+              <input type="text" name="inchps" value="800" data-numberonly="true"> <br>
+            <label>Incoming heal every 2.5 seconds  </label>
+              <input type="text" name="incheal" value="4500" data-numberonly="true">
+          </li>
+          <li>
+            <label> HP Percentage to use defensive trinkets </label>
+              <input type="text" name="defensivethreshold" value="30" data-numberonly="true">
           </li>
         </ul>
       </article>

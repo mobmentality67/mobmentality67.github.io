@@ -1027,10 +1027,8 @@ class Tenacity extends Aura {
         this.active = false;
         this.spelldelay = this.duration;
         this.activeUse = true;
-        this.defensive = true;
     }
     use() {
-        this.player.itemtimer = this.duration * 1000;
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
@@ -1047,7 +1045,40 @@ class Tenacity extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.active;
+    }
+}
+
+class TenacityDefensive extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 20;
+        this.stats = { agi: 150 };
+        this.name = 'Badge of Tenacity';
+        this.cooldown = 120 * 1000;
+        this.active = false;
+        this.spelldelay = this.duration;
+        this.defensive = true;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Trinket ${this.name} applied. Agility: ${this.player.stats.agi}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Trinket ${this.name} removed. Agility: ${this.player.stats.agi}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active;
     }
 }
 

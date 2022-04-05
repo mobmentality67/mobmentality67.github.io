@@ -20,10 +20,13 @@ class Player {
             },
             activetank: $('select[name="activetank"]').val() == "Yes",
             bosscrush: $('select[name="bosscrush"]').val() == "Yes",
+            bossparryhaste: $('select[name="bossparryhaste"]').val() == "Yes",
             bossdw: $('select[name="bossdw"]').val() == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
             inchps: parseFloat($('input[name="inchps"]').val()),
+            incheal: parseFloat($('input[name="incheal"]').val()),
+            defensivethreshold: parseFloat($('input[name="defensivethreshold"]').val()),
         };
     }
     constructor(testItem, testType, enchtype, config) {
@@ -42,10 +45,12 @@ class Player {
         this.target = config.target;
         this.activetank = config.activetank;
         this.bosscrush = config.bosscrush;
+        this.bossparryhaste = config.bossparryhaste;
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
         this.inchps = config.inchps;
+        this.incheal = config.incheal;
         this.ooc = false;
         this.enableLogging = false;
         this.activemetagem = "";
@@ -53,8 +58,10 @@ class Player {
         this.t5laceratebonus = false;
         this.squawks = 0;
         this.currenthp = 0;
-        this.lasthptick = 0;
-        this.defensivehpthreshold = 5000;
+        this.lastlifebloomtick = 0;
+        this.bighealtick = 0;
+        this.defensivethreshold = config.defensivethreshold;
+        this.defensivehpthreshold = 0;
         this.defensivesave = false;
         this.base = {
             sta: 0,
@@ -71,6 +78,8 @@ class Player {
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
             inchps: config.inchps,
+            inchps: config.incheal,
+            defensivethreshold: config.defensivethreshold,
             incmiss: 4.4,
             hit: 0,
             hitrating: 0,
@@ -178,6 +187,7 @@ class Player {
         if (this.items.includes(32501)) this.auras.protectorsvigor = new ProtectorsVigor(this);
         if (this.items.includes(34163)) this.auras.tremendousfortitude = new TremendousFortitude(this);
         if (this.items.includes(33832)) this.auras.tremendousfortitude = new TremendousFortitude(this);
+        if (this.items.includes(32658)) this.auras.tenacitydefensive = new TenacityDefensive(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
@@ -594,7 +604,8 @@ class Player {
         this.batchedextras = 0;
         this.nextswinghs = false;
         this.nextswingcl = false;
-        this.lasthptick = 0;
+        this.lastlifebloomtick = 0;
+        this.bighealtick = 0;
         this.died = false;
         this.defensivesave = false;
         for (let s in this.spells) {
@@ -661,6 +672,7 @@ class Player {
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
         this.stats.maxhp = this.stats.sta * 10 + this.stats.bonushp + 3439; // 3439 assumed as base hp constant
+        this.defensivehpthreshold = this.stats.maxhp * this.defensivethreshold / 100;
         this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         this.stats.ap = ~~(this.stats.ap * this.stats.apmod);
         this.stats.crit += this.stats.agi / 25;
@@ -923,7 +935,7 @@ class Player {
 
     checkParryHaste(result) {
 
-        if (result == RESULT.PARRY) {
+        if (result == RESULT.PARRY && this.bossparryhaste) {
             /* If current boss swing timer > 60% of base timer, haste by 40% */
             if (this.incswingtimer >= .6 * this.base.incswingtimer) {
                 this.incswingtimer = ~~(this.incswingtimer * 0.6);
@@ -1012,10 +1024,20 @@ class Player {
     }
 
     takeheal(tick) {
-        let timeDiff = Math.floor(tick / 1000) - this.lasthptick;
-        if (timeDiff >= 1.0) {
-            this.currenthp = Math.min(this.currenthp + timeDiff * this.inchps, this.stats.maxhp);
-            this.lasthptick = Math.floor(tick / 1000);
+        /* Handle lifebloom heal */
+        let timeDiffLifebloom = Math.floor(tick / 1000) - this.lastlifebloomtick;
+        if (timeDiffLifebloom >= 1.0) {
+            this.currenthp = Math.min(this.currenthp + timeDiffLifebloom * this.inchps, this.stats.maxhp);
+            this.lastlifebloomtick = Math.floor(tick / 1000);
+        }
+
+        /* Handle holy light style heal */
+        let timeDiffBigHeal = tick / 1000 - this.bighealtick / 1000;
+        let numHeals = Math.floor(timeDiffBigHeal / 2.5);
+        if (numHeals > 0) {
+            let remainder = tick % 2500;
+            this.currenthp = Math.min(this.currenthp + numHeals * this.incheal, this.stats.maxhp);
+            this.bighealtick = tick - remainder;
         }
 
     }
