@@ -24,7 +24,7 @@ class Player {
             bossdw: $('select[name="bossdw"]').val() == "Yes",
             incswingdamage: parseFloat($('input[name="incswingdamage"]').val()),
             incswingtimer: parseFloat($('input[name="incswingtimer"]').val()),
-            inchps: parseFloat($('input[name="inchps"]').val()),
+            inchpslifebloom: parseFloat($('input[name="inchpslifebloom"]').val()),
             incheal: parseFloat($('input[name="incheal"]').val()),
             defensivethreshold: parseFloat($('input[name="defensivethreshold"]').val()),
         };
@@ -49,7 +49,7 @@ class Player {
         this.bossdw = config.bossdw;
         this.incswingdamage = config.incswingdamage;
         this.incswingtimer = config.incswingtimer * 1000;
-        this.inchps = config.inchps;
+        this.inchpslifebloom = config.inchpslifebloom;
         this.incheal = config.incheal;
         this.ooc = false;
         this.enableLogging = false;
@@ -77,8 +77,8 @@ class Player {
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
-            inchps: config.inchps,
-            inchps: config.incheal,
+            inchpslifebloom: config.inchpslifebloom,
+            incheal: config.incheal,
             defensivethreshold: config.defensivethreshold,
             incmiss: 4.4,
             hit: 0,
@@ -1027,7 +1027,7 @@ class Player {
         /* Handle lifebloom heal */
         let timeDiffLifebloom = Math.floor(tick / 1000) - this.lastlifebloomtick;
         if (timeDiffLifebloom >= 1.0) {
-            this.currenthp = Math.min(this.currenthp + timeDiffLifebloom * this.inchps, this.stats.maxhp);
+            this.currenthp = Math.min(this.currenthp + timeDiffLifebloom * this.inchpslifebloom, this.stats.maxhp);
             this.lastlifebloomtick = Math.floor(tick / 1000);
         }
 

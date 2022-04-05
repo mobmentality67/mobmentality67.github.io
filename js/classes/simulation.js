@@ -191,7 +191,7 @@ class Simulation {
             pullvariancethreshold: parseFloat($('input[name="pullvariancethreshold"]').val()),
             pullvariancetime: parseFloat($('input[name="pullvariancetime"]').val()),
             pullvariancemdthreat: parseFloat($('input[name="pullvariancemdthreat"]').val()),
-            inchps: parseFloat($('input[name="inchps"]').val()),
+            inchpslifebloom: parseFloat($('input[name="inchpslifebloom"]').val()),
         };
     }
     constructor(player, callback_finished, callback_update, config) {

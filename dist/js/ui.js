@@ -1296,7 +1296,7 @@ SIM.UI = {
         localStorage.pullvariancethreshold = parseFloat($('input[name="pullvariancethreshold"]').val());
         localStorage.pullvariancetime = parseFloat($('input[name="pullvariancetime"]').val());
         localStorage.pullvariancemdthreat = parseFloat($('input[name="pullvariancemdthreat"]').val());
-        localStorage.inchps = parseFloat($('input[name="inchps"]').val());
+        localStorage.inchpslifebloom = parseFloat($('input[name="inchpslifebloom"]').val());
         localStorage.incheal = parseFloat($('input[name="incheal"]').val());
         localStorage.defensivethreshold = parseFloat($('input[name="defensivethreshold"]').val());
 
