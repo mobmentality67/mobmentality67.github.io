@@ -1312,7 +1312,7 @@ class EvasiveManeuvers extends Aura {
             this.timer = this.starttimer + this.cooldown;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
-            if (this.player.enableLogging) this.player.log(`Evasive Maneuvers applied. Dodge rating: ${this.player.stats.incdodgerating}`);
+            if (this.player.enableLogging) this.player.log(`Evasive Maneuvers removed. Dodge rating: ${this.player.stats.incdodgerating}`);
         }
     }
     canUse() {
