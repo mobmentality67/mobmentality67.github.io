@@ -3083,6 +3083,14 @@ var gear = {
          "incdodgerating": 38,
          "source": "Karazhan",
          "phase": "1",
+         "id": 285280000,
+         "idoverride": 28528,
+      },
+      {
+         "name": "Moroes' Lucky Pocket Watch",
+         "incdodgerating": 38,
+         "source": "Karazhan",
+         "phase": "1",
          "id": 28528
       },
       {
@@ -3350,6 +3358,14 @@ var gear = {
       },
       {
          "name": "Moroes' Lucky Pocket Watch (Never Used)",
+         "incdodgerating": 38,
+         "source": "Karazhan",
+         "phase": "1",
+         "id": 285280000,
+         "idoverride": 28528,
+      },
+      {
+         "name": "Moroes' Lucky Pocket Watch",
          "incdodgerating": 38,
          "source": "Karazhan",
          "phase": "1",

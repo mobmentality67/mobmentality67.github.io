@@ -322,7 +322,8 @@ class Simulation {
             player.auras.primalinstinct,
             player.auras.protectorsvigor,
             player.auras.tremendousfortitude,
-            player.auras.tenacitydefensive
+            player.auras.tenacitydefensive,
+            player.auras.timesfavor
         ];
 
         /* Remove spells/auras that don't exist in this run */

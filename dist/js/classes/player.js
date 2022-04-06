@@ -189,6 +189,7 @@ class Player {
         if (this.items.includes(33832)) this.auras.tremendousfortitude = new TremendousFortitude(this);
         if (this.items.includes(32658)) this.auras.tenacitydefensive = new TenacityDefensive(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
+        if (this.items.includes(28528)) this.auras.timesfavor = new TimesFavor(this);
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         if (this.squawks) this.auras.squawks = new Squawks(this);

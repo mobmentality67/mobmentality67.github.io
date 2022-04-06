@@ -1246,6 +1246,46 @@ class TremendousFortitude extends Aura {
     }
 }
 
+class TimesFavor extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Time\'s Favor';
+        this.cooldown = 120 * 1000;
+        this.active = false;
+        this.stats = { incdodgerating: 300 };
+        this.activeuse = true;
+        this.defensive = true;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Time's Favor applied. Dodge rating: ${this.player.stats.incdodgerating}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Time's Favor removed. Dodge rating: ${this.player.stats.incdodgerating}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active;
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+    }
+}
 class OmenOfClarity {
 
     constructor(player, oocTalent) {
