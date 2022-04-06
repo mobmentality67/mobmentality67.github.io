@@ -2325,7 +2325,7 @@ var gear = {
          "name": "Ring of the Stalwart Protector",
          "sta": 45,
          "ac": 392,
-         "dodgerating": 28,
+         "incdodgerating": 28,
          "source": "Badges",
          "phase": "5",
          "id": 34888
@@ -2622,7 +2622,7 @@ var gear = {
          "name": "Ring of the Stalwart Protector",
          "sta": 45,
          "ac": 392,
-         "dodgerating": 28,
+         "incdodgerating": 28,
          "source": "Badges",
          "phase": "5",
          "id": 34888

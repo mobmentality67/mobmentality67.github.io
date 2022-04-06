@@ -1065,7 +1065,9 @@ class Player {
             if (this.enableLogging) this.log("Boss swing missed");
             return 0;
         }
-        dmg = dmg * (1 - this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5)));
+        let selfArmorMod = this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5));
+        if (selfArmorMod > 0.75) selfArmorMod = 0.75;
+        dmg = dmg * (1-selfArmorMod);
         this.addDamageTakenRage(dmg);
         return dmg;
     }
