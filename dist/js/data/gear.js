@@ -2906,7 +2906,7 @@ var gear = {
    ],
    "trinket1": [
       {
-         "name": "Commendation of Kael'thas",
+         "name": "Commendation of Kael'thas (Used Defensively)",
          "sta": 57,
          "id": 34473,
          "source": "Heroic",
@@ -3191,7 +3191,7 @@ var gear = {
    ],
    "trinket2": [
       {
-         "name": "Commendation of Kael'thas",
+         "name": "Commendation of Kael'thas (Used Defensively)",
          "sta": 57,
          "id": 34473,
          "source": "Sunwell",

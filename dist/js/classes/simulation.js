@@ -323,7 +323,8 @@ class Simulation {
             player.auras.protectorsvigor,
             player.auras.tremendousfortitude,
             player.auras.tenacitydefensive,
-            player.auras.timesfavor
+            player.auras.timesfavor,
+            player.auras.evasivemaneuvers
         ];
 
         /* Remove spells/auras that don't exist in this run */

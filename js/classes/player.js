@@ -190,6 +190,7 @@ class Player {
         if (this.items.includes(32658)) this.auras.tenacitydefensive = new TenacityDefensive(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.items.includes(28528)) this.auras.timesfavor = new TimesFavor(this);
+        if (this.items.includes(34473)) this.auras.evasivemaneuvers = new EvasiveManeuvers(this); 
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
         if (this.squawks) this.auras.squawks = new Squawks(this);
@@ -1089,6 +1090,7 @@ class Player {
                 }
             })
         }
+        
         let bonusdefensivehp = 0;
         activatedSpells.forEach(spell => {
                 if (spell.defensive && spell.active) {

@@ -1286,6 +1286,48 @@ class TimesFavor extends Aura {
         this.active = false;
     }
 }
+
+class EvasiveManeuvers extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Evasive Maneuvers';
+        this.cooldown = 30 * 1000;
+        this.active = false;
+        this.stats = { incdodgerating: 152 };
+        this.defensive = true;
+        this.player = player;
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        this.player.updateStats();
+        if (this.player.enableLogging) this.player.log(`Evasive Maneuvers applied. Dodge rating: ${this.player.stats.incdodgerating}`);
+    }
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) this.player.log(`Evasive Maneuvers applied. Dodge rating: ${this.player.stats.incdodgerating}`);
+        }
+    }
+    canUse() {
+        return (step >= this.timer) && !this.active && ((this.player.currenthp / this.player.stats.maxhp) < .35);
+    }
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.stacks = 0;
+        this.active = false;
+    }
+}
+
 class OmenOfClarity {
 
     constructor(player, oocTalent) {
