@@ -2965,14 +2965,14 @@ var gear = {
          "ap": 80,
          "source": "PVP",
          "phase": "3",
-         "id": 33832
+         "id": 34578,
       },
       {
          "name": "Battlemaster's Cruelty",
          "critrating": 40,
          "source": "PVP",
          "phase": "3",
-         "id": 34163,
+         "id": 34576,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
@@ -3250,14 +3250,14 @@ var gear = {
          "ap": 80,
          "source": "PVP",
          "phase": "3",
-         "id": 33832
+         "id": 34578,
       },
       {
          "name": "Battlemaster's Cruelty",
          "critrating": 40,
          "source": "PVP",
          "phase": "3",
-         "id": 34163,
+         "id": 34576,
       },
       {
          "name": "Madness of the Betrayer (1 PPM, no ICD)",
