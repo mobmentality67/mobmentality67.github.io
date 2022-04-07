@@ -185,8 +185,8 @@ class Player {
         if (this.items.includes(32257)) this.auras.mangleapbuff = new MangleAPBuff(this);
         if (this.items.includes(33509)) this.auras.primalinstinct = new PrimalInstinct(this);
         if (this.items.includes(32501)) this.auras.protectorsvigor = new ProtectorsVigor(this);
-        if (this.items.includes(34163)) this.auras.tremendousfortitude = new TremendousFortitude(this);
-        if (this.items.includes(33832)) this.auras.tremendousfortitude = new TremendousFortitude(this);
+        if (this.items.includes(34576)) this.auras.tremendousfortitude = new TremendousFortitude(this);
+        if (this.items.includes(34578)) this.auras.tremendousfortitude = new TremendousFortitude(this);
         if (this.items.includes(32658)) this.auras.tenacitydefensive = new TenacityDefensive(this);
         if (this.items.includes(326580000)) this.auras.tenacity = new Tenacity(this);
         if (this.items.includes(28528)) this.auras.timesfavor = new TimesFavor(this);
