@@ -2,6 +2,7 @@ var MAX_GEMS = {
     head: 2,
     neck: 2,
     shoulder: 2,
+    back: 1,
     chest: 3,
     wrist: 1,
     hands: 2,
@@ -17,7 +18,10 @@ function getGlobalsDelta() {
             return {
                 id: item.id,
                 tps: item.tps,
+                dps: item.dps,
+                pullvar: item.pullvar,
                 ehp: item.ehp,
+                psurv: item.psurv,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -29,6 +33,8 @@ function getGlobalsDelta() {
             return {
                 id: item.id,
                 tps: item.tps,
+                dps: item.dps,
+                pullvar: item.pullvar,
                 ehp: item.ehp,
                 selected: item.selected,
                 hidden: item.hidden,
@@ -44,7 +50,10 @@ function getGlobalsDelta() {
                 return {
                     id: item.id,
                     tps: item.tps,
+                    dps: item.dps,
+                    pullvar: item.pullvar,
                     ehp: item.ehp,
+                    psurv: item.psurv,
                     selected: item.selected,
                     hidden: item.hidden,
                 }
@@ -123,6 +132,9 @@ function updateGlobals(params) {
                     if (i.id == j.id) {
                         j.tps = i.tps;
                         j.ehp = i.ehp;
+                        j.psurv = i.psurv;
+                        j.dps = i.dps;
+                        j.pullvar = i.pullvar;
                         j.selected = i.selected;
                         j.hidden = i.hidden;
                     }
@@ -133,6 +145,9 @@ function updateGlobals(params) {
                 if (i.id == j.id) {
                     j.tps = i.tps;
                     j.ehp = i.ehp;
+                    j.psurv = i.psurv;
+                    j.dps = i.dps;
+                    j.pullvar = i.pullvar;
                     j.selected = i.selected;
                     j.hidden = i.hidden;
                 }
@@ -158,6 +173,9 @@ function updateGlobals(params) {
                         if (i.id == j.id) {
                            j.tps = i.tps;
                            j.ehp = i.ehp;
+                           j.psurv = i.psurv;
+                           j.dps = i.dps;
+                           j.pullvar = i.pullvar;
                            j.selected = i.selected;
                            j.hidden = i.hidden;
                         }

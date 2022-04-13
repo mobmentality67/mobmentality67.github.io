@@ -252,7 +252,7 @@ SIM.SETTINGS = {
             /* When to queue maul qualifier */
             if (spell.id == 26996) {
                 div.find('.options').empty();
-                div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="50" data-numberonly="true"> rage or Mangle cooldown >= <input type="text" name="maincd" value="4" data-numberonly="true"> secs</li>`);
+                div.find('.options').append(`<li>Queue when above <input type="text" name="minrage" value="50" data-numberonly="true"> rage or Mangle cooldown >= <input type="text" name="maincd" value="8" data-numberonly="true"> secs</li>`);
                 div.find('.options').append(`<li><input style="width:25px" type="text" name="reaction" value="${spell.reaction}" data-numberonly="true" /> ms reaction time</li>`);
             }
 
