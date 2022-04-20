@@ -1384,7 +1384,7 @@ class Stomp extends Aura {
         this.name = 'Stomp';
         this.cooldown = 30 * 1000;
         this.active = false;
-        this.stats = { incdodgerating: 0, ac: 0};
+        this.stats = { ac: 0};
         this.activeuse = true;
         this.avoidable = false;
         this.baseDamage = 20000;
@@ -1411,16 +1411,13 @@ class Stomp extends Aura {
         if (this.duration) {
             this.damagedone = this.rollDamage();
             this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
-            this.stats.incdodgerating = -1893;
-            //this.player.addStun(this, step);
             this.player.updateStats();
             if (this.player.enableLogging) 
-                this.player.log(`Stomp applied for ${this.duration}s. Dodge: ${this.player.stats.incdodge}, armor: ${this.player.stats.ac}`);
+                this.player.log(`Stomp applied for ${this.duration}s. Armor: ${this.player.stats.ac}`);
         }
         else {
             this.damagedone = 0;
             this.stats.ac = 0;
-            this.stats.incdodgerating = 0;
             this.player.updateStats();
             this.timer = step + this.cooldown;
             this.active = false;
@@ -1450,7 +1447,7 @@ class Stomp extends Aura {
             this.uptime += step - this.starttimer;
             this.player.removeStun(this);
             if (this.player.enableLogging) 
-                this.player.log(`Stomp removed. Dodge: ${this.player.stats.incdodge}, armor: ${this.player.stats.ac}`);
+                this.player.log(`Stomp removed. Armor: ${this.player.stats.ac}`);
         }
     }
 

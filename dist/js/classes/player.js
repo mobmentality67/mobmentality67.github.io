@@ -671,7 +671,7 @@ class Player {
 
         this.stats.incdodge = Math.max(-1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
             this.stats.def * .04 + this.talents.feralswiftnessmod + (this.race == 'Night Elf'), 0);
-        this.stats.incmiss = this.base.incmiss + this.stats.def * .04 + 19.0 * this.bossdw;
+        this.stats.incmiss = this.base.incmiss + this.stats.def * .04;
         this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
         this.stats.inccrush = this.bosscrush ? 15 : 0;
 
@@ -1110,28 +1110,57 @@ class Player {
     takeattack(tick) {
         this.takeheal(tick);
         this.incswingtimer = this.base.incswingtimer;
+
+        // Roll MH swing 
         let result = this.rollattacktaken();
         let dmg = this.incswingdamage;
         this.damageTakenData[result]++;
         if (result == RESULT.HIT) {
             dmg *= 1.0;
-            if (this.enableLogging) this.log(`Boss hit for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss MH hit for ${dmg}`);
         }
         else if (result == RESULT.CRIT) {
             dmg *= 2.0;
-            if (this.enableLogging) this.log(`Boss crit for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss MH crit for ${dmg}`);
         }
         else if (result == RESULT.CRUSH) {
             dmg *= 1.5;
-            if (this.enableLogging) this.log(`Boss crushed for ${dmg}`);
+            if (this.enableLogging) this.log(`Boss MH crushed for ${dmg}`);
         }
         else {
             dmg = 0.0;
-            if (this.enableLogging) this.log("Boss swing missed");
-            return 0;
+            if (this.enableLogging) this.log("Boss MH swing missed");
         }
         let selfArmorMod = this.getselfarmormod();
         dmg = dmg * (1 - selfArmorMod);
+        this.addDamageTakenRage(dmg);
+
+        // Roll OH swing if applicable
+        if (this.bossdw) {
+            let result = this.rollattacktaken();
+            let ohdmg = this.incswingdamage * 0.5;
+            this.damageTakenData[result]++;
+            if (result == RESULT.HIT) {
+                ohdmg *= 1.0;
+                if (this.enableLogging) this.log(`Boss offhand hit for ${ohdmg}`);
+            }
+            else if (result == RESULT.CRIT) {
+                ohdmg *= 2.0;
+                if (this.enableLogging) this.log(`Boss offhand crit for ${ohdmg}`);
+            }
+            else if (result == RESULT.CRUSH) {
+                ohdmg *= 1.5;
+                if (this.enableLogging) this.log(`Boss offhand crushed for ${ohdmg}`);
+            }
+            else {
+                ohdmg = 0.0;
+                if (this.enableLogging) this.log("Boss offhand swing missed");
+            }
+            let selfArmorMod = this.getselfarmormod();
+            ohdmg = ohdmg * (1 - selfArmorMod);
+            dmg += ohdmg;
+        }
+
         this.addDamageTakenRage(dmg);
         return dmg;
     }
