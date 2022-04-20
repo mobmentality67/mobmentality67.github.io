@@ -16,6 +16,7 @@ SIM.SETTINGS = {
         view.body = $('body');
         view.buffs = view.body.find('article.buffs');
         view.debuffs = view.body.find('article.debuffs');
+        view.bossabilities = view.body.find('article.bossabilities');
         view.fight = view.body.find('article.fight');
         view.rotation = view.body.find('article.rotation');
         view.talents = view.body.find('article.talents');
@@ -266,7 +267,7 @@ SIM.SETTINGS = {
     buildBuffs: function () {
         var view = this;
         for (let buff of buffs) {
-            if (buff.debuff != true) {
+            if (buff.debuff != true && buff.bossability != true) {
                 let wh = buff.spellid ? 'spell' : 'item';
                 let active = buff.active ? 'active' : '';
                 let group = buff.group ? `data-group="${buff.group}"` : '';
@@ -286,12 +287,38 @@ SIM.SETTINGS = {
         }
 
         // Add line break before debuffs
-        let debuffTag = `<p><span></span></p>`;
+        let debuffTag = `<p><span> Boss Buffs & Debuffs</span></p>`;
         view.buffs.append(debuffTag);
 
         // Add debuffs
         for (let buff of buffs) {
             if (buff.debuff) {
+                let wh = buff.spellid ? 'spell' : 'item';
+                let active = buff.active ? 'active' : '';
+                let group = buff.group ? `data-group="${buff.group}"` : '';
+                let disable = buff.disableSpell ? `data-disable-spell="${buff.disableSpell}"` : '';
+                let max_count = buff.max_count ? `data-max_count="${buff.max_count}"` : '';
+                let base_icon_name = `data-base_icon_name="dist/img/${buff.iconname.toLowerCase()}"`;
+                let iconname = buff.max_count ? buff.iconname.toLowerCase() + "_" + buff.count : buff.iconname.toLowerCase();
+                let count = buff.count ? `data-count="${buff.count}"` : '';
+                let html = `<div data-id="${buff.id}" data-name = "${buff.name}" ${max_count} ${count} ${base_icon_name}
+                                class="icon ${active}" ${group} ${disable}>
+                                <img src="dist/img/${iconname}.jpg " alt="${buff.name}">
+                                <a href="https://tbc.wowhead.com/${wh}=${buff.id}" class="wh-tooltip"></a>
+                            </div>`;
+
+                view.buffs.append(html);
+            }
+        }
+
+
+        // Add line break before boss abilities
+        let bossabilityTag = `<p><span>Boss Abilities</span></p>`;
+        view.buffs.append(bossabilityTag);
+
+        // Add debuffs
+        for (let buff of buffs) {
+            if (buff.bossability) {
                 let wh = buff.spellid ? 'spell' : 'item';
                 let active = buff.active ? 'active' : '';
                 let group = buff.group ? `data-group="${buff.group}"` : '';

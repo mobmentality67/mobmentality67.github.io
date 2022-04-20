@@ -311,7 +311,7 @@ class Pummeler extends Aura {
         }
     }
     canUse() {
-        return this.firstuse && !this.timer && !this.player.timer && !this.player.itemtimer;
+        return this.firstuse && !this.timer && !this.player.timer && !this.player.itemtimer && this.player.stunned == false;
     }
 }
 
@@ -338,7 +338,7 @@ class Swarmguard extends Aura {
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated `);
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
     proc() {
         this.stacks = Math.min(this.stacks + 1, 6);
@@ -436,7 +436,7 @@ class Icon extends Aura {
         if (this.player.enableLogging) this.player.log(`Trinket ${this.name} activated. Target armor at ${this.player.target.armor}`);
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
     step() {
          if (step > this.timer && this.active) {
@@ -500,7 +500,7 @@ class Spider extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -639,7 +639,7 @@ class Slayer extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -708,7 +708,7 @@ class Berserkers extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -741,7 +741,7 @@ class BloodlustBrooch extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -774,7 +774,7 @@ class Direbrew extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -807,7 +807,7 @@ class Tablet extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -840,7 +840,7 @@ class Abacus extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.player.itemtimer && !this.active;
+        return (step >= this.timer) && !this.player.itemtimer && !this.active && this.player.stunned == false;
     }
 }
 
@@ -1045,7 +1045,7 @@ class Tenacity extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
 }
 
@@ -1078,7 +1078,7 @@ class TenacityDefensive extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
 }
 
@@ -1192,7 +1192,7 @@ class ProtectorsVigor extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
     end() {
         if (this.active) {
@@ -1234,7 +1234,7 @@ class TremendousFortitude extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
     end() {
         if (this.active) {
@@ -1275,7 +1275,7 @@ class TimesFavor extends Aura {
         }
     }
     canUse() {
-        return (step >= this.timer) && !this.active;
+        return (step >= this.timer) && !this.active && this.player.stunned == false;
     }
     end() {
         if (this.active) {
@@ -1374,4 +1374,101 @@ class OmenOfClarity {
         spell.oocspell = false;
     }
 
+}
+
+class Stomp extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Stomp';
+        this.cooldown = 30 * 1000;
+        this.active = false;
+        this.stats = { incdodgerating: 0, ac: 0};
+        this.activeuse = true;
+        this.avoidable = false;
+        this.baseDamage = 20000;
+        this.rngrange = 0.05;
+        this.physical = true;
+        this.timer = 0;
+        this.damagedone = 0;
+    }
+    use() {
+        // Divide the tank segment into 36 second splits
+        let tankSegment = step % 36000;
+        // Stomp duration is full unless about to tank swap or you just tank swapped
+        if (tankSegment < 12000) { // If taking over from another tank, just burn the cd
+            this.duration = 0;
+        }
+        else {
+            this.duration = Math.min((36000 - tankSegment) / 1000, 10);
+        }
+        
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+        /* Apply debuff if actually taking the stomp */
+        if (this.duration) {
+            this.damagedone = this.rollDamage();
+            this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
+            this.stats.incdodgerating = -1893;
+            //this.player.addStun(this, step);
+            this.player.updateStats();
+            if (this.player.enableLogging) 
+                this.player.log(`Stomp applied for ${this.duration}s. Dodge: ${this.player.stats.incdodge}, armor: ${this.player.stats.ac}`);
+        }
+        else {
+            this.damagedone = 0;
+            this.stats.ac = 0;
+            this.stats.incdodgerating = 0;
+            this.player.updateStats();
+            this.timer = step + this.cooldown;
+            this.active = false;
+            if (this.player.enableLogging) 
+                this.player.log(`Stomp eaten by other tank`);
+        }
+
+    }
+
+    rollDamage() {
+        let damage = 0;
+        // Workaround to return damage = 0 if other tank eats stomp 
+        if (this.duration) {
+            damage = this.baseDamage;
+            if (this.player.weaponrng) {
+                damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+            }
+        }
+        return damage * (1 - this.player.getselfarmormod())
+    }
+
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            this.player.removeStun(this);
+            if (this.player.enableLogging) 
+                this.player.log(`Stomp removed. Dodge: ${this.player.stats.incdodge}, armor: ${this.player.stats.ac}`);
+        }
+    }
+
+    canUse(bossswinglanded) {
+        return (step >= this.timer) && !this.active;
+    }
+
+    resetCD() {
+        this.active = false;
+        this.timer = step + this.cooldown;
+        this.starttimer = step;
+    }
+
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.active = false;
+    }
 }

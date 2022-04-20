@@ -289,6 +289,7 @@ class Simulation {
         let damageDone = 0;
         let threatDone = 0;
         let died = false;
+        let bossswinglanded = false;
         var damage_threat = [0, 0];
         /* If weapon RNG is enabled, randomize first swing time [0, 1s) */
         if (this.player.weaponrng) {
@@ -327,8 +328,13 @@ class Simulation {
             player.auras.evasivemaneuvers
         ];
 
+        let bossSpells = [
+            player.auras.stomp
+        ];
+
         /* Remove spells/auras that don't exist in this run */
         activatedSpells = activatedSpells.filter(aura => aura);
+        bossSpells = bossSpells.filter(aura => aura);
 
         if (log) console.log(' TIME |   RAGE | EVENT');
 
@@ -373,7 +379,7 @@ class Simulation {
             // Attack boss
             if (player.mh.timer <= 0) {
                 /* Step timers for active spells */
-                player.stepauras(activatedSpells);
+                player.stepauras(activatedSpells, bossSpells);
                 damage_threat = player.attackmh(player.mh, damage_threat, step);
                 damageDone = damage_threat[0];
                 threatDone = damage_threat[1];
@@ -384,11 +390,23 @@ class Simulation {
 
             // Incoming attack
             if (player.activetank && player.incswingtimer <= 0) {
+                /* Take boss auto-attack */
                 let damageTaken = player.takeattack(step);
+                this.idamagetaken += damageTaken;
+                if (damageTaken) {
+                    bossswinglanded = true;
+                }
+                if (!died) {
+                   died = player.updatehealth(damageTaken, activatedSpells); 
+                }
+
+                /* Check boss specials */
+                damageTaken = player.takebossspecial(step, bossSpells, bossswinglanded);
                 this.idamagetaken += damageTaken;
                 if (!died) {
                    died = player.updatehealth(damageTaken, activatedSpells); 
                 }
+
                 spellcheck = true;
             }
 
@@ -433,7 +451,7 @@ class Simulation {
                     player.heroicdelay = delayedheroic.maxdelay - 49;
                 if (delayedspell.canUse()) {
                     /* Step timers for active spells */
-                    player.stepauras(activatedSpells);
+                    player.stepauras(activatedSpells, bossSpells);
                     damage_threat = player.cast(delayedspell, damage_threat, step);
                     this.idmg += damage_threat[0];
                     this.ithreat += damage_threat[1];
@@ -494,7 +512,7 @@ class Simulation {
         }
 
         // Fight done
-        player.endauras(activatedSpells);
+        player.endauras(activatedSpells, bossSpells);
         player.currenthp = player.stats.maxhp;
 
         if (player.auras.laceratedot && player.spells.lacerate) {

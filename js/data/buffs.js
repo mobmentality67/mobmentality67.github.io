@@ -253,7 +253,15 @@ var buffs = [
       debuff: true,
       incmiss: -5.0,
       incdodgerating: -378.46
+   },
+   {
+      id: 45185,
+      spellid: true,
+      name: "Stomp",
+      iconname: "ability_warstomp",
+      bossability: true,
    }
+
    
    
 ];

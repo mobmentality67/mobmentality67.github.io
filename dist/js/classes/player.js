@@ -63,6 +63,9 @@ class Player {
         this.defensivethreshold = config.defensivethreshold;
         this.defensivehpthreshold = 0;
         this.defensivesave = false;
+        this.stunned = false;
+        this.stuns = [];
+        this.laststunend = 0;
         this.base = {
             sta: 0,
             ac: 0,
@@ -168,6 +171,7 @@ class Player {
         this.addGem();
         this.addBuffs();
         this.addSpells();
+        this.addBossSpells();
         this.ooc = new OmenOfClarity(this, this.talents.ooc);
 
 
@@ -595,6 +599,34 @@ class Player {
             }
         }
     }
+
+    addBossSpells() {
+        for (let buff of buffs) {
+            if (buff.bossability) {
+                if (buff.active) {
+                    this.auras[buff.name.toLowerCase()] = eval(`new ${buff.name}(this)`);
+                }
+            }
+
+        }
+    }
+
+    addStun(stun, start) {
+        this.stunned = true;
+        this.stuns.push(stun);
+        this.laststunend = Math.max(this.laststunend, start + stun.duration);
+        this.mh.timer = Math.max(stun.duration * 1000, this.mh.timer); // Delay swing by stun duration
+    }
+
+    removeStun(stun) {
+        this.stuns = this.stuns.filter(function(value, index, arr) {
+            return value != stun;
+        });
+        if (this.stuns.length == 0) {
+            this.stunned = false;
+        }
+    }
+
     reset(rage) {
         this.rage = rage;
         this.timer = 0;
@@ -636,9 +668,9 @@ class Player {
     updateIncAttackTable() {
         // Incoming attack table constant setup
         // Base dodge - boss suppression + dodge from agi + dodge from dodge rating + dodge from def rating + dodge from talents
-        this.stats.incdodge = -1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
-            this.stats.def * .04 + this.talents.feralswiftnessmod; 
-        if (this.race == 'Night Elf') this.stats.incdodge += 1; // 4.4 base miss + miss from defense rating
+
+        this.stats.incdodge = Math.max(-1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
+            this.stats.def * .04 + this.talents.feralswiftnessmod + (this.race == 'Night Elf'), 0);
         this.stats.incmiss = this.base.incmiss + this.stats.def * .04 + 19.0 * this.bossdw;
         this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
         this.stats.inccrush = this.bosscrush ? 15 : 0;
@@ -695,7 +727,7 @@ class Player {
         /* Calculate agi/buffs armor after armor mod */
         this.stats.ac += this.stats.agi * 2;
         for (let name in this.auras) {
-            if (this.auras[name].timer && this.auras[name].stats.ac)
+            if (this.auras[name].timer && this.auras[name].stats.ac && this.auras[name].active)
                 this.stats.ac += this.auras[name].stats.ac;
         }
         this.stats.ac += this.base.bonusac;
@@ -862,7 +894,7 @@ class Player {
         }
     }
 
-    stepauras(activatedSpells) {
+    stepauras(activatedSpells, bossSpells) {
 
         // Step any active trinket spells
         activatedSpells.forEach((spell) => {
@@ -871,13 +903,27 @@ class Player {
             }
         })
 
+        // Step boss specials
+        bossSpells.forEach((spell) => {
+            if (spell.timer) {
+                spell.step();
+            }
+        })
+
         // Step lacerate DOT manually if necessary
         if (this.auras.laceratedot && this.auras.laceratedot.timer) this.auras.laceratedot.step();
     }
-    endauras(activatedSpells) {
+    endauras(activatedSpells, bossSpells) {
 
         // Step any active trinket spells
         activatedSpells.forEach((spell) => {
+            if (spell.timer) {
+                spell.end();
+            }
+        })
+
+        // Step any active trinket spells
+        bossSpells.forEach((spell) => {
             if (spell.timer) {
                 spell.end();
             }
@@ -916,6 +962,17 @@ class Player {
         if (roll < tmp) return RESULT.CRIT;
         return RESULT.HIT;
     }
+
+    rollspecialtaken() {
+        let tmp = 0;
+        let roll = rng10k();
+        tmp += this.stats.incmiss * 100;
+        if (roll < tmp) return RESULT.MISS;
+        tmp += this.stats.incdodge * 100
+        if (roll < tmp) return RESULT.DODGE;
+        return RESULT.HIT;
+    }
+
     rollspell(spell) {
        let roll = rng10k();
        let tmp = Math.max(this.mh.miss, 0) * 100;
@@ -1044,6 +1101,12 @@ class Player {
 
     }
 
+    getselfarmormod() {
+        let selfArmorMod = this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5));
+        if (selfArmorMod > 0.75) selfArmorMod = 0.75;
+        return selfArmorMod;
+    }
+
     takeattack(tick) {
         this.takeheal(tick);
         this.incswingtimer = this.base.incswingtimer;
@@ -1067,11 +1130,39 @@ class Player {
             if (this.enableLogging) this.log("Boss swing missed");
             return 0;
         }
-        let selfArmorMod = this.stats.ac / (this.stats.ac + (467.5 * 73 - 22167.5));
-        if (selfArmorMod > 0.75) selfArmorMod = 0.75;
-        dmg = dmg * (1-selfArmorMod);
+        let selfArmorMod = this.getselfarmormod();
+        dmg = dmg * (1 - selfArmorMod);
         this.addDamageTakenRage(dmg);
         return dmg;
+    }
+
+    takebossspecial(tick, bossSpells, bossswinglanded) {
+        let totalDamage = 0;
+        for (let special of bossSpells) {
+            let dmg = 0;
+            // Use boss ability if off CD
+            if (special.canUse(bossswinglanded)) {
+                // Roll special if avoidable, reset CD if miss
+                let result = RESULT.HIT;
+                if (special.avoidable) {
+                    result = this.rollspecialtaken()
+                }
+                if (result == RESULT.HIT) {
+                    special.use();
+                    dmg = special.damagedone;
+                    if (this.enableLogging) this.log(`${special.name} hit for ${dmg}`);
+                }
+                else {
+                    special.resetCD();
+                    if (this.enableLogging) this.log(`${special.name} avoided (${result})`);
+                }
+
+                this.addDamageTakenRage(dmg);
+                totalDamage += dmg;
+            }
+
+        }
+        return totalDamage;
     }
 
     updatehealth(damage, activatedSpells) {
@@ -1081,6 +1172,7 @@ class Player {
         if (this.currenthp <= 0) {
             died = true;
             this.defensivesave = false; // Rule out previously saved life
+            if (this.enableLogging) this.log(`Player died`);
         }
         /* If below defensive HP threshold, pop all defensives available */
         else if (this.currenthp <= this.defensivehpthreshold) {
@@ -1328,8 +1420,8 @@ class Player {
         };
     }
     log(msg) {
-        if (this.enableLogging) {
+        //if (this.enableLogging) {
             console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${msg}`);
-        }
+        //}
     }
 }
