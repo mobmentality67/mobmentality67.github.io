@@ -6,6 +6,7 @@ var MAX_GEMS = {
     head: 2,
     neck: 2,
     shoulder: 2,
+    back: 1,
     chest: 3,
     wrist: 1,
     hands: 2,
@@ -876,9 +877,11 @@ SIM.UI = {
 
     simulateRow: function(tr, updateFn) {
         var view = this;
-        var dps = tr.find('td:last-of-type');
+        var ehp = tr.find('td:nth-last-of-type(5)');
+        var psurv = tr.find('td:nth-last-of-type(4)');
+        var pullvar = tr.find('td:nth-last-of-type(3)');
+        var dps = tr.find('td:nth-last-of-type(2)');
         var tps = tr.find('td:last-of-type');
-        var ehp = tr.find('td:nth-last-of-type(2)');
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
@@ -895,21 +898,21 @@ SIM.UI = {
         var sim = new SimulationWorker(
             (report) => {
                 // Finished
-                //let span = $('<span></span>');
                 let spantps = $('<span></span>');
                 let calc = report.totaldmg / report.totalduration;
                 let calctps = report.totalthreat / report.totalduration;
+                let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
+                let calcpsurv = (100.0 - (report.totaldeaths / report.iterations * 100)).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
-                //span.text(difftps.toFixed(2));
                 spantps.text(difftps.toFixed(2));
-                //if (diff >= 0) span.addClass('p');
-                //else span.addClass('n');
                 if (difftps >= 0) spantps.addClass('p');
                 else spantps.addClass('n');
-                //dps.text(calc.toFixed(2)).append(span);
-                tps.text(calctps.toFixed(2)).append(spantps);
                 ehp.text(report.ehp.toFixed(2) || 0);
+                psurv.text(calcpsurv || 0);
+                pullvar.text(calcpullvar || 0);
+                dps.text(calc.toFixed(2) || 0);
+                tps.text(calctps.toFixed(2)).append(spantps);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -925,8 +928,11 @@ SIM.UI = {
                 if (isench) {
                     for(let i of enchant[type])
                         if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
                             i.ehp = report.ehp.toFixed(2) || 0;
+                            i.psurv = calcpsurv.toFixed(2) || 0;
+                            i.pullvar = calcpullvar || 0;
+                            i.dps = calc.toFixed(2) || 0;
+                            i.tps = calctps.toFixed(2);
                         }
                 }
 
@@ -934,8 +940,11 @@ SIM.UI = {
                     for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                         for(let i of Object.values(gem[type][gemIndex])){
                             if (i.id == item) {
-                                i.tps = calctps.toFixed(2);
                                 i.ehp = report.ehp.toFixed(2) || 0;
+                                i.psurv = calcpsurv.toFixed(2) || 0;
+                                i.pullvar = calcpullvar || 0;
+                                i.dps = calc.toFixed(2) || 0;
+                                i.tps = calctps.toFixed(2);
                             }
                         }
                     }
@@ -945,19 +954,18 @@ SIM.UI = {
                 else {
                     for(let i of gear[type])
                         if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
                             i.ehp = report.ehp.toFixed(2) || 0;
+                            i.psurv = calcpsurv || 0;
+                            i.pullvar = calcpullvar || 0;
+                            i.dps = calc.toFixed(2) || 0;
+                            i.tps = calctps.toFixed(2);
                         }
                 }
             },
             (iteration, report) => {
                 // Update
                 updateFn(Math.floor((iteration / report.iterations) * 100));
-                dps.text((report.totaldmg / report.totalduration).toFixed(2));
                 tps.text((report.totalthreat / report.totalduration).toFixed(2));
-                if(dtps && typeof dtps.text == "function"){
-                dtps.text((report.totaldamagetaken / report.totalduration).toFixed(2));
-                }
             },
             (error) => {
                 dps.text('ERROR');
@@ -983,38 +991,23 @@ SIM.UI = {
         var sim = new SimulationWorker(
             (report) => {
                 // Finished
-                //let span = $('<span></span>');
-                //let spantps = $('<span></span>');
                 let calc = report.totaldmg / report.totalduration;
                 let calctps = report.totalthreat / report.totalduration;
+                let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
+                let calcpsurv = (100.0 - (report.totaldeaths / report.iterations * 100)).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
-                //span.text(difftps.toFixed(2));
-                //spantps.text(difftps.toFixed(2));
-                //if (diff >= 0) span.addClass('p');
-                //else span.addClass('n');
-                //if (difftps >= 0) spantps.addClass('p');
-                //else spantps.addClass('n');
-                //dps.text(calc.toFixed(2)).append(span);
-                //tps.text(calctps.toFixed(2)).append(spantps);
-                //ehp.text(report.ehp.toFixed(2) || 0);
-
-                //view.tcontainer.find('table').each(function() {
-                //    if (type == "custom") return;
-                //    $(this).trigger('update');
-                //    let sortList = [[$(this).find('th').length - 1, 1]];
-                //    $(this).trigger("sorton", [sortList]);
-                //});
-                
-                //tr.removeClass('waiting');
                 updateFn(100);
                 sim = null;
 
                 if (isench) {
                     for(let i of enchant[type])
                         if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
-                            i.ehp = report.ehp.toFixed(2) || 0;
+                                i.ehp = report.ehp.toFixed(2) || 0;
+                                i.psurv = calcpsurv.toFixed(2) || 0;
+                                i.pullvar = calcpullvar || 0;
+                                i.dps = calc.toFixed(2) || 0;
+                                i.tps = calctps.toFixed(2);
                         }
                 }
 
@@ -1022,8 +1015,11 @@ SIM.UI = {
                     for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                         for(let i of Object.values(gem[type][gemIndex])){
                             if (i.id == item) {
-                                i.tps = calctps.toFixed(2);
                                 i.ehp = report.ehp.toFixed(2) || 0;
+                                i.psurv = calcpsurv.toFixed(2) || 0;
+                                i.pullvar = calcpullvar || 0;
+                                i.dps = calc.toFixed(2) || 0;
+                                i.tps = calctps.toFixed(2);
                             }
                         }
                     }
@@ -1033,8 +1029,11 @@ SIM.UI = {
                 else {
                     for(let i of gear[type])
                         if (i.id == item) {
-                            i.tps = calctps.toFixed(2);
                             i.ehp = report.ehp.toFixed(2) || 0;
+                            i.psurv = calcpsurv.toFixed(2) || 0;
+                            i.pullvar = calcpullvar || 0;
+                            i.dps = calc.toFixed(2) || 0;
+                            i.tps = calctps.toFixed(2);
                         }
                 }
             },
@@ -1090,7 +1089,6 @@ SIM.UI = {
                 enchant.twohand[i].selected = false;
         }
 
-        //view.loadGems(type, table.hasClass('editmode'), activeItem);
     },
 
     rowHideItem: function(tr) {
@@ -1331,14 +1329,14 @@ SIM.UI = {
         for (let type in gear) {
             _gear[type] = [];
             for (let item of gear[type]) {
-                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
+                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
             }
         }
 
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
+                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
             }
         }
 
@@ -1347,7 +1345,7 @@ SIM.UI = {
             for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                 _gem[type][gemIndex] =  [];
                 for (let item of Object.values(gem[type][gemIndex])) {
-                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp});
+                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
                 }
             }
         }
@@ -1428,7 +1426,10 @@ SIM.UI = {
                                 <th>Armor</th>
                                 <th>Res</th>
                                 <th>EHP</th>
-                                <th>TPS</th>
+                                <th>P(Survival)</th>
+                                <th>P(Pull Success)</th>
+                                <th>DPS</th>
+                                <th>    TPS    </th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1474,6 +1475,9 @@ SIM.UI = {
                         <td>${item.ac || ''}</td>
                         <td>${item.res || ''}</td>
                         <td>${item.ehp || ''}</td>
+                        <td>${item.psurv || ''}</td>
+                        <td>${item.pullvar || ''}</td>
+                        <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -1523,7 +1527,10 @@ SIM.UI = {
                                 <th>Armor</th>
                                 <th>Res</th>
                                 <th>EHP</th>
-                                <th>TPS</th>
+                                <th>P(Survival)</th>
+                                <th>P(Pull Success)</th>
+                                <th>DPS</th>
+                                <th>    TPS    </th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1569,6 +1576,9 @@ SIM.UI = {
                         <td>${item.ac || ''}</td>
                         <td>${item.res || ''}</td>
                         <td>${item.ehp || ''}</td>
+                        <td>${item.psurv || ''}</td>
+                        <td>${item.pullvar || ''}</td>
+                        <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -1579,9 +1589,9 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[14, 1],[1, 0]] : [[13, 1],[0, 0]],
+            sortList: editmode ? [[17, 1],[1, 0]] : [[16, 1],[0, 0]],
             textSorter : {
-                13 : function(a, b, direction, column, table) {
+                16 : function(a, b, direction, column, table) {
                     var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
                     var b = parseFloat(b.substring(0,b.indexOf('.') + 3));
                     if (isNaN(a)) a = 0; 
@@ -1614,7 +1624,10 @@ SIM.UI = {
                                 <th>Hit</th>
                                 <th>Crit</th>
                                 <th>EHP</th>
-                                <th>TPS</th>
+                                <th>P(Survival)</th>
+                                <th>P(Pull Success)</th>
+                                <th>DPS</th>
+                                <th>    TPS    </th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1630,6 +1643,9 @@ SIM.UI = {
                         <td>${item.hit || ''}</td>
                         <td>${item.critrating || ''}</td>
                         <td>${item.ehp || ''}</td>
+                        <td>${item.psurv || ''}</td>
+                        <td>${item.pullvar || ''}</td>
+                        <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -1640,7 +1656,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[8, 1]] : [[7, 1]],
+            sortList: editmode ? [[11, 1]] : [[10, 1]],
         });
     },
 
@@ -1662,7 +1678,10 @@ SIM.UI = {
                                 <th>Crit</th>
                                 <th>Damage</th>
                                 <th>EHP</th>
-                                <th>TPS</th>
+                                <th>P(Survival)</th>
+                                <th>P(Pull Success)</th>
+                                <th>DPS</th>
+                                <th>    TPS    </th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1684,6 +1703,9 @@ SIM.UI = {
                         <td>${item.critrating || ''}</td>
                         <td>${item.bonusdmg || ''}</td>
                         <td>${item.ehp || ''}</td>
+                        <td>${item.psurv || ''}</td>
+                        <td>${item.pullvar || ''}</td>
+                        <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
                     </tr>`;
         }
@@ -1695,7 +1717,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.enchant').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[9, 1]] : [[8, 1]],
+            sortList: editmode ? [[12, 1]] : [[11, 1]],
         });
 
         view.main.find('.js-enchant').show();
@@ -1730,7 +1752,10 @@ loadGems: function (type, editmode, activeGear) {
                                     <th>Hit</th>
                                     <th>Resilience</th>
                                     <th>EHP</th>
-                                    <th>TPS</th>
+                                    <th>P(Survival)</th>
+                                    <th>P(Pull Success)</th>
+                                    <th>DPS</th>
+                                    <th>    TPS    </th>
                                 </tr>
                             </thead>
                         <tbody>`;
@@ -1756,6 +1781,9 @@ loadGems: function (type, editmode, activeGear) {
                             <td>${item.hitrating || ''}</td>
                             <td>${item.res || ''}</td>
                             <td>${item.ehp || ''}</td>
+                            <td>${item.psurv || ''}</td>
+                            <td>${item.pullvar || ''}</td>
+                            <td>${item.dps || ''}</td>
                             <td>${item.tps || ''}</td>
                         </tr>`;
             }
@@ -1767,7 +1795,7 @@ loadGems: function (type, editmode, activeGear) {
             view.tcontainer.append(table);
             view.tcontainer.find('table.gem').tablesorter({
                 widthFixed: true,
-                sortList: editmode ? [[8, 1]] : [[7, 1]],
+                sortList: editmode ? [[111, 1]] : [[10, 1]],
             });
         }
 

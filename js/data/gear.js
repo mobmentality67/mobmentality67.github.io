@@ -4874,6 +4874,183 @@ var gem = {
          "color": "green",
       }
    ],
+   "back": [
+      {
+         "id": 32206,
+         "name": "Rigid Lionseye",
+         "hitrating": 10,
+         "color": "yellow",
+      },
+      {
+         "id": 32226,
+         "name": "Jagged Seaspray Emerald",
+         "sta": 7,
+         "critrating": 5,
+         "color": "green",
+      },
+      {
+         "id": 32193,
+         "name": "Bold Crimson Spinel",
+         "str": 10,
+         "color": "red",
+      },
+      {
+         "id": 32220,
+         "name": "Glinting Pyrestone",
+         "agi": 5,
+         "hitrating": 5,
+         "color": "orange",
+      },
+      {
+         "id": 30585,
+         "name": "Glistening Fire Opal",
+         "agi": 4,
+         "def": 5,
+         "color": "orange",
+      },
+      {
+         "id": 32200,
+         "name": "Solid Empyrean Sapphire",
+         "sta": 15,
+         "color": "blue",
+      },
+      {
+         "id": 32208,
+         "name": "Thick Lionseye",
+         "def": 10,
+         "color": "yellow",
+      },
+      {
+         "id": 32208,
+         "name": "Thick Lionseye",
+         "def": 10,
+         "color": "yellow",
+      },
+      {
+         "id": 32194,
+         "name": "Delicate Crimson Spinel",
+         "agi": 10,
+         "color": "red",
+      },
+      {
+         "id": 32223,
+         "name": "Enduring Seaspray Emerald",
+         "def": 5,
+         "sta": 7,
+         "color": "green",
+      },
+      {
+         "id": 35758,
+         "name": "Steady Seaspray Emerald",
+         "res": 5,
+         "sta": 7,
+         "color": "green",
+      },
+      {
+         "id": 32212,
+         "name": "Shifting Shadowsong Amethyst",
+         "agi": 5,
+         "sta": 7,
+         "color": "purple",
+      },
+      {
+         "id": 24033,
+         "name": "Solid Star of Elune",
+         "sta": 12,
+         "color": "blue",
+      },
+      {
+         "id": 33135,
+         "name": "Falling Star",
+         "sta": 18,
+         "color": "blue",
+      },
+      {
+         "id": 24028,
+         "name": "Delicate Living Ruby",
+         "agi": 8,
+         "color": "red"
+      },
+      {
+         "id": 24027,
+         "name": "Bold Living Ruby",
+         "str": 8,
+         "color": "red"
+      },
+      {
+         "id": 33131,
+         "name": "Crimson Sun",
+         "ap": 24,
+         "color": "red"
+      },
+      {
+         "id": 24051,
+         "name": "Rigid Dawnstone",
+         "hitrating": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 24061,
+         "name": "Glinting Noble Topaz",
+         "hitrating": 4,
+         "agi": 4,
+         "color": "orange",
+      },
+      {
+         "id": 24053,
+         "name": "Mystic Dawnstone",
+         "res": 8,
+         "color": "yellow",
+      },
+      {
+         "id": 32209,
+         "name": "Mystic Lionseye",
+         "res": 10,
+         "color": "yellow",
+      },
+      {
+         "id": 33143,
+         "name": "Stone of Blades",
+         "critrating": 12,
+         "color": "yellow",
+      },
+      {
+         "id": 24055,
+         "name": "Shifting Nightseye",
+         "agi": 4,
+         "sta": 6,
+         "color": "purple",
+      },
+      {
+         "id": 33782,
+         "name": "Steady Talasite",
+         "res": 4,
+         "sta": 6,
+         "color": "green",
+      },
+      {
+         "id": 24062,
+         "name": "Enduring Talasite",
+         "def": 4,
+         "sta": 6,
+         "color": "green",
+      },
+      {
+         "id": 31863,
+         "name": "Balanced Nightseye",
+         "ap": 8,
+         "sta": 6,
+         "color": "purple",
+      },
+      {
+         "id": 24067,
+         "name": "Jagged Talasite",
+         "critrating": 4,
+         "sta": 6,
+         "color": "green",
+      }
+
+   ],
    "chest": [
       {
          "id": 32206,
