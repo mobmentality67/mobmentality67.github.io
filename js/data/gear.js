@@ -4392,12 +4392,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -4561,12 +4555,6 @@ var gem = {
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
          "color": "blue",
-      },
-      {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
       },
       {
          "id": 32208,
@@ -4745,12 +4733,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -4913,12 +4895,6 @@ var gem = {
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
          "color": "blue",
-      },
-      {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
       },
       {
          "id": 32208,
@@ -5098,12 +5074,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -5274,12 +5244,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -5442,12 +5406,6 @@ var gem = {
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
          "color": "blue",
-      },
-      {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
       },
       {
          "id": 32208,
@@ -5626,12 +5584,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -5794,12 +5746,6 @@ var gem = {
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
          "color": "blue",
-      },
-      {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
       },
       {
          "id": 32208,
@@ -5978,12 +5924,6 @@ var gem = {
          "color": "yellow",
       },
       {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
-      },
-      {
          "id": 32194,
          "name": "Delicate Crimson Spinel",
          "agi": 10,
@@ -6146,12 +6086,6 @@ var gem = {
          "name": "Solid Empyrean Sapphire",
          "sta": 15,
          "color": "blue",
-      },
-      {
-         "id": 32208,
-         "name": "Thick Lionseye",
-         "def": 10,
-         "color": "yellow",
       },
       {
          "id": 32208,

@@ -402,7 +402,7 @@ class Player {
         if (gem && gem.name == 'Relentless Earthstorm Diamond') {
             reqColors.yellow = 2; reqColors.red = 2; reqColors.blue = 2;
         }
-        else if (gem && gem.name == 'Brutal Earthstorm Diamond') {
+        else if (gem && gem.name == 'Powerful Earthstorm Diamond') {
             reqColors.blue = 3;
         }  
         else {
