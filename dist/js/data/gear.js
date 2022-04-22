@@ -3136,6 +3136,13 @@ var gear = {
          "id": 23836,
       },
       {
+         "name": "Darkmoon Card (Passive)",
+         "sta": 51,
+         "phase": "4",
+         "source": "Other",
+         "id": 31858,
+      },
+      {
          "name": "Argussian Compass",
          "sta": 36,
          "phase": "1",
@@ -3412,6 +3419,13 @@ var gear = {
          "phase": "1",
          "source": "Crafting",
          "id": 23836,
+      },
+      {
+         "name": "Darkmoon Card (Passive)",
+         "sta": 51,
+         "phase": "4",
+         "source": "Other",
+         "id": 31858,
       },
       {
          "name": "Argussian Compass",

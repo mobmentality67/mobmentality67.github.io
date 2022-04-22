@@ -85,6 +85,14 @@ var buffs = [
       ap: 120
    },
    {
+      id: 22851,
+      name: "Flask of Fortification",
+      iconname: "inv_potion_117",
+      group: "elixir",
+      def: 10,
+      bonushp: 500
+   },
+   {
       id: 22849,
       name: "Ironshield Potion",
       iconname: "inv_potion_133",
