@@ -329,7 +329,9 @@ class Simulation {
         ];
 
         let bossSpells = [
-            player.auras.stomp
+            player.auras.stomp_full,
+            player.auras.stomp_toggle,
+            player.auras.cleave
         ];
 
         /* Remove spells/auras that don't exist in this run */

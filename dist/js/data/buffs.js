@@ -255,11 +255,69 @@ var buffs = [
       incdodgerating: -378.46
    },
    {
+      id: 27226,
+      spellid: true,
+      name: "Curse of Recklessness",
+      iconname: "spell_shadow_unholystrength",
+      debuff: true,
+      bossapmod: 135,
+   },
+   {
+      id: 25202,
+      spellid: true,
+      name: "Demoralizing Shout",
+      iconname: "ability_warrior_warcry",
+      debuff: true,
+      bossapmod: -420,
+   },
+   {
+      id: 24579,
+      spellid: true,
+      name: "Screech",
+      iconname: "ability_hunter_pet_bat",
+      debuff: true,
+      bossapmod: -100,
+   },   
+   {
+      id: 32394,
+      spellid: true,
+      name: "Shadow Embrace",
+      iconname: "spell_shadow_shadowembrace",
+      debuff: true,
+      bossattackmod: -5,
+   },
+   {
+      id: 12666,
+      spellid: true,
+      name: "Thunder Clap",
+      iconname: "ability_thunderclap",
+      debuff: true,
+      bossattackspeedmod: 20,
+   },
+   {
       id: 45185,
       spellid: true,
-      name: "Stomp",
-      iconname: "ability_warstomp",
+      name: "Stomp_Full",
+      iconname: "ability_stomp_full",
       bossability: true,
+      group: "bossability_unique"
+   },
+   {
+      id: 4518500000,
+      idoverride: 45185,
+      spellid: true,
+      name: "Stomp_Toggle",
+      iconname: "ability_stomp_toggle",
+      bossability: true,
+      group: "bossability_unique"
+   },
+   {
+      id: 31345,
+      spellid: true,
+      name: "Cleave",
+      iconname: "ability_warrior_cleave",
+      bossability: true,
+      group: "bossability_unique"
    }
 
    

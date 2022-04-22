@@ -327,10 +327,11 @@ SIM.SETTINGS = {
                 let base_icon_name = `data-base_icon_name="dist/img/${buff.iconname.toLowerCase()}"`;
                 let iconname = buff.max_count ? buff.iconname.toLowerCase() + "_" + buff.count : buff.iconname.toLowerCase();
                 let count = buff.count ? `data-count="${buff.count}"` : '';
+                let buffOverrideID = buff.idoverride ? buff.idoverride : buff.id; 
                 let html = `<div data-id="${buff.id}" data-name = "${buff.name}" ${max_count} ${count} ${base_icon_name}
                                 class="icon ${active}" ${group} ${disable}>
                                 <img src="dist/img/${iconname}.jpg " alt="${buff.name}">
-                                <a href="https://tbc.wowhead.com/${wh}=${buff.id}" class="wh-tooltip"></a>
+                                <a href="https://tbc.wowhead.com/${wh}=${buffOverrideID}" class="wh-tooltip"></a>
                             </div>`;
 
                 view.buffs.append(html);

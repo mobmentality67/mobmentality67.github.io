@@ -1376,66 +1376,156 @@ class OmenOfClarity {
 
 }
 
-class Stomp extends Aura {
+/* -------- Boss Spells ---------- */
+
+class Stomp_Toggle extends Aura {
 
     constructor(player) {
         super(player);
         this.duration = 10;
-        this.name = 'Stomp';
+        this.name = 'Stomp (Toggle)';
         this.cooldown = 30 * 1000;
         this.active = false;
         this.stats = { ac: 0};
-        this.activeuse = true;
         this.avoidable = false;
         this.baseDamage = 20000;
         this.rngrange = 0.05;
         this.physical = true;
         this.timer = 0;
         this.damagedone = 0;
+
+        this.healonswap = false;
+        this.healafter = false;
     }
     use() {
         // Divide the tank segment into 36 second splits
         let tankSegment = step % 36000;
         // Stomp duration is full unless about to tank swap or you just tank swapped
-        if (tankSegment < 12000) { // If taking over from another tank, just burn the cd
-            this.duration = 0;
+        if (tankSegment < 12000) { 
+            this.duration = 2;
+            this.healonswap = true;
+            this.healafter = true;
+        }
+        else if (tankSegment < 24000) {
+            this.duration = 2;
+            this.healonswap = true;
+            this.healafter = true;
+        }
+        else if (tankSegment < 28000) {
+            this.duration = 2;
+            this.healonswap = true;
+            this.healafter = true;
         }
         else {
-            this.duration = Math.min((36000 - tankSegment) / 1000, 10);
+            this.duration = (36000 - tankSegment) / 1000;
+            this.healonswap = false;
+            this.healafter = true;
         }
-        
+
         this.timer = step + this.duration * 1000;
         this.starttimer = step;
         this.active = true;
-        /* Apply debuff if actually taking the stomp */
-        if (this.duration) {
-            this.damagedone = this.rollDamage();
-            this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
-            this.player.updateStats();
-            if (this.player.enableLogging) 
-                this.player.log(`Stomp applied for ${this.duration}s. Armor: ${this.player.stats.ac}`);
-        }
-        else {
-            this.damagedone = 0;
-            this.stats.ac = 0;
-            this.player.updateStats();
-            this.timer = step + this.cooldown;
-            this.active = false;
-            if (this.player.enableLogging) 
-                this.player.log(`Stomp eaten by other tank`);
-        }
 
+        this.damagedone = this.rollDamage();
+        this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
+        this.player.updateStats();
+        if (this.player.enableLogging) 
+            this.player.log(`Stomp applied for ${this.duration}s. Armor: ${this.player.stats.ac}`);
+        if (this.healonswap) {
+            this.player.currenthp = this.player.stats.maxhp;
+            this.player.log(`Other tank taking over after stomp, full heal`);
+        }
     }
 
     rollDamage() {
-        let damage = 0;
-        // Workaround to return damage = 0 if other tank eats stomp 
-        if (this.duration) {
-            damage = this.baseDamage;
-            if (this.player.weaponrng) {
-                damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+        let damage = this.baseDamage;
+        if (this.player.weaponrng) {
+            damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+        }
+
+        return damage * (1 - this.player.getselfarmormod())
+    }
+
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            this.player.removeStun(this);
+            if (this.player.enableLogging) 
+                this.player.log(`Stomp removed. Armor: ${this.player.stats.ac}`);
+            if (this.healafter) {
+                this.player.currenthp = this.player.stats.maxhp;
+                this.player.log(`Tank swapping back after stomp, full heal`);
             }
         }
+    }
+
+    canUse(bossswinglanded) {
+        return (step >= this.timer) && !this.active;
+    }
+
+    resetCD() {
+        this.active = false;
+        this.timer = step + this.cooldown;
+        this.starttimer = step;
+    }
+
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 0;
+        this.active = false;
+    }
+}
+
+class Stomp_Full extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Stomp (Full)';
+        this.cooldown = 30 * 1000;
+        this.active = false;
+        this.stats = { ac: 0};
+        this.avoidable = false;
+        this.baseDamage = 20000;
+        this.rngrange = 0.05;
+        this.physical = true;
+        this.timer = 0;
+        this.damagedone = 0;
+
+    }
+    use() {
+        // Divide the tank segment into 36 second splits
+        let tankSegment = step % 36000;
+        // Stomp duration is full unless about to tank swap or you just tank swapped
+        if (tankSegment < 24000) {
+            this.duration = 10;
+        }
+        else {
+            this.duration = (36000 - tankSegment) / 1000;
+        }
+
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+
+        this.damagedone = this.rollDamage();
+        this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
+        this.player.updateStats();
+        if (this.player.enableLogging) 
+            this.player.log(`Stomp applied for ${this.duration}s. Armor: ${this.player.stats.ac}`);
+    }
+
+    rollDamage() {
+        let damage = this.baseDamage;
+        if (this.player.weaponrng) {
+            damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+        }
+
         return damage * (1 - this.player.getselfarmormod())
     }
 
@@ -1467,5 +1557,52 @@ class Stomp extends Aura {
         }
         this.timer = 0;
         this.active = false;
+    }
+}
+
+class Cleave extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Cleave';
+        this.cooldown = 11 * 1000;
+        this.active = false;
+        this.stats = { ac: 0};
+        this.activeuse = true;
+        this.avoidable = true;
+        this.baseDamage = player.incswingdamage + 1750;
+        this.rngrange = 0.05;
+        this.physical = true;
+        this.timer = 0;
+        this.damagedone = 0;
+    }    
+
+    use() {
+        this.damagedone = this.rollDamage();
+        this.resetCD();
+    }
+
+    rollDamage() {
+        let damage = 0;
+        if (this.duration) {
+            damage = this.baseDamage;
+            if (this.player.weaponrng) {
+                damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+            }
+        }
+        return damage * (1 - this.player.getselfarmormod())
+    }
+
+    canUse(bossswinglanded) {
+        return (step >= this.timer);
+    }
+
+    resetCD() {
+        this.timer = step + this.cooldown;
+    }
+
+    end() {
+        this.timer = 0;
     }
 }

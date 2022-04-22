@@ -5,6 +5,8 @@ class Player {
     EXP_RATING_COEFFICIENT = 1 / 3.9423;
     CRIT_RATING_COEFFICIENT = 1/(14*82/52);
     DODGE_RATING_COEFFICIENT =  1/(12*82/52);
+    BOSS_AP = 1930;
+    BOSS_ATTACK_COEFFICIENT = 1/2250;
 
     static getConfig(base) {
         return {
@@ -80,9 +82,14 @@ class Player {
             incdodge: 0,
             incdodgerating: 0,
             incswingtimer: config.incswingtimer * 1000,
+            incswingspeed: config.incswingtimer * 1000,
+            incswingdamage: config.incswingdamage,
             inchpslifebloom: config.inchpslifebloom,
             incheal: config.incheal,
             defensivethreshold: config.defensivethreshold,
+            bossattackmod: 1.0,
+            bossapmod: 320,
+            bossattackspeedmod: 1.0,
             incmiss: 4.4,
             hit: 0,
             hitrating: 0,
@@ -561,6 +568,9 @@ class Player {
                 this.base.hitrating += buff.hitrating || 0;
                 this.base.critrating += buff.critrating || 0;
                 this.base.spellcrit += buff.spellcrit || 0;
+                this.base.bossapmod += buff.bossapmod || 0;
+                this.base.bossattackmod *= (1 + buff.bossattackmod / 100) || 1;
+                this.base.bossattackspeedmod *= (1 + buff.bossattackspeedmod / 100) || 1;
                 this.base.agimod *= (1 + buff.agimod / 100) || 1;
                 this.base.strmod *= (1 + buff.strmod / 100) || 1;
                 this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
@@ -665,6 +675,15 @@ class Player {
         this.mh.parry = this.getParryChance(this.mh);
         this.mh.block = this.getBlockChance(this.mh);
     }
+
+    updateIncSwingDamage() {
+        this.incswingdamage = this.base.incswingdamage;
+        let attackModifier = this.stats.bossattackmod; // Percent modifiers like shadow embrace 
+        let apModifier = Math.max(this. BOSS_ATTACK_COEFFICIENT * (this.BOSS_AP + this.stats.bossapmod), .858); // AP Debuffs
+        this.incswingdamage *= attackModifier * apModifier;
+        this.incswingspeed = this.base.incswingspeed * this.stats.bossattackspeedmod;
+    }
+
     updateIncAttackTable() {
         // Incoming attack table constant setup
         // Base dodge - boss suppression + dodge from agi + dodge from dodge rating + dodge from def rating + dodge from talents
@@ -716,6 +735,7 @@ class Player {
         this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; // Add haste from rating
         this.mh.bonusdmg = this.stats.bonusdmg;
         this.updateArmor(); // Update current armor reduction
+        this.updateIncSwingDamage(); // Update boss swing speed, damage
         this.updateIncAttackTable(); // Update defensive attack table
         this.updateTargetArmorReduction(); // Update current target's armor reduction 
     }
@@ -996,13 +1016,13 @@ class Player {
 
         if (result == RESULT.PARRY && this.bossparryhaste) {
             /* If current boss swing timer > 60% of base timer, haste by 40% */
-            if (this.incswingtimer >= .6 * this.base.incswingtimer) {
-                this.incswingtimer = ~~(this.incswingtimer * 0.6);
+            if (this.incswingtimer >= .6 * this.incswingspeed) {
+                this.incswingtimer = ~~(this.incswingspeed * 0.6);
             }
             /* Otherwise if between 20% and 60% incoming swing timer,
              * swing timer = swing timer - (remaining time - 20% of base swing timer) */
-            else if (this.incswingtimer >= .2 * this.base.incswingtimer) {
-                this.incswingtimer -= ~~(this.incswingtimer - .2 * this.base.incswingtimer);           
+            else if (this.incswingtimer >= .2 * this.incswingspeed) {
+                this.incswingtimer -= ~~(this.incswingtimer - .2 * this.incswingspeed);           
             }
             else {
                 // No action taken if swing is within 20% of completing
@@ -1109,7 +1129,7 @@ class Player {
 
     takeattack(tick) {
         this.takeheal(tick);
-        this.incswingtimer = this.base.incswingtimer;
+        this.incswingtimer = this.incswingspeed;
 
         // Roll MH swing 
         let result = this.rollattacktaken();
@@ -1449,8 +1469,9 @@ class Player {
         };
     }
     log(msg) {
-        //if (this.enableLogging) {
-            console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${msg}`);
-        //}
+        if (this.enableLogging) {
+            let currentHPPercent = this.currenthp / this.stats.maxhp * 100;
+            console.log(`${step.toString().padStart(5,' ')} | ${this.rage.toFixed(2).padStart(6,' ')} | ${currentHPPercent.toFixed(2).padStart(6,' ')} | ${msg}`);
+        }
     }
 }
