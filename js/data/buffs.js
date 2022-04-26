@@ -87,10 +87,19 @@ var buffs = [
    {
       id: 22851,
       name: "Flask of Fortification",
-      iconname: "inv_potion_117",
+      iconname: "inv_potion_119",
       group: "elixir",
       def: 10,
       bonushp: 500
+   },
+   {
+      id: 33208,
+      name: "Flask of Chromatic Wonder",
+      iconname: "inv_potion_48",
+      group: "elixir",
+      agi: 18,
+      sta: 18,
+      str: 18
    },
    {
       id: 22849,

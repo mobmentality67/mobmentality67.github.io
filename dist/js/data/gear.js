@@ -2333,7 +2333,7 @@ var gear = {
       {
          "name": "Hard Khorium Band",
          "sta": 42,
-         "agi": 42,
+         "agi": 30,
          "hasterating": 28,
          "ap": 58,
          "source": "Crafting",
@@ -2630,7 +2630,7 @@ var gear = {
       {
          "name": "Hard Khorium Band",
          "sta": 42,
-         "agi": 42,
+         "agi": 30,
          "hasterating": 28,
          "ap": 58,
          "source": "Crafting",
@@ -3903,7 +3903,7 @@ var gear = {
       {
          "id": 25,
          "name": "+ 1% Dodge",
-         "incdodgerating": 18.293
+         "incdodgerating": 18.923
       },     
       {
          "id": 26,
@@ -3988,6 +3988,12 @@ var enchant = {
          "sta": 18,
          "res": 20,
          "phase": 5
+      },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
+         "phase": 1
       }
    ],
    "shoulder": [
@@ -4051,6 +4057,12 @@ var enchant = {
          "ap": 30,
          "phase": 1
       },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
+         "phase": 1
+      }
    ],
    "back": [
       {
@@ -4100,6 +4112,12 @@ var enchant = {
          "sta": 4,
          "phase": 1
       },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
+         "phase": 1
+      }
    ],
    "wrist": [
       {
@@ -4176,6 +4194,12 @@ var enchant = {
          "hasterating": 10,
          "phase": 1
       },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
+         "phase": 1
+      }
    ],
    "legs": [
       {
@@ -4204,6 +4228,12 @@ var enchant = {
          "name": "Cobrahide Leg Armor",
          "ap": 40,
          "critrating": 10,
+         "phase": 1
+      },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
          "phase": 1
       }
    ],
@@ -4243,6 +4273,12 @@ var enchant = {
          "name": "Surefooted",
          "phase": 1
       },
+      {
+         "id": 34330,
+         "name": "Heavy Knothide Armor Kit",
+         "sta": 10,
+         "phase": 1
+      }
    ],
 "finger1": [
       {
