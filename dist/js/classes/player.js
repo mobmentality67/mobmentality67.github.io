@@ -660,6 +660,9 @@ class Player {
             this.auras[s].timer = 0;
             this.auras[s].firstuse = true;
             this.auras[s].stacks = 0;
+            if (this.auras[s].resetCD) {
+                this.auras[s].resetCD();
+            }
         }
         if (this.auras.laceratedot) {
             this.auras.laceratedot.idmg = 0;
@@ -1017,7 +1020,7 @@ class Player {
         if (result == RESULT.PARRY && this.bossparryhaste) {
             /* If current boss swing timer > 60% of base timer, haste by 40% */
             if (this.incswingtimer >= .6 * this.incswingspeed) {
-                this.incswingtimer = ~~(this.incswingspeed * 0.6);
+                this.incswingtimer = ~~(this.incswingtimer * 0.6);
             }
             /* Otherwise if between 20% and 60% incoming swing timer,
              * swing timer = swing timer - (remaining time - 20% of base swing timer) */

@@ -294,7 +294,10 @@ class Simulation {
         /* If weapon RNG is enabled, randomize first swing time [0, 1s) */
         if (this.player.weaponrng) {
             player.mh.timer = (~~rng10k() / 10) | 0;
+            player.incswingtimer = ~~(player.incswingtimer * Math.random());
         }
+
+
 
         let activatedSpells = [
             player.auras.slayer,
@@ -392,15 +395,18 @@ class Simulation {
 
             // Incoming attack
             if (player.activetank && player.incswingtimer <= 0) {
+
                 /* Take boss auto-attack */
                 let damageTaken = player.takeattack(step);
                 this.idamagetaken += damageTaken;
                 if (damageTaken) {
                     bossswinglanded = true;
                 }
+
                 if (!died) {
                    died = player.updatehealth(damageTaken, activatedSpells); 
                 }
+
 
                 /* Check boss specials */
                 damageTaken = player.takebossspecial(step, bossSpells, bossswinglanded);

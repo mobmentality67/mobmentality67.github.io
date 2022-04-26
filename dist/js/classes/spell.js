@@ -1391,7 +1391,7 @@ class Stomp_Toggle extends Aura {
         this.baseDamage = 20000;
         this.rngrange = 0.05;
         this.physical = true;
-        this.timer = 0;
+        this.timer = 27.5 + Math.random() * 5;
         this.damagedone = 0;
 
         this.healonswap = false;
@@ -1430,7 +1430,7 @@ class Stomp_Toggle extends Aura {
         this.stats.ac = -0.5 * (this.player.base.ac) * (this.player.stats.armormod);
         this.player.updateStats();
         if (this.player.enableLogging) 
-            this.player.log(`Stomp applied for ${this.duration}s. Armor: ${this.player.stats.ac}`);
+            this.player.log(`Stomp applied for ${this.duration}s (tank segment ${tankSegment}). Armor: ${this.player.stats.ac}`);
         if (this.healonswap) {
             this.player.currenthp = this.player.stats.maxhp;
             this.player.log(`Other tank taking over after stomp, full heal`);
@@ -1449,7 +1449,7 @@ class Stomp_Toggle extends Aura {
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
-            this.timer = this.starttimer + this.cooldown;
+            this.timer = this.starttimer + this.cooldown + Math.random() * 2000;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
             this.player.removeStun(this);
@@ -1468,7 +1468,7 @@ class Stomp_Toggle extends Aura {
 
     resetCD() {
         this.active = false;
-        this.timer = step + this.cooldown;
+        this.timer = step + this.cooldown + Math.random() * 2000;
         this.starttimer = step;
     }
 
@@ -1476,7 +1476,7 @@ class Stomp_Toggle extends Aura {
         if (this.active) {
            this.uptime += step - this.starttimer;
         }
-        this.timer = 0;
+        this.timer = 27.5 + Math.random() * 5;
         this.active = false;
     }
 }
@@ -1532,7 +1532,7 @@ class Stomp_Full extends Aura {
     step() {
         if (step > this.timer && this.active) {
             this.active = false;
-            this.timer = this.starttimer + this.cooldown;
+            this.timer = this.starttimer + this.cooldown + Math.random() * 2000;
             this.player.updateStats();
             this.uptime += step - this.starttimer;
             this.player.removeStun(this);
@@ -1547,7 +1547,7 @@ class Stomp_Full extends Aura {
 
     resetCD() {
         this.active = false;
-        this.timer = step + this.cooldown;
+        this.timer = step + this.cooldown + Math.random() * 2000;
         this.starttimer = step;
     }
 
@@ -1555,7 +1555,7 @@ class Stomp_Full extends Aura {
         if (this.active) {
            this.uptime += step - this.starttimer;
         }
-        this.timer = 0;
+        this.timer = 27.5 + Math.random() * 5;
         this.active = false;
     }
 }
@@ -1599,7 +1599,7 @@ class Cleave extends Aura {
     }
 
     resetCD() {
-        this.timer = step + this.cooldown;
+        this.timer = step + this.cooldown + Math.random() * 2000;
     }
 
     end() {
