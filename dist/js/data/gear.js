@@ -3960,6 +3960,11 @@ var gear = {
          "name": "+ 2000 Armor",
          "bonusac": 2000,
       },
+      {
+         "id": 37,
+         "name": "+ 103 Resilience Rating",
+         "res": 103,
+      },
    ]
 };
 
