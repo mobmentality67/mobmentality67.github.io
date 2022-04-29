@@ -22,6 +22,7 @@ function getGlobalsDelta() {
                 pullvar: item.pullvar,
                 ehp: item.ehp,
                 psurv: item.psurv,
+		score: item.score,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -36,6 +37,7 @@ function getGlobalsDelta() {
                 dps: item.dps,
                 pullvar: item.pullvar,
                 ehp: item.ehp,
+		score: item.score,
                 selected: item.selected,
                 hidden: item.hidden,
             }
@@ -54,6 +56,7 @@ function getGlobalsDelta() {
                     pullvar: item.pullvar,
                     ehp: item.ehp,
                     psurv: item.psurv,
+		    score: item.score,
                     selected: item.selected,
                     hidden: item.hidden,
                 }
@@ -135,6 +138,7 @@ function updateGlobals(params) {
                         j.psurv = i.psurv;
                         j.dps = i.dps;
                         j.pullvar = i.pullvar;
+			j.score = i.score;
                         j.selected = i.selected;
                         j.hidden = i.hidden;
                     }
@@ -148,6 +152,7 @@ function updateGlobals(params) {
                     j.psurv = i.psurv;
                     j.dps = i.dps;
                     j.pullvar = i.pullvar;
+		    j.score = i.score;
                     j.selected = i.selected;
                     j.hidden = i.hidden;
                 }
@@ -176,6 +181,7 @@ function updateGlobals(params) {
                            j.psurv = i.psurv;
                            j.dps = i.dps;
                            j.pullvar = i.pullvar;
+			   j.score = i.score;
                            j.selected = i.selected;
                            j.hidden = i.hidden;
                         }
