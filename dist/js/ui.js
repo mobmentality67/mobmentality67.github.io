@@ -484,7 +484,7 @@ SIM.UI = {
         let tpsstats = view.sidebar.find('#tpsstats');
         let dtps = view.sidebar.find('#dtps');
         let dtpsstats = view.sidebar.find('#dtpsstats');
-	let score = view.sidebar.find('#score');
+    let score = view.sidebar.find('#score');
         let time = view.sidebar.find('#time');
         let deaths = view.sidebar.find('#deaths');
         let saves = view.sidebar.find('#saves');
@@ -497,7 +497,7 @@ SIM.UI = {
         tps.text('');
         dps.text('');
         dtps.text('');
-	score.text('');
+    score.text('');
         error.text('');
         time.text('');
         deaths.text('');
@@ -528,12 +528,12 @@ SIM.UI = {
                 const mean = report.totaldmg / report.totalduration;
                 const meantps = report.totalthreat / report.totalduration;
                 const meandtps = report.totaldamagetaken / report.totalduration;
-		const pdeath = report.totaldeaths / report.iterations;
-		const meanscore = 100.0 * (localStorage.survivalskew * (1.0 - pdeath) + (1.0 - localStorage.survivalskew) * Math.log(mean));
+        const pdeath = report.totaldeaths / report.iterations;
+        const meanscore = 100.0 * (localStorage.survivalskew * (1.0 - pdeath) + (1.0 - localStorage.survivalskew) * Math.log(mean));
                 tps.text(meantps.toFixed(2));
                 dps.text(mean.toFixed(2));
                 dtps.text(meandtps.toFixed(2));
-		score.text(meanscore.toFixed(2));
+        score.text(meanscore.toFixed(2));
 
                 const s1 = report.sumthreat, s2 = report.sumthreat2, n = report.iterations;
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
@@ -887,7 +887,7 @@ SIM.UI = {
         var pullvar = tr.find('td:nth-last-of-type(4)');
         var dps = tr.find('td:nth-last-of-type(3)');
         var tps = tr.find('td:nth-last-of-type(2)');
-	var score = tr.find('td:last-of-type');
+        var score = tr.find('td:last-of-type');
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
@@ -909,7 +909,7 @@ SIM.UI = {
                 let calctps = report.totalthreat / report.totalduration;
                 let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
                 let calcpsurv = 100.0 - (report.totaldeaths / report.iterations * 100);
-		let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
+                let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
                 spantps.text(difftps.toFixed(2));
@@ -920,7 +920,7 @@ SIM.UI = {
                 pullvar.text(calcpullvar || 0);
                 dps.text(calc.toFixed(2) || 0);
                 tps.text(calctps.toFixed(2)).append(spantps);
-		score.text(calcscore || 0);
+                score.text(calcscore || 0);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -941,7 +941,7 @@ SIM.UI = {
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
-			    i.score = calcscore.toFixed(2) || 0;
+                            i.score = calcscore.toFixed(2) || 0;
                         }
                 }
 
@@ -954,7 +954,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
-				i.score = calcscore.toFixed(2) || 0;
+                                i.score = calcscore.toFixed(2) || 0;
                             }
                         }
                     }
@@ -969,7 +969,7 @@ SIM.UI = {
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
-			    i.score = calcscore || 0;
+                          i.score = calcscore || 0;
                         }
                 }
             },
@@ -1006,7 +1006,7 @@ SIM.UI = {
                 let calctps = report.totalthreat / report.totalduration;
                 let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
                 let calcpsurv = 100.0 - (report.totaldeaths / report.iterations * 100);
-		let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
+                let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
                 updateFn(100);
@@ -1020,7 +1020,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
-				i.score = calcscore.toFixed(2) || 0;
+                                i.score = calcscore.toFixed(2) || 0;
                         }
                 }
 
@@ -1033,7 +1033,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
-				i.score = calcscore.toFixed(2) || 0;
+                                i.score = calcscore.toFixed(2) || 0;
                             }
                         }
                     }
@@ -1048,7 +1048,7 @@ SIM.UI = {
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
-			    i.score = calcscore.toFixed(2) || 0;
+                            i.score = calcscore.toFixed(2) || 0;
                         }
                 }
             },
@@ -1086,16 +1086,6 @@ SIM.UI = {
                 gear[type][i].selected = false;
         }
 
-        if (type == "twohand") {
-            for(let i = 0; i < gear.mainhand.length; i++)
-                gear.mainhand[i].selected = false;
-            for(let i = 0; i < gear.offhand.length; i++)
-                gear.offhand[i].selected = false;
-            for(let i = 0; i < enchant.mainhand.length; i++)
-                enchant.mainhand[i].selected = false;
-            for(let i = 0; i < enchant.offhand.length; i++)
-                enchant.offhand[i].selected = false;
-        }
 
         if (type == "mainhand" || type == "offhand") {
             for(let i = 0; i < gear.twohand.length; i++)
@@ -1446,7 +1436,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
-				<th>Score</th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1549,7 +1539,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
-				<th>Score</th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1648,7 +1638,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
-				<th>Score</th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1704,7 +1694,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
-				<th>Score</th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1780,7 +1770,7 @@ loadGems: function (type, editmode, activeGear) {
                                     <th>P(Pull Success)</th>
                                     <th>DPS</th>
                                     <th>    TPS    </th>
-				    <th>Score</th>
+                    <th>Score</th>
                                 </tr>
                             </thead>
                         <tbody>`;
