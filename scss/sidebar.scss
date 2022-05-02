@@ -260,6 +260,23 @@
             display: none;
         }
     }
+    
+    #score-box {
+        text-align: center;
+    }
+
+    #score {
+        font-size: 20px;
+        font-weight: bold;
+        color: $item-uncommon;
+        &:after {
+            content: " Overall Score";
+            font-size: 11px;
+        }
+        &:empty:after {
+            display: none;
+        }
+    }
 
     #dps-box {
         text-align: center;

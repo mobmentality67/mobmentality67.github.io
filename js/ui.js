@@ -484,6 +484,7 @@ SIM.UI = {
         let tpsstats = view.sidebar.find('#tpsstats');
         let dtps = view.sidebar.find('#dtps');
         let dtpsstats = view.sidebar.find('#dtpsstats');
+    let score = view.sidebar.find('#score');
         let time = view.sidebar.find('#time');
         let deaths = view.sidebar.find('#deaths');
         let saves = view.sidebar.find('#saves');
@@ -496,6 +497,7 @@ SIM.UI = {
         tps.text('');
         dps.text('');
         dtps.text('');
+    score.text('');
         error.text('');
         time.text('');
         deaths.text('');
@@ -526,15 +528,18 @@ SIM.UI = {
                 const mean = report.totaldmg / report.totalduration;
                 const meantps = report.totalthreat / report.totalduration;
                 const meandtps = report.totaldamagetaken / report.totalduration;
+        const pdeath = report.totaldeaths / report.iterations;
+        const meanscore = 100.0 * (localStorage.survivalskew * (1.0 - pdeath) + (1.0 - localStorage.survivalskew) * Math.log(mean));
                 tps.text(meantps.toFixed(2));
                 dps.text(mean.toFixed(2));
                 dtps.text(meandtps.toFixed(2));
+        score.text(meanscore.toFixed(2));
 
                 const s1 = report.sumthreat, s2 = report.sumthreat2, n = report.iterations;
                 const varmean = (s2 - s1 * s1 / n) / (n - 1) / n;
                 error.text((1.96 * Math.sqrt(varmean)).toFixed(2));
 
-                deaths.text(report.totaldeaths + ' iterations (' + (report.totaldeaths / report.iterations * 100).toFixed(2) + '%) \
+                deaths.text(report.totaldeaths + ' iterations (' + (pdeath * 100).toFixed(2) + '%) \
                     ended in death');
                 if (report.totaldefensivesaves > 0) {
                     saves.text(report.totaldefensivesaves + ' (' + (report.totaldefensivesaves / report.iterations * 100).toFixed(2) + '%) last stand saves');
@@ -877,11 +882,12 @@ SIM.UI = {
 
     simulateRow: function(tr, updateFn) {
         var view = this;
-        var ehp = tr.find('td:nth-last-of-type(5)');
-        var psurv = tr.find('td:nth-last-of-type(4)');
-        var pullvar = tr.find('td:nth-last-of-type(3)');
-        var dps = tr.find('td:nth-last-of-type(2)');
-        var tps = tr.find('td:last-of-type');
+        var ehp = tr.find('td:nth-last-of-type(6)');
+        var psurv = tr.find('td:nth-last-of-type(5)');
+        var pullvar = tr.find('td:nth-last-of-type(4)');
+        var dps = tr.find('td:nth-last-of-type(3)');
+        var tps = tr.find('td:nth-last-of-type(2)');
+        var score = tr.find('td:last-of-type');
         var type = tr.parents('table').data('type');
         var item = tr.data('id');
         var isench = tr.parents('table').hasClass('enchant');
@@ -902,17 +908,19 @@ SIM.UI = {
                 let calc = report.totaldmg / report.totalduration;
                 let calctps = report.totalthreat / report.totalduration;
                 let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
-                let calcpsurv = (100.0 - (report.totaldeaths / report.iterations * 100)).toFixed(2)
+                let calcpsurv = 100.0 - (report.totaldeaths / report.iterations * 100);
+                let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
                 spantps.text(difftps.toFixed(2));
                 if (difftps >= 0) spantps.addClass('p');
                 else spantps.addClass('n');
                 ehp.text(report.ehp.toFixed(2) || 0);
-                psurv.text(calcpsurv || 0);
+                psurv.text(calcpsurv.toFixed(2) || 0);
                 pullvar.text(calcpullvar || 0);
                 dps.text(calc.toFixed(2) || 0);
                 tps.text(calctps.toFixed(2)).append(spantps);
+                score.text(calcscore || 0);
 
                 view.tcontainer.find('table').each(function() {
                     if (type == "custom") return;
@@ -933,6 +941,7 @@ SIM.UI = {
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
+                            i.score = calcscore.toFixed(2) || 0;
                         }
                 }
 
@@ -945,6 +954,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
+                                i.score = calcscore.toFixed(2) || 0;
                             }
                         }
                     }
@@ -955,10 +965,11 @@ SIM.UI = {
                     for(let i of gear[type])
                         if (i.id == item) {
                             i.ehp = report.ehp.toFixed(2) || 0;
-                            i.psurv = calcpsurv || 0;
+                            i.psurv = calcpsurv.toFixed(2) || 0;
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
+                          i.score = calcscore || 0;
                         }
                 }
             },
@@ -994,7 +1005,8 @@ SIM.UI = {
                 let calc = report.totaldmg / report.totalduration;
                 let calctps = report.totalthreat / report.totalduration;
                 let calcpullvar = (report.pullvariancemet / report.iterations * 100).toFixed(2)
-                let calcpsurv = (100.0 - (report.totaldeaths / report.iterations * 100)).toFixed(2)
+                let calcpsurv = 100.0 - (report.totaldeaths / report.iterations * 100);
+                let calcscore = (localStorage.survivalskew * calcpsurv + (1.0 - localStorage.survivalskew) * Math.log(calc) * 100.0).toFixed(2)
                 let diff = calc - base;
                 let difftps = calctps - basetps;
                 updateFn(100);
@@ -1008,6 +1020,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
+                                i.score = calcscore.toFixed(2) || 0;
                         }
                 }
 
@@ -1020,6 +1033,7 @@ SIM.UI = {
                                 i.pullvar = calcpullvar || 0;
                                 i.dps = calc.toFixed(2) || 0;
                                 i.tps = calctps.toFixed(2);
+                                i.score = calcscore.toFixed(2) || 0;
                             }
                         }
                     }
@@ -1034,6 +1048,7 @@ SIM.UI = {
                             i.pullvar = calcpullvar || 0;
                             i.dps = calc.toFixed(2) || 0;
                             i.tps = calctps.toFixed(2);
+                            i.score = calcscore.toFixed(2) || 0;
                         }
                 }
             },
@@ -1071,16 +1086,6 @@ SIM.UI = {
                 gear[type][i].selected = false;
         }
 
-        if (type == "twohand") {
-            for(let i = 0; i < gear.mainhand.length; i++)
-                gear.mainhand[i].selected = false;
-            for(let i = 0; i < gear.offhand.length; i++)
-                gear.offhand[i].selected = false;
-            for(let i = 0; i < enchant.mainhand.length; i++)
-                enchant.mainhand[i].selected = false;
-            for(let i = 0; i < enchant.offhand.length; i++)
-                enchant.offhand[i].selected = false;
-        }
 
         if (type == "mainhand" || type == "offhand") {
             for(let i = 0; i < gear.twohand.length; i++)
@@ -1297,6 +1302,7 @@ SIM.UI = {
         localStorage.inchpslifebloom = parseFloat($('input[name="inchpslifebloom"]').val());
         localStorage.incheal = parseFloat($('input[name="incheal"]').val());
         localStorage.defensivethreshold = parseFloat($('input[name="defensivethreshold"]').val());
+        localStorage.survivalskew = parseFloat($('input[name="survivalskew"]').val());
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {}, _gem = {};
         view.buffs.find('.active').each(function () { 
@@ -1329,14 +1335,14 @@ SIM.UI = {
         for (let type in gear) {
             _gear[type] = [];
             for (let item of gear[type]) {
-                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
+                _gear[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar,score:item.score});
             }
         }
 
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
+                _enchant[type].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar,score:item.score});
             }
         }
 
@@ -1345,7 +1351,7 @@ SIM.UI = {
             for (let gemIndex = 0; gemIndex < MAX_GEMS[type]; gemIndex++) {
                 _gem[type][gemIndex] =  [];
                 for (let item of Object.values(gem[type][gemIndex])) {
-                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar});
+                    _gem[type][gemIndex].push({id:item.id,selected:item.selected,tps:item.tps,hidden:item.hidden,ehp:item.ehp,psurv:item.psurv,dps:item.dps,pullvar:item.pullvar,score:item.score});
                 }
             }
         }
@@ -1430,6 +1436,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1479,6 +1486,7 @@ SIM.UI = {
                         <td>${item.pullvar || ''}</td>
                         <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
+                        <td>${item.score || ''}</td>
                     </tr>`;
         }
 
@@ -1531,6 +1539,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1580,6 +1589,7 @@ SIM.UI = {
                         <td>${item.pullvar || ''}</td>
                         <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
+                        <td>${item.score || ''}</td>
                     </tr>`;
         }
 
@@ -1589,9 +1599,9 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[17, 1],[1, 0]] : [[16, 1],[0, 0]],
+            sortList: editmode ? [[18, 1],[1, 0]] : [[17, 1],[0, 0]],
             textSorter : {
-                16 : function(a, b, direction, column, table) {
+                17 : function(a, b, direction, column, table) {
                     var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
                     var b = parseFloat(b.substring(0,b.indexOf('.') + 3));
                     if (isNaN(a)) a = 0; 
@@ -1628,6 +1638,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1647,6 +1658,7 @@ SIM.UI = {
                         <td>${item.pullvar || ''}</td>
                         <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
+                        <td>${item.score || ''}</td>
                     </tr>`;
         }
 
@@ -1656,7 +1668,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[11, 1]] : [[10, 1]],
+            sortList: editmode ? [[12, 1]] : [[11, 1]],
         });
     },
 
@@ -1682,6 +1694,7 @@ SIM.UI = {
                                 <th>P(Pull Success)</th>
                                 <th>DPS</th>
                                 <th>    TPS    </th>
+                <th>Score</th>
                             </tr>
                         </thead>
                     <tbody>`;
@@ -1707,6 +1720,7 @@ SIM.UI = {
                         <td>${item.pullvar || ''}</td>
                         <td>${item.dps || ''}</td>
                         <td>${item.tps || ''}</td>
+                        <td>${item.score || ''}</td>
                     </tr>`;
         }
 
@@ -1717,7 +1731,7 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.enchant').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[12, 1]] : [[11, 1]],
+            sortList: editmode ? [[13, 1]] : [[12, 1]],
         });
 
         view.main.find('.js-enchant').show();
@@ -1756,6 +1770,7 @@ loadGems: function (type, editmode, activeGear) {
                                     <th>P(Pull Success)</th>
                                     <th>DPS</th>
                                     <th>    TPS    </th>
+                    <th>Score</th>
                                 </tr>
                             </thead>
                         <tbody>`;
@@ -1785,6 +1800,7 @@ loadGems: function (type, editmode, activeGear) {
                             <td>${item.pullvar || ''}</td>
                             <td>${item.dps || ''}</td>
                             <td>${item.tps || ''}</td>
+                            <td>${item.score || ''}</td>
                         </tr>`;
             }
 
@@ -1795,7 +1811,7 @@ loadGems: function (type, editmode, activeGear) {
             view.tcontainer.append(table);
             view.tcontainer.find('table.gem').tablesorter({
                 widthFixed: true,
-                sortList: editmode ? [[111, 1]] : [[10, 1]],
+                sortList: editmode ? [[12, 1]] : [[11, 1]],
             });
         }
 

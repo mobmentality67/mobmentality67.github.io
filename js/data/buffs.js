@@ -144,6 +144,20 @@ var buffs = [
       sta: 30
    },
    {
+      id: 27149,
+      spellid: true,
+      name: "Devotion Aura",
+      iconname: "spell_holy_devotionaura",
+      bonusac: 861
+   },
+   {
+      id: 27268,
+      spellid: true,
+      name: "Blood Pact",
+      iconname: "spell_shadow_bloodboil",
+      sta: 77
+   },
+   {
       id: 27498,
       name: "Scroll of Agility V",
       iconname: "spell_holy_blessingofagility",
