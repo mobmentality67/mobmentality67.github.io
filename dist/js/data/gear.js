@@ -1421,7 +1421,7 @@ var gear = {
          "ac": 368,
          "source": "PVP",
          "phase": 5,
-         "id": 34988 
+         "id": 34998 
       },
       {
          "name": "Thunderheart Gauntlets",
@@ -2128,7 +2128,7 @@ var gear = {
          "sta": 21,
          "ap": 60,
          "hitrating": 22,
-         "ac": 418,
+         "ac": 278,
          "socket0": "blue",
          "socket1": "red",
          "socketbonus_hitrating": 3,

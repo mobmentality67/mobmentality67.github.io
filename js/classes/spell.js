@@ -1576,11 +1576,13 @@ class Cleave extends Aura {
         this.physical = true;
         this.timer = 0;
         this.damagedone = 0;
+        this.uptime = 0;
     }    
 
     use() {
         this.damagedone = this.rollDamage();
         this.resetCD();
+        this.uptime = 0;
     }
 
     rollDamage() {
@@ -1604,5 +1606,77 @@ class Cleave extends Aura {
 
     end() {
         this.timer = 0;
+    }
+}
+
+class Corrosion extends Aura {
+
+    constructor(player) {
+        super(player);
+        this.duration = 10;
+        this.name = 'Corrosion';
+        this.cooldown = 32 * 1000;
+        this.airphasedelay = 90 * 1000;
+        this.active = false;
+        this.mult_stats = { bossattackmod: 100 };
+        this.avoidable = false;
+        this.baseDamage = 10000;
+        this.rngrange = 0.05;
+        this.physical = false;
+        this.timer = 32 + Math.random() * 5;
+        this.damagedone = 0;
+        this.usagecount = 0;
+
+    }
+    use() {
+        this.timer = step + this.duration * 1000;
+        this.starttimer = step;
+        this.active = true;
+
+        this.damagedone = this.rollDamage();
+        this.player.updateStats();
+        this.usagecount++;
+        if (this.player.enableLogging) 
+            this.player.log(`Corrosion hit for ${this.damagedone}, applied for ${this.duration}s, Boss attack mod: ${this.player.stats.bossattackmod}`);
+
+    }
+
+    rollDamage() {
+        let damage = this.baseDamage * (1 - this.rngrange) + Math.random() * this.baseDamage * this.rngrange * 2; 
+        return damage;
+    }
+
+    step() {
+        if (step > this.timer && this.active) {
+            this.active = false;
+            this.timer = this.starttimer + this.cooldown + Math.random() * 2000;
+            this.player.updateStats();
+            this.uptime += step - this.starttimer;
+            if (this.player.enableLogging) 
+                this.player.log(`Corrosion removed, Boss attack mod: ${this.player.stats.bossattackmod}`);
+
+        }
+    }
+
+    canUse(bossswinglanded) {
+        return (step >= this.timer) && !this.active;
+    }
+
+    resetCD() {
+        this.active = false;
+        this.timer = step + this.cooldown + Math.random() * 2000;
+        // Add an additional 90s delay for air phase
+        if (this.usagecount % 2) {
+            this.timer += this.airphasedelay;
+        }
+        this.starttimer = step;
+    }
+
+    end() {
+        if (this.active) {
+           this.uptime += step - this.starttimer;
+        }
+        this.timer = 27.5 + Math.random() * 5;
+        this.active = false;
     }
 }

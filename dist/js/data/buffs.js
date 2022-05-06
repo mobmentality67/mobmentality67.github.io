@@ -349,6 +349,14 @@ var buffs = [
       iconname: "ability_warrior_cleave",
       bossability: true,
       group: "bossability_unique"
+   },
+   {
+      id: 45866,
+      spellid: true,
+      name: "Corrosion",
+      iconname: "spell_nature_elementalshields",
+      bossability: true,
+      group: "bossability_unique"
    }
 
    
