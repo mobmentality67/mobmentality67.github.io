@@ -40,6 +40,7 @@
   <script type="text/javascript" src="js/data/buffs.js"></script>
   <script type="text/javascript" src="js/data/spells.js"></script>
   <script type="text/javascript" src="js/data/talents.js"></script>
+  <script type="text/javascript" src="js/data/boss_presets.js"></script>
   <script type="text/javascript" src="js/data/session.js"></script>
   <script type="text/javascript" src="js/globals.js"></script>
   <script type="text/javascript" src="js/settings.js"></script>
@@ -193,10 +194,10 @@ profiles
         <ul>
           <li>
             <label>Race</label>
-            <select dir="rtl" name="race">
-              <option value="Night Elf">Night Elf</option>
-              <option value="Tauren">Tauren</option>
-            </select>
+              <select dir="rtl" name="race" id="raceselect">
+                <option value="Night Elf">Night Elf</option>
+                <option value="Tauren">Tauren</option>
+              </select>
           </li>
           <li>
             <label>Simulations</label>
@@ -207,12 +208,26 @@ profiles
             <input type="text" name="simulationsall" value="10" data-numberonly="true">
           </li>
           <li>
+            <label>Apply Boss Preset</label>
+            <select dir="rtl" name="bosspreset" id="bosspreset">
+              <option value="none" selected></option>
+              <option value="Teron Gorefiend">Teron Gorefiend</option>
+              <option value="Mother Shahraz">Mother Shahraz</option>
+              <option value="Gathios the Shatterer">Gathios the Shatterer</option>
+              <option value="Kalecgos">Kalecgos</option>
+              <option value="Brutallus">Brutallus</option>
+              <option value="Felmyst">Felmyst</option>
+              <option value="Lady Sacrolash">Lady Sacrolash</option>
+              <option value="Entropius">Entropius</option>
+            </select>
+          </li>
+          <li>
             <label>Fight Duration (min)</label>
-            <input type="text" name="timesecsmin" value="220" data-numberonly="true">
+            <input type="text" name="timesecsmin" value="220" data-numberonly="true" id="timesecmin">
           </li>
           <li>
             <label>Fight Duration (max)</label>
-            <input type="text" name="timesecsmax" value="240" data-numberonly="true">
+            <input type="text" name="timesecsmax" value="240" data-numberonly="true" id="timesecmax">
           </li>
           <li>
             <label>Initial Rage</label>
@@ -220,7 +235,7 @@ profiles
           </li>
           <li>
             <label>Target Base Armor</label>
-            <input type="text" name="targetbasearmor" value="7700" data-numberonly="true">
+            <input type="text" name="targetbasearmor" value="7700" data-numberonly="true" id="targetbasearmor">
           </li>
           <li>
             <label>Weapon Damage RNG</label>
@@ -231,14 +246,14 @@ profiles
           </li>
           <li>
             <label>Boss Crush</label>
-            <select dir="rtl" name="bosscrush" >
+            <select dir="rtl" name="bosscrush" id="bosscrush">
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
           </li>
           <li>
             <label>Boss Parry Haste</label>
-            <select dir="rtl" name="bossparryhaste" >
+            <select dir="rtl" name="bossparryhaste" id="bossparryhaste">
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
@@ -252,15 +267,15 @@ profiles
           </li>
           <li>
             <label>Boss Damage (If Active Tank) </label>
-              <input type="text" name="incswingdamage" value="22000" data-numberonly="true">
+              <input type="text" name="incswingdamage" value="22000" data-numberonly="true" id="incswingdamage">
           </li>
           <li>
             <label>Boss Swing Timer (If Active Tank)</label>
-              <input type="text" name="incswingtimer" value="2.0" data-numberonly="true">
+              <input type="text" name="incswingtimer" value="2.0" data-numberonly="true" id="incswingtimer">
           </li>
           <li>
             <label>Add 50% Damage Offhand Swing (No DW Penalty)</label>
-            <select dir="rtl" name="bossdw" >
+            <select dir="rtl" name="bossdw" id="bossdw">
               <option value="Yes">Yes</option>
               <option value="No" selected>No</option>
             </select>
@@ -275,9 +290,9 @@ profiles
           </li>
           <li>
             <label>Incoming HPS (lifebloom model) </label>
-              <input type="text" name="inchpslifebloom" value="800" data-numberonly="true"> <br>
+              <input type="text" name="inchpslifebloom" value="800" data-numberonly="true" id="inchpslifebloom"> <br>
             <label>Incoming heal every 2.5 seconds  </label>
-              <input type="text" name="incheal" value="4500" data-numberonly="true">
+              <input type="text" name="incheal" value="4500" data-numberonly="true" id="incheal">
           </li>
           <li>
             <label> HP Percentage to use defensive trinkets </label>

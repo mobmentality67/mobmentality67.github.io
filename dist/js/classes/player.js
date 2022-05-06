@@ -612,7 +612,7 @@ class Player {
 
     addBossSpells() {
         for (let buff of buffs) {
-            if (buff.bossability) {
+            if (buff.bossability && buff.name != 'Sunwell Radiance') {
                 if (buff.active) {
                     this.auras[buff.name.toLowerCase()] = eval(`new ${buff.name}(this)`);
                 }

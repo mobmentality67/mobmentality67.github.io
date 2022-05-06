@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "WarriorSim",
   "main": "main.js",
+  "type": "module",
   "devDependencies": {
     "browser-sync": "^2.26.12",
     "gulp": "^4.0.2",

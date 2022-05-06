@@ -1308,7 +1308,9 @@ SIM.UI = {
         view.buffs.find('.active').each(function () { 
             var buff_count_pair = {};
             let buffid = String($(this).attr('data-id'));
+            let id = String($(this).attr('id'));
             let count = $(this).data('count') ? $(this).data('count') : "1";
+            count += " " + id;
             buff_count_pair[buffid] = String(count);
             _buffs.push(buff_count_pair);
         });

@@ -277,15 +277,6 @@ var buffs = [
       debuff: true
    },
    {
-      id: 45769,
-      spellid: true,
-      name: "Sunwell Radiance",
-      iconname: "spell_holy_circleofrenewal",
-      debuff: true,
-      incmiss: -5.0,
-      incdodgerating: -378.46
-   },
-   {
       id: 27226,
       spellid: true,
       name: "Curse of Recklessness",
@@ -324,6 +315,15 @@ var buffs = [
       iconname: "ability_thunderclap",
       debuff: true,
       bossattackspeedmod: 20,
+   },
+   {
+      id: 45769,
+      spellid: true,
+      name: "Sunwell Radiance",
+      iconname: "spell_holy_circleofrenewal",
+      incmiss: -5.0,
+      bossability: true,
+      incdodgerating: -378.46
    },
    {
       id: 45185,
