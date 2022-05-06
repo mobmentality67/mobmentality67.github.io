@@ -1349,7 +1349,7 @@ var gear = {
          "str": 15,
          "sta": 14,
          "agi": 16,
-         "ac": 103,
+         "ac": 118,
          "source": "Other",
          "phase": 5,
          "id": 21602
@@ -2278,6 +2278,7 @@ var gear = {
          "sta": 28,
          "agi": 29,
          "ap": 44,
+         "ac": 250,
          "hitrating": 13,
          "socket0": "red",
          "socket1": "yellow",
