@@ -47,6 +47,21 @@ var gear = {
          "id": 34999
       },
       {
+         "name": "Quad Deathblow X44 Goggles",
+         "ac": 405,
+         "agi": 61,
+         "sta": 47,
+         "ap": 104,
+         "hitrating": 24,
+         "arpen": 84,
+         "socket0": "meta",
+         "socket1": "blue",
+         "socketbonus_agi": 4,
+         "source": "Crafting",
+         "phase": 5,
+         "id": 34353
+      },
+      {
          "name": "Grimgrin Faceguard",
          "ac": 341,
          "agi": 40,
