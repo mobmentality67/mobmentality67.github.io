@@ -4084,6 +4084,13 @@ var enchant = {
          "agi": 12,
          "phase": 1
       },
+      {
+         "id": 47051,
+         "spellid": true,
+         "name": "Steelweave",
+         "def": 12,
+         "phase": 5
+      },
    ],
    "chest": [
       {
@@ -4107,6 +4114,13 @@ var enchant = {
          "name": "Major Resilience",
          "res": 15,
          "phase": 1
+      },
+      {
+         "id": 46594,
+         "spellid": true,
+         "name": "Defense",
+         "def": 15,
+         "phase": 5
       },
       {
          "id": 20025,
