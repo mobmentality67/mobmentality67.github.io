@@ -1,5 +1,6 @@
 var SIM = SIM || {}
 
+
 SIM.SETTINGS = {
 
     init: function () {
@@ -179,34 +180,57 @@ SIM.SETTINGS = {
             SIM.UI.updateSidebar();
         });
 
-        view.fight.on('change', 'select[name="weaponrng"]', function (e) {
+        view.fight.on('change', 'select[name="bosspreset"]', function (e) {
+            view.applyBossPreset();
             SIM.UI.updateSession();
             SIM.UI.updateSidebar();
         });
 
-        view.fight.on('change', 'select[name="batching"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
+    },
 
-        view.fight.on('change', 'select[name="activetank"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
+    applyBossPreset: function () {
+        for (boss of boss_presets) {
+            let bossname = document.getElementById("bosspreset").value;
+            if (boss.name.toLowerCase() != bossname.toLowerCase()) continue;
+            for (parameter of Object.keys(boss)) {
+                let field = document.getElementById(parameter);
+                if (field != null && parameter != "Boss") {
+                    field.value = boss[parameter];
+                }
+                else {
+                    console.log(`Did not apply boss preset parameter ${parameter}`);
+                }
+            }
+            
+            let radiance = null;
+            buffs.forEach(function(buff) {
+                if (buff.id == 45769) {
+                    radiance = buff;
+                }
+                else if (buff.bossability) {
+                    let buff_selected = document.getElementById(buff.id);
+                    if (buff.id == boss.bossspecial) {
+                        buff.active = true;
+                        buff_selected.classList.add('active');
+                    }
+                    else {
+                        buff.active = false;
+                        buff_selected.classList.remove('active');
+                    }
+                }
+            });
+            
+            let buff_selected = document.getElementById(radiance.id);
+            if (boss.radiance == true) {
+                radiance.active = true;
+                buff_selected.classList.add('active');
+            }
+            else {
+                radiance.active = false;
+                buff_selected.classList.remove('active');
+            }
 
-        view.fight.on('change', 'select[name="bossdw"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
-
-        view.fight.on('change', 'select[name="incswingdamage"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
-        view.fight.on('change', 'select[name="incswingtimer"]', function (e) {
-            SIM.UI.updateSession();
-            SIM.UI.updateSidebar();
-        });
+        }
     },
 
     buildSpells: function () {
@@ -316,7 +340,7 @@ SIM.SETTINGS = {
         let bossabilityTag = `<p><span>Boss Abilities</span></p>`;
         view.buffs.append(bossabilityTag);
 
-        // Add debuffs
+        // Add boss abilities
         for (let buff of buffs) {
             if (buff.bossability) {
                 let wh = buff.spellid ? 'spell' : 'item';
@@ -328,7 +352,7 @@ SIM.SETTINGS = {
                 let iconname = buff.max_count ? buff.iconname.toLowerCase() + "_" + buff.count : buff.iconname.toLowerCase();
                 let count = buff.count ? `data-count="${buff.count}"` : '';
                 let buffOverrideID = buff.idoverride ? buff.idoverride : buff.id; 
-                let html = `<div data-id="${buff.id}" data-name = "${buff.name}" ${max_count} ${count} ${base_icon_name}
+                let html = `<div data-id="${buff.id}" data-name = "${buff.name}" id="${buff.id}" ${max_count} ${count} ${base_icon_name}
                                 class="icon ${active}" ${group} ${disable}>
                                 <img src="dist/img/${iconname}.jpg " alt="${buff.name}">
                                 <a href="https://tbc.wowhead.com/${wh}=${buffOverrideID}" class="wh-tooltip"></a>

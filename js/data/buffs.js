@@ -277,15 +277,6 @@ var buffs = [
       debuff: true
    },
    {
-      id: 45769,
-      spellid: true,
-      name: "Sunwell Radiance",
-      iconname: "spell_holy_circleofrenewal",
-      debuff: true,
-      incmiss: -5.0,
-      incdodgerating: -378.46
-   },
-   {
       id: 27226,
       spellid: true,
       name: "Curse of Recklessness",
@@ -326,6 +317,15 @@ var buffs = [
       bossattackspeedmod: 20,
    },
    {
+      id: 45769,
+      spellid: true,
+      name: "Sunwell Radiance",
+      iconname: "spell_holy_circleofrenewal",
+      incmiss: -5.0,
+      bossability: true,
+      incdodgerating: -378.46
+   },
+   {
       id: 45185,
       spellid: true,
       name: "Stomp_Full",
@@ -347,6 +347,14 @@ var buffs = [
       spellid: true,
       name: "Cleave",
       iconname: "ability_warrior_cleave",
+      bossability: true,
+      group: "bossability_unique"
+   },
+   {
+      id: 45866,
+      spellid: true,
+      name: "Corrosion",
+      iconname: "spell_nature_elementalshields",
       bossability: true,
       group: "bossability_unique"
    }

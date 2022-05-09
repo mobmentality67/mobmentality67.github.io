@@ -47,6 +47,21 @@ var gear = {
          "id": 34999
       },
       {
+         "name": "Quad Deathblow X44 Goggles",
+         "ac": 405,
+         "agi": 61,
+         "sta": 47,
+         "ap": 104,
+         "hitrating": 24,
+         "arpen": 84,
+         "socket0": "meta",
+         "socket1": "blue",
+         "socketbonus_agi": 4,
+         "source": "Crafting",
+         "phase": 5,
+         "id": 34353
+      },
+      {
          "name": "Grimgrin Faceguard",
          "ac": 341,
          "agi": 40,
@@ -1349,7 +1364,7 @@ var gear = {
          "str": 15,
          "sta": 14,
          "agi": 16,
-         "ac": 103,
+         "ac": 118,
          "source": "Other",
          "phase": 5,
          "id": 21602
@@ -1421,7 +1436,7 @@ var gear = {
          "ac": 368,
          "source": "PVP",
          "phase": 5,
-         "id": 34988 
+         "id": 34998 
       },
       {
          "name": "Thunderheart Gauntlets",
@@ -2128,7 +2143,7 @@ var gear = {
          "sta": 21,
          "ap": 60,
          "hitrating": 22,
-         "ac": 418,
+         "ac": 278,
          "socket0": "blue",
          "socket1": "red",
          "socketbonus_hitrating": 3,
@@ -2278,6 +2293,7 @@ var gear = {
          "sta": 28,
          "agi": 29,
          "ap": 44,
+         "ac": 250,
          "hitrating": 13,
          "socket0": "red",
          "socket1": "yellow",

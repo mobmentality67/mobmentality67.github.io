@@ -612,7 +612,7 @@ class Player {
 
     addBossSpells() {
         for (let buff of buffs) {
-            if (buff.bossability) {
+            if (buff.bossability && buff.name != 'Sunwell Radiance') {
                 if (buff.active) {
                     this.auras[buff.name.toLowerCase()] = eval(`new ${buff.name}(this)`);
                 }
@@ -694,7 +694,7 @@ class Player {
         this.stats.incdodge = Math.max(-1.87 + -0.6 + this.stats.agi / 14.7059 + this.stats.incdodgerating * this.DODGE_RATING_COEFFICIENT + 
             this.stats.def * .04 + this.talents.feralswiftnessmod + (this.race == 'Night Elf'), 0);
         this.stats.incmiss = this.base.incmiss + this.stats.def * .04;
-        this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res * 0.025381;
+        this.stats.inccrit = 5.6 - this.talents.survivalofthefittest - this.stats.def * .04 - this.stats.res / 39.423081398499;
         this.stats.inccrush = this.bosscrush ? 15 : 0;
 
         /*
@@ -728,13 +728,14 @@ class Player {
         this.stats.agi = ~~(this.stats.agi * this.stats.agimod);
         this.stats.sta = ~~(this.stats.sta * this.stats.stammod);
         this.stats.maxhp = this.stats.sta * 10 + this.stats.bonushp + 3439; // 3439 assumed as base hp constant
+        if (this.race == 'Tauren') this.stats.maxhp = ~~(this.stats.maxhp * 1.05);
         this.defensivehpthreshold = this.stats.maxhp * this.defensivethreshold / 100;
         this.stats.ap += this.stats.str * 2 + this.talents.predatorystrikes / 2.0 * 70 + this.base.aprace;
         this.stats.ap = ~~(this.stats.ap * this.stats.apmod);
         this.stats.crit += this.stats.agi / 25;
         this.crit = this.getCritChance();
         this.stats.armormod *= this.talents.thickhidemod;
-        this.stats.def = Math.floor(this.stats.def / 2.3654); // Adjust defense skill for defense rating
+        this.stats.def = Math.floor(this.stats.def / 2.3653850351998); // Adjust defense skill for defense rating
         this.stats.haste +=  this.stats.haste * this.stats.hasterating * this.HASTE_RATING_COEFFICIENT / 100; // Add haste from rating
         this.mh.bonusdmg = this.stats.bonusdmg;
         this.updateArmor(); // Update current armor reduction
