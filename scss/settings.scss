@@ -119,9 +119,17 @@
     }
 
     .buffs {
-        font-size: 40;
+        font-size: 32;
         width: 430px;
         height: 600px;
+
+
+        span {
+           display: inline-block;
+           width: 430px;
+           height: 28px;
+           margin-top:10px; 
+        }
     }
 
 

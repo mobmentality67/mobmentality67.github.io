@@ -58,7 +58,7 @@ class Player {
         this.activemetagem = "";
         this.t4rageproc = false;
         this.t5laceratebonus = false;
-        this.squawks = 0;
+        this.drums = 0;
         this.currenthp = 0;
         this.lastlifebloomtick = 0;
         this.bighealtick = 0;
@@ -204,7 +204,7 @@ class Player {
         if (this.items.includes(34473)) this.auras.evasivemaneuvers = new EvasiveManeuvers(this); 
         if (this.lust) this.auras.bloodlust = new Bloodlust(this);
         if (this.hastepot) this.auras.hastepot = new HastePotion(this);
-        if (this.squawks) this.auras.squawks = new Squawks(this);
+        if (this.drums) this.auras.drums = new Drums(this);
         this.update();
         this.currenthp = this.stats.maxhp;
     }
@@ -585,9 +585,9 @@ class Player {
                     this.base.dmgmod *= (1 + buff.dmgmod / 100) || 1;
                 }
             }
-            /* Special handling for stacks of Squawk */
-            if (buff.id == 23060 && buff.active) {
-                this.squawks = buff.count;
+            /* Special handling for drums, lust, haste pot */
+            if (buff.id == 351355 && buff.active) {
+                this.drums = buff.active;
             }
             else if (buff.id == 2825) {
                 this.lust = buff.active;
@@ -597,7 +597,7 @@ class Player {
             }
 
             if (buff.id == 14169 && buff.active) {
-                this.updateTimes.push([475, 18000]); // IEA at 18s (armor diff of IEA - 5 sunders)
+                this.updateTimes.push([475, 18000]); // IEA at 18s (armor diff of IEA - 5 sunders = 475)
             }
         }
     }

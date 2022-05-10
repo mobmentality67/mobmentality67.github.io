@@ -321,7 +321,7 @@ class Simulation {
             player.auras.hastepot,
             player.auras.pummeler,
             player.auras.tenacity,
-            player.auras.squawks,
+            player.auras.drums,
             player.auras.mangleapbuff,
             player.auras.primalinstinct,
             player.auras.protectorsvigor,
@@ -355,9 +355,9 @@ class Simulation {
             player.cast(player.auras.hastepot, damage_threat);
         }  
 
-        /* Pop chicken if active */
-        if (player.auras.squawks) {
-            player.cast(player.auras.squawks, damage_threat);
+        /* Pop drums if active */
+        if (player.auras.drums) {
+            player.cast(player.auras.drums, damage_threat);
         } 
 
         // Manually check once for pre-pop trinkets to avoid artifically delaying on-pull spells

@@ -574,16 +574,15 @@ class HastePotion extends Aura {
     }
 }
 
-class Squawks extends Aura {
+class Drums extends Aura {
     constructor(player) {
         super(player);
-        this.duration = 225; // Assume only 15 seconds of squawk have fallen off on pull (generous)
-        this.mult_stats = { haste: player.squawks * 5};
+        this.duration = 30; // Assume only 15 seconds of squawk have fallen off on pull (generous)
+        this.stats = { hasterating: 80};
         this.cooldown = 9999999999;
-        this.name = 'Battle Squawk';
+        this.name = 'Greater Drums of Battle';
         this.active = false;
         this.spelldelay = 0;
-        this.squawks = player.squawks;
     }
     use() {
         let oldHaste;

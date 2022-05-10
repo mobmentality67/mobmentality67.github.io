@@ -289,9 +289,15 @@ SIM.SETTINGS = {
     },
 
     buildBuffs: function () {
+
         var view = this;
+
+        // Add line break before consumes
+        let groupBuffsTag = `<span>Group Buffs</span>`;
+        view.buffs.append(groupBuffsTag);
+
         for (let buff of buffs) {
-            if (buff.debuff != true && buff.bossability != true) {
+            if (buff.debuff != true && buff.bossability != true && buff.consume != true) {
                 let wh = buff.spellid ? 'spell' : 'item';
                 let active = buff.active ? 'active' : '';
                 let group = buff.group ? `data-group="${buff.group}"` : '';
@@ -310,8 +316,35 @@ SIM.SETTINGS = {
             }
         }
 
+        // Add line break before consumes
+        let consumesTag = `<span>Consumables</span>`;
+        view.buffs.append(consumesTag);
+
+
+        var view = this;
+        for (let buff of buffs) {
+            if (buff.consume) {
+                let wh = buff.spellid ? 'spell' : 'item';
+                let active = buff.active ? 'active' : '';
+                let group = buff.group ? `data-group="${buff.group}"` : '';
+                let disable = buff.disableSpell ? `data-disable-spell="${buff.disableSpell}"` : '';
+                let max_count = buff.max_count ? `data-max_count="${buff.max_count}"` : '';
+                let base_icon_name = `data-base_icon_name="dist/img/${buff.iconname.toLowerCase()}"`;
+                let iconname = buff.max_count ? buff.iconname.toLowerCase() + "_" + buff.count : buff.iconname.toLowerCase();
+                let count = buff.count ? `data-count="${buff.count}"` : '';
+                let html = `<div data-id="${buff.id}" data-name = "${buff.name}" ${max_count} ${count} ${base_icon_name}
+                                class="icon ${active}" ${group} ${disable}>
+                                <img src="dist/img/${iconname}.jpg " alt="${buff.name}">
+                                <a href="https://tbc.wowhead.com/${wh}=${buff.id}" class="wh-tooltip"></a>
+                            </div>`;
+
+                view.buffs.append(html);
+            }
+        }
+
+
         // Add line break before debuffs
-        let debuffTag = `<p><span> Boss Buffs & Debuffs</span></p>`;
+        let debuffTag = `<span> Boss Buffs & Debuffs</span>`;
         view.buffs.append(debuffTag);
 
         // Add debuffs
@@ -337,7 +370,7 @@ SIM.SETTINGS = {
 
 
         // Add line break before boss abilities
-        let bossabilityTag = `<p><span>Boss Abilities</span></p>`;
+        let bossabilityTag = `<span>Boss Abilities</span>`;
         view.buffs.append(bossabilityTag);
 
         // Add boss abilities
