@@ -266,7 +266,7 @@ var buffs = [
       spellid: true,
       name: "Greater Drums of Battle",
       iconname: "inv_misc_drum_02",
-      group: "squawk",
+      group: "",
       consume: true
    },
    {
