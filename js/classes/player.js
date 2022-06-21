@@ -191,7 +191,7 @@ class Player {
         if (this.items.includes(38287)) this.auras.direbrew = new Direbrew(this);
         if (this.items.includes(25937)) this.auras.tablet = new Tablet(this);
         if (this.items.includes(33831)) this.auras.berserkers = new Berserkers(this);
-        if (this.items.includes(28121)) this.auras.icon = new Icon(this);
+        if (this.items.includes(28121)) this.auras.icon = new IconOfUnyieldingCourage(this);
         if (this.items.includes(28288)) this.auras.abacus = new Abacus(this);
         if (this.items.includes(32257)) this.auras.mangleapbuff = new MangleAPBuff(this);
         if (this.items.includes(33509)) this.auras.primalinstinct = new PrimalInstinct(this);

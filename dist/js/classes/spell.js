@@ -415,7 +415,7 @@ class Sliver extends Aura {
     }
 }
 
-class Icon extends Aura {
+class IconOfUnyieldingCourage extends Aura {
     constructor(player) {
         super(player);
         this.duration = 20;
