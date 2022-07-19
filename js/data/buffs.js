@@ -60,6 +60,14 @@ var buffs = [
       iconname: "spell_nature_earthbindtotem",
       group: "strengthearth",
       str: 99
+   },   
+   {
+      id: 20337,
+      spellid: true,
+      name: "Improved Seal of the Crusader",
+      iconname: "spell_holy_holysmite",
+      group: "",
+      crit: 3
    },
    {
       id: 13452,
@@ -67,7 +75,8 @@ var buffs = [
       iconname: "inv_potion_32",
       group: "elixir",
       agi: 25,
-      critrating: 28
+      critrating: 28,
+      consume: true
    },
    {
       id: 22831,
@@ -75,14 +84,16 @@ var buffs = [
       iconname: "major_agility",
       group: "elixir",
       agi: 35,
-      critrating: 20
+      critrating: 20,
+      consume: true
    },
    {
       id: 22854,
       name: "Flask of Relentless Assault",
       iconname: "inv_potion_117",
       group: "elixir",
-      ap: 120
+      ap: 120,
+      consume: true
    },
    {
       id: 22851,
@@ -90,7 +101,8 @@ var buffs = [
       iconname: "inv_potion_119",
       group: "elixir",
       def: 10,
-      bonushp: 500
+      bonushp: 500,
+      consume: true
    },
    {
       id: 33208,
@@ -99,49 +111,56 @@ var buffs = [
       group: "elixir",
       agi: 18,
       sta: 18,
-      str: 18
+      str: 18,
+      consume: true
    },
    {
       id: 22849,
       name: "Ironshield Potion",
       iconname: "inv_potion_133",
       group: "potion",
-      bonusac: 2500
+      bonusac: 2500,
+      consume: true
    },
    {
       id: 32068,
       name: "Elixir of Ironskin",
       iconname: "inv_potion_159",
       group: "guardian",
-      res: 30
+      res: 30,
+      consume: true
    },
    {
       id: 27658,
       name: "Roasted Clefthoof",
       iconname: "roasted_clefthoof",
       group: "food",
-      str: 20
+      str: 20,
+      consume: true
    },
    {
       id: 27664,
       name: "Grilled Mudfish",
       iconname: "grilled_mudfish",
       group: "food",
-      agi: 20
+      agi: 20,
+      consume: true
    },
    {
       id: 33872,
       name: "Spicy Hot Talbuk",
       iconname: "inv_misc_food_84_roastclefthoof",
       group: "food",
-      hitrating: 20
+      hitrating: 20,
+      consume: true
    },
    {
       id: 33052,
       name: "Fisherman's Feast",
       iconname: "inv_misc_food_88_ravagernuggets",
       group: "food",
-      sta: 30
+      sta: 30,
+      consume: true
    },
    {
       id: 27149,
@@ -162,21 +181,24 @@ var buffs = [
       name: "Scroll of Agility V",
       iconname: "spell_holy_blessingofagility",
       group: "",
-      agi: 20
+      agi: 20,
+      consume: true
    },
    {
       id: 27503,
       name: "Scroll of Strength V",
       iconname: "spell_nature_strength",
       group: "",
-      str: 20
+      str: 20,
+      consume: true
    },
    {
       id: 27500,
       name: "Scroll of Protection V",
       iconname: "ability_warrior_defensivestance",
       group: "",
-      bonusac: 300
+      bonusac: 300,
+      consume: true
    },
    {
       id: 25389,
@@ -240,13 +262,12 @@ var buffs = [
       count:1
    },
    {
-      id: 23060,
+      id: 351355,
       spellid: true,
-      name: "Battle Squawk",
-      iconname: "inv_misc_birdbeck",
-      group: "squawk",
-      max_count: 6,
-      count:1
+      name: "Greater Drums of Battle",
+      iconname: "inv_misc_drum_02",
+      group: "",
+      consume: true
    },
    {
       id: 34503,
@@ -267,7 +288,8 @@ var buffs = [
       spellid: true,
       name: "Haste Potion",
       group: "potion",
-      iconname: "inv_potion_108"
+      iconname: "inv_potion_108",
+      consume: true
    },
    {
       id: 14169,

@@ -60,23 +60,6 @@ SIM.UI = {
             $('section.stats').removeClass('active');
         });
 
-        // view.sidebar.find('.js-saveconfig').ready(function (e) {
-        //     e.preventDefault();
-        //     $('.js-saveconfig')
-        //     .mouseenter(function() {
-        //       $('.popup').show();
-        //     })
-        // });
-
-        // view.sidebar.find('.js-loadconfig').click(function (e) {
-        //     e.preventDefault();
-        //     var input = $(document.createElement("input"));
-        //     input.attr("type", "file");
-        //     // add onchange handler if you wish to get the file :)
-        //     input.trigger("click"); // opening dialog
-        //     return false; // avoiding navigation
-        // });
-
         view.sidebar.find('.js-dps').click(function (e) {
             e.preventDefault();
             view.disableEditMode();
