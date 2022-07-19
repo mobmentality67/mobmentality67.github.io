@@ -1607,6 +1607,8 @@ var gear = {
          "agi": 40,
          "hitrating": 23,
          "ac": 342,
+         "socket0": "red",
+         "socketbonus_sta": 3,
          "source": "Sunwell",
          "phase": 5,
          "id": 34556
